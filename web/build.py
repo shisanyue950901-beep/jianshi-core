@@ -460,7 +460,7 @@ def build_account_page():
 
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
-    badge=f'<span class="badge {"good" if is_ready else "watch"}>{"已验证机会" if is_ready else "持续观察"}</span>'
+    badge=f'<span class="badge {"good" if is_ready else "watch"}">{"已验证机会" if is_ready else "持续观察"}</span>'
     body=f"""<main class="wrap"><section class="detail-hero">{badge}<h1>{esc(x.get("title"))}</h1><p class="lead">{esc(x.get("thesis") or "")}</p></section>
 <div class="detail-grid"><div>
 <section class="panel verdict-panel"><span class="section-kicker">一句话结论</span><h2>{esc(verdict(x))}</h2>{score_row(x)}<div class="kv">
@@ -474,7 +474,14 @@ def build_detail(data):
 <div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div><div>GitHub</div><div>{fmt_int(x.get("github_repo_count"))}</div>
 <div>商业挂牌</div><div>{fmt_int(x.get("market_listing_count"))}</div><div>综合分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
 <div class="disclosure">{"该方向已经同时获得至少两类独立数据源支持。评分只用于研究与发现，不代表收益承诺。" if is_ready else "该方向目前仍在持续观察，证据来源还不够分散，不应视为已经验证的商业机会。"}</div>{account_action_block(x)}</aside></div></main>"""
-    return shell(f'{esc(x.get("title"))}｜见势',body,x.get("thesis") or "见势机会研究")
+    slug=str(x.get("slug") or "").strip()
+    canonical_path=f"/opportunity/{slug}/" if slug else "/"
+    return shell(
+        f'{esc(x.get("title"))}｜见势',
+        body,
+        x.get("thesis") or "见势机会研究",
+        canonical_path=canonical_path,
+    )
 
 def main():
     if DIST.exists(): shutil.rmtree(DIST)
