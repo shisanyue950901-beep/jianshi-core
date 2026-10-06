@@ -1,0 +1,11 @@
+-- R8.2 runtime schedule.
+-- Daily opportunity snapshots refresh at minute 48; generate user alerts at minute 50.
+select cron.unschedule(jobid)
+from cron.job
+where jobname='jianshi-user-alerts-6h';
+
+select cron.schedule(
+  'jianshi-user-alerts-6h',
+  '50 */6 * * *',
+  $$select refresh_user_alert_events_v01();$$
+);
