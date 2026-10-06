@@ -1,0 +1,48 @@
+-- R7.10 runtime schedule template.
+-- Safe before provider credentials exist: both functions return no-op when newsletter_provider_ready_v01() is false.
+
+-- Retry WAITLIST confirmation delivery hourly.
+select cron.unschedule(jobid)
+from cron.job
+where jobname='jianshi-newsletter-confirmations-hourly';
+
+select cron.schedule(
+  'jianshi-newsletter-confirmations-hourly',
+  '12 * * * *',
+  $$
+  select net.http_post(
+    url := (select decrypted_secret from vault.decrypted_secrets where name='jianshi_project_url')
+           || '/functions/v1/newsletter-dispatch-confirmations',
+    headers := jsonb_build_object(
+      'Content-Type','application/json',
+      'apikey',(select decrypted_secret from vault.decrypted_secrets where name='jianshi_publishable_key'),
+      'Authorization','Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name='jianshi_publishable_key')
+    ),
+    body := '{"limit":20}'::jsonb,
+    timeout_milliseconds := 30000
+  );
+  $$
+);
+
+-- Daily digest at 09:10 Asia/Shanghai = 01:10 UTC.
+select cron.unschedule(jobid)
+from cron.job
+where jobname='jianshi-newsletter-daily-top10';
+
+select cron.schedule(
+  'jianshi-newsletter-daily-top10',
+  '10 1 * * *',
+  $$
+  select net.http_post(
+    url := (select decrypted_secret from vault.decrypted_secrets where name='jianshi_project_url')
+           || '/functions/v1/newsletter-daily',
+    headers := jsonb_build_object(
+      'Content-Type','application/json',
+      'apikey',(select decrypted_secret from vault.decrypted_secrets where name='jianshi_publishable_key'),
+      'Authorization','Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name='jianshi_publishable_key')
+    ),
+    body := '{"subscriber_limit":100}'::jsonb,
+    timeout_milliseconds := 30000
+  );
+  $$
+);
