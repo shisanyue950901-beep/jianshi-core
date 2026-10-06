@@ -186,6 +186,8 @@ def build_daily_page(kind, daily):
       if not ready.get("one_day") else
       "已开始显示与昨日变化；7 日趋势仍在积累。"
     )
+    if kind=="rising" and not ready.get("one_day"):
+        history_note="历史尚未形成完整变化序列：当前先按热度展示候选；从明天起优先依据真实变化排序。"
     body=f"""<main class="wrap daily-page">
 <section class="list-hero"><span class="section-kicker">{esc(title)}</span><h1>{esc(heading)}</h1><p>{esc(lead)}</p>
 <div class="history-note">{esc(history_note)}</div></section>
