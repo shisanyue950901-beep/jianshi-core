@@ -60,59 +60,141 @@ def shell(title, body, description="见势：看见正在发生的生意机会�
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="robots" content="index,follow">
 <link rel="stylesheet" href="/styles.css"></head><body>
-<header><div class="wrap nav"><a class="brand" href="/">见势 <small>JIANSHI</small></a>
-<nav><a href="/#opportunities">机会</a><a href="/#watch">观察池</a><a href="/#tech">技术信号</a><a href="/#about">关于</a></nav></div></header>
+<header><div class="wrap nav"><a class="brand" href="/">见势</a>
+<nav><a href="/#today">今日机会</a><a href="/#rising">正在起势</a><a href="/#build">值得做</a><a href="/#content">值得讲</a><a href="/#method">我们怎么判断</a></nav></div></header>
 {body}
 <footer id="about"><div class="wrap">见势｜商业机会与趋势情报。数据和评分用于研究与发现，不构成投资、收益或经营承诺。</div></footer>
 <script src="/search.js" defer></script></body></html>"""
 
 def score_row(item):
-    pairs=[("热度",item.get("heat_score")),("内容",item.get("content_score")),
-           ("可做",item.get("build_score")),("商业",item.get("business_score"))]
+    pairs=[("趋势热度",item.get("heat_score")),("内容价值",item.get("content_score")),
+           ("可执行性",item.get("build_score")),("商业质量",item.get("business_score"))]
     return '<div class="score-row">'+''.join(
         f'<div class="score"><b>{fmt_score(v)}</b><span>{esc(k)}</span></div>' for k,v in pairs
     )+'</div>'
 
-def card(item, watch=False):
+def verdict(item):
+    heat=num(item.get("heat_score"))
+    content=num(item.get("content_score"))
+    build=num(item.get("build_score"))
+    business=num(item.get("business_score"))
+    if item.get("public_ready"):
+        return "技术趋势和真实商业市场同时出现证据，已经通过多源验证。"
+    if business >= 70 and content >= 75:
+        return "已有较强赚钱样本，也很适合做内容，但还需要第二类独立趋势证据。"
+    if content >= 85:
+        return "话题传播潜力很高，适合先做内容测试，再观察是否形成商业共振。"
+    if build >= 65:
+        return "个人可执行性较高，适合继续研究需求、竞品和最小可行产品。"
+    if heat >= 80:
+        return "趋势明显升温，但目前更适合观察，不建议仅凭热度直接下结论。"
+    return "已有值得关注的信号，但证据还不够完整，继续观察。"
+
+def card(item, watch=False, compact=False):
     slug=esc(item.get("slug"))
-    label="单源观察" if watch else "多源机会"
+    label="持续观察" if watch else "已验证机会"
     cls="watch" if watch else "good"
-    return f"""<a class="card" data-card href="/opportunity/{slug}/">
-<span class="badge {cls}">{label}</span><h3>{esc(item.get("title"))}</h3>
-<p>{esc(item.get("thesis") or "")}</p>{score_row(item)}
-<div class="meta">{fmt_int(item.get("evidence_count"))} 条证据 · {fmt_int(item.get("source_count"))} 类数据源 · 综合 {fmt_score(item.get("overall_score"))}</div></a>"""
+    compact_cls=" compact" if compact else ""
+    return f"""<a class="card{compact_cls}" data-card href="/opportunity/{slug}/">
+<div class="card-top"><span class="badge {cls}">{label}</span><span class="card-score">综合 {fmt_score(item.get("overall_score"))}</span></div>
+<h3>{esc(item.get("title"))}</h3>
+<p class="card-verdict">{esc(verdict(item))}</p>
+{score_row(item)}
+<div class="meta">{fmt_int(item.get("evidence_count"))} 条证据 · {fmt_int(item.get("source_count"))} 类独立数据源</div></a>"""
+
+def rank_card(item, label, metric_key):
+    return f"""<a class="rank-card" href="/opportunity/{esc(item.get("slug"))}/">
+<span>{esc(label)}</span><strong>{esc(item.get("title"))}</strong>
+<b>{fmt_score(item.get(metric_key))}</b><small>{esc(verdict(item))}</small></a>"""
 
 def build_home(data):
     stats=data.get("stats") or {}
     opps=data.get("opportunities") or []
     watch=data.get("watchlist") or []
     tech=data.get("tech_signals") or []
+    catalog=opps+watch
+
+    top_validated=max(opps,key=lambda x:num(x.get("overall_score")),default=None)
+    rising=sorted(watch,key=lambda x:num(x.get("heat_score")),reverse=True)[:3]
+    build_rank=sorted(catalog,key=lambda x:num(x.get("build_score")),reverse=True)[:3]
+    content_rank=sorted(catalog,key=lambda x:num(x.get("content_score")),reverse=True)[:3]
+
+    hero_feature=card(top_validated,False,True) if top_validated else '<div class="empty">今天还没有通过多源验证的机会，我们会继续自动扫描。</div>'
+
     stats_html="".join([
-      f'<div class="stat"><b>{fmt_int(stats.get("marketplace_listings"))}</b><span>商业挂牌样本</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("github_repositories"))}</b><span>GitHub 趋势仓库</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("signals"))}</b><span>已识别信号</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("validated_opportunities"))}</b><span>多源验证机会</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("watch_opportunities"))}</b><span>单源观察</span></div>'
+      f'<div class="stat"><b>{fmt_int(stats.get("marketplace_listings"))}</b><span>真实商业样本</span></div>',
+      f'<div class="stat"><b>{fmt_int(stats.get("github_repositories"))}</b><span>技术项目样本</span></div>',
+      f'<div class="stat"><b>{fmt_int(stats.get("validated_opportunities"))}</b><span>已验证机会</span></div>',
+      f'<div class="stat"><b>{fmt_int(stats.get("watch_opportunities"))}</b><span>持续观察方向</span></div>',
+      '<div class="stat"><b>6 小时</b><span>自动更新一次</span></div>'
     ])
-    opp_html=''.join(card(x,False) for x in opps) or '<div class="panel">当前没有通过多源 Gate 的机会。</div>'
+
+    opp_html=''.join(card(x,False) for x in opps) or '<div class="empty">当前没有通过多源验证的机会。</div>'
     watch_html=''.join(card(x,True) for x in watch)
+    rising_html=''.join(rank_card(x,f"趋势第 {i+1}","heat_score") for i,x in enumerate(rising))
+    build_html=''.join(rank_card(x,f"可执行第 {i+1}","build_score") for i,x in enumerate(build_rank))
+    content_html=''.join(rank_card(x,f"内容第 {i+1}","content_score") for i,x in enumerate(content_rank))
     tech_html=''.join(
-      f'<a class="tech-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><div><b>{esc(x.get("full_name"))}</b><br><small>{esc(x.get("description") or "")}</small></div><div>{esc(x.get("language") or "—")}</div><div>{fmt_int(x.get("stars"))} ★</div><div>{fmt_score(x.get("rank_score"))}</div></a>'
+      f'<a class="tech-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><div><b>{esc(x.get("full_name"))}</b><br><small>{esc(x.get("description") or "")}</small></div><div>{esc(x.get("language") or "—")}</div><div>{fmt_int(x.get("stars"))} 星标</div><div>趋势 {fmt_score(x.get("rank_score"))}</div></a>'
       for x in tech
     )
-    body=f"""<main class="wrap">
-<section class="hero"><div class="eyebrow">BUSINESS SIGNAL INTELLIGENCE</div><h1>看见正在发生的<br>生意机会。</h1>
-<p>追踪全球产品、开源项目与真实商业市场。<strong>见势不会把“热”直接等同于“值得做”</strong>，只有通过多源共振 Gate 的条目才进入机会榜。</p></section>
-<section class="stats">{stats_html}</section>
-<section class="section" id="opportunities"><div class="section-head"><div><div class="eyebrow">VALIDATED</div><h2>已通过多源验证</h2></div><div class="section-note">技术供给 × 商业证据</div></div><div class="grid">{opp_html}</div></section>
-<section class="section" id="watch"><div class="section-head"><div><div class="eyebrow">WATCHLIST</div><h2>值得继续盯</h2></div><div class="section-note">热度高，但仍缺第二类独立证据</div></div>
-<div class="searchbox"><input data-search placeholder="搜索赛道、机会、关键词…" aria-label="搜索机会"></div><div class="grid">{watch_html}</div></section>
-<section class="section" id="tech"><div class="section-head"><div><div class="eyebrow">TECH SIGNALS</div><h2>技术侧正在变热</h2></div><div class="section-note">仅作为早期供给信号，不等于商业机会</div></div><div class="tech-list">{tech_html}</div></section></main>"""
-    return shell("见势｜看见正在发生的生意机会",body)
+
+    body=f"""<main>
+<section class="hero wrap">
+<div class="hero-copy">
+<span class="kicker">互联网商业机会与趋势情报平台</span>
+<h1>每天帮你从海量项目里，<br><em>筛出真正值得行动的机会。</em></h1>
+<p class="hero-lead">见势自动扫描开源项目和真实商业交易市场，把杂乱的数据整理成三种结论：<strong>什么值得做、什么值得讲、什么值得继续盯。</strong></p>
+<div class="hero-actions"><a class="btn primary" href="#build">我想找项目</a><a class="btn" href="#content">我想找选题</a><a class="text-link" href="#method">它是怎么判断的？</a></div>
+</div>
+<div class="hero-explain">
+<div class="explain-label">一句话看懂见势</div>
+<p><strong>别人告诉你“什么火”，见势告诉你“这个火点有没有真实商业价值，以及你能不能做”。</strong></p>
+<div class="mini-flow"><span>发现趋势</span><i>→</i><span>找赚钱证据</span><i>→</i><span>交叉验证</span><i>→</i><span>给行动结论</span></div>
+</div>
+</section>
+
+<section class="wrap stats">{stats_html}</section>
+
+<section class="wrap usecases">
+<div class="usecase"><span>01</span><h3>你想做一个项目</h3><p>看“值得做”，优先找需求明确、个人能落地、商业证据更扎实的方向。</p><a href="#build">看今天值得做什么 →</a></div>
+<div class="usecase"><span>02</span><h3>你想做内容选题</h3><p>看“值得讲”，优先找反差大、故事强、普通人容易理解的话题。</p><a href="#content">看今天值得讲什么 →</a></div>
+<div class="usecase"><span>03</span><h3>你想早点发现趋势</h3><p>看“正在起势”，发现还没完全商业化、但已经出现明显增长信号的方向。</p><a href="#rising">看哪些方向在升温 →</a></div>
+</section>
+
+<section class="wrap spotlight" id="today">
+<div class="section-head"><div><span class="section-kicker">今天先看这个</span><h2>已经被技术趋势和真实商业同时验证</h2></div><div class="section-note">不是“热门推荐”，而是证据交叉后的结果</div></div>
+{hero_feature}
+</section>
+
+<section class="wrap decision-grid">
+<div class="decision-block" id="rising"><div class="section-head compact-head"><div><span class="section-kicker">正在起势</span><h2>哪些方向正在变热？</h2></div></div>{rising_html}</div>
+<div class="decision-block" id="build"><div class="section-head compact-head"><div><span class="section-kicker">值得做</span><h2>如果今天要做项目</h2></div></div>{build_html}</div>
+<div class="decision-block" id="content"><div class="section-head compact-head"><div><span class="section-kicker">值得讲</span><h2>如果今天要做内容</h2></div></div>{content_html}</div>
+</section>
+
+<section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据比较完整，可以深入研究</h2></div><div class="section-note">至少两类独立数据源同时支持</div></div><div class="grid">{opp_html}</div></section>
+
+<section class="wrap section" id="watch"><div class="section-head"><div><span class="section-kicker">持续观察</span><h2>有信号，但还不能急着下结论</h2></div><div class="section-note">热度不等于机会，继续等待更多证据</div></div>
+<div class="searchbox"><input data-search placeholder="搜索方向、机会或关键词…" aria-label="搜索机会"></div><div class="grid">{watch_html}</div></section>
+
+<section class="method" id="method"><div class="wrap">
+<div class="section-head light"><div><span class="section-kicker">我们怎么判断</span><h2>不预测风口，只把证据摆到一起</h2></div></div>
+<div class="method-flow">
+<div><b>1</b><h3>先看什么正在变热</h3><p>跟踪 GitHub 等公开技术信号，观察项目热度、增长和活跃度。</p></div>
+<div><b>2</b><h3>再看有没有人赚钱</h3><p>读取允许使用的真实商业市场数据，看收入、利润、售价和运营强度。</p></div>
+<div><b>3</b><h3>必须交叉验证</h3><p>单一来源只能进入“持续观察”；不同类型证据同时出现，才升级为已验证机会。</p></div>
+<div><b>4</b><h3>最后给行动分数</h3><p>分别判断趋势热度、内容价值、可执行性和商业质量，不用一个总分掩盖差异。</p></div>
+</div></div></section>
+
+<section class="wrap section" id="tech"><div class="section-head"><div><span class="section-kicker">底层趋势证据</span><h2>技术项目里，哪些正在升温</h2></div><div class="section-note">这里只是早期信号，不直接等于商业机会</div></div><div class="tech-list">{tech_html}</div></section>
+</main>"""
+    return shell("见势｜每天发现值得做、值得讲、值得盯的商业机会",body,
+                 "见势每天扫描全球开源项目与真实商业市场，帮你发现值得做的项目、值得讲的内容和正在起势的商业机会。")
 
 def evidence_github(rows):
-    if not rows: return '<div class="evidence-row"><small>暂无 GitHub 证据。</small></div>'
-    return ''.join(f'<a class="evidence-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><b>{esc(x.get("full_name"))}</b><small>{esc(x.get("language") or "—")} · {fmt_int(x.get("stars"))} Stars · 技术排名 {fmt_score(x.get("rank_score"))}</small></a>' for x in rows)
+    if not rows: return '<div class="evidence-row"><small>暂无开源项目证据。</small></div>'
+    return ''.join(f'<a class="evidence-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><b>{esc(x.get("full_name"))}</b><small>{esc(x.get("language") or "—")} · {fmt_int(x.get("stars"))} 星标 · 趋势评分 {fmt_score(x.get("rank_score"))}</small></a>' for x in rows)
 
 def evidence_market(rows):
     if not rows: return '<div class="evidence-row"><small>暂无交易市场证据。</small></div>'
@@ -120,19 +202,19 @@ def evidence_market(rows):
 
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
-    badge=f'<span class="badge {"good" if is_ready else "watch"}>{"多源机会" if is_ready else "单源观察"}</span>'
+    badge=f'<span class="badge {"good" if is_ready else "watch"}>{"已验证机会" if is_ready else "持续观察"}</span>'
     body=f"""<main class="wrap"><section class="detail-hero">{badge}<h1>{esc(x.get("title"))}</h1><p class="lead">{esc(x.get("thesis") or "")}</p></section>
 <div class="detail-grid"><div>
-<section class="panel"><h2>机会判断</h2>{score_row(x)}<div class="kv">
+<section class="panel verdict-panel"><span class="section-kicker">一句话结论</span><h2>{esc(verdict(x))}</h2>{score_row(x)}<div class="kv">
 <div>要解决的问题</div><div>{esc(x.get("problem") or "—")}</div><div>目标用户</div><div>{esc(x.get("target_customer") or "—")}</div>
 <div>商业模式</div><div>{esc(x.get("business_model") or "—")}</div><div>中国化适配</div><div>{fmt_score(x.get("china_fit"))}/100</div>
 <div>一人公司适配</div><div>{fmt_score(x.get("solo_founder_fit"))}/100</div></div></section>
-<section class="panel"><h2>GitHub 技术证据</h2>{evidence_github((data.get("evidence") or {}).get("github") or [])}</section>
-<section class="panel"><h2>真实商业市场证据</h2>{evidence_market((data.get("evidence") or {}).get("marketplace") or [])}</section></div>
+<section class="panel"><h2>开源项目证据</h2>{evidence_github((data.get("evidence") or {}).get("github") or [])}</section>
+<section class="panel"><h2>真实商业样本</h2>{evidence_market((data.get("evidence") or {}).get("marketplace") or [])}</section></div>
 <aside><section class="panel"><h3>证据强度</h3><div class="kv"><div>数据源</div><div>{fmt_int(x.get("source_count"))}</div>
 <div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div><div>GitHub</div><div>{fmt_int(x.get("github_repo_count"))}</div>
 <div>商业挂牌</div><div>{fmt_int(x.get("market_listing_count"))}</div><div>综合分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
-<div class="disclosure">{esc(data.get("disclosure") or "")}</div></aside></div></main>"""
+<div class="disclosure">{"该方向已经同时获得至少两类独立数据源支持。评分只用于研究与发现，不代表收益承诺。" if is_ready else "该方向目前仍在持续观察，证据来源还不够分散，不应视为已经验证的商业机会。"}</div></aside></div></main>"""
     return shell(f'{esc(x.get("title"))}｜见势',body,x.get("thesis") or "见势机会研究")
 
 def main():
