@@ -51,7 +51,7 @@ Deno.serve(async (req: Request) => {
         product: {
           name: "见势",
           tagline: "看见正在发生的生意机会",
-          engine_version: "OPP_V0.1",
+          engine_version: "OPP_V0.2",
         },
         generated_at: new Date().toISOString(),
         stats: statsQ.data,
@@ -120,7 +120,7 @@ Deno.serve(async (req: Request) => {
         db.from("score_snapshots")
           .select("score_kind,score,score_version,calculated_at")
           .eq("opportunity_id", item.opportunity_id)
-          .eq("score_version", "OPP_V0.1")
+          .eq("score_version", "OPP_V0.2")
           .order("calculated_at", { ascending: false })
           .limit(40),
       ]);

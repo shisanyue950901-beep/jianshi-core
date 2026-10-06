@@ -356,6 +356,29 @@ def evidence_market(rows):
         for x in rows
     )
 
+def sold_activity_block(x):
+    count=int(num(x.get("sold_status_count")))
+    market_count=int(num(x.get("market_listing_count")))
+    if count<=0 and market_count<=0:
+        return ""
+    ready=bool(x.get("sold_sample_ready"))
+    if ready:
+        body=f"""<div class="exit-metrics">
+<div><b>{fmt_int(count)}</b><span>已捕获 Sold 状态样本</span></div>
+<div><b>{fmt_score(x.get("median_sold_status_days_on_market"))} 天</b><span>在市天数中位数</span></div>
+<div><b>{fmt_money(x.get("median_sold_status_annual_profit"))}</b><span>样本年利润中位数</span></div>
+</div>
+<p>样本已达到最低门槛，会作为商业质量的弱辅助证据；这部分对商业质量评分最多只影响 +5 分。</p>"""
+    else:
+        body=f"""<div class="exit-metrics">
+<div><b>{fmt_int(count)}</b><span>已捕获 Sold 状态样本</span></div>
+</div>
+<p>样本还不足 5 个，目前只展示，不进入商业质量评分。</p>"""
+    return f"""<section class="panel exit-panel"><span class="section-kicker">退出活跃度 · 辅助证据</span><h2>这个商业模式是否出现过已售状态？</h2>
+{body}
+<div class="disclosure">Sold 只表示该挂牌在官方市场中的已售状态。见势没有把最后挂牌价当作真实成交价，也不会把 Sold 样本数解释为成交率。</div>
+</section>"""
+
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
     badge=f'<span class="badge {"good" if is_ready else "watch"}>{"已验证机会" if is_ready else "持续观察"}</span>'
@@ -366,7 +389,8 @@ def build_detail(data):
 <div>商业模式</div><div>{esc(x.get("business_model") or "—")}</div><div>中国化适配</div><div>{fmt_score(x.get("china_fit"))}/100</div>
 <div>一人公司适配</div><div>{fmt_score(x.get("solo_founder_fit"))}/100</div></div></section>
 <section class="panel"><h2>开源项目证据</h2>{evidence_github((data.get("evidence") or {}).get("github") or [])}</section>
-<section class="panel"><h2>真实商业样本</h2>{evidence_market((data.get("evidence") or {}).get("marketplace") or [])}</section></div>
+<section class="panel"><h2>真实商业样本</h2>{evidence_market((data.get("evidence") or {}).get("marketplace") or [])}</section>
+{sold_activity_block(x)}</div>
 <aside><section class="panel"><h3>证据强度</h3><div class="kv"><div>数据源</div><div>{fmt_int(x.get("source_count"))}</div>
 <div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div><div>GitHub</div><div>{fmt_int(x.get("github_repo_count"))}</div>
 <div>商业挂牌</div><div>{fmt_int(x.get("market_listing_count"))}</div><div>综合分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
