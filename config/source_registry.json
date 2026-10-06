@@ -1,0 +1,57 @@
+{
+  "registry_version": "1.1",
+  "reviewed_at": "2026-10-06",
+  "sources": [
+    {
+      "code": "empire_flippers",
+      "name": "Empire Flippers",
+      "status": "GREEN",
+      "access_method": "OFFICIAL_API",
+      "auto_collect": true,
+      "redisplay_allowed": true,
+      "policy_url": "https://empireflippers.com/marketplace-api/",
+      "rate_limit_rps": 1.0,
+      "notes": "官方 Marketplace API 明确支持把当前在售 listings syndicate 到自有网站；无认证；不超过 1 req/s。"
+    },
+    {
+      "code": "acquire",
+      "name": "Acquire.com",
+      "status": "RED",
+      "access_method": "MANUAL_RESEARCH_ONLY",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "policy_url": "https://acquire.com/buyerseller/",
+      "notes": "未取得书面许可前禁止自动抓取、竞争性 benchmark 和跨域重展示。"
+    },
+    {
+      "code": "flippa",
+      "name": "Flippa",
+      "status": "RED",
+      "access_method": "MANUAL_RESEARCH_OR_WRITTEN_LICENSE",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "policy_url": "https://flippa.com/terms-of-service/",
+      "notes": "未取得书面授权前不做批量抽取和 substantial database 复制。"
+    },
+    {
+      "code": "microns",
+      "name": "Microns",
+      "status": "RED",
+      "access_method": "MANUAL_RESEARCH_ONLY",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "policy_url": "https://www.microns.io/terms",
+      "notes": "Terms 禁止未经明确许可 crawl/scrape/spider。"
+    },
+    {
+      "code": "sideprojectors",
+      "name": "SideProjectors",
+      "status": "YELLOW",
+      "access_method": "REVIEW_REQUIRED",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "policy_url": null,
+      "notes": "完成 API / robots / Terms 专项审查后再决定是否转 GREEN。"
+    }
+  ]
+}
