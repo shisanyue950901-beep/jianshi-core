@@ -8,9 +8,14 @@ seen=set()
 for s in d["sources"]:
     assert s["code"] not in seen, f"duplicate source: {s['code']}"
     seen.add(s["code"])
+    for field in ("internal_research_allowed","derived_public_analytics_allowed","written_permission_required"):
+        assert field in s, f"missing policy field {field}: {s['code']}"
     if s["status"] != "GREEN":
         assert s["auto_collect"] is False, f"non-GREEN auto collect forbidden: {s['code']}"
         assert s["redisplay_allowed"] is False, f"non-GREEN redisplay forbidden: {s['code']}"
+        assert s["derived_public_analytics_allowed"] is False, f"non-GREEN derived public analytics forbidden: {s['code']}"
     if s["status"] == "GREEN":
         assert s.get("policy_url"), f"GREEN requires policy URL: {s['code']}"
+        assert s["auto_collect"] is True
+        assert s["redisplay_allowed"] is True
 print("SOURCE_REGISTRY_PASS", len(seen))
