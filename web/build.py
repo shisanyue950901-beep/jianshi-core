@@ -11,6 +11,9 @@ STATIC=ROOT/"static"
 FIXTURE=ROOT/"fixtures"/"api.json"
 API=os.getenv("JIANSHI_API_URL","").strip().rstrip("/")
 SITE=os.getenv("JIANSHI_SITE_URL","https://jianshi-bua.pages.dev").strip().rstrip("/")
+NEWSLETTER_API=os.getenv("JIANSHI_NEWSLETTER_URL","").strip().rstrip("/")
+if not NEWSLETTER_API and API.endswith("/public-feed"):
+    NEWSLETTER_API=API[:-len("/public-feed")] + "/newsletter-subscribe"
 
 def esc(v):
     return html.escape("" if v is None else str(v), quote=True)
@@ -169,6 +172,20 @@ def daily_row(item, metric_key, metric_label, rank=None):
 <div class="daily-evidence"><b>{fmt_int(item.get("evidence_count"))}</b><span>有效证据</span></div>
 </a>"""
 
+def newsletter_block():
+    endpoint=esc(NEWSLETTER_API)
+    return f"""<section class="newsletter" id="subscribe"><div class="wrap newsletter-inner">
+<div class="newsletter-copy"><span class="section-kicker">免费订阅</span><h2>每天把 Top 10 机会发给我</h2>
+<p>不需要注册账号。我们会先发送确认邮件；只有完成确认后，才会开始发送每日机会摘要。可随时退订。</p></div>
+<form class="newsletter-form" data-newsletter-form data-endpoint="{endpoint}">
+<label class="sr-only" for="newsletter-email">邮箱</label>
+<input id="newsletter-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="你的邮箱，例如 name@example.com" required>
+<input class="hp-field" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit">订阅每日 Top 10</button>
+<p class="newsletter-consent">提交即表示你同意接收见势的订阅确认邮件与每日机会摘要。未确认前不会发送每日邮件。</p>
+<p class="newsletter-status" data-newsletter-status role="status" aria-live="polite"></p>
+</form></div></section>"""
+
 def build_daily_page(kind, daily):
     cfg={
       "today":("今日机会","今天最值得先看的机会","综合判断","overall_score","把今天值得关注的方向按综合价值排序，并明确告诉你哪里发生了变化。"),
@@ -192,6 +209,7 @@ def build_daily_page(kind, daily):
 <section class="list-hero"><span class="section-kicker">{esc(title)}</span><h1>{esc(heading)}</h1><p>{esc(lead)}</p>
 <div class="history-note">{esc(history_note)}</div></section>
 <section class="daily-list">{"".join(daily_row(x,metric_key,metric_label,i+1) for i,x in enumerate(rows))}</section>
+{newsletter_block()}
 <section class="daily-explain panel"><h2>怎么看这个榜单？</h2>
 <p>见势不会因为某个方向“很火”就把它直接认定为机会。榜单同时参考趋势、内容传播、可执行性、商业质量和证据变化。历史不足时我们会明确写“历史积累中”，不会伪造昨日或 7 日涨幅。</p></section>
 </main>"""
@@ -276,6 +294,8 @@ def build_home(data, daily=None):
 <div class="decision-block" id="build"><div class="section-head compact-head"><div><span class="section-kicker">值得做</span><h2>如果今天要做项目</h2></div><a class="section-more" href="/build/">查看完整榜单 →</a></div>{build_html}</div>
 <div class="decision-block" id="content"><div class="section-head compact-head"><div><span class="section-kicker">值得讲</span><h2>如果今天要做内容</h2></div><a class="section-more" href="/content/">查看完整榜单 →</a></div>{content_html}</div>
 </section>
+
+{newsletter_block()}
 
 <section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据比较完整，可以深入研究</h2></div><div class="section-note">至少两类独立数据源同时支持</div></div><div class="grid">{opp_html}</div></section>
 
