@@ -39,6 +39,10 @@ class TestR7DailyProduct(unittest.TestCase):
         self.assertIn('/build/',home)
         self.assertIn('/content/',home)
         self.assertIn('/rising/',home)
+        rank_sql=Path("db/migrations/0020_r7_rank_policy.sql").read_text(encoding="utf-8")
+        self.assertIn("c.public_ready desc,c.overall_score desc",rank_sql)
+        rising=Path("web/dist/rising/index.html").read_text(encoding="utf-8")
+        self.assertIn("当前先按热度展示候选",rising)
 
 if __name__=="__main__":
     unittest.main()
