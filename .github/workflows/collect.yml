@@ -1,10 +1,10 @@
-name: JianShi Collect
+name: JianShi CI
 on:
-  schedule:
-    - cron: '17 */6 * * *'
-  workflow_dispatch:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -19,6 +19,7 @@ jobs:
         run: python scripts/validate_registry.py
       - name: Tests
         run: python -m unittest discover -s tests -p 'test_*.py' -v
-      - name: Collector safety state
+      - name: Runtime contract
         run: |
-          echo "Production collector remains FAIL_CLOSED until Supabase staging smoke tests PASS."
+          echo "Production collection runtime: Supabase Cron + Edge Function."
+          echo "GitHub Actions is CI-only; no production database secret is required here."
