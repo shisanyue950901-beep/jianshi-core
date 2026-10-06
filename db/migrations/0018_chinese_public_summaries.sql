@@ -91,7 +91,8 @@ revoke all on function refresh_github_summary_zh_v01() from public,anon,authenti
 
 select refresh_github_summary_zh_v01();
 
-create or replace view public_tech_signals_v01 as
+drop view if exists public_tech_signals_v01;
+create view public_tech_signals_v01 as
 select
   gh.github_repository_id,
   gh.full_name,
@@ -121,7 +122,8 @@ group by
 
 alter view public_tech_signals_v01 set (security_invoker=true);
 
-create or replace view public_market_evidence_v01 as
+drop view if exists public_market_evidence_v01;
+create view public_market_evidence_v01 as
 select
   oe.opportunity_id,
   ml.id as marketplace_listing_id,
@@ -162,7 +164,8 @@ where oe.active=true
 alter view public_market_evidence_v01 set (security_invoker=true);
 
 
-create or replace view public_github_evidence_v01 as
+drop view if exists public_github_evidence_v01;
+create view public_github_evidence_v01 as
 select
   oe.opportunity_id,
   gr.id as github_repository_id,
