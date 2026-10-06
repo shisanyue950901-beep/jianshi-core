@@ -1,0 +1,22 @@
+-- Runtime-only template. Do not commit real project values here.
+-- Store project URL and publishable key in Vault first.
+select vault.create_secret('https://PROJECT_REF.supabase.co', 'project_url');
+select vault.create_secret('PUBLISHABLE_KEY', 'publishable_key');
+
+select cron.schedule(
+  'jianshi-empire-flippers-6h',
+  '17 */6 * * *',
+  $$
+  select net.http_post(
+    url := (select decrypted_secret from vault.decrypted_secrets where name='project_url')
+           || '/functions/v1/collect-empire-flippers',
+    headers := jsonb_build_object(
+      'Content-Type','application/json',
+      'apikey',(select decrypted_secret from vault.decrypted_secrets where name='publishable_key'),
+      'Authorization','Bearer ' || (select decrypted_secret from vault.decrypted_secrets where name='publishable_key')
+    ),
+    body := '{"start_page":1,"max_pages":10}'::jsonb,
+    timeout_milliseconds := 30000
+  );
+  $$
+);
