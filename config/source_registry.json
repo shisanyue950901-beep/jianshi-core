@@ -1,5 +1,5 @@
 {
-  "registry_version": "1.1",
+  "registry_version": "1.2",
   "reviewed_at": "2026-10-06",
   "sources": [
     {
@@ -11,7 +11,18 @@
       "redisplay_allowed": true,
       "policy_url": "https://empireflippers.com/marketplace-api/",
       "rate_limit_rps": 1.0,
-      "notes": "官方 Marketplace API 明确支持把当前在售 listings syndicate 到自有网站；无认证；不超过 1 req/s。"
+      "notes": "官方 Marketplace API；生产采集不超过 1 req/s。"
+    },
+    {
+      "code": "github",
+      "name": "GitHub",
+      "status": "GREEN",
+      "access_method": "OFFICIAL_REST_API_PUBLIC_METADATA",
+      "auto_collect": true,
+      "redisplay_allowed": true,
+      "policy_url": "https://docs.github.com/en/rest",
+      "rate_limit_rps": null,
+      "notes": "仅采集公开仓库元数据；遵守 GitHub API Terms 与 Rate Limit；不采集私有仓库或用户私密数据。"
     },
     {
       "code": "acquire",
