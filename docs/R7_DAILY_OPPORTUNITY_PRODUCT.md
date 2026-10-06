@@ -34,3 +34,9 @@
 - 不做付费墙
 - 不伪造 7 日历史
 - 不把单来源高热度直接升级为“已验证机会”
+
+## Staging 验收记录
+- 2026-10-06：首日 6 个机会快照落库。
+- 历史不足：1 日/7 日 delta 均为 NULL，页面显示“历史积累中”。
+- 合成昨日样本：solo-saas 正确识别 NEWLY_VALIDATED，heat +4.83、evidence +7；验收后已删除合成数据。
+- public-feed daily：PASS。
