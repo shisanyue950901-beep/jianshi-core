@@ -1,0 +1,21 @@
+{
+  "home":{
+    "product":{"name":"见势","tagline":"看见正在发生的生意机会","engine_version":"OPP_V0.1"},
+    "generated_at":"2026-10-06T12:00:00Z",
+    "stats":{"marketplace_listings":174,"github_repositories":195,"signals":0,"validated_opportunities":1,"watch_opportunities":5,"latest_pipeline_at":"2026-10-06T11:45:00Z"},
+    "opportunities":[{"slug":"solo-saas","title":"一人公司 SaaS","category":"SAAS","thesis":"SaaS 同时具备开源供给与真实交易市场现金流证据。","source_count":2,"evidence_count":56,"heat_score":59.52,"content_score":74.79,"build_score":69.19,"business_score":73.04,"overall_score":68.60,"public_ready":true,"resonance_status":"MULTI_SOURCE"}],
+    "watchlist":[
+      {"slug":"ecommerce-brands","title":"轻量电商品牌与 Amazon 资产","thesis":"大量可交易电商资产提供真实收入、利润和估值样本。","source_count":1,"evidence_count":107,"heat_score":100,"content_score":90.2,"build_score":47.25,"business_score":71.22,"overall_score":75.64,"public_ready":false},
+      {"slug":"ai-agent-tools","title":"AI Agent 工具与自动化","thesis":"Agent 正从演示走向可执行工作流。","source_count":1,"evidence_count":50,"heat_score":84.97,"content_score":90.44,"build_score":61.24,"business_score":39.74,"overall_score":67.14,"public_ready":false}
+    ],
+    "tech_signals":[{"full_name":"example/agent","description":"Agent framework example","html_url":"https://github.com/example/agent","language":"Python","stars":12000,"forks":1200,"rank_score":88.4}]
+  },
+  "details":{
+    "solo-saas":{
+      "item":{"slug":"solo-saas","title":"一人公司 SaaS","category":"SAAS","thesis":"SaaS 同时具备开源供给与真实交易市场现金流证据，是见势首个天然多源赛道。","problem":"细分业务软件仍存在大量小而稳定的付费需求。","target_customer":"小微企业、专业人士、垂直团队","business_model":"订阅制 SaaS","china_fit":80,"solo_founder_fit":82,"github_repo_count":50,"market_listing_count":6,"source_count":2,"evidence_count":56,"heat_score":59.52,"content_score":74.79,"build_score":69.19,"business_score":73.04,"overall_score":68.6,"public_ready":true,"resonance_status":"MULTI_SOURCE"},
+      "evidence":{"github":[{"full_name":"example/saas","description":"Open-source SaaS starter","html_url":"https://github.com/example/saas","language":"TypeScript","stars":5000,"forks":500,"quality_score":90,"heat_score":80,"rank_score":82}],"marketplace":[{"listing_number":12345,"public_title":"$20K Per Month SaaS Business","listing_price":720000,"average_monthly_net_profit":15000,"average_monthly_gross_revenue":20000,"profit_margin":75,"listing_multiple":48,"hours_worked_per_week":8,"monetizations":["SaaS"],"niches":["Business"]}]},
+      "score_history":[],
+      "disclosure":"该机会已通过当前版本的多源共振 Gate。评分是研究工具，不代表收益承诺。"
+    }
+  }
+}
