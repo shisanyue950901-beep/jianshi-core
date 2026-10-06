@@ -1,5 +1,5 @@
 {
-  "registry_version": "1.3",
+  "registry_version": "1.4",
   "reviewed_at": "2026-10-06",
   "sources": [
     {
@@ -133,6 +133,45 @@
       "written_permission_required": true,
       "policy_url": "https://acquirebase.com/terms",
       "notes": "公开挂牌包含 MRR/利润/售价等高价值字段，但现有条款未明确授予自动采集、历史归档或商业重展示权利；需书面确认。"
+    },
+    {
+      "code": "fe_international",
+      "name": "FE International",
+      "status": "RED",
+      "access_method": "MANUAL_RESEARCH_OR_WRITTEN_LICENSE",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "policy_url": "https://www.feinternational.com/legal-md/buyer-seller-terms-of-use",
+      "notes": "2026 Platform Terms 明确禁止 benchmarking/competitive intelligence，以及未经书面许可的 automated/manual scraping、crawl、harvest 或 extract Marketplace 数据。"
+    },
+    {
+      "code": "investors_club",
+      "name": "Investors Club",
+      "status": "YELLOW",
+      "access_method": "PUBLIC_WEB_REVIEW_REQUIRED",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "policy_url": "https://investors.club/terms-and-conditions/",
+      "notes": "公开挂牌及历史数据价值高，但 Terms 将平台 Content 视为专有内容，未明确授予第三方商业聚合/再发布许可；需书面授权。"
+    },
+    {
+      "code": "motion_invest",
+      "name": "Motion Invest",
+      "status": "YELLOW",
+      "access_method": "PUBLIC_WEB_REVIEW_REQUIRED",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "policy_url": "https://www.motioninvest.com/terms-of-service",
+      "notes": "Marketplace 公开展示网站/YouTube 收入与售价，但未发现公开 API 或商业再利用授权；平台内容/IP 权利保留，需书面许可。"
     }
   ]
 }
