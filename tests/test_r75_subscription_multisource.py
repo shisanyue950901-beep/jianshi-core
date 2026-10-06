@@ -24,6 +24,10 @@ class TestR75SubscriptionAndMultisource(unittest.TestCase):
         ]:
             self.assertIn(token,sql)
         self.assertIn("revoke all on newsletter_subscribers,newsletter_events from anon,authenticated",sql)
+        waitlist=Path("db/migrations/0023_real_newsletter_waitlist.sql").read_text(encoding="utf-8")
+        self.assertIn("'WAITLIST'",waitlist)
+        self.assertIn("request_newsletter_waitlist_v01",waitlist)
+        self.assertIn("unsubscribe_token_hash drop not null",waitlist)
 
     def test_newsletter_edge_contract(self):
         fn=Path("supabase/functions/newsletter-subscribe/index.ts").read_text(encoding="utf-8")
@@ -31,6 +35,8 @@ class TestR75SubscriptionAndMultisource(unittest.TestCase):
         self.assertIn("Honeypot",fn)
         self.assertIn("sha256Hex",fn)
         self.assertIn("WAITLIST",fn)
+        self.assertIn("newsletter_provider_ready_v01",fn)
+        self.assertIn("request_newsletter_waitlist_v01",fn)
         self.assertIn("CONFIRMATION_QUEUED",fn)
         self.assertNotIn('message: "确认邮件已发送',fn)
 
