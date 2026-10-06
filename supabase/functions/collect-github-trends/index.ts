@@ -15,7 +15,11 @@ function compact(raw: Record<string, any>, sourceId: string) {
     github_repo_id: Number(raw.id),
     full_name: String(raw.full_name),
     owner_login: String(raw.owner?.login ?? ""),
+    owner_type: raw.owner?.type ?? null,
     name: String(raw.name ?? ""),
+    repo_size_kb: Number(raw.size ?? 0),
+    has_issues: Boolean(raw.has_issues),
+    has_projects: Boolean(raw.has_projects),
     description: raw.description ?? null,
     html_url: raw.html_url,
     homepage_url: raw.homepage || null,
@@ -89,7 +93,7 @@ Deno.serve(async (req: Request) => {
 
   const { data: queries, error: queryError } = await admin
     .from("github_discovery_queries")
-    .select("code,query_template,sort_by,order_by,per_page")
+    .select("id,code,query_template,sort_by,order_by,per_page")
     .eq("enabled", true)
     .order("code");
 
@@ -124,6 +128,7 @@ Deno.serve(async (req: Request) => {
   let incompleteResults = 0;
   let minRateRemaining: number | null = null;
   const repos = new Map<number, Record<string, any>>();
+  const queryHits = new Map<number, Set<string>>();
 
   try {
     for (let i = 0; i < queries.length; i++) {
@@ -172,7 +177,11 @@ Deno.serve(async (req: Request) => {
           if (!raw?.id || !raw?.full_name || !raw?.html_url) {
             throw new Error("MISSING_REQUIRED_FIELDS");
           }
-          repos.set(Number(raw.id), compact(raw, source.id));
+          const repoKey = Number(raw.id);
+          repos.set(repoKey, compact(raw, source.id));
+          const hits = queryHits.get(repoKey) ?? new Set<string>();
+          hits.add(String(q.code));
+          queryHits.set(repoKey, hits);
         } catch {
           parserErrors += 1;
         }
@@ -201,6 +210,32 @@ Deno.serve(async (req: Request) => {
     const idByGithubId = new Map(
       (upserted ?? []).map((row: any) => [Number(row.github_repo_id), row.id]),
     );
+
+    const queryIdByCode = new Map(
+      queries.map((q: any) => [String(q.code), q.id]),
+    );
+    const discoveryRows: Record<string, any>[] = [];
+    for (const [githubId, codes] of queryHits.entries()) {
+      const repoId = idByGithubId.get(githubId);
+      if (!repoId) continue;
+      for (const code of codes) {
+        const queryId = queryIdByCode.get(code);
+        if (!queryId) continue;
+        discoveryRows.push({
+          github_repository_id: repoId,
+          query_id: queryId,
+          last_seen_at: new Date().toISOString(),
+        });
+      }
+    }
+    if (discoveryRows.length) {
+      const { error: discoveryError } = await admin
+        .from("github_repository_discoveries")
+        .upsert(discoveryRows, {
+          onConflict: "github_repository_id,query_id",
+        });
+      if (discoveryError) throw discoveryError;
+    }
 
     const snapshots = [];
     for (const row of normalized) {
