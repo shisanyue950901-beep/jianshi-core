@@ -160,8 +160,10 @@ def rank_card(item, label, metric_key):
 
 def daily_row(item, metric_key, metric_label, rank=None):
     rank_html=f'<span class="daily-rank">#{rank}</span>' if rank else ""
+    status="已验证" if item.get("public_ready") else "持续观察"
+    status_cls="good" if item.get("public_ready") else "watch"
     return f"""<a class="daily-row" href="/opportunity/{esc(item.get("slug"))}/">
-<div class="daily-title">{rank_html}<div><strong>{esc(item.get("title"))}</strong><small>{esc(item.get("change_summary_zh") or verdict(item))}</small></div></div>
+<div class="daily-title">{rank_html}<div><div class="daily-name"><strong>{esc(item.get("title"))}</strong><span class="badge {status_cls}">{status}</span></div><small>{esc(item.get("change_summary_zh") or verdict(item))}</small></div></div>
 <div class="daily-change">{esc(change_label(item))}</div>
 <div class="daily-metric"><b>{fmt_score(item.get(metric_key))}</b><span>{esc(metric_label)}</span></div>
 <div class="daily-evidence"><b>{fmt_int(item.get("evidence_count"))}</b><span>有效证据</span></div>
