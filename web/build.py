@@ -15,6 +15,13 @@ NEWSLETTER_API=os.getenv("JIANSHI_NEWSLETTER_URL","").strip().rstrip("/")
 if not NEWSLETTER_API and API.endswith("/public-feed"):
     NEWSLETTER_API=API[:-len("/public-feed")] + "/newsletter-subscribe"
 
+AUTH_ENABLED=os.getenv("JIANSHI_AUTH_ENABLED","0").strip().lower() in ("1","true","yes","on")
+SUPABASE_URL=os.getenv("JIANSHI_SUPABASE_URL","https://dalfvgehosxfyxkptxwx.supabase.co").strip().rstrip("/")
+SUPABASE_PUBLISHABLE_KEY=os.getenv(
+    "JIANSHI_SUPABASE_PUBLISHABLE_KEY",
+    "sb_publishable_4NfyMm47GUcpBMvQ_W4mqw_rGer-_2h"
+).strip()
+
 def esc(v):
     return html.escape("" if v is None else str(v), quote=True)
 
@@ -91,20 +98,32 @@ def api_get(view, **params):
     with urllib.request.urlopen(req,timeout=30) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
-def shell(title, body, description="见势：看见正在发生的生意机会。", canonical_path="/"):
+def shell(title, body, description="见势：看见正在发生的生意机会。", canonical_path="/", robots="index,follow"):
     canonical=SITE + (canonical_path if canonical_path.startswith("/") else "/"+canonical_path)
+    account_nav='<a href="/account/">我的见势</a>' if AUTH_ENABLED else ''
+    auth_boot = (
+        '<script>window.JIANSHI_AUTH_CONFIG='
+        + json.dumps({
+            "enabled":AUTH_ENABLED,
+            "url":SUPABASE_URL,
+            "key":SUPABASE_PUBLISHABLE_KEY,
+            "site":SITE,
+        },ensure_ascii=False,separators=(",",":"))
+        + ';</script><script type="module" src="/account.js"></script>'
+        if AUTH_ENABLED else ""
+    )
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="robots" content="index,follow">
+<title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="robots" content="{esc(robots)}">
 <link rel="canonical" href="{esc(canonical)}">
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}">
 <meta property="og:type" content="website"><meta property="og:url" content="{esc(canonical)}">
 <link rel="stylesheet" href="/styles.css"></head><body>
 <header><div class="wrap nav"><a class="brand" href="/">见势</a>
-<nav><a href="/today/">今日机会</a><a href="/rising/">正在起势</a><a href="/build/">值得做</a><a href="/content/">值得讲</a><a href="/#method">我们怎么判断</a></nav></div></header>
+<nav><a href="/today/">今日机会</a><a href="/rising/">正在起势</a><a href="/build/">值得做</a><a href="/content/">值得讲</a><a href="/#method">我们怎么判断</a>{account_nav}</nav></div></header>
 {body}
 <footer id="about"><div class="wrap">见势｜商业机会与趋势情报。数据和评分用于研究与发现，不构成投资、收益或经营承诺。 · <a href="/privacy/">隐私说明</a></div></footer>
-<script src="/search.js" defer></script></body></html>"""
+<script src="/search.js" defer></script>{auth_boot}</body></html>"""
 
 def score_row(item):
     pairs=[("趋势热度",item.get("heat_score")),("内容价值",item.get("content_score")),
@@ -379,6 +398,66 @@ def sold_activity_block(x):
 <div class="disclosure">Sold 只表示该挂牌在官方市场中的已售状态。见势没有把最后挂牌价当作真实成交价，也不会把 Sold 样本数解释为成交率。</div>
 </section>"""
 
+def account_action_block(item):
+    if not AUTH_ENABLED:
+        return ""
+    opportunity_id=esc(item.get("opportunity_id") or "")
+    if not opportunity_id:
+        return ""
+    return f"""<section class="panel account-actions">
+<span class="section-kicker">我的见势</span>
+<h3>保存这个机会</h3>
+<p>登录后可以收藏、加入观察清单，并在证据或评分变化时收到站内提醒。</p>
+<div class="account-action-buttons">
+<button type="button" data-save-opportunity="{opportunity_id}">收藏机会</button>
+<button type="button" class="secondary" data-watch-opportunity="{opportunity_id}">加入观察</button>
+</div>
+<p class="account-action-status" data-account-action-status></p>
+</section>"""
+
+def build_account_page():
+    if not AUTH_ENABLED:
+        body="""<main class="wrap account-page">
+<section class="list-hero"><span class="section-kicker">我的见势</span><h1>账户功能正在完成最后的邮件登录配置。</h1>
+<p>收藏、观察清单和站内提醒的数据层已经上线。为了避免让用户遇到无法收到登录邮件的半成品体验，正式登录入口暂时不开闸。</p>
+<div class="history-note">当前状态：账户数据层 PASS · RLS PASS · 登录邮件通道待自定义 SMTP。</div></section>
+<section class="panel"><h2>开放后你可以做什么？</h2>
+<div class="account-feature-grid">
+<div><b>收藏机会</b><span>把值得继续研究的方向保存到自己的空间。</span></div>
+<div><b>观察清单</b><span>关注首次验证、新增证据和明显分数变化。</span></div>
+<div><b>站内提醒</b><span>不依赖邮件，也能看到你关注方向今天发生了什么。</span></div>
+</div></section></main>"""
+        return shell("我的见势｜账户功能准备中",body,
+                     "见势账户功能准备页。登录开放后可收藏机会、建立观察清单和查看变化提醒。",
+                     "/account/",robots="noindex,nofollow")
+
+    body="""<main class="wrap account-page">
+<section class="list-hero"><span class="section-kicker">我的见势</span><h1>把值得跟踪的机会留在自己的清单里。</h1>
+<p>使用邮箱免密码登录。公开榜单始终免费；登录只用于收藏、观察和提醒。</p></section>
+
+<section class="panel auth-login" data-auth-logged-out>
+<h2>邮箱登录</h2>
+<form class="auth-email-form" data-auth-email-form>
+<input type="email" name="email" maxlength="254" autocomplete="email" placeholder="你的邮箱" required>
+<button type="submit">发送登录链接</button>
+<p class="auth-hint">我们会发送一次性登录链接，不需要设置密码。</p>
+<p class="auth-status" data-auth-status role="status" aria-live="polite"></p>
+</form>
+</section>
+
+<section class="account-dashboard" data-auth-logged-in hidden>
+<div class="account-toolbar"><div><span class="section-kicker">当前账号</span><b data-auth-user-email></b></div><button type="button" class="secondary" data-auth-signout>退出登录</button></div>
+<div class="account-columns">
+<section class="panel"><h2>我的收藏</h2><div data-saved-list><p class="muted">正在读取…</p></div></section>
+<section class="panel"><h2>我的观察</h2><div data-watch-list><p class="muted">正在读取…</p></div></section>
+<section class="panel"><h2>最新提醒</h2><div data-alert-list><p class="muted">正在读取…</p></div></section>
+</div>
+</section>
+</main>"""
+    return shell("我的见势｜收藏与观察",body,
+                 "登录见势，收藏机会、建立个人观察清单并查看变化提醒。",
+                 "/account/",robots="noindex,nofollow")
+
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
     badge=f'<span class="badge {"good" if is_ready else "watch"}>{"已验证机会" if is_ready else "持续观察"}</span>'
@@ -394,7 +473,7 @@ def build_detail(data):
 <aside><section class="panel"><h3>证据强度</h3><div class="kv"><div>数据源</div><div>{fmt_int(x.get("source_count"))}</div>
 <div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div><div>GitHub</div><div>{fmt_int(x.get("github_repo_count"))}</div>
 <div>商业挂牌</div><div>{fmt_int(x.get("market_listing_count"))}</div><div>综合分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
-<div class="disclosure">{"该方向已经同时获得至少两类独立数据源支持。评分只用于研究与发现，不代表收益承诺。" if is_ready else "该方向目前仍在持续观察，证据来源还不够分散，不应视为已经验证的商业机会。"}</div></aside></div></main>"""
+<div class="disclosure">{"该方向已经同时获得至少两类独立数据源支持。评分只用于研究与发现，不代表收益承诺。" if is_ready else "该方向目前仍在持续观察，证据来源还不够分散，不应视为已经验证的商业机会。"}</div>{account_action_block(x)}</aside></div></main>"""
     return shell(f'{esc(x.get("title"))}｜见势',body,x.get("thesis") or "见势机会研究")
 
 def main():
@@ -402,6 +481,7 @@ def main():
     DIST.mkdir(parents=True)
     shutil.copy2(STATIC/"styles.css",DIST/"styles.css")
     shutil.copy2(STATIC/"search.js",DIST/"search.js")
+    shutil.copy2(STATIC/"account.js",DIST/"account.js")
     home=api_get("home")
     daily=api_get("daily")
     catalog=api_get("catalog").get("items",[])
@@ -415,6 +495,10 @@ def main():
     privacy_out=DIST/"privacy"
     privacy_out.mkdir(parents=True,exist_ok=True)
     (privacy_out/"index.html").write_text(build_privacy_page(),encoding="utf-8")
+
+    account_out=DIST/"account"
+    account_out.mkdir(parents=True,exist_ok=True)
+    (account_out/"index.html").write_text(build_account_page(),encoding="utf-8")
     search=[]
     for item in catalog:
         slug=item.get("slug")
@@ -446,9 +530,9 @@ def main():
     # If a Pages project is configured to publish the repository root, emit
     # only the generated public entrypoints there at build time. These files
     # are not committed; they exist only in the ephemeral build workspace.
-    for name in ("index.html","404.html","styles.css","search.js","search-index.json","sitemap.xml","robots.txt"):
+    for name in ("index.html","404.html","styles.css","search.js","account.js","search-index.json","sitemap.xml","robots.txt"):
         shutil.copy2(DIST/name, REPO_ROOT/name)
-    for dirname in ("opportunity","today","rising","build","content","privacy"):
+    for dirname in ("opportunity","today","rising","build","content","privacy","account"):
         target=REPO_ROOT/dirname
         if target.exists():
             shutil.rmtree(target)
