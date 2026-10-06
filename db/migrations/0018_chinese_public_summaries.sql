@@ -160,3 +160,30 @@ where oe.active=true
   and ml.active=true;
 
 alter view public_market_evidence_v01 set (security_invoker=true);
+
+
+create or replace view public_github_evidence_v01 as
+select
+  oe.opportunity_id,
+  gr.id as github_repository_id,
+  gr.full_name,
+  gr.summary_zh,
+  gr.summary_zh_source,
+  gr.description as description_en,
+  gr.html_url,
+  gh.language,
+  gh.stars,
+  gh.forks,
+  gh.quality_score,
+  gh.heat_score,
+  gh.rank_score,
+  oe.rule_code,
+  oe.last_seen_at
+from opportunity_evidence oe
+join github_repositories gr on gr.id=oe.entity_id
+join github_hot_current gh on gh.github_repository_id=gr.id
+where oe.active=true
+  and oe.rule_version='OPP_V0.1'
+  and oe.evidence_type='GITHUB_REPOSITORY';
+
+alter view public_github_evidence_v01 set (security_invoker=true);
