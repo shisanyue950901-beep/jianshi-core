@@ -36,8 +36,8 @@ Deno.serve(async (req: Request) => {
           .select("*")
           .order("public_ready", { ascending: false })
           .order("overall_score", { ascending: false }),
-        db.from("github_hot_current")
-          .select("full_name,description,html_url,language,stars,forks,quality_score,heat_score,rank_score")
+        db.from("public_tech_signals_v01")
+          .select("full_name,description,html_url,language,stars,forks,quality_score,heat_score,rank_score,matched_queries")
           .order("rank_score", { ascending: false })
           .limit(8),
       ]);
@@ -46,7 +46,7 @@ Deno.serve(async (req: Request) => {
       if (catalogQ.error) throw catalogQ.error;
       if (githubQ.error) throw githubQ.error;
 
-      const catalog = catalogQ.data ?? [];
+      const catalog = (catalogQ.data ?? []).map(({ opportunity_id, ...rest }: any) => rest);
       return json({
         product: {
           name: "见势",
@@ -67,7 +67,8 @@ Deno.serve(async (req: Request) => {
         .order("public_ready", { ascending: false })
         .order("overall_score", { ascending: false });
       if (error) throw error;
-      return json({ generated_at: new Date().toISOString(), items: data ?? [] });
+      const items = (data ?? []).map(({ opportunity_id, ...rest }: any) => rest);
+      return json({ generated_at: new Date().toISOString(), items });
     }
 
     if (view === "detail") {
@@ -106,12 +107,15 @@ Deno.serve(async (req: Request) => {
       if (marketQ.error) throw marketQ.error;
       if (historyQ.error) throw historyQ.error;
 
+      const { opportunity_id, ...publicItem } = item as any;
+      const publicGithub = (githubQ.data ?? []).map(({ opportunity_id: _o, github_repository_id: _g, ...rest }: any) => rest);
+      const publicMarketplace = (marketQ.data ?? []).map(({ opportunity_id: _o, marketplace_listing_id: _m, source_url: _s, ...rest }: any) => rest);
       return json({
         generated_at: new Date().toISOString(),
-        item,
+        item: publicItem,
         evidence: {
-          github: githubQ.data ?? [],
-          marketplace: marketQ.data ?? [],
+          github: publicGithub,
+          marketplace: publicMarketplace,
         },
         score_history: historyQ.data ?? [],
         disclosure: item.public_ready
