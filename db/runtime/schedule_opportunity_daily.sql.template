@@ -1,0 +1,7 @@
+-- R7 production runtime schedule.
+-- Run after jianshi-opportunity-engine-6h (45 */6 * * *).
+select cron.schedule(
+  'jianshi-opportunity-daily-snapshot-6h',
+  '48 */6 * * *',
+  $$select refresh_opportunity_daily_snapshots_v01();$$
+);
