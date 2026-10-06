@@ -4,7 +4,9 @@ import html, json, os, shutil, urllib.parse, urllib.request
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent
+REPO_ROOT=ROOT.parent
 DIST=ROOT/"dist"
+COMPAT_DIRS=[REPO_ROOT/"dist", REPO_ROOT/"public"]
 STATIC=ROOT/"static"
 FIXTURE=ROOT/"fixtures"/"api.json"
 API=os.getenv("JIANSHI_API_URL","").strip().rstrip("/")
@@ -152,6 +154,32 @@ def main():
         search.append({"slug":slug,"title":item.get("title"),"category":item.get("category"),"public_ready":item.get("public_ready")})
     (DIST/"search-index.json").write_text(json.dumps(search,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     (DIST/"404.html").write_text(shell("未找到｜见势",'<main class="wrap"><section class="hero"><h1>这里还没有信号。</h1><p><a href="/">返回见势首页 →</a></p></section></main>'),encoding="utf-8")
-    print(json.dumps({"status":"PASS","api":"live" if API else "fixture","pages":1+len(search),"opportunities":len(catalog)},ensure_ascii=False))
+
+    # Cloudflare Pages compatibility mirrors.
+    # The canonical artifact remains web/dist. During the build we also mirror
+    # to common Pages output directories so a dashboard-side output setting
+    # drift cannot produce a successful-but-empty deployment.
+    for compat in COMPAT_DIRS:
+        if compat.exists():
+            shutil.rmtree(compat)
+        shutil.copytree(DIST, compat)
+
+    # If a Pages project is configured to publish the repository root, emit
+    # only the generated public entrypoints there at build time. These files
+    # are not committed; they exist only in the ephemeral build workspace.
+    for name in ("index.html","404.html","styles.css","search.js","search-index.json"):
+        shutil.copy2(DIST/name, REPO_ROOT/name)
+    root_opp=REPO_ROOT/"opportunity"
+    if root_opp.exists():
+        shutil.rmtree(root_opp)
+    shutil.copytree(DIST/"opportunity", root_opp)
+
+    print(json.dumps({
+        "status":"PASS",
+        "api":"live" if API else "fixture",
+        "pages":1+len(search),
+        "opportunities":len(catalog),
+        "outputs":["web/dist","dist","public","repo-root-runtime"]
+    },ensure_ascii=False))
 
 if __name__=="__main__": main()
