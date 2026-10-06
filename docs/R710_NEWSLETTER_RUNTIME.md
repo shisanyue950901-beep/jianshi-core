@@ -70,3 +70,25 @@ newsletter-daily：
 ## Cron
 - 确认补发：每小时第 12 分钟
 - 每日 Top 10：UTC 01:10，即北京时间 09:10
+
+
+## Production 验收｜2026-10-07
+- migrations 0029 / 0030 / 0031：PASS
+- newsletter-subscribe：ACTIVE
+- newsletter-dispatch-confirmations：ACTIVE
+- newsletter-daily：ACTIVE
+- jianshi-newsletter-confirmations-hourly：ACTIVE（每小时第 12 分钟）
+- jianshi-newsletter-daily-top10：ACTIVE（UTC 01:10 / 北京时间 09:10）
+- provider_ready：FALSE（Resend 生产凭证仍未进入 Supabase Vault）
+- confirmations 手工触发：HTTP 200 / no-op / queued=0 PASS
+- daily 手工触发：HTTP 200 / no-op / queued=0 PASS
+- 伪造 HMAC 退订签名：BLOCK PASS
+- 合法 HMAC 退订签名：PASS
+- provider 缺失时 daily send 不生成发送记录：PASS
+- Production smoke 测试订阅与发送记录：已清理为 0
+
+当前外部阻塞仅剩：
+- resend_api_key
+- newsletter_from_email
+
+这两个凭证未配置前，生产运行时保持 fail-closed；配置后不需要再次修改代码即可启用确认邮件和每日 Top 10。
