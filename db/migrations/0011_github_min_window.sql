@@ -134,11 +134,6 @@ select
 from scored
 where archived=false and is_fork=false;
 
-create or replace view github_rising_current as
-select *
-from github_repository_momentum
-where stars >= 50;
-
 create or replace function refresh_github_momentum_signals()
 returns integer
 language plpgsql
