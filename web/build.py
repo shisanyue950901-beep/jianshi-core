@@ -107,6 +107,19 @@ def rank_card(item, label, metric_key):
 <span>{esc(label)}</span><strong>{esc(item.get("title"))}</strong>
 <b>{fmt_score(item.get(metric_key))}</b><small>{esc(verdict(item))}</small></a>"""
 
+def tech_summary(item):
+    summary=(item.get("summary_zh") or "").strip()
+    if summary:
+        return summary
+    codes=item.get("matched_queries") or []
+    if "ai_agents" in codes and "llm" in codes:
+        return "AI Agent 与大模型相关开源项目，聚焦智能体能力、自动化和开发工作流。"
+    if "ai_agents" in codes:
+        return "AI Agent 相关开源项目，聚焦智能体框架、自动化或工具协作。"
+    if "saas" in codes:
+        return "SaaS 相关开源项目，聚焦在线软件产品、开发框架或商业化基础设施。"
+    return "大模型相关开源项目，聚焦 LLM 应用、开发工具或工作流。"
+
 def build_home(data):
     stats=data.get("stats") or {}
     opps=data.get("opportunities") or []
@@ -135,7 +148,7 @@ def build_home(data):
     build_html=''.join(rank_card(x,f"可执行第 {i+1}","build_score") for i,x in enumerate(build_rank))
     content_html=''.join(rank_card(x,f"内容第 {i+1}","content_score") for i,x in enumerate(content_rank))
     tech_html=''.join(
-      f'<a class="tech-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><div><b>{esc(x.get("full_name"))}</b><br><small>{esc(x.get("description") or "")}</small></div><div>{esc(x.get("language") or "—")}</div><div>{fmt_int(x.get("stars"))} 星标</div><div>趋势 {fmt_score(x.get("rank_score"))}</div></a>'
+      f'<a class="tech-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><div><b>{esc(x.get("full_name"))}</b><br><small>{esc(tech_summary(x))}</small></div><div>{esc(x.get("language") or "—")}</div><div>{fmt_int(x.get("stars"))} 星标</div><div>趋势 {fmt_score(x.get("rank_score"))}</div></a>'
       for x in tech
     )
 
@@ -194,11 +207,21 @@ def build_home(data):
 
 def evidence_github(rows):
     if not rows: return '<div class="evidence-row"><small>暂无开源项目证据。</small></div>'
-    return ''.join(f'<a class="evidence-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><b>{esc(x.get("full_name"))}</b><small>{esc(x.get("language") or "—")} · {fmt_int(x.get("stars"))} 星标 · 趋势评分 {fmt_score(x.get("rank_score"))}</small></a>' for x in rows)
+    return ''.join(
+        f'<a class="evidence-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener">'
+        f'<b>{esc(x.get("full_name"))}</b>'
+        f'<span class="evidence-summary">{esc(tech_summary(x))}</span>'
+        f'<small>{esc(x.get("language") or "—")} · {fmt_int(x.get("stars"))} 星标 · 趋势评分 {fmt_score(x.get("rank_score"))}</small></a>'
+        for x in rows
+    )
 
 def evidence_market(rows):
     if not rows: return '<div class="evidence-row"><small>暂无交易市场证据。</small></div>'
-    return ''.join(f'<div class="evidence-row"><b>#{esc(x.get("listing_number"))} {esc(x.get("public_title") or "")}</b><small class="money">售价 {fmt_money(x.get("listing_price"))} · 月利润 {fmt_money(x.get("average_monthly_net_profit"))} · 利润率 {fmt_score(x.get("profit_margin"))}% · 每周 {fmt_score(x.get("hours_worked_per_week"))}h</small></div>' for x in rows)
+    return ''.join(
+        f'<div class="evidence-row"><b>{esc(x.get("display_title_zh") or ("互联网商业样本 #"+str(x.get("listing_number") or "")))}</b>'
+        f'<small class="money">售价 {fmt_money(x.get("listing_price"))} · 月利润 {fmt_money(x.get("average_monthly_net_profit"))} · 月收入 {fmt_money(x.get("average_monthly_gross_revenue"))} · 利润率 {fmt_score(x.get("profit_margin"))}% · 每周运营 {fmt_score(x.get("hours_worked_per_week"))} 小时</small></div>'
+        for x in rows
+    )
 
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))

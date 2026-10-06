@@ -37,7 +37,7 @@ Deno.serve(async (req: Request) => {
           .order("public_ready", { ascending: false })
           .order("overall_score", { ascending: false }),
         db.from("public_tech_signals_v01")
-          .select("full_name,description,html_url,language,stars,forks,quality_score,heat_score,rank_score,matched_queries")
+          .select("full_name,summary_zh,html_url,language,stars,forks,quality_score,heat_score,rank_score,matched_queries")
           .order("rank_score", { ascending: false })
           .limit(8),
       ]);
