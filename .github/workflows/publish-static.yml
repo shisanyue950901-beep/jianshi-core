@@ -41,7 +41,7 @@ jobs:
           test -f public/index.html
           test -f index.html
           grep -q "见势" index.html
-          grep -q "看见正在发生的" index.html
+          grep -q "筛出真正值得行动的机会" index.html
 
       - name: Commit generated snapshot
         run: |
