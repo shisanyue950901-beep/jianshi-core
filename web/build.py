@@ -10,6 +10,7 @@ COMPAT_DIRS=[REPO_ROOT/"dist", REPO_ROOT/"public"]
 STATIC=ROOT/"static"
 FIXTURE=ROOT/"fixtures"/"api.json"
 API=os.getenv("JIANSHI_API_URL","").strip().rstrip("/")
+SITE=os.getenv("JIANSHI_SITE_URL","https://jianshi-bua.pages.dev").strip().rstrip("/")
 
 def esc(v):
     return html.escape("" if v is None else str(v), quote=True)
@@ -41,6 +42,38 @@ def api_get(view, **params):
         if view=="catalog":
             items=(data["home"].get("opportunities") or [])+(data["home"].get("watchlist") or [])
             return {"items":items,"generated_at":data["home"].get("generated_at")}
+        if view=="daily":
+            items=(data["home"].get("opportunities") or [])+(data["home"].get("watchlist") or [])
+            rows=[]
+            for idx,item in enumerate(items,1):
+                x=dict(item)
+                x.update({
+                    "snapshot_date":"2026-10-06",
+                    "history_days":1,
+                    "previous_date":None,
+                    "seven_day_date":None,
+                    "heat_delta_1d":None,
+                    "overall_delta_1d":None,
+                    "evidence_delta_1d":None,
+                    "heat_delta_7d":None,
+                    "overall_delta_7d":None,
+                    "evidence_delta_7d":None,
+                    "change_state":"ACCUMULATING",
+                    "change_summary_zh":"历史数据正在积累，明天开始显示与昨日变化。",
+                    "rising_rank":idx,
+                    "build_rank":idx,
+                    "content_rank":idx,
+                    "overall_rank":idx,
+                })
+                rows.append(x)
+            return {
+                "generated_at":data["home"].get("generated_at"),
+                "history_ready":{"one_day":False,"seven_day":False},
+                "today":rows,
+                "rising":sorted(rows,key=lambda x:num(x.get("heat_score")),reverse=True),
+                "build":sorted(rows,key=lambda x:num(x.get("build_score")),reverse=True),
+                "content":sorted(rows,key=lambda x:num(x.get("content_score")),reverse=True),
+            }
         if view=="detail":
             slug=params.get("slug","")
             if slug in data.get("details",{}): return data["details"][slug]
@@ -55,13 +88,17 @@ def api_get(view, **params):
     with urllib.request.urlopen(req,timeout=30) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
-def shell(title, body, description="见势：看见正在发生的生意机会。"):
+def shell(title, body, description="见势：看见正在发生的生意机会。", canonical_path="/"):
+    canonical=SITE + (canonical_path if canonical_path.startswith("/") else "/"+canonical_path)
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="robots" content="index,follow">
+<link rel="canonical" href="{esc(canonical)}">
+<meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}">
+<meta property="og:type" content="website"><meta property="og:url" content="{esc(canonical)}">
 <link rel="stylesheet" href="/styles.css"></head><body>
 <header><div class="wrap nav"><a class="brand" href="/">见势</a>
-<nav><a href="/#today">今日机会</a><a href="/#rising">正在起势</a><a href="/#build">值得做</a><a href="/#content">值得讲</a><a href="/#method">我们怎么判断</a></nav></div></header>
+<nav><a href="/today/">今日机会</a><a href="/rising/">正在起势</a><a href="/build/">值得做</a><a href="/content/">值得讲</a><a href="/#method">我们怎么判断</a></nav></div></header>
 {body}
 <footer id="about"><div class="wrap">见势｜商业机会与趋势情报。数据和评分用于研究与发现，不构成投资、收益或经营承诺。</div></footer>
 <script src="/search.js" defer></script></body></html>"""
@@ -102,10 +139,59 @@ def card(item, watch=False, compact=False):
 {score_row(item)}
 <div class="meta">{fmt_int(item.get("evidence_count"))} 条证据 · {fmt_int(item.get("source_count"))} 类独立数据源</div></a>"""
 
+def change_label(item):
+    if item.get("previous_date") is None:
+        return "历史积累中"
+    delta=item.get("overall_delta_1d")
+    ev=item.get("evidence_delta_1d")
+    if item.get("change_state")=="NEWLY_VALIDATED":
+        return "今天升级为已验证"
+    if ev is not None and num(ev)>0:
+        return f"今日新增 {fmt_int(ev)} 条证据"
+    if delta is not None and abs(num(delta))>=0.05:
+        sign="+" if num(delta)>0 else ""
+        return f"较昨日 {sign}{num(delta):.1f}"
+    return "较昨日基本稳定"
+
 def rank_card(item, label, metric_key):
     return f"""<a class="rank-card" href="/opportunity/{esc(item.get("slug"))}/">
 <span>{esc(label)}</span><strong>{esc(item.get("title"))}</strong>
 <b>{fmt_score(item.get(metric_key))}</b><small>{esc(verdict(item))}</small></a>"""
+
+def daily_row(item, metric_key, metric_label, rank=None):
+    rank_html=f'<span class="daily-rank">#{rank}</span>' if rank else ""
+    return f"""<a class="daily-row" href="/opportunity/{esc(item.get("slug"))}/">
+<div class="daily-title">{rank_html}<div><strong>{esc(item.get("title"))}</strong><small>{esc(item.get("change_summary_zh") or verdict(item))}</small></div></div>
+<div class="daily-change">{esc(change_label(item))}</div>
+<div class="daily-metric"><b>{fmt_score(item.get(metric_key))}</b><span>{esc(metric_label)}</span></div>
+<div class="daily-evidence"><b>{fmt_int(item.get("evidence_count"))}</b><span>有效证据</span></div>
+</a>"""
+
+def build_daily_page(kind, daily):
+    cfg={
+      "today":("今日机会","今天最值得先看的机会","综合判断","overall_score","把今天值得关注的方向按综合价值排序，并明确告诉你哪里发生了变化。"),
+      "rising":("正在起势","哪些方向正在变热","趋势热度","heat_score","优先看趋势加速、证据增加或刚刚完成多源验证的方向。"),
+      "build":("值得做","如果今天要做一个项目","可执行性","build_score","优先考虑个人或小团队更容易落地，同时具备商业证据的方向。"),
+      "content":("值得讲","如果今天要做一个内容选题","内容价值","content_score","优先找反差强、故事性高、普通人容易理解并愿意传播的话题。"),
+    }
+    title,heading,metric_label,metric_key,lead=cfg[kind]
+    rows=daily.get(kind) or daily.get("today") or []
+    ready=daily.get("history_ready") or {}
+    history_note = (
+      "已具备昨日与 7 日历史，可查看真实变化。"
+      if ready.get("seven_day") else
+      "历史正在积累：明天开始显示与昨日变化，累计 7 天后显示 7 日趋势。"
+      if not ready.get("one_day") else
+      "已开始显示与昨日变化；7 日趋势仍在积累。"
+    )
+    body=f"""<main class="wrap daily-page">
+<section class="list-hero"><span class="section-kicker">{esc(title)}</span><h1>{esc(heading)}</h1><p>{esc(lead)}</p>
+<div class="history-note">{esc(history_note)}</div></section>
+<section class="daily-list">{"".join(daily_row(x,metric_key,metric_label,i+1) for i,x in enumerate(rows))}</section>
+<section class="daily-explain panel"><h2>怎么看这个榜单？</h2>
+<p>见势不会因为某个方向“很火”就把它直接认定为机会。榜单同时参考趋势、内容传播、可执行性、商业质量和证据变化。历史不足时我们会明确写“历史积累中”，不会伪造昨日或 7 日涨幅。</p></section>
+</main>"""
+    return shell(f"{title}｜见势",body,lead,f"/{kind}/")
 
 def tech_summary(item):
     summary=(item.get("summary_zh") or "").strip()
@@ -120,17 +206,18 @@ def tech_summary(item):
         return "SaaS 相关开源项目，聚焦在线软件产品、开发框架或商业化基础设施。"
     return "大模型相关开源项目，聚焦 LLM 应用、开发工具或工作流。"
 
-def build_home(data):
+def build_home(data, daily=None):
     stats=data.get("stats") or {}
     opps=data.get("opportunities") or []
     watch=data.get("watchlist") or []
     tech=data.get("tech_signals") or []
     catalog=opps+watch
+    daily=daily or {"today":[],"rising":[],"build":[],"content":[],"history_ready":{}}
 
     top_validated=max(opps,key=lambda x:num(x.get("overall_score")),default=None)
-    rising=sorted(watch,key=lambda x:num(x.get("heat_score")),reverse=True)[:3]
-    build_rank=sorted(catalog,key=lambda x:num(x.get("build_score")),reverse=True)[:3]
-    content_rank=sorted(catalog,key=lambda x:num(x.get("content_score")),reverse=True)[:3]
+    rising=(daily.get("rising") or sorted(watch,key=lambda x:num(x.get("heat_score")),reverse=True))[:3]
+    build_rank=(daily.get("build") or sorted(catalog,key=lambda x:num(x.get("build_score")),reverse=True))[:3]
+    content_rank=(daily.get("content") or sorted(catalog,key=lambda x:num(x.get("content_score")),reverse=True))[:3]
 
     hero_feature=card(top_validated,False,True) if top_validated else '<div class="empty">今天还没有通过多源验证的机会，我们会继续自动扫描。</div>'
 
@@ -158,7 +245,7 @@ def build_home(data):
 <span class="kicker">互联网商业机会与趋势情报平台</span>
 <h1>每天帮你从海量项目里，<br><em>筛出真正值得行动的机会。</em></h1>
 <p class="hero-lead">见势自动扫描开源项目和真实商业交易市场，把杂乱的数据整理成三种结论：<strong>什么值得做、什么值得讲、什么值得继续盯。</strong></p>
-<div class="hero-actions"><a class="btn primary" href="#build">我想找项目</a><a class="btn" href="#content">我想找选题</a><a class="text-link" href="#method">它是怎么判断的？</a></div>
+<div class="hero-actions"><a class="btn primary" href="/build/">我想找项目</a><a class="btn" href="/content/">我想找选题</a><a class="text-link" href="#method">它是怎么判断的？</a></div>
 </div>
 <div class="hero-explain">
 <div class="explain-label">一句话看懂见势</div>
@@ -170,9 +257,9 @@ def build_home(data):
 <section class="wrap stats">{stats_html}</section>
 
 <section class="wrap usecases">
-<div class="usecase"><span>01</span><h3>你想做一个项目</h3><p>看“值得做”，优先找需求明确、个人能落地、商业证据更扎实的方向。</p><a href="#build">看今天值得做什么 →</a></div>
-<div class="usecase"><span>02</span><h3>你想做内容选题</h3><p>看“值得讲”，优先找反差大、故事强、普通人容易理解的话题。</p><a href="#content">看今天值得讲什么 →</a></div>
-<div class="usecase"><span>03</span><h3>你想早点发现趋势</h3><p>看“正在起势”，发现还没完全商业化、但已经出现明显增长信号的方向。</p><a href="#rising">看哪些方向在升温 →</a></div>
+<div class="usecase"><span>01</span><h3>你想做一个项目</h3><p>看“值得做”，优先找需求明确、个人能落地、商业证据更扎实的方向。</p><a href="/build/">看今天值得做什么 →</a></div>
+<div class="usecase"><span>02</span><h3>你想做内容选题</h3><p>看“值得讲”，优先找反差大、故事强、普通人容易理解的话题。</p><a href="/content/">看今天值得讲什么 →</a></div>
+<div class="usecase"><span>03</span><h3>你想早点发现趋势</h3><p>看“正在起势”，发现还没完全商业化、但已经出现明显增长信号的方向。</p><a href="/rising/">看哪些方向在升温 →</a></div>
 </section>
 
 <section class="wrap spotlight" id="today">
@@ -181,9 +268,9 @@ def build_home(data):
 </section>
 
 <section class="wrap decision-grid">
-<div class="decision-block" id="rising"><div class="section-head compact-head"><div><span class="section-kicker">正在起势</span><h2>哪些方向正在变热？</h2></div></div>{rising_html}</div>
-<div class="decision-block" id="build"><div class="section-head compact-head"><div><span class="section-kicker">值得做</span><h2>如果今天要做项目</h2></div></div>{build_html}</div>
-<div class="decision-block" id="content"><div class="section-head compact-head"><div><span class="section-kicker">值得讲</span><h2>如果今天要做内容</h2></div></div>{content_html}</div>
+<div class="decision-block" id="rising"><div class="section-head compact-head"><div><span class="section-kicker">正在起势</span><h2>哪些方向正在变热？</h2></div><a class="section-more" href="/rising/">查看完整榜单 →</a></div>{rising_html}</div>
+<div class="decision-block" id="build"><div class="section-head compact-head"><div><span class="section-kicker">值得做</span><h2>如果今天要做项目</h2></div><a class="section-more" href="/build/">查看完整榜单 →</a></div>{build_html}</div>
+<div class="decision-block" id="content"><div class="section-head compact-head"><div><span class="section-kicker">值得讲</span><h2>如果今天要做内容</h2></div><a class="section-more" href="/content/">查看完整榜单 →</a></div>{content_html}</div>
 </section>
 
 <section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据比较完整，可以深入研究</h2></div><div class="section-note">至少两类独立数据源同时支持</div></div><div class="grid">{opp_html}</div></section>
@@ -246,8 +333,14 @@ def main():
     shutil.copy2(STATIC/"styles.css",DIST/"styles.css")
     shutil.copy2(STATIC/"search.js",DIST/"search.js")
     home=api_get("home")
+    daily=api_get("daily")
     catalog=api_get("catalog").get("items",[])
-    (DIST/"index.html").write_text(build_home(home),encoding="utf-8")
+    (DIST/"index.html").write_text(build_home(home,daily),encoding="utf-8")
+
+    for kind in ("today","rising","build","content"):
+        out=DIST/kind
+        out.mkdir(parents=True,exist_ok=True)
+        (out/"index.html").write_text(build_daily_page(kind,daily),encoding="utf-8")
     search=[]
     for item in catalog:
         slug=item.get("slug")
@@ -258,7 +351,14 @@ def main():
         (out/"index.html").write_text(build_detail(detail),encoding="utf-8")
         search.append({"slug":slug,"title":item.get("title"),"category":item.get("category"),"public_ready":item.get("public_ready")})
     (DIST/"search-index.json").write_text(json.dumps(search,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    (DIST/"404.html").write_text(shell("未找到｜见势",'<main class="wrap"><section class="hero"><h1>这里还没有信号。</h1><p><a href="/">返回见势首页 →</a></p></section></main>'),encoding="utf-8")
+    (DIST/"404.html").write_text(shell("未找到｜见势",'<main class="wrap"><section class="hero"><h1>这里还没有信号。</h1><p><a href="/">返回见势首页 →</a></p></section></main>',canonical_path="/404"),encoding="utf-8")
+
+    urls=["/","/today/","/rising/","/build/","/content/"]+[f"/opportunity/{x['slug']}/" for x in search]
+    sitemap='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(
+        f'<url><loc>{esc(SITE+u)}</loc></url>' for u in urls
+    )+'</urlset>'
+    (DIST/"sitemap.xml").write_text(sitemap,encoding="utf-8")
+    (DIST/"robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n",encoding="utf-8")
 
     # Cloudflare Pages compatibility mirrors.
     # The canonical artifact remains web/dist. During the build we also mirror
@@ -272,17 +372,18 @@ def main():
     # If a Pages project is configured to publish the repository root, emit
     # only the generated public entrypoints there at build time. These files
     # are not committed; they exist only in the ephemeral build workspace.
-    for name in ("index.html","404.html","styles.css","search.js","search-index.json"):
+    for name in ("index.html","404.html","styles.css","search.js","search-index.json","sitemap.xml","robots.txt"):
         shutil.copy2(DIST/name, REPO_ROOT/name)
-    root_opp=REPO_ROOT/"opportunity"
-    if root_opp.exists():
-        shutil.rmtree(root_opp)
-    shutil.copytree(DIST/"opportunity", root_opp)
+    for dirname in ("opportunity","today","rising","build","content"):
+        target=REPO_ROOT/dirname
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.copytree(DIST/dirname,target)
 
     print(json.dumps({
         "status":"PASS",
         "api":"live" if API else "fixture",
-        "pages":1+len(search),
+        "pages":5+len(search),
         "opportunities":len(catalog),
         "outputs":["web/dist","dist","public","repo-root-runtime"]
     },ensure_ascii=False))
