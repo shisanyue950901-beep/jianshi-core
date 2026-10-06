@@ -132,3 +132,49 @@ revoke all on function assert_source_publication_allowed_v01(text) from public,a
 
 comment on view source_policy_effective_v01 is
 'Latest reviewed policy per source. Production collectors and publication paths must treat non-GREEN as fail-closed.';
+
+
+create table if not exists source_permission_requests (
+  id uuid primary key default gen_random_uuid(),
+  source_id uuid not null references data_sources(id) on delete cascade,
+  request_status text not null default 'DRAFT'
+    check (request_status in ('DRAFT','SENT','APPROVED','PARTIAL_APPROVAL','REJECTED','EXPIRED')),
+  requested_scopes jsonb not null default '[]'::jsonb,
+  approved_scopes jsonb,
+  contact_channel text,
+  contact_reference text,
+  requested_at timestamptz,
+  responded_at timestamptz,
+  expires_at timestamptz,
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create index if not exists idx_source_permission_requests_source
+  on source_permission_requests(source_id,created_at desc);
+
+alter table source_permission_requests enable row level security;
+revoke all on source_permission_requests from anon,authenticated;
+
+insert into source_permission_requests(
+  source_id,request_status,requested_scopes,contact_channel,notes
+)
+select ds.id,'DRAFT',
+       '["AUTOMATED_API_OR_FEED","HISTORICAL_SNAPSHOT_STORAGE","DERIVED_ANALYTICS","PUBLIC_SUMMARY_DISPLAY","COMMERCIAL_PRODUCT_USE"]'::jsonb,
+       case ds.code
+         when 'acquire' then 'support@acquire.com / partnership contact'
+         when 'trustmrr' then 'official contact / API owner'
+         when 'catchbuys' then 'official contact / API owner'
+         when 'acquirebase' then 'atta@acquirebase.com'
+         when 'sideprojectors' then 'official contact'
+       end,
+       'R7.6 licensing outreach draft; no automated collection before written approval.'
+from data_sources ds
+where ds.code in ('acquire','trustmrr','catchbuys','acquirebase','sideprojectors')
+  and not exists (
+    select 1 from source_permission_requests spr
+    where spr.source_id=ds.id and spr.request_status in ('DRAFT','SENT','APPROVED','PARTIAL_APPROVAL')
+  );
+
+comment on table source_permission_requests is
+'Tracks written licensing/permission outreach. Approval does not auto-enable a source; registry and policy review must still be explicitly updated.';
