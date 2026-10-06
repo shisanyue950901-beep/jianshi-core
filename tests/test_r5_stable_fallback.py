@@ -7,7 +7,7 @@ class TestStableFallback(unittest.TestCase):
         self.assertTrue(p.exists())
         s=p.read_text(encoding="utf-8")
         self.assertIn("看见正在发生的",s)
-        self.assertIn('view","home"',s.replace(" ",""))
+        self.assertIn('awaitapi("home")',s.replace(" ",""))
         self.assertIn("public-feed",s)
         self.assertIn("cache-control",s)
         self.assertNotIn("SUPABASE_SERVICE_ROLE_KEY",s)
