@@ -1,0 +1,57 @@
+name: JianShi Static Snapshot
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - index.html
+      - 404.html
+      - styles.css
+      - search.js
+      - search-index.json
+      - opportunity/**
+      - dist/**
+      - public/**
+      - web/dist/**
+
+permissions:
+  contents: write
+
+jobs:
+  build-static:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      JIANSHI_API_URL: https://dalfvgehosxfyxkptxwx.supabase.co/functions/v1/public-feed
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build live static snapshot
+        run: python web/build.py
+
+      - name: Verify public artifact
+        run: |
+          test -f web/dist/index.html
+          test -f dist/index.html
+          test -f public/index.html
+          test -f index.html
+          grep -q "见势" index.html
+          grep -q "看见正在发生的" index.html
+
+      - name: Commit generated snapshot
+        run: |
+          git config user.name "jianshi-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html 404.html styles.css search.js search-index.json opportunity dist public
+          git add -f web/dist
+          if git diff --cached --quiet; then
+            echo "STATIC_SNAPSHOT_NO_CHANGE"
+            exit 0
+          fi
+          git commit -m "chore: refresh live static snapshot"
+          git push origin HEAD:main
