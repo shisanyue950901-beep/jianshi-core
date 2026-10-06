@@ -11,6 +11,7 @@ on:
       - 404.html
       - styles.css
       - search.js
+      - account.js
       - search-index.json
       - opportunity/**
       - today/**
@@ -18,6 +19,7 @@ on:
       - build/**
       - content/**
       - privacy/**
+      - account/**
       - sitemap.xml
       - robots.txt
       - dist/**
@@ -33,6 +35,8 @@ jobs:
     timeout-minutes: 10
     env:
       JIANSHI_API_URL: https://dalfvgehosxfyxkptxwx.supabase.co/functions/v1/public-feed
+      # R8.3 stays fail-closed until custom SMTP is configured for Supabase Auth.
+      JIANSHI_AUTH_ENABLED: "0"
     steps:
       - uses: actions/checkout@v4
 
@@ -54,16 +58,19 @@ jobs:
           test -f build/index.html
           test -f content/index.html
           test -f privacy/index.html
+          test -f account/index.html
+          test -f account.js
           test -f sitemap.xml
           test -f robots.txt
           grep -q "见势" index.html
           grep -q "筛出真正值得行动的机会" index.html
+          grep -q "账户功能正在完成最后的邮件登录配置" account/index.html
 
       - name: Commit generated snapshot
         run: |
           git config user.name "jianshi-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html 404.html styles.css search.js search-index.json sitemap.xml robots.txt opportunity today rising build content privacy dist public
+          git add index.html 404.html styles.css search.js account.js search-index.json sitemap.xml robots.txt opportunity today rising build content privacy account dist public
           git add -f web/dist
           if git diff --cached --quiet; then
             echo "STATIC_SNAPSHOT_NO_CHANGE"
