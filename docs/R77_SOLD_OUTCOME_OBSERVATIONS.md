@@ -71,3 +71,19 @@ R7.7 初期先作为底层证据，不立即把小样本中位数包装成“市
 
 并持续标注：
 “最后挂牌倍数 ≠ 实际成交倍数。”
+
+
+## Staging 实跑｜2026-10-07
+官方 API 真实采集：
+- For Sale: 174
+- Sold（最近 120 天）: 43
+- 总 accepted: 217
+- parser errors: 0
+- quality gate: PASS
+- sold warning: NULL
+- observed For Sale → Sold transitions: 0
+
+解释：
+43 个 Sold 是 R7.7 首次纳入的历史已售状态，不能反推为“见势此前观察到它们在售”。
+因此它们可作为“已售状态存在”的事实样本，但不会进入 observed exit benchmark。
+真正的退出基准从 R7.7 上线后的连续状态历史开始积累。
