@@ -2,6 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const API = "https://api.empireflippers.com/api/v1/listings/list";
+const PAGE_SIZE = 100;
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function num(v: unknown): number | null {
@@ -10,13 +11,19 @@ function num(v: unknown): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
+function dateDaysAgo(days: number): string {
+  const d = new Date(Date.now() - days * 86400000);
+  return d.toISOString().slice(0, 10);
+}
+
 function compact(raw: Record<string, any>, sourceId: string) {
+  const status = raw.listing_status ?? null;
   return {
     source_id: sourceId,
     source_external_id: String(raw.id),
     listing_number: raw.listing_number ?? null,
     public_title: raw.public_title ?? null,
-    listing_status: raw.listing_status ?? null,
+    listing_status: status,
     listing_price: num(raw.listing_price),
     unpriced: Boolean(raw.unpriced),
     average_monthly_net_profit: num(raw.average_monthly_net_profit),
@@ -48,7 +55,7 @@ function compact(raw: Record<string, any>, sourceId: string) {
     source_updated_at: raw.updated_at ?? null,
     source_url: API,
     last_seen_at: new Date().toISOString(),
-    active: true,
+    active: status === "For Sale",
     updated_at: new Date().toISOString(),
   };
 }
@@ -84,7 +91,11 @@ Deno.serve(async (req: Request) => {
 
   const body = await req.json().catch(() => ({}));
   const startPage = Math.max(1, Math.min(100, Number(body.start_page ?? 1)));
-  const maxPages = Math.max(1, Math.min(10, Number(body.max_pages ?? 10)));
+  const activeMaxPages = Math.max(1, Math.min(10, Number(body.active_max_pages ?? body.max_pages ?? 5)));
+  const soldMaxPages = Math.max(1, Math.min(10, Number(body.sold_max_pages ?? 5)));
+  const includeSold = body.include_sold !== false;
+  const soldLookbackDays = Math.max(7, Math.min(365, Number(body.sold_lookback_days ?? 120)));
+  const soldAtFrom = dateDaysAgo(soldLookbackDays);
 
   const { data: source, error: sourceError } = await admin
     .from("data_sources")
@@ -128,24 +139,44 @@ Deno.serve(async (req: Request) => {
   let accepted = 0;
   let parserErrors = 0;
   let newSnapshots = 0;
-  let pages = 0;
+  let totalPages = 0;
+  let requestCount = 0;
+  let soldWarning: string | null = null;
+  const statusCounts: Record<string, { pages: number; fetched: number; accepted: number }> = {
+    "For Sale": { pages: 0, fetched: 0, accepted: 0 },
+    Sold: { pages: 0, fetched: 0, accepted: 0 },
+  };
 
-  try {
+  async function collectStatus(
+    status: "For Sale" | "Sold",
+    maxPages: number,
+    extra: Record<string, string> = {},
+  ) {
     for (let page = startPage; page < startPage + maxPages; page++) {
-      const url = `${API}?page=${page}&listing_status=${encodeURIComponent("For Sale")}`;
-      const response = await fetch(url, {
-        headers: { "User-Agent": "JianShi/0.1 official-api-collector" },
+      if (requestCount > 0) await sleep(1050);
+
+      const params = new URLSearchParams({
+        page: String(page),
+        limit: String(PAGE_SIZE),
+        listing_status: status,
+        ...extra,
+      });
+      const response = await fetch(`${API}?${params.toString()}`, {
+        headers: { "User-Agent": "JianShi/0.2 official-api-collector" },
         signal: AbortSignal.timeout(25000),
       });
-      if (!response.ok) throw new Error(`UPSTREAM_HTTP_${response.status}`);
+      requestCount += 1;
+      if (!response.ok) throw new Error(`${status.replace(" ", "_")}_UPSTREAM_HTTP_${response.status}`);
 
       const payload = await response.json();
       const listings = payload?.data?.listings ?? [];
-      if (!Array.isArray(listings)) throw new Error("UPSTREAM_SCHEMA_INVALID");
+      if (!Array.isArray(listings)) throw new Error(`${status.replace(" ", "_")}_UPSTREAM_SCHEMA_INVALID`);
       if (listings.length === 0) break;
 
-      pages += 1;
+      totalPages += 1;
+      statusCounts[status].pages += 1;
       fetched += listings.length;
+      statusCounts[status].fetched += listings.length;
 
       const normalized: Record<string, any>[] = [];
       for (const raw of listings) {
@@ -164,7 +195,9 @@ Deno.serve(async (req: Request) => {
           .select("id,source_external_id");
 
         if (upsertError) throw upsertError;
-        accepted += upserted?.length ?? 0;
+        const acceptedHere = upserted?.length ?? 0;
+        accepted += acceptedHere;
+        statusCounts[status].accepted += acceptedHere;
 
         const idByExternal = new Map(
           (upserted ?? []).map((row: any) => [String(row.source_external_id), row.id]),
@@ -187,6 +220,7 @@ Deno.serve(async (req: Request) => {
             mrr: row.mrr,
             churn_percent: row.churn_percent,
             growth_percent: row.growth_percent,
+            days_on_marketplace: row.days_on_marketplace,
             status: row.listing_status,
             source_updated_at: row.source_updated_at,
           };
@@ -212,12 +246,26 @@ Deno.serve(async (req: Request) => {
         }
       }
 
-      if (listings.length < 20) break;
-      if (page < startPage + maxPages - 1) await sleep(1050);
+      if (listings.length < PAGE_SIZE) break;
+    }
+  }
+
+  try {
+    await collectStatus("For Sale", activeMaxPages);
+
+    if (includeSold) {
+      try {
+        await collectStatus("Sold", soldMaxPages, { sold_at_from: soldAtFrom });
+      } catch (error) {
+        soldWarning = String(error);
+      }
     }
 
     const parserRate = fetched ? parserErrors / fetched : 1;
-    const gatePass = fetched > 0 && parserRate < 0.2;
+    const gatePass = statusCounts["For Sale"].fetched > 0 && parserRate < 0.2;
+    const qualityStatus = gatePass
+      ? (soldWarning ? "PASS_WITH_WARNINGS" : "PASS")
+      : "FAIL";
 
     await admin
       .from("pipeline_runs")
@@ -228,13 +276,21 @@ Deno.serve(async (req: Request) => {
         accepted_count: accepted,
         duplicate_count: Math.max(0, accepted - newSnapshots),
         parser_error_count: parserErrors,
-        quality_gate_status: gatePass ? "PASS" : "FAIL",
+        quality_gate_status: qualityStatus,
         quality_gate_reason: {
-          pages,
+          total_pages: totalPages,
+          page_size: PAGE_SIZE,
           start_page: startPage,
-          max_pages: maxPages,
+          active_max_pages: activeMaxPages,
+          sold_max_pages: soldMaxPages,
+          include_sold: includeSold,
+          sold_lookback_days: soldLookbackDays,
+          sold_at_from: soldAtFrom,
+          status_counts: statusCounts,
+          sold_warning: soldWarning,
           new_snapshots: newSnapshots,
           parser_error_rate: parserRate,
+          sold_values_are_observed_status_not_transaction_price: true,
         },
       })
       .eq("id", run.id);
@@ -249,11 +305,15 @@ Deno.serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         ok: gatePass,
-        pages,
+        quality_status: qualityStatus,
+        pages: totalPages,
         fetched,
         accepted,
         parser_errors: parserErrors,
         new_snapshots: newSnapshots,
+        status_counts: statusCounts,
+        sold_warning: soldWarning,
+        sold_lookback_days: soldLookbackDays,
       }),
       {
         status: gatePass ? 200 : 503,
@@ -270,7 +330,7 @@ Deno.serve(async (req: Request) => {
         accepted_count: accepted,
         parser_error_count: parserErrors,
         quality_gate_status: "FAIL",
-        quality_gate_reason: { error: String(error) },
+        quality_gate_reason: { error: String(error), status_counts: statusCounts },
       })
       .eq("id", run.id);
 

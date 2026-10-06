@@ -41,6 +41,7 @@ class NormalizedListing:
     first_listed_at: str | None
     reason_for_sale: str | None
     source_updated_at: str | None
+    active: bool
 
 def _num(v: Any) -> float | None:
     if v is None or v == "":
@@ -83,6 +84,7 @@ def normalize(raw: dict[str, Any]) -> NormalizedListing:
         first_listed_at=raw.get("first_listed_at"),
         reason_for_sale=raw.get("reason_for_sale"),
         source_updated_at=raw.get("updated_at"),
+        active=(raw.get("listing_status") == "For Sale"),
     )
 
 def snapshot_hash(item: NormalizedListing) -> str:
@@ -93,8 +95,17 @@ def parse_page(payload: dict[str, Any]) -> list[NormalizedListing]:
     listings = ((payload.get("data") or {}).get("listings") or [])
     return [normalize(x) for x in listings]
 
-def fetch_page(page: int, listing_status: str = "For Sale", timeout: int = 30) -> dict[str, Any]:
-    params = urllib.parse.urlencode({"page": page, "listing_status": listing_status})
+def fetch_page(
+    page: int,
+    listing_status: str = "For Sale",
+    timeout: int = 30,
+    limit: int = 100,
+    sold_at_from: str | None = None,
+) -> dict[str, Any]:
+    query: dict[str, Any] = {"page": page, "limit": limit, "listing_status": listing_status}
+    if sold_at_from:
+        query["sold_at_from"] = sold_at_from
+    params = urllib.parse.urlencode(query)
     url = f"{BASE_URL}?{params}"
     req = urllib.request.Request(url, headers={"User-Agent": "JianShi/0.1 (+business-intelligence; official-api)"})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -102,10 +113,15 @@ def fetch_page(page: int, listing_status: str = "For Sale", timeout: int = 30) -
             raise RuntimeError(f"Empire Flippers HTTP {resp.status}")
         return json.loads(resp.read().decode("utf-8"))
 
-def iter_pages(max_pages: int = 100, sleep_seconds: float = 1.05) -> Iterable[tuple[int, dict[str, Any]]]:
+def iter_pages(
+    max_pages: int = 100,
+    sleep_seconds: float = 1.05,
+    listing_status: str = "For Sale",
+    sold_at_from: str | None = None,
+) -> Iterable[tuple[int, dict[str, Any]]]:
     """Rate limited to <=1 req/s. Stops when a page contains no listings."""
     for page in range(1, max_pages + 1):
-        payload = fetch_page(page)
+        payload = fetch_page(page, listing_status=listing_status, sold_at_from=sold_at_from)
         listings = ((payload.get("data") or {}).get("listings") or [])
         if not listings:
             break
