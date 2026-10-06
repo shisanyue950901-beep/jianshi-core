@@ -2,6 +2,8 @@ name: JianShi Static Snapshot
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '55 */6 * * *'
   push:
     branches: [main]
     paths-ignore:
