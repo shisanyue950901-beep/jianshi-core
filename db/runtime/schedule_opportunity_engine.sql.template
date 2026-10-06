@@ -1,0 +1,5 @@
+select cron.schedule(
+  'jianshi-opportunity-engine-6h',
+  '45 */6 * * *',
+  $$ select refresh_opportunity_scores_v01(); $$
+);
