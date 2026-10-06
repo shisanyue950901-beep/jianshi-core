@@ -103,7 +103,7 @@ def shell(title, body, description="见势：看见正在发生的生意机会�
 <header><div class="wrap nav"><a class="brand" href="/">见势</a>
 <nav><a href="/today/">今日机会</a><a href="/rising/">正在起势</a><a href="/build/">值得做</a><a href="/content/">值得讲</a><a href="/#method">我们怎么判断</a></nav></div></header>
 {body}
-<footer id="about"><div class="wrap">见势｜商业机会与趋势情报。数据和评分用于研究与发现，不构成投资、收益或经营承诺。</div></footer>
+<footer id="about"><div class="wrap">见势｜商业机会与趋势情报。数据和评分用于研究与发现，不构成投资、收益或经营承诺。 · <a href="/privacy/">隐私说明</a></div></footer>
 <script src="/search.js" defer></script></body></html>"""
 
 def score_row(item):
@@ -182,9 +182,31 @@ def newsletter_block():
 <input id="newsletter-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="你的邮箱，例如 name@example.com" required>
 <input class="hp-field" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
 <button type="submit">订阅每日 Top 10</button>
-<p class="newsletter-consent">提交即表示你同意接收见势的订阅确认邮件与每日机会摘要。未确认前不会发送每日邮件。</p>
+<p class="newsletter-consent">提交即表示你同意接收见势的订阅确认邮件与每日机会摘要。未确认前不会发送每日邮件。<a href="/privacy/">查看隐私说明</a></p>
 <p class="newsletter-status" data-newsletter-status role="status" aria-live="polite"></p>
 </form></div></section>"""
+
+def build_privacy_page():
+    body="""<main class="wrap daily-page">
+<section class="list-hero"><span class="section-kicker">隐私说明</span><h1>我们只收集完成订阅所必需的信息。</h1>
+<p>见势当前的轻量订阅不需要创建账号。我们把邮箱只用于订阅确认、每日机会摘要和必要的订阅状态管理。</p></section>
+<section class="panel privacy-copy">
+<h2>我们收集什么</h2>
+<p>当你主动提交订阅时，我们会保存：邮箱地址、订阅状态、授权时间、提交来源页面，以及发送/确认/退订等事件记录。</p>
+<h2>我们怎么使用</h2>
+<p>这些信息只用于处理见势的邮件订阅，包括确认订阅、发送每日 Top 10 机会、处理退订、退信和投诉状态。</p>
+<h2>我们不会做什么</h2>
+<p>我们不会把订阅邮箱公开展示，也不会把邮箱作为公开机会数据的一部分。未经授权，不会把邮箱出售给广告商或用于与见势订阅无关的营销。</p>
+<h2>邮件服务商</h2>
+<p>邮件通道启用后，见势计划使用 Resend 作为邮件发送基础设施。发送邮件所必需的数据会按服务需要传递给邮件服务商。</p>
+<h2>确认与退订</h2>
+<p>订阅采用双重确认。只有点击确认链接后才进入正式订阅状态。每封正式邮件都会提供退订方式；退订后停止发送每日机会。</p>
+<h2>当前阶段</h2>
+<p>如果邮件通道尚未启用，你提交的邮箱只会进入 WAITLIST，不会被标记成已确认订阅，也不会虚假记录为邮件已发送。</p>
+</section></main>"""
+    return shell("隐私说明｜见势",body,
+                 "见势轻量订阅隐私说明：说明邮箱的收集、使用、确认和退订方式。",
+                 "/privacy/")
 
 def build_daily_page(kind, daily):
     cfg={
@@ -365,6 +387,10 @@ def main():
         out=DIST/kind
         out.mkdir(parents=True,exist_ok=True)
         (out/"index.html").write_text(build_daily_page(kind,daily),encoding="utf-8")
+
+    privacy_out=DIST/"privacy"
+    privacy_out.mkdir(parents=True,exist_ok=True)
+    (privacy_out/"index.html").write_text(build_privacy_page(),encoding="utf-8")
     search=[]
     for item in catalog:
         slug=item.get("slug")
@@ -377,7 +403,7 @@ def main():
     (DIST/"search-index.json").write_text(json.dumps(search,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     (DIST/"404.html").write_text(shell("未找到｜见势",'<main class="wrap"><section class="hero"><h1>这里还没有信号。</h1><p><a href="/">返回见势首页 →</a></p></section></main>',canonical_path="/404"),encoding="utf-8")
 
-    urls=["/","/today/","/rising/","/build/","/content/"]+[f"/opportunity/{x['slug']}/" for x in search]
+    urls=["/","/today/","/rising/","/build/","/content/","/privacy/"]+[f"/opportunity/{x['slug']}/" for x in search]
     sitemap='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(
         f'<url><loc>{esc(SITE+u)}</loc></url>' for u in urls
     )+'</urlset>'
@@ -398,7 +424,7 @@ def main():
     # are not committed; they exist only in the ephemeral build workspace.
     for name in ("index.html","404.html","styles.css","search.js","search-index.json","sitemap.xml","robots.txt"):
         shutil.copy2(DIST/name, REPO_ROOT/name)
-    for dirname in ("opportunity","today","rising","build","content"):
+    for dirname in ("opportunity","today","rising","build","content","privacy"):
         target=REPO_ROOT/dirname
         if target.exists():
             shutil.rmtree(target)
@@ -407,7 +433,7 @@ def main():
     print(json.dumps({
         "status":"PASS",
         "api":"live" if API else "fixture",
-        "pages":5+len(search),
+        "pages":6+len(search),
         "opportunities":len(catalog),
         "outputs":["web/dist","dist","public","repo-root-runtime"]
     },ensure_ascii=False))

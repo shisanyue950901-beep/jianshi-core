@@ -17,6 +17,7 @@ on:
       - rising/**
       - build/**
       - content/**
+      - privacy/**
       - sitemap.xml
       - robots.txt
       - dist/**
@@ -52,6 +53,7 @@ jobs:
           test -f rising/index.html
           test -f build/index.html
           test -f content/index.html
+          test -f privacy/index.html
           test -f sitemap.xml
           test -f robots.txt
           grep -q "见势" index.html
@@ -61,7 +63,7 @@ jobs:
         run: |
           git config user.name "jianshi-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html 404.html styles.css search.js search-index.json sitemap.xml robots.txt opportunity today rising build content dist public
+          git add index.html 404.html styles.css search.js search-index.json sitemap.xml robots.txt opportunity today rising build content privacy dist public
           git add -f web/dist
           if git diff --cached --quiet; then
             echo "STATIC_SNAPSHOT_NO_CHANGE"

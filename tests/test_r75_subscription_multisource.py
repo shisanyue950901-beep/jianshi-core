@@ -51,6 +51,11 @@ class TestR75SubscriptionAndMultisource(unittest.TestCase):
         self.assertIn("newsletter-subscribe",Path("web/build.py").read_text(encoding="utf-8"))
         self.assertIn("source_path",js)
         self.assertIn("fetch(endpoint",js)
+        privacy=Path("web/dist/privacy/index.html").read_text(encoding="utf-8")
+        self.assertIn("我们只收集完成订阅所必需的信息",privacy)
+        self.assertIn("双重确认",privacy)
+        self.assertIn("WAITLIST",privacy)
+        self.assertIn("/privacy/",home)
 
 if __name__=="__main__":
     unittest.main()

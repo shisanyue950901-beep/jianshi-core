@@ -49,7 +49,8 @@ ChatGPT 中连接 Resend 不等于 Supabase 生产环境自动获得 Resend API 
 
 在这两个生产密钥接入前：
 - 网站可以收集订阅意向
-- 状态保持 PENDING_CONFIRMATION
+- 状态保持 WAITLIST
+- 不生成不可恢复的确认 Token
 - 前端明确提示邮件通道正在启用
 - 不会虚假显示邮件已发送
 
@@ -65,3 +66,19 @@ ChatGPT 中连接 Resend 不等于 Supabase 生产环境自动获得 Resend API 
 WAITLIST → PENDING_CONFIRMATION → ACTIVE → UNSUBSCRIBED
 
 这样不会提前生成无法恢复的确认 Token。邮件通道启用后，可为 WAITLIST 用户生成新的确认 Token 并发送确认邮件。
+
+
+## Production 结果｜2026-10-06
+生产 GitHub 扩展采集已完成：
+- discovery queries: 8
+- unique repositories: 379
+- quality gate: PASS
+- active opportunity evidence: 496
+
+生产多源机会已从 1 个升级为 4 个：
+- 创作者媒体资产
+- 轻量电商品牌与 Amazon 资产
+- 一人公司 SaaS
+- 联盟营销与内容资产
+
+AI Agent 工具与自动化、LLM 应用与工具仍保持单源观察，不因热度高而绕过多源 Gate。
