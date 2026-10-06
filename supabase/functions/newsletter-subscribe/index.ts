@@ -63,8 +63,8 @@ Deno.serve(async (req: Request) => {
       return redirect("invalid");
     }
 
-    const hash = await sha256Hex(token);
     if (mode === "confirm") {
+      const hash = await sha256Hex(token);
       const { data, error } = await db.rpc("confirm_newsletter_subscription_v01", {
         p_token_hash: hash,
       });
@@ -72,6 +72,17 @@ Deno.serve(async (req: Request) => {
       return redirect(data === true ? "confirmed" : "invalid");
     }
 
+    // R7.10 signed unsubscribe tokens are durable. Keep a fallback for the
+    // early hash-token implementation even though production had no users yet.
+    if (token.includes(".")) {
+      const { data, error } = await db.rpc("unsubscribe_newsletter_signed_v01", {
+        p_token: token,
+      });
+      if (error) return redirect("error");
+      return redirect(data === true ? "unsubscribed" : "invalid");
+    }
+
+    const hash = await sha256Hex(token);
     const { data, error } = await db.rpc("unsubscribe_newsletter_v01", {
       p_token_hash: hash,
     });
@@ -90,11 +101,7 @@ Deno.serve(async (req: Request) => {
 
   // Honeypot: real users never fill this invisible field.
   if (String(body?.company ?? "").trim()) {
-    return json({
-      ok: true,
-      state: "PENDING",
-      message: "订阅请求已记录。",
-    }, 202);
+    return json({ ok: true, state: "PENDING", message: "订阅请求已记录。" }, 202);
   }
 
   const email = normalizeEmail(body?.email);
@@ -103,7 +110,6 @@ Deno.serve(async (req: Request) => {
   }
 
   const sourcePath = String(body?.source_path ?? "/").slice(0, 200);
-
   const { data: providerReady, error: providerReadyError } = await db.rpc("newsletter_provider_ready_v01");
   if (providerReadyError) {
     return json({ ok: false, error: "PROVIDER_STATE_FAILED", message: "暂时无法提交，请稍后再试。" }, 500);
@@ -135,17 +141,14 @@ Deno.serve(async (req: Request) => {
   }
 
   const confirmToken = randomToken();
-  const unsubscribeToken = randomToken();
   const confirmHash = await sha256Hex(confirmToken);
-  const unsubscribeHash = await sha256Hex(unsubscribeToken);
 
   const { data: requestState, error: requestError } = await db.rpc(
-    "request_newsletter_subscription_v01",
+    "request_newsletter_subscription_v02",
     {
       p_email: email,
       p_source_path: sourcePath,
       p_confirmation_token_hash: confirmHash,
-      p_unsubscribe_token_hash: unsubscribeHash,
     },
   );
 
@@ -165,25 +168,28 @@ Deno.serve(async (req: Request) => {
     return json({
       ok: true,
       state: "PENDING_CONFIRMATION",
-      message: "订阅请求已记录。若确认邮件已启用，请检查邮箱。",
+      message: "确认请求已经存在，请稍后检查邮箱。",
     }, 202);
   }
 
   const { data: providerState, error: providerError } = await db.rpc(
-    "queue_newsletter_confirmation_v01",
+    "queue_newsletter_confirmation_v02",
     {
       p_subscriber_id: requestState.subscriber_id,
       p_email: email,
       p_confirm_token: confirmToken,
-      p_unsubscribe_token: unsubscribeToken,
     },
   );
 
   if (providerError || providerState?.sent !== true) {
+    await db.rpc("revert_pending_confirmation_to_waitlist_v01", {
+      p_subscriber_id: requestState.subscriber_id,
+      p_confirmation_token_hash: confirmHash,
+    });
     return json({
       ok: true,
       state: "WAITLIST",
-      message: "已记录订阅意向。邮件确认通道正在启用，启用后会先向你发送确认邮件。",
+      message: "已记录订阅意向。邮件通道暂时不可用，恢复后会自动发送确认邮件。",
     }, 202);
   }
 
