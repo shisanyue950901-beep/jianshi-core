@@ -58,3 +58,10 @@ ChatGPT 中连接 Resend 不等于 Supabase 生产环境自动获得 Resend API 
 “每天把 Top 10 机会发给我”
 
 不设注册墙。
+
+
+## R7.5.1 WAITLIST 修正
+当 Resend 生产密钥尚未配置时，用户现在进入真正的 WAITLIST 状态：
+WAITLIST → PENDING_CONFIRMATION → ACTIVE → UNSUBSCRIBED
+
+这样不会提前生成无法恢复的确认 Token。邮件通道启用后，可为 WAITLIST 用户生成新的确认 Token 并发送确认邮件。
