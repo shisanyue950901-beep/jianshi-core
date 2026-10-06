@@ -61,6 +61,28 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    if (view === "daily") {
+      const { data, error } = await db
+        .from("public_daily_brief_v01")
+        .select("*")
+        .order("overall_rank", { ascending: true });
+      if (error) throw error;
+
+      const items = data ?? [];
+      const now = new Date().toISOString();
+      return json({
+        generated_at: now,
+        history_ready: {
+          one_day: items.some((x: any) => x.previous_date !== null),
+          seven_day: items.some((x: any) => x.seven_day_date !== null),
+        },
+        today: items.slice(0, 10),
+        rising: [...items].sort((a: any,b: any) => Number(a.rising_rank)-Number(b.rising_rank)).slice(0, 10),
+        build: [...items].sort((a: any,b: any) => Number(a.build_rank)-Number(b.build_rank)).slice(0, 10),
+        content: [...items].sort((a: any,b: any) => Number(a.content_rank)-Number(b.content_rank)).slice(0, 10),
+      });
+    }
+
     if (view === "catalog") {
       const { data, error } = await db.from("public_opportunity_catalog_v01")
         .select("*")
