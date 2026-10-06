@@ -1,6 +1,6 @@
 {
-  "registry_version": "1.4",
-  "reviewed_at": "2026-10-06",
+  "registry_version": "1.5",
+  "reviewed_at": "2026-10-07",
   "sources": [
     {
       "code": "empire_flippers",
@@ -172,6 +172,20 @@
       "written_permission_required": true,
       "policy_url": "https://www.motioninvest.com/terms-of-service",
       "notes": "Marketplace 公开展示网站/YouTube 收入与售价，但未发现公开 API 或商业再利用授权；平台内容/IP 权利保留，需书面许可。"
+    },
+    {
+      "code": "foundersprime",
+      "name": "FoundersPrime",
+      "status": "YELLOW",
+      "access_method": "OFFICIAL_PUBLIC_API_UPSTREAM_RESTRICTED",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "upstream_provenance_required": true,
+      "policy_url": "https://www.foundersprime.com/terms",
+      "notes": "官方公开 JSON API 允许读取/索引/引用并要求 attribution；但 /api/v1/startups 当前 1150 条审计样本全部来自 Acquire.com(618) 与 TrustMRR(532)。在确认其拥有对这些上游挂牌的商业再许可权之前，收购数据保持 YELLOW、禁止生产自动采集与公开再展示。"
     }
   ]
 }
