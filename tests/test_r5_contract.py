@@ -11,6 +11,8 @@ class TestR5Contract(unittest.TestCase):
         self.assertNotIn("raw_items",fn)
         self.assertIn('view === "detail"',fn)
         self.assertIn("cache-control",fn)
+        wrangler=Path("wrangler.toml").read_text(encoding="utf-8")
+        self.assertIn('pages_build_output_dir = "./web/dist"',wrangler)
 
     def test_static_build_fixture(self):
         p=subprocess.run([sys.executable,"web/build.py"],capture_output=True,text=True,check=True)
