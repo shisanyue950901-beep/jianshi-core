@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jianshi-bua.pages.dev/sitemap.xml
