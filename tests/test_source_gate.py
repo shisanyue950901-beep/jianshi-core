@@ -9,7 +9,13 @@ class TestGate(unittest.TestCase):
         with self.assertRaises(SourceGateError):
             assert_auto_collect_allowed(SourcePolicy("acquire","RED",False,False))
     def test_yellow_fails_closed(self):
-        with self.assertRaises(SourceGateError):
-            assert_auto_collect_allowed(SourcePolicy("sideprojectors","YELLOW",False,False))
+        for code in ("sideprojectors","trustmrr","catchbuys","acquirebase"):
+            with self.assertRaises(SourceGateError):
+                assert_auto_collect_allowed(SourcePolicy(code,"YELLOW",False,False))
+
+    def test_marketplace_red_sources_fail_closed(self):
+        for code in ("acquire","flippa","microns","deal_slide"):
+            with self.assertRaises(SourceGateError):
+                assert_auto_collect_allowed(SourcePolicy(code,"RED",False,False))
 
 if __name__ == "__main__": unittest.main()
