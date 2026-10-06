@@ -11,6 +11,12 @@ on:
       - search.js
       - search-index.json
       - opportunity/**
+      - today/**
+      - rising/**
+      - build/**
+      - content/**
+      - sitemap.xml
+      - robots.txt
       - dist/**
       - public/**
       - web/dist/**
@@ -40,6 +46,12 @@ jobs:
           test -f dist/index.html
           test -f public/index.html
           test -f index.html
+          test -f today/index.html
+          test -f rising/index.html
+          test -f build/index.html
+          test -f content/index.html
+          test -f sitemap.xml
+          test -f robots.txt
           grep -q "见势" index.html
           grep -q "筛出真正值得行动的机会" index.html
 
@@ -47,7 +59,7 @@ jobs:
         run: |
           git config user.name "jianshi-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html 404.html styles.css search.js search-index.json opportunity dist public
+          git add index.html 404.html styles.css search.js search-index.json sitemap.xml robots.txt opportunity today rising build content dist public
           git add -f web/dist
           if git diff --cached --quiet; then
             echo "STATIC_SNAPSHOT_NO_CHANGE"
