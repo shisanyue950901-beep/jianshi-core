@@ -158,7 +158,7 @@ Deno.serve(async (req: Request) => {
 
   return json({
     ok: true,
-    state: "CHECK_EMAIL",
-    message: "确认邮件已发送，请检查邮箱并完成确认。",
+    state: "CONFIRMATION_QUEUED",
+    message: "确认邮件已进入发送队列，请稍后检查邮箱并完成确认。",
   }, 202);
 });
