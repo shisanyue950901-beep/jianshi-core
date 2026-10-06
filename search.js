@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",()=>{const input=document.querySelector("[data-search]");if(!input)return;const cards=[...document.querySelectorAll("[data-card]")];input.addEventListener("input",()=>{const q=input.value.trim().toLowerCase();cards.forEach(c=>{c.style.display=!q||c.textContent.toLowerCase().includes(q)?"":"none"})})});
