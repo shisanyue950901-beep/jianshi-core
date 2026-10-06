@@ -136,3 +136,22 @@ revoke all on newsletter_internal_metrics_v01 from anon,authenticated;
 
 comment on table newsletter_subscribers is
 'R7.5 private email subscription state. No public/anon table access. Double opt-in before ACTIVE.';
+
+
+grant select,insert,update on newsletter_subscribers,newsletter_events to service_role;
+grant usage,select on sequence newsletter_events_id_seq to service_role;
+grant execute on function queue_newsletter_confirmation_v01(uuid,text,text,text) to service_role;
+
+create or replace function newsletter_provider_ready_v01()
+returns boolean
+language sql
+security definer
+set search_path=public,vault
+as $$
+  select exists(select 1 from vault.decrypted_secrets where name='resend_api_key')
+     and exists(select 1 from vault.decrypted_secrets where name='newsletter_from_email')
+     and exists(select 1 from vault.decrypted_secrets where name='jianshi_project_url');
+$$;
+
+revoke all on function newsletter_provider_ready_v01() from public,anon,authenticated;
+grant execute on function newsletter_provider_ready_v01() to service_role;
