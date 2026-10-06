@@ -1,5 +1,5 @@
 {
-  "registry_version": "1.2",
+  "registry_version": "1.3",
   "reviewed_at": "2026-10-06",
   "sources": [
     {
@@ -10,8 +10,11 @@
       "auto_collect": true,
       "redisplay_allowed": true,
       "policy_url": "https://empireflippers.com/marketplace-api/",
-      "rate_limit_rps": 1.0,
-      "notes": "官方 Marketplace API；生产采集不超过 1 req/s。"
+      "rate_limit_rps": 1,
+      "notes": "官方 Marketplace API；生产采集不超过 1 req/s。",
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": true,
+      "written_permission_required": false
     },
     {
       "code": "github",
@@ -22,7 +25,10 @@
       "redisplay_allowed": true,
       "policy_url": "https://docs.github.com/en/rest",
       "rate_limit_rps": null,
-      "notes": "仅采集公开仓库元数据；遵守 GitHub API Terms 与 Rate Limit；不采集私有仓库或用户私密数据。"
+      "notes": "仅采集公开仓库元数据；遵守 GitHub API Terms 与 Rate Limit。",
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": true,
+      "written_permission_required": false
     },
     {
       "code": "acquire",
@@ -32,7 +38,10 @@
       "auto_collect": false,
       "redisplay_allowed": false,
       "policy_url": "https://acquire.com/buyerseller/",
-      "notes": "未取得书面许可前禁止自动抓取、竞争性 benchmark 和跨域重展示。"
+      "notes": "2026-03-18 Buyer & Seller Terms 明确禁止 automated/manual scraping or data extraction、automatic queries、跨域重展示，以及用服务构建竞争产品；只有 Acquire 书面许可后才可调整。",
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true
     },
     {
       "code": "flippa",
@@ -42,7 +51,10 @@
       "auto_collect": false,
       "redisplay_allowed": false,
       "policy_url": "https://flippa.com/terms-of-service/",
-      "notes": "未取得书面授权前不做批量抽取和 substantial database 复制。"
+      "notes": "未取得书面授权前不做批量抽取、substantial database 复制或公开重展示。",
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true
     },
     {
       "code": "microns",
@@ -52,17 +64,75 @@
       "auto_collect": false,
       "redisplay_allowed": false,
       "policy_url": "https://www.microns.io/terms",
-      "notes": "Terms 禁止未经明确许可 crawl/scrape/spider。"
+      "notes": "Terms 禁止未经明确许可 crawl/scrape/spider；保留研究线索，不进入自动管道。",
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true
     },
     {
       "code": "sideprojectors",
       "name": "SideProjectors",
       "status": "YELLOW",
-      "access_method": "REVIEW_REQUIRED",
+      "access_method": "PUBLIC_WEB_REVIEW_REQUIRED",
       "auto_collect": false,
       "redisplay_allowed": false,
-      "policy_url": null,
-      "notes": "完成 API / robots / Terms 专项审查后再决定是否转 GREEN。"
+      "policy_url": "https://www.sideprojectors.com/v4/legal/terms-of-service",
+      "notes": "公开市场有大量小项目，但自动化及商业再利用权利尚未核验清楚；未转 GREEN 前 fail-closed。",
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true
+    },
+    {
+      "code": "deal_slide",
+      "name": "DealSlide",
+      "status": "RED",
+      "access_method": "MANUAL_RESEARCH_ONLY",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "policy_url": "https://dealslide.com/terms",
+      "notes": "2025-04-18 Terms 明确禁止自动访问、scraping、reproducing、republishing、selling/reselling/duplicating 网站或内容。"
+    },
+    {
+      "code": "trustmrr",
+      "name": "TrustMRR",
+      "status": "YELLOW",
+      "access_method": "OFFICIAL_API_RESTRICTED",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "policy_url": "https://trustmrr.com/terms",
+      "notes": "有官方 API/MCP；内部 acquisition research 可用，但公开展示、客户可见产品、批量再发布、AI/推荐系统等需 TrustMRR 事先书面许可。"
+    },
+    {
+      "code": "catchbuys",
+      "name": "CatchBuys",
+      "status": "YELLOW",
+      "access_method": "OFFICIAL_API_TERMS_PENDING",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "policy_url": "https://catchbuys.com/terms",
+      "notes": "官方 API 页面明确面向 data products/newsletter/deal-flow/alerts，覆盖约30市场；但完整 Terms 正文尚未完成可核验审查，且需确认其对上游数据的商业再许可权。"
+    },
+    {
+      "code": "acquirebase",
+      "name": "AcquireBase",
+      "status": "YELLOW",
+      "access_method": "PUBLIC_WEB_REVIEW_REQUIRED",
+      "auto_collect": false,
+      "redisplay_allowed": false,
+      "internal_research_allowed": true,
+      "derived_public_analytics_allowed": false,
+      "written_permission_required": true,
+      "policy_url": "https://acquirebase.com/terms",
+      "notes": "公开挂牌包含 MRR/利润/售价等高价值字段，但现有条款未明确授予自动采集、历史归档或商业重展示权利；需书面确认。"
     }
   ]
 }
