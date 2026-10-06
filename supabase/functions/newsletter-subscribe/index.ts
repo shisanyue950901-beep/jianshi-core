@@ -103,6 +103,37 @@ Deno.serve(async (req: Request) => {
   }
 
   const sourcePath = String(body?.source_path ?? "/").slice(0, 200);
+
+  const { data: providerReady, error: providerReadyError } = await db.rpc("newsletter_provider_ready_v01");
+  if (providerReadyError) {
+    return json({ ok: false, error: "PROVIDER_STATE_FAILED", message: "暂时无法提交，请稍后再试。" }, 500);
+  }
+
+  if (providerReady !== true) {
+    const { data: waitlistState, error: waitlistError } = await db.rpc(
+      "request_newsletter_waitlist_v01",
+      { p_email: email, p_source_path: sourcePath },
+    );
+
+    if (waitlistError) {
+      return json({ ok: false, error: "WAITLIST_FAILED", message: "暂时无法提交，请稍后再试。" }, 500);
+    }
+
+    if (waitlistState?.status === "ACTIVE") {
+      return json({
+        ok: true,
+        state: "ACTIVE",
+        message: "这个邮箱已经完成订阅，无需重复提交。",
+      });
+    }
+
+    return json({
+      ok: true,
+      state: "WAITLIST",
+      message: "已记录订阅意向。邮件确认通道启用后，会先向你发送确认邮件。",
+    }, 202);
+  }
+
   const confirmToken = randomToken();
   const unsubscribeToken = randomToken();
   const confirmHash = await sha256Hex(confirmToken);
