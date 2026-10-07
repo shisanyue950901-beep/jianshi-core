@@ -46,15 +46,15 @@ do update set
 create or replace view opportunity_evidence_class_counts_v01 as
 select
   o.id as opportunity_id,
-  count(oe.entity_id) filter (
+  count(distinct oe.entity_id) filter (
     where r.evidence_class='TECHNICAL_SUPPLY'
       and r.counts_for_public_validation=true
   ) as technical_evidence_count,
-  count(oe.entity_id) filter (
+  count(distinct oe.entity_id) filter (
     where r.evidence_class='COMMERCIAL_PROOF'
       and r.counts_for_public_validation=true
   ) as commercial_evidence_count,
-  count(oe.entity_id) filter (
+  count(distinct oe.entity_id) filter (
     where r.evidence_class='DEMAND_SIGNAL'
       and r.counts_for_public_validation=true
   ) as demand_evidence_count,
