@@ -8,6 +8,7 @@ class TestP45DVerticalSaaSRefinement(unittest.TestCase):
     def setUpClass(cls):
         cls.sql=(ROOT/"db/migrations/0058_vertical_saas_rule_refinement.sql").read_text(encoding="utf-8")
         cls.doc=(ROOT/"docs/P45D_VERTICAL_SAAS_REVIEW_REFINEMENT.md").read_text(encoding="utf-8")
+        cls.version_sql=(ROOT/"db/migrations/0059_child_mapping_ruleset_version.sql").read_text(encoding="utf-8")
 
     def test_old_broad_rule_is_disabled(self):
         self.assertIn("rule_code='P45B_SAAS_VERTICAL'",self.sql)
@@ -34,6 +35,12 @@ class TestP45DVerticalSaaSRefinement(unittest.TestCase):
         self.assertIn("auto approved = 4",self.doc)
         self.assertIn("review required = 1",self.doc)
         self.assertIn("excluded = 1",self.doc)
+
+    def test_ruleset_audit_version_is_not_stale(self):
+        self.assertIn("child_evidence_mapping_ruleset_version_v01", self.version_sql)
+        self.assertIn("'P45D_V1'::text", self.version_sql)
+        self.assertIn("'ruleset_version',v_ruleset_version", self.version_sql)
+        self.assertNotIn("'rule_version','P45B_V1'", self.version_sql)
 
     def test_no_production_or_publication_changes(self):
         lower=self.sql.lower()
