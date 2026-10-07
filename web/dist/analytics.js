@@ -9,6 +9,7 @@
   const ACQ="jianshi_acquisition_v1";
   const SEEN="jianshi_seen_opportunities_v1";
   const SECOND="jianshi_second_opportunity_v1";
+  const QA_SESSION="jianshi_analytics_qa_session";
   const ROTATE_MS=90*24*60*60*1000;
 
   const storageSafe=(storage,key)=>{
@@ -29,6 +30,12 @@
   };
 
   const privacyBlocked=()=>{
+    try{
+      const qa=new URLSearchParams(location.search).get("qa");
+      if(qa==="1") setSafe(sessionStorage,QA_SESSION,"1");
+      if(qa==="0") removeSafe(sessionStorage,QA_SESSION);
+    }catch{}
+    if(storageSafe(sessionStorage,QA_SESSION)==="1") return true;
     if(storageSafe(localStorage,OPT_OUT)==="1") return true;
     if(navigator.globalPrivacyControl===true) return true;
     return navigator.doNotTrack==="1"||window.doNotTrack==="1";
