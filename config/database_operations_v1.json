@@ -1,0 +1,18 @@
+{
+  "version": "P3.6-V1",
+  "current_plan_assumption": "SUPABASE_FREE",
+  "database_limit_bytes": 524288000,
+  "database_warning_pct": 70,
+  "database_critical_pct": 90,
+  "connection_warning_pct": 70,
+  "connection_critical_pct": 90,
+  "backup_target": "GITHUB_ACTIONS_PRIVATE_ARTIFACT",
+  "backup_schedule": "DAILY_WHEN_ARMED",
+  "backup_retention_days": 30,
+  "backup_encryption_required": true,
+  "backup_status": "READY_NOT_ARMED",
+  "restore_drill_status": "PENDING_FIRST_BACKUP",
+  "paid_upgrade": "NOT_REQUIRED_VALIDATION_STAGE",
+  "pitr": "NOT_ENABLED_FREE_PLAN",
+  "auth_launch_requires_backup_decision": true
+}
