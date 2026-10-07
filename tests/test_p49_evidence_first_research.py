@@ -108,5 +108,14 @@ class TestP49EvidenceFirstResearch(unittest.TestCase):
             self.assertNotIn("值得讲",html)
 
 
+    def test_sample_preview_discloses_visible_vs_total(self):
+        env=dict(os.environ)
+        env.pop("JIANSHI_API_URL",None)
+        subprocess.run([sys.executable,str(BUILD)],cwd=ROOT,env=env,check=True,
+                       stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        html=(ROOT/"web"/"dist"/"opportunity"/"amazon-fba-niche-brand"/"index.html").read_text(encoding="utf-8")
+        self.assertIn("展示最近 0 条 / 当前共 70 条",html)
+
+
 if __name__=="__main__":
     unittest.main()

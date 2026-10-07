@@ -1,7 +1,7 @@
 # P4.9｜Evidence-First UI / 证据优先重构
 
 日期：2026-10-08  
-状态：STAGING_API_PASS / FRONTEND_CI_PENDING
+状态：PASS_PRODUCTION
 
 ## 用户反馈对应的问题
 
@@ -149,7 +149,29 @@ P49_PUBLIC_COPY_EVIDENCE_ONLY = PASS
 P49_UNSUPPORTED_EDITORIAL_COPY = ABSENT
 P49_REALTIME_RESEARCH_FETCH = PASS
 P49_NOINDEX_BOUNDARY = PASS
-P49_CI = PASS
-P49_PRODUCTION_EDGE_FUNCTION = NOT_YET
-P49_PUBLIC_SITE = NOT_YET
+P49_PREMERGE_CI = PASS_RUN_216
+P49_POSTMERGE_CI = PASS_RUN_217
+P49_STATIC_SNAPSHOT = PASS_RUN_74
+P49_PRODUCTION_EDGE_FUNCTION = PASS_VERSION_8
+P49_PUBLIC_SITE = PASS
+P49_RENDERED_UI_QA = PASS_WITH_ONE_MINOR_DISCLOSURE_FIX
 ```
+
+## Production 验收
+
+- PR #61 已合并，merge SHA：`ba97a4d56c3323d680c7d8a941fa347bd370dab3`
+- 最新静态快照：`8f2e293c1152d53a9625df8c94d5b37a8c053184`
+- Production public-feed：version 8
+- Production FBA：70 个当前在售样本，69 个有报价样本
+- Production KDP：9 个当前在售样本
+- 首页 / 项目研究库 / SaaS / FBA / 综合信号均已真实验收
+- 6 个首批研究详情仍为 `noindex,nofollow`
+- 6 个首批研究 slug 仍不进入 sitemap / search-index
+- 渲染 QA 结论：整体已呈现专业研究终端，不再呈现营销内容站风格
+
+渲染 QA 唯一中等反馈为“总样本数与表格预览数量关系应更明确”。后续补充为：
+
+> 展示最近 N 条 / 当前共 M 条
+
+不扩展为一次性铺开全部挂牌记录，避免破坏详情页的信息密度。
+
