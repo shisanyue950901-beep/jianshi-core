@@ -15,6 +15,10 @@ NEWSLETTER_API=os.getenv("JIANSHI_NEWSLETTER_URL","").strip().rstrip("/")
 if not NEWSLETTER_API and API.endswith("/public-feed"):
     NEWSLETTER_API=API[:-len("/public-feed")] + "/newsletter-subscribe"
 
+ANALYTICS_API=os.getenv("JIANSHI_ANALYTICS_URL","").strip().rstrip("/")
+if not ANALYTICS_API and API.endswith("/public-feed"):
+    ANALYTICS_API=API[:-len("/public-feed")] + "/behavior-track"
+
 AUTH_REQUESTED=os.getenv("JIANSHI_AUTH_ENABLED","0").strip().lower() in ("1","true","yes","on")
 AUTH_ENABLED=False
 SUPABASE_URL=os.getenv("JIANSHI_SUPABASE_URL","https://dalfvgehosxfyxkptxwx.supabase.co").strip().rstrip("/")
@@ -113,6 +117,14 @@ def shell(title, body, description="见势：看见正在发生的生意机会�
         + ';</script><script type="module" src="/account.js"></script>'
         if AUTH_ENABLED else ""
     )
+    analytics_boot = (
+        '<script>window.JIANSHI_ANALYTICS_CONFIG='
+        + json.dumps({
+            "enabled":bool(ANALYTICS_API),
+            "endpoint":ANALYTICS_API,
+        },ensure_ascii=False,separators=(",",":"))
+        + ';</script><script src="/analytics.js" defer></script>'
+    )
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="robots" content="{esc(robots)}">
@@ -124,7 +136,7 @@ def shell(title, body, description="见势：看见正在发生的生意机会�
 <nav><a href="/opportunities/">发现机会</a><a href="/today/">今日推荐</a><a href="/rising/">正在起势</a><a href="/content/">内容选题</a><a href="/#method">我们怎么判断</a>{account_nav}</nav></div></header>
 {body}
 <footer id="about"><div class="wrap">见势｜商业机会发现与决策平台。数据和评分用于研究与发现，不构成投资、收益或经营承诺。 · <a href="/privacy/">隐私说明</a></div></footer>
-<script src="/search.js" defer></script>{auth_boot}</body></html>"""
+<script src="/search.js" defer></script>{auth_boot}{analytics_boot}</body></html>"""
 
 def score_row(item):
     pairs=[("趋势热度",item.get("heat_score")),("内容价值",item.get("content_score")),
@@ -231,15 +243,24 @@ def newsletter_block():
 
 def build_privacy_page():
     body="""<main class="wrap daily-page">
-<section class="list-hero"><span class="section-kicker">隐私说明</span><h1>我们只收集完成订阅所必需的信息。</h1>
-<p>见势当前的轻量订阅不需要创建账号。我们把邮箱只用于订阅确认、每日机会摘要和必要的订阅状态管理。</p></section>
+<section class="list-hero"><span class="section-kicker">隐私说明</span><h1>只收集提供服务和验证产品所必需的数据。</h1>
+<p>见势当前把订阅信息与匿名产品使用分析分开处理。我们不会把匿名浏览分析用于广告画像，也不会在行为分析中保存姓名、邮箱、IP 地址、完整 User-Agent 或完整搜索词。</p></section>
 <section class="panel privacy-copy">
-<h2>我们收集什么</h2>
-<p>当你主动提交订阅时，我们会保存：邮箱地址、订阅状态、授权时间、提交来源页面，以及发送/确认/退订等事件记录。</p>
-<h2>我们怎么使用</h2>
-<p>这些信息只用于处理见势的邮件订阅，包括确认订阅、发送每日 Top 10 机会、处理退订、退信和投诉状态。</p>
+<h2>匿名使用分析</h2>
+<p>为了判断见势是否真的对用户有价值，我们会使用第一方随机浏览器标识记录页面访问、机会详情浏览、第二个机会浏览、机会库筛选、来源跳转、30 秒阅读和滚动深度等事件。</p>
+<p>随机浏览器标识最多使用 90 天后轮换；原始行为事件默认保留 90 天。搜索只记录输入长度和结果数量，不保存你输入的原始搜索文字。来源跳转只记录目标域名。</p>
+<p>如果浏览器启用了 Global Privacy Control（GPC）或 Do Not Track（DNT），见势不会发送这些分析事件。你也可以随时主动关闭。</p>
+<div class="privacy-actions">
+<button type="button" data-analytics-opt-out>关闭匿名使用分析</button>
+<button type="button" class="secondary" data-analytics-opt-in>重新开启</button>
+</div>
+<p class="analytics-privacy-status" data-analytics-status role="status" aria-live="polite"></p>
+<h2>邮件订阅收集什么</h2>
+<p>当你主动提交订阅时，我们会保存邮箱地址、订阅状态、授权时间、提交来源页面，以及发送、确认、退订等必要事件记录。</p>
+<h2>邮件信息怎么使用</h2>
+<p>邮箱只用于处理见势邮件订阅，包括确认订阅、发送机会摘要、处理退订、退信和投诉状态。邮箱不会进入匿名行为分析表。</p>
 <h2>我们不会做什么</h2>
-<p>我们不会把订阅邮箱公开展示，也不会把邮箱作为公开机会数据的一部分。未经授权，不会把邮箱出售给广告商或用于与见势订阅无关的营销。</p>
+<p>我们不会把订阅邮箱公开展示，也不会出售订阅邮箱。匿名产品分析不接入第三方广告追踪器，不用于跨站广告画像。</p>
 <h2>邮件服务商</h2>
 <p>邮件通道启用后，见势计划使用 Resend 作为邮件发送基础设施。发送邮件所必需的数据会按服务需要传递给邮件服务商。</p>
 <h2>确认与退订</h2>
@@ -248,7 +269,7 @@ def build_privacy_page():
 <p>如果邮件通道尚未启用，你提交的邮箱只会进入 WAITLIST，不会被标记成已确认订阅，也不会虚假记录为邮件已发送。</p>
 </section></main>"""
     return shell("隐私说明｜见势",body,
-                 "见势轻量订阅隐私说明：说明邮箱的收集、使用、确认和退订方式。",
+                 "见势隐私说明：匿名产品使用分析、邮箱订阅、确认和退订。",
                  "/privacy/")
 
 def build_daily_page(kind, daily):
@@ -596,6 +617,7 @@ def main():
     shutil.copy2(STATIC/"styles.css",DIST/"styles.css")
     shutil.copy2(STATIC/"search.js",DIST/"search.js")
     shutil.copy2(STATIC/"account.js",DIST/"account.js")
+    shutil.copy2(STATIC/"analytics.js",DIST/"analytics.js")
     home=api_get("home")
     remote_auth_enabled=bool((home.get("features") or {}).get("account_auth"))
     # Local fixture builds may exercise the enabled UI with the env flag alone.
@@ -652,7 +674,7 @@ def main():
     # If a Pages project is configured to publish the repository root, emit
     # only the generated public entrypoints there at build time. These files
     # are not committed; they exist only in the ephemeral build workspace.
-    for name in ("index.html","404.html","styles.css","search.js","account.js","search-index.json","sitemap.xml","robots.txt"):
+    for name in ("index.html","404.html","styles.css","search.js","account.js","analytics.js","search-index.json","sitemap.xml","robots.txt"):
         shutil.copy2(DIST/name, REPO_ROOT/name)
     for dirname in ("opportunity","opportunities","today","rising","build","content","privacy","account"):
         target=REPO_ROOT/dirname
