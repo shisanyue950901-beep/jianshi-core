@@ -8,6 +8,28 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   }
 
+
+  const catalogSearch=document.querySelector("[data-catalog-search]");
+  const catalogCards=[...document.querySelectorAll("[data-catalog-grid] [data-card]")];
+  const catalogFilters=[...document.querySelectorAll("[data-catalog-filter]")];
+  if(catalogSearch&&catalogCards.length){
+    let activeFilter="all";
+    const applyCatalogFilter=()=>{
+      const q=catalogSearch.value.trim().toLowerCase();
+      catalogCards.forEach(card=>{
+        const textMatch=!q||card.textContent.toLowerCase().includes(q);
+        const stateMatch=activeFilter==="all"||card.dataset.state===activeFilter;
+        card.style.display=textMatch&&stateMatch?"": "none";
+      });
+    };
+    catalogSearch.addEventListener("input",applyCatalogFilter);
+    catalogFilters.forEach(btn=>btn.addEventListener("click",()=>{
+      activeFilter=btn.dataset.catalogFilter||"all";
+      catalogFilters.forEach(x=>x.classList.toggle("active",x===btn));
+      applyCatalogFilter();
+    }));
+  }
+
   const params=new URLSearchParams(location.search);
   const state=params.get("newsletter");
   const statusNodes=[...document.querySelectorAll("[data-newsletter-status]")];
