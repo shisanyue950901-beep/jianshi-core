@@ -1,0 +1,39 @@
+{
+  "version": "P3.5-V1",
+  "status": "STRATEGY_FREEZE_CANDIDATE",
+  "business_model": "INTELLIGENCE_LED_MANAGED_MARKETPLACE",
+  "current_stage": "OPPORTUNITY_INTELLIGENCE_VALIDATION",
+  "registration": "NEXT_IDENTITY_LAYER",
+  "consulting": "STRUCTURED_DEMAND_DISCOVERY",
+  "creator_role": "SECONDARY_USER_AND_DISTRIBUTION",
+  "enterprise_role": "LONG_TERM_PRIMARY_REVENUE",
+  "solution_scope": ["AGENT","SAAS","AUTOMATION_WORKFLOW","DATA_PRODUCT","API","PLUGIN","STANDARDIZED_SERVICE","INDUSTRY_SOLUTION"],
+  "generic_agent_store": "FORBIDDEN",
+  "generic_outsourcing_marketplace": "FORBIDDEN",
+  "open_marketplace_before_gate_d": "FORBIDDEN",
+  "managed_matching_before_open_marketplace": true,
+  "own_escrow_before_legal_payment_gate": "FORBIDDEN",
+  "personalization": "DEFERRED",
+  "transaction_infrastructure": "DEFERRED",
+  "primary_moat": "DEMAND_PLUS_DELIVERY_OUTCOMES",
+  "stage_gates": {
+    "A": "CONSULTING_PRODUCTIZATION",
+    "B": "CURATED_SUPPLY",
+    "C": "ENTERPRISE_PILOTS",
+    "D": "MARKETPLACE_PRODUCTIZATION"
+  },
+  "year_1_priority": [
+    "FRONTEND_PRODUCTIZATION",
+    "REGISTRATION_WORKSPACE",
+    "STRUCTURED_CONSULTING",
+    "DATA_SOURCE_EXPANSION",
+    "CREATOR_TOPIC_VIEW"
+  ],
+  "forbidden_now": [
+    "OPEN_MARKETPLACE",
+    "SELF_HOSTED_ESCROW",
+    "MASS_PROVIDER_RECRUITING",
+    "GENERIC_AGENT_STORE",
+    "GENERIC_OUTSOURCING_PLATFORM"
+  ]
+}
