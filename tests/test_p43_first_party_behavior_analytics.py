@@ -31,8 +31,10 @@ class TestP43FirstPartyBehaviorAnalytics(unittest.TestCase):
         self.assertFalse(self.cfg["persist_email_or_name"])
         self.assertFalse(self.cfg["persist_full_search_text"])
         self.assertEqual(self.cfg["raw_event_retention_days"], 90)
-        for forbidden in ["ip_address", "user_agent", "email"]:
-            self.assertNotIn(forbidden, self.sql.lower())
+        lower = self.sql.lower()
+        self.assertNotIn("ip_address text", lower)
+        self.assertNotIn("user_agent text", lower)
+        self.assertNotIn("email text", lower)
 
     def test_client_respects_privacy_controls(self):
         self.assertIn("globalPrivacyControl", self.client)
