@@ -339,7 +339,7 @@ def build_home(data, daily=None):
 
 {newsletter_block()}
 
-<section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据比较完整，可以深入研究</h2></div><div class="section-note">至少两类独立数据源同时支持</div></div><div class="grid">{opp_html}</div></section>
+<section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据比较完整，可以深入研究</h2></div><div class="section-note">技术供给证据与真实商业证据同时支持</div></div><div class="grid">{opp_html}</div></section>
 
 <section class="wrap section" id="watch"><div class="section-head"><div><span class="section-kicker">持续观察</span><h2>有信号，但还不能急着下结论</h2></div><div class="section-note">热度不等于机会，继续等待更多证据</div></div>
 <div class="searchbox"><input data-search placeholder="搜索方向、机会或关键词…" aria-label="搜索机会"></div><div class="grid">{watch_html}</div></section>
@@ -494,7 +494,7 @@ def build_detail(data):
 <aside><section class="panel"><h3>证据强度</h3><div class="kv"><div>数据源</div><div>{fmt_int(x.get("source_count"))}</div>
 <div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div><div>GitHub</div><div>{fmt_int(x.get("github_repo_count"))}</div>
 <div>商业挂牌</div><div>{fmt_int(x.get("market_listing_count"))}</div><div>综合分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
-<div class="disclosure">{"该方向已经同时获得至少两类独立数据源支持。评分只用于研究与发现，不代表收益承诺。" if is_ready else "该方向目前仍在持续观察，证据来源还不够分散，不应视为已经验证的商业机会。"}</div>{account_action_block(x)}</aside></div></main>"""
+<div class="disclosure">{"该方向已经同时获得技术供给证据与真实商业证据支持。评分只用于研究与发现，不代表收益承诺。" if is_ready else "该方向目前仍在持续观察，还缺少技术供给或真实商业中的关键一类证据，不应视为已经验证的商业机会。"}</div>{account_action_block(x)}</aside></div></main>"""
     slug=str(x.get("slug") or "").strip()
     canonical_path=f"/opportunity/{slug}/" if slug else "/"
     return shell(
