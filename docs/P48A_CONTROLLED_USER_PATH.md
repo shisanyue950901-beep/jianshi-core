@@ -97,6 +97,20 @@ PR #53 合并后，6 个详情页已经可以直接访问，但：
 
 第一轮先积累真实基线，不预设“漂亮数字”。在至少 30 个新项目详情 session 前，不根据小样本重做产品；目标测试池仍是 P4.3 冻结的第一批 100–500 个精准真实访客。
 
+## 发布前行为基线
+
+只用于切分测试 Epoch，不作为产品结论：
+
+```text
+P48A_PRE_EPOCH_TOTAL_EVENTS = 68
+P48A_PRE_EPOCH_UNIQUE_VISITORS = 2
+P48A_PRE_EPOCH_UNIQUE_SESSIONS = 3
+P48A_PRE_EPOCH_NEW_PROJECT_EVENTS = 0
+P48A_PRE_EPOCH_CUTOFF = 2026-10-07T15:39:44.925566Z
+```
+
+正式发布后的判断只读取 cutoff 之后、且属于 P4.8A 新 Epoch 的事件。
+
 ## 测量 Epoch
 
 正式发布 P4.8A 后才开启新的 USER_TEST_EPOCH。
