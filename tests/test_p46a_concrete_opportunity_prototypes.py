@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-CONTENT=ROOT/"content"/"p46a_concrete_opportunity_prototypes.json"
+CONTENT=ROOT/"config"/"p46a_concrete_opportunity_prototypes.json"
 BUILD=ROOT/"web"/"build.py"
 
 
