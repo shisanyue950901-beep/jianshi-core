@@ -1,0 +1,29 @@
+{
+  "version": "P4.1-V1",
+  "status": "IMPLEMENTING_SHADOW",
+  "source_count_is_kpi": false,
+  "public_ready_unchanged": true,
+  "opp_v02_unchanged": true,
+  "first_wave": {
+    "npm": "GREEN_IMPLEMENT",
+    "stack_exchange": "GREEN_NEXT",
+    "hacker_news": "YELLOW_POLICY_REVIEW",
+    "product_hunt": "YELLOW_COMMERCIAL_PERMISSION_REQUIRED",
+    "reddit": "RED_COMMERCIAL_CONTRACT_REQUIRED",
+    "google_trends": "YELLOW_ALPHA_ACCESS_REQUIRED"
+  },
+  "shadow_only_evidence_types": [
+    "NPM_PACKAGE",
+    "STACKEXCHANGE_TAG",
+    "HN_STORY",
+    "PRODUCTHUNT_POST",
+    "REDDIT_POST",
+    "GOOGLE_TRENDS_TERM"
+  ],
+  "target_opportunities_phase_1": {
+    "browseable_min": 30,
+    "browseable_max": 50,
+    "high_quality_validated_min": 10,
+    "high_quality_validated_max": 15
+  }
+}
