@@ -107,11 +107,12 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             "Amazon KDP Business",
             "Agency Business",
         ]
+        forbidden.append("listing")
         for item in self.data["opportunities"]:
             ev=item["overseas_validation"]
-            scope=ev["evidence_scope"]
+            visible=json.dumps(item,ensure_ascii=False)
             for token in forbidden:
-                self.assertNotIn(token,scope,item["slug"])
+                self.assertNotIn(token,visible,item["slug"])
             for niche in ev.get("observed_niches") or []:
                 self.assertRegex(niche,r"[\u4e00-\u9fff]",item["slug"])
 
