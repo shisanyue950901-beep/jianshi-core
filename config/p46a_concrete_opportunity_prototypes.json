@@ -79,7 +79,7 @@
       "what_it_is": "这不是简单上架商品，而是围绕一个细分类目持续经营。选品、采购、库存、页面、评价、广告、售后和现金流共同决定项目能否成立。",
       "overseas_validation": {
         "as_of": "2026-10-07",
-        "direct_samples": 69,
+        "direct_samples": 70,
         "commercial_source_diversity": 1,
         "evidence_scope": "当前正式商业样本中，公开主标题明确归类为亚马逊物流（FBA）业务的在售项目；按挂牌项目去重计数。",
         "observed_niche_count": 33,
@@ -95,7 +95,7 @@
           "户外"
         ],
         "conclusion": "海外市场存在大量可被观察到的 Amazon FBA 商业资产样本，覆盖多个细分类目。",
-        "caveat": "当前严格口径下有 69 个直接商业样本，来自同一商业来源；样本数量不等于来源数量，公开挂牌价也不等于真实成交价。"
+        "caveat": "静态文件仅作为构建回退快照；公开页面以 Production 研究接口实时计算为准。挂牌字段来自来源公开披露，挂牌报价不等于最终成交价。"
       },
       "china_screening": {
         "why_relevant": "中国创业者距离供应链更近，可能在打样、采购和迭代速度上具备条件，但这并不自动等于品牌和销售优势。",
@@ -281,10 +281,10 @@
       "what_it_is": "这类项目不是简单“上传一本书”，而是围绕选题、内容生产、封面与页面、关键词、评价和持续上新形成可重复经营的数字出版业务。平台负责主要交易与履约环节，创作者重点经营内容和选题资产。",
       "overseas_validation": {
         "as_of": "2026-10-07",
-        "direct_samples": 8,
+        "direct_samples": 9,
         "commercial_source_diversity": 1,
         "evidence_scope": "当前正式商业样本中，公开主标题明确归类为亚马逊 KDP 数字出版业务的在售项目；按挂牌项目去重计数。",
-        "observed_niche_count": 12,
+        "observed_niche_count": 16,
         "observed_niches": [
           "图书",
           "商业",
@@ -300,7 +300,7 @@
           "生存与安全"
         ],
         "conclusion": "海外公开商业市场中存在多个不同题材的亚马逊 KDP 数字出版资产样本，说明这种项目形态具备真实商业存在。",
-        "caveat": "当前 8 个直接样本来自同一商业来源。样本可以证明项目形态真实存在，但不能证明某个题材一定能获得同样销量，也不能把公开挂牌信息当成未来收益。"
+        "caveat": "静态文件仅作为构建回退快照；公开页面以 Production 研究接口实时计算为准。挂牌字段来自来源公开披露，不能据此推导未来收益。"
       },
       "china_screening": {
         "why_relevant": "对中国个人创业者而言，这类项目的吸引力在于内容可以数字化生产和交付，库存压力较低，同时可以把写作、设计、资料整理或垂直知识转化成可重复销售的出版资产。",
@@ -436,5 +436,7 @@
       "unknowns"
     ],
     "rule": "缺少明确来源支持的编辑判断不得进入公开研究主界面。"
-  }
+  },
+  "snapshot_role": "BUILD_FALLBACK_ONLY",
+  "live_source_of_truth": "Production public-feed?view=research&slug=<slug>"
 }
