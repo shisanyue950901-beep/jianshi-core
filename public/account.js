@@ -46,6 +46,9 @@ if(cfg.enabled&&cfg.url&&cfg.key){
     }
 
     rows.forEach((row)=>{
+      const wrapper=document.createElement("div");
+      wrapper.className="account-list-row";
+
       const item=document.createElement("a");
       item.className="account-list-item";
       item.href=row.slug?"/opportunity/"+encodeURIComponent(String(row.slug))+"/":"#";
@@ -77,7 +80,19 @@ if(cfg.enabled&&cfg.url&&cfg.key){
         meta="已收藏";
       }
       item.append(main,textNode("small",meta));
-      container.appendChild(item);
+      wrapper.appendChild(item);
+
+      if((kind==="saved"||kind==="watch")&&row.opportunity_id){
+        const remove=document.createElement("button");
+        remove.type="button";
+        remove.className="account-row-remove";
+        remove.textContent=kind==="saved"?"取消收藏":"移出观察";
+        remove.dataset.removeKind=kind;
+        remove.dataset.opportunityId=String(row.opportunity_id);
+        wrapper.appendChild(remove);
+      }
+
+      container.appendChild(wrapper);
     });
   }
 
@@ -106,7 +121,7 @@ if(cfg.enabled&&cfg.url&&cfg.key){
   }
 
   function bindAlertRead(){
-    $("[data-alert-id]").forEach((node)=>{
+    document.querySelectorAll("[data-alert-id]").forEach((node)=>{
       node.addEventListener("click",async()=>{
         const id=Number(node.dataset.alertId||0);
         if(!id) return;
@@ -114,6 +129,84 @@ if(cfg.enabled&&cfg.url&&cfg.key){
           await supabase.rpc("mark_my_alert_read_v01",{p_alert_id:id});
         }catch(_err){}
       },{once:true});
+    });
+  }
+
+  function bindRemoveActions(){
+    document.querySelectorAll("[data-remove-kind]").forEach((button)=>{
+      button.addEventListener("click",async()=>{
+        const kind=button.dataset.removeKind;
+        const opportunityId=button.dataset.opportunityId;
+        if(!opportunityId) return;
+        button.disabled=true;
+        const fn=kind==="saved"?"unsave_my_opportunity_v01":"unwatch_my_opportunity_v01";
+        const result=await supabase.rpc(fn,{p_opportunity_id:opportunityId});
+        if(result.error){
+          button.disabled=false;
+          button.textContent="操作失败";
+          return;
+        }
+        await (kind==="saved"?loadSaved():loadWatch());
+        bindRemoveActions();
+      },{once:true});
+    });
+  }
+
+  async function loadPreferences(){
+    const form=$("[data-alert-preferences-form]");
+    if(!form) return;
+    const result=await supabase.rpc("get_my_alert_preferences_v01");
+    if(result.error||!result.data||!result.data.length) return;
+    const p=result.data[0];
+    const inApp=$('input[name="in_app_enabled"]',form);
+    const email=$('input[name="email_enabled"]',form);
+    const daily=$('input[name="daily_digest_enabled"]',form);
+    const weekly=$('input[name="weekly_digest_enabled"]',form);
+    if(inApp) inApp.checked=Boolean(p.in_app_enabled);
+    if(email) email.checked=Boolean(p.email_enabled);
+    if(daily) daily.checked=Boolean(p.daily_digest_enabled);
+    if(weekly) weekly.checked=Boolean(p.weekly_digest_enabled);
+  }
+
+  function bindPreferenceForm(){
+    const form=$("[data-alert-preferences-form]");
+    if(!form) return;
+    form.addEventListener("submit",async(event)=>{
+      event.preventDefault();
+      const status=$("[data-preferences-status]",form);
+      const button=$('button[type="submit"]',form);
+      button.disabled=true;
+      setStatus(status,"正在保存…","loading");
+      const result=await supabase.rpc("update_my_alert_preferences_v01",{
+        p_in_app_enabled:Boolean($('input[name="in_app_enabled"]',form)?.checked),
+        p_email_enabled:Boolean($('input[name="email_enabled"]',form)?.checked),
+        p_daily_digest_enabled:Boolean($('input[name="daily_digest_enabled"]',form)?.checked),
+        p_weekly_digest_enabled:Boolean($('input[name="weekly_digest_enabled"]',form)?.checked)
+      });
+      button.disabled=false;
+      setStatus(status,result.error?"保存失败，请稍后重试。":"提醒偏好已保存。",result.error?"error":"ok");
+    });
+  }
+
+  function bindClearData(){
+    const button=$("[data-clear-my-data]");
+    if(!button) return;
+    button.addEventListener("click",async()=>{
+      const status=$("[data-clear-my-data-status]");
+      const confirmed=window.confirm("这会清空你的收藏、观察清单和站内提醒，但不会删除登录账号。确认继续吗？");
+      if(!confirmed) return;
+      button.disabled=true;
+      setStatus(status,"正在清空…","loading");
+      const result=await supabase.rpc("clear_my_jianshi_data_v01");
+      button.disabled=false;
+      if(result.error){
+        setStatus(status,"清空失败，请稍后重试。","error");
+        return;
+      }
+      setStatus(status,"收藏、观察和提醒数据已清空。","ok");
+      await Promise.all([loadSaved(),loadWatch(),loadAlerts(),loadPreferences()]);
+      bindRemoveActions();
+      bindAlertRead();
     });
   }
 
@@ -139,8 +232,9 @@ if(cfg.enabled&&cfg.url&&cfg.key){
       return;
     }
 
-    await Promise.all([loadSaved(),loadWatch(),loadAlerts()]);
+    await Promise.all([loadSaved(),loadWatch(),loadAlerts(),loadPreferences()]);
     bindAlertRead();
+    bindRemoveActions();
   }
 
   const form=$("[data-auth-email-form]");
@@ -226,6 +320,9 @@ if(cfg.enabled&&cfg.url&&cfg.key){
       setStatus(status,result.error?"加入观察失败，请稍后重试。":"已加入观察清单。",result.error?"error":"ok");
     });
   });
+
+  bindPreferenceForm();
+  bindClearData();
 
   supabase.auth.onAuthStateChange((_event,session)=>{
     queueMicrotask(()=>renderAccount(session).catch(()=>{}));
