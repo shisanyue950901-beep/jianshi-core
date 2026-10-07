@@ -43,6 +43,7 @@ class TestP414PyPIStagingValidation(unittest.TestCase):
         self.assertIn("EXPANSION_CATEGORIES", self.edge)
         self.assertIn("candidateQuality", self.edge)
         self.assertIn("candidate_quality_score", self.edge)
+        self.assertIn('candidate_rule_version:"P415_V1"', self.edge)
         self.assertIn('priority:"HIGH"|"MEDIUM"|"LOW"', self.edge)
         self.assertIn("score>=4", self.edge)
 
