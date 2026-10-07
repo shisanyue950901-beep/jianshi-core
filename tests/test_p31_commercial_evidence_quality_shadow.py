@@ -22,9 +22,10 @@ class TestP31CommercialEvidenceQualityShadow(unittest.TestCase):
         sql=Path("db/migrations/0044_commercial_evidence_quality_shadow.sql").read_text(encoding="utf-8")
         self.assertIn("'quiet_light','Quiet Light'",sql)
         self.assertIn("'startupmkt','StartupMKT'",sql)
-        self.assertIn("auto_collect,false",sql.replace(" ",""))
-        self.assertIn("redisplay_allowed,false",sql.replace(" ",""))
-        self.assertNotIn("source_status='GREEN'", sql.split("insert into data_sources",1)[1].split("create table if not exists commercial_source_quality_rules",1)[0])
+        candidate_block=sql.split("insert into data_sources",1)[1].split("create table if not exists commercial_source_quality_rules",1)[0]
+        self.assertIn("'YELLOW'",candidate_block)
+        self.assertIn("'MANUAL_RESEARCH_OR_WRITTEN_LICENSE',false,false",candidate_block.replace("\n"," "))
+        self.assertNotIn("source_status='GREEN'",candidate_block)
 
     def test_no_score_or_public_ready_redefinition(self):
         sql=Path("db/migrations/0044_commercial_evidence_quality_shadow.sql").read_text(encoding="utf-8")
