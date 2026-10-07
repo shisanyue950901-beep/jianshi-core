@@ -73,10 +73,47 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             self.assertTrue(item["china_screening"]["copy_path"])
             self.assertTrue(item["unknowns"])
 
-    def test_vertical_saas_direct_sample_count_is_deduped(self):
+    def test_direct_sample_counts_match_frozen_strict_rules(self):
         by_slug={x["slug"]:x for x in self.data["opportunities"]}
-        self.assertEqual(by_slug["vertical-industry-saas"]["overseas_validation"]["direct_samples"],4)
-        self.assertIn("listing 去重计数",by_slug["vertical-industry-saas"]["overseas_validation"]["evidence_scope"])
+        expected={
+            "vertical-industry-saas":4,
+            "amazon-fba-niche-brand":69,
+            "digital-product-business":9,
+            "affiliate-content-site":11,
+            "amazon-kdp-publishing":8,
+            "agency-business":4,
+        }
+        for slug,count in expected.items():
+            self.assertEqual(by_slug[slug]["overseas_validation"]["direct_samples"],count,slug)
+        self.assertEqual(
+            by_slug["amazon-fba-niche-brand"]["overseas_validation"]["observed_niche_count"],
+            33,
+        )
+        self.assertIn(
+            "挂牌项目去重计数",
+            by_slug["vertical-industry-saas"]["overseas_validation"]["evidence_scope"],
+        )
+
+    def test_user_facing_evidence_copy_has_no_internal_engineering_terms(self):
+        forbidden=[
+            "Production",
+            "active listing",
+            "SaaS Business",
+            "Amazon FBA Business",
+            "Digital Product Business",
+            "Affiliate Site",
+            "Amazon Associates Site",
+            "Display Advertising Site",
+            "Amazon KDP Business",
+            "Agency Business",
+        ]
+        for item in self.data["opportunities"]:
+            ev=item["overseas_validation"]
+            scope=ev["evidence_scope"]
+            for token in forbidden:
+                self.assertNotIn(token,scope,item["slug"])
+            for niche in ev.get("observed_niches") or []:
+                self.assertRegex(niche,r"[\u4e00-\u9fff]",item["slug"])
 
     def test_prototypes_are_noindex_and_not_added_to_search_index(self):
         self.assertIn('robots="noindex,nofollow"',self.build)
@@ -106,6 +143,11 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             self.assertIn("06 · 风险与未知",html)
             self.assertNotIn("渠道矩阵",html)
             self.assertIn("noindex,nofollow",html)
+        fba=(ROOT/"web"/"dist"/"opportunity"/"amazon-fba-niche-brand"/"index.html").read_text(encoding="utf-8")
+        self.assertIn("亚马逊物流（FBA）细分品牌",fba)
+        self.assertIn(">69<",fba)
+        self.assertNotIn("Production",fba)
+        self.assertNotIn("active listing",fba)
         digital=(ROOT/"web"/"dist"/"opportunity"/"digital-product-business"/"index.html").read_text(encoding="utf-8")
         affiliate=(ROOT/"web"/"dist"/"opportunity"/"affiliate-content-site"/"index.html").read_text(encoding="utf-8")
         self.assertIn("数字产品业务",digital)
