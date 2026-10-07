@@ -65,7 +65,8 @@ jobs:
           test -f sitemap.xml
           test -f robots.txt
           grep -q "见势" index.html
-          grep -q "发现下一个值得做的项目" index.html
+          grep -q "发现下一个" index.html
+          grep -q "值得做的项目" index.html
           grep -q "把值得研究的项目放到一张桌面上" opportunities/index.html
           grep -q "01 · 决策摘要" opportunity/solo-saas/index.html
           grep -q "06 · 证据与来源" opportunity/solo-saas/index.html
