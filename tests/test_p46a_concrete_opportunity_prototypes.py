@@ -14,7 +14,15 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data=json.loads(CONTENT.read_text(encoding="utf-8"))
+        cls.raw=CONTENT.read_text(encoding="utf-8")
         cls.build=BUILD.read_text(encoding="utf-8")
+
+    def test_product_core_is_simple_and_explicit(self):
+        self.assertEqual(
+            self.data["product_core"],
+            "海外已验证的一人公司 / 小团队项目 → 筛选 → 中文解释 → 推荐给中国用户",
+        )
+        self.assertEqual(self.data["audience"],"寻找创业项目与方向的中国中文用户")
 
     def test_exactly_two_first_prototypes(self):
         items=self.data["opportunities"]
@@ -25,16 +33,21 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         )
         self.assertTrue(all(x["status"]=="值得研究" for x in items))
 
-    def test_chinese_and_global_channels_are_both_considered(self):
-        raw=CONTENT.read_text(encoding="utf-8")
-        for token in ["抖音","小红书","B站","公众号","YouTube","TikTok","SEO"]:
-            self.assertIn(token,raw)
-
-    def test_evidence_and_editorial_judgement_stay_separate(self):
+    def test_default_channel_matrix_is_removed(self):
         for item in self.data["opportunities"]:
-            self.assertEqual(item["evidence"]["commercial_source_diversity"],1)
-            self.assertTrue(item["evidence"]["caveat"])
+            self.assertNotIn("channel_matrix",item)
+            self.assertIn("overseas_validation",item)
+            self.assertIn("china_screening",item)
+        for token in ["抖音","小红书","B站","YouTube","TikTok"]:
+            self.assertNotIn(token,self.raw)
+
+    def test_evidence_and_recommendation_stay_separate(self):
+        for item in self.data["opportunities"]:
+            ev=item["overseas_validation"]
+            self.assertEqual(ev["commercial_source_diversity"],1)
+            self.assertTrue(ev["caveat"])
             self.assertTrue(item["editorial_judgement"])
+            self.assertTrue(item["china_screening"]["copy_path"])
             self.assertTrue(item["unknowns"])
 
     def test_prototypes_are_noindex_and_not_added_to_search_index(self):
@@ -42,24 +55,22 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         self.assertIn("prototype_count",self.build)
         self.assertNotIn('search.append({"slug":prototype_slug',self.build)
 
-    def test_fixture_build_renders_both_prototypes(self):
+    def test_fixture_build_renders_simplified_six_section_template(self):
         env=dict(os.environ)
         env.pop("JIANSHI_API_URL",None)
         subprocess.run([sys.executable,str(BUILD)],cwd=ROOT,env=env,check=True,
                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         for slug in ["vertical-industry-saas","amazon-fba-niche-brand"]:
-            page=(ROOT/"web"/"dist"/"opportunity"/slug/"index.html")
+            page=ROOT/"web"/"dist"/"opportunity"/slug/"index.html"
             self.assertTrue(page.exists(),slug)
             html=page.read_text(encoding="utf-8")
-            self.assertIn("04 · 中国创业者视角",html)
-            self.assertIn("05 · 渠道矩阵",html)
+            self.assertIn("海外已验证项目 · 中文筛选",html)
+            self.assertIn("03 · 海外真实验证",html)
+            self.assertIn("04 · 对中国用户有没有参考价值",html)
+            self.assertIn("05 · 第一轮怎么验证",html)
+            self.assertIn("06 · 风险与未知",html)
+            self.assertNotIn("渠道矩阵",html)
             self.assertIn("noindex,nofollow",html)
-        saas=(ROOT/"web"/"dist"/"opportunity"/"vertical-industry-saas"/"index.html").read_text(encoding="utf-8")
-        fba=(ROOT/"web"/"dist"/"opportunity"/"amazon-fba-niche-brand"/"index.html").read_text(encoding="utf-8")
-        self.assertIn("抖音",saas)
-        self.assertIn("YouTube",saas)
-        self.assertIn("TikTok",fba)
-        self.assertIn("Amazon 站内",fba)
 
 
 if __name__=="__main__":
