@@ -67,9 +67,14 @@ jobs:
           test -f sitemap.xml
           test -f robots.txt
           grep -q "见势" index.html
-          grep -q "发现下一个" index.html
-          grep -q "值得做的项目" index.html
-          grep -q "把值得研究的项目放到一张桌面上" opportunities/index.html
+          grep -q "海外已验证项目 · 中文筛选" index.html
+          grep -q "首批项目研究" opportunities/index.html
+          grep -q "趋势方向 · 辅助观察" opportunities/index.html
+          test -f opportunity/vertical-industry-saas/index.html
+          test -f opportunity/amazon-fba-niche-brand/index.html
+          grep -q "继续比较" opportunity/vertical-industry-saas/index.html
+          grep -q "noindex,nofollow" opportunity/vertical-industry-saas/index.html
+          ! grep -q "vertical-industry-saas" sitemap.xml
           grep -q "01 · 决策摘要" opportunity/solo-saas/index.html
           grep -q "06 · 证据与来源" opportunity/solo-saas/index.html
           grep -q "账户功能正在完成最后的邮件登录配置" account/index.html
