@@ -54,7 +54,7 @@
     {
       "rank": 5,
       "slug": "agency-business",
-      "title": "垂直服务型业务",
+      "title": "专业服务业务（Agency）",
       "direct_samples": 4,
       "evidence_rule": "active listing 且主标题明确为 Agency Business",
       "solo_small_team_fit": "HIGH",
