@@ -50,6 +50,11 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             self.assertTrue(item["china_screening"]["copy_path"])
             self.assertTrue(item["unknowns"])
 
+    def test_vertical_saas_direct_sample_count_is_deduped(self):
+        by_slug={x["slug"]:x for x in self.data["opportunities"]}
+        self.assertEqual(by_slug["vertical-industry-saas"]["overseas_validation"]["direct_samples"],4)
+        self.assertIn("listing 去重计数",by_slug["vertical-industry-saas"]["overseas_validation"]["evidence_scope"])
+
     def test_prototypes_are_noindex_and_not_added_to_search_index(self):
         self.assertIn('robots="noindex,nofollow"',self.build)
         self.assertIn("prototype_count",self.build)
