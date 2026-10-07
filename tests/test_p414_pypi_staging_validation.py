@@ -11,6 +11,7 @@ class TestP414PyPIStagingValidation(unittest.TestCase):
         cls.sql=(ROOT/"db/migrations/0053_pypi_staging_source.sql").read_text(encoding="utf-8")
         cls.edge=(ROOT/"supabase/functions/collect-pypi-signals/index.ts").read_text(encoding="utf-8")
         cls.doc=(ROOT/"docs/P414_PYPI_STAGING_VALIDATION.md").read_text(encoding="utf-8")
+        cls.candidate_view=(ROOT/"db/migrations/0054_pypi_candidate_shadow_v01.sql").read_text(encoding="utf-8")
 
     def test_official_rss_and_json_only(self):
         self.assertIn("OFFICIAL_RSS_PLUS_JSON_API",self.sql)
@@ -53,6 +54,13 @@ class TestP414PyPIStagingValidation(unittest.TestCase):
         self.assertIn("TECHNICAL_ECOSYSTEM_CONFIRMATION", self.edge)
         self.assertIn("TECHNICAL_DISCOVERY", self.edge)
         self.assertIn("candidate_github_linked_not_in_current_corpus", self.edge)
+
+    def test_current_candidate_view_is_versioned_and_private(self):
+        self.assertIn("pypi_candidate_shadow_v01", self.candidate_view)
+        self.assertIn("P415_V1", self.candidate_view)
+        self.assertIn("candidate_match", self.candidate_view)
+        self.assertIn("from public,anon,authenticated", self.candidate_view)
+        self.assertIn("to service_role", self.candidate_view)
 
     def test_no_cron_in_staging_experiment(self):
         self.assertNotIn("cron.schedule",self.sql.lower())
