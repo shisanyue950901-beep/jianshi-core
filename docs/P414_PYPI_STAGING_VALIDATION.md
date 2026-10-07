@@ -1,7 +1,7 @@
 # P4.1.4 PyPI Staging 验证
 
 日期：2026-10-07
-状态：STAGING_CANDIDATE
+状态：PASS_STAGING_CONDITIONAL
 
 ## 范围
 
@@ -69,3 +69,71 @@ PyPI 官方文档建议周期检查新包/更新时优先使用 RSS；JSON API �
 
 技术 Gate PASS 不代表 Production PASS。
 如果信息密度或类别质量不足，允许像 Stack Exchange 一样 HOLD。
+
+
+## Staging 实测结果
+
+2026-10-07 首次真实运行：
+
+- RSS items = 80
+- unique discovered = 76
+- accepted package metadata = 60
+- metadata success rate = 100%
+- parser errors = 0
+- new snapshots = 60
+- candidate count = 26
+- candidate match rate = 43.33%
+- package_content_stored = false
+- deprecated_json_downloads_used = false
+- BigQuery used = false
+- scoring_changed = false
+
+候选类别：
+
+- DEVTOOLS = 18
+- AI_AGENT = 8
+- DATA_ANALYTICS = 4
+- SAAS_INFRA = 3
+- CREATOR_MEDIA = 2
+- AUTOMATION = 1
+- ECOMMERCE = 0
+- MARKETING_GROWTH = 0
+
+## 增量价值审计
+
+26 个 candidate 中：
+
+- 带 GitHub URL = 19
+- 带非 GitHub URL = 8
+- 只有非 GitHub URL = 1
+- 无 project URL = 0
+
+说明 PyPI 当前更适合：
+
+1. 补 Python 生态技术供给；
+2. 发现新发布/新更新的 Python 项目；
+3. 给 GitHub 项目增加“已进入包生态”的独立信号；
+
+而不是单独承担“发现商业项目”的职责。
+
+## 最终 Staging 判断
+
+```
+P414_TECHNICAL_GATE = PASS
+P414_SIGNAL_DENSITY = PASS
+P414_METADATA_QUALITY = PASS
+P414_INCREMENTAL_DISCOVERY = MEDIUM
+P414_GITHUB_OVERLAP = HIGH
+P414_COMMERCIAL_PROOF = NONE
+P414_PRODUCTION_PROMOTION = HOLD_FOR_REFINEMENT
+P414_PRODUCTION_CHANGE = FALSE
+```
+
+进入 Production 前至少再解决：
+
+- 减少 DEVTOOLS / AI 偏置；
+- 增加 candidate quality filter，降低关键词误命中；
+- 明确 PyPI 与 GitHub 的去重/互证语义；
+- 评估是否值得引入 BigQuery download trend 作为 adoption signal。
+
+因此 PR 保持未合并，不在本阶段推 Production。
