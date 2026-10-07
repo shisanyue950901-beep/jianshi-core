@@ -51,5 +51,13 @@ class TestP48BUserTestReporting(unittest.TestCase):
         self.assertIn("count(distinct e.opportunity_slug)",self.sql)
 
 
+    def test_acquisition_uses_session_entry_not_detail_event(self):
+        self.assertIn("target_session_acquisition",self.sql)
+        self.assertIn("from epoch_events e",self.sql)
+        self.assertIn("join target_detail_sessions d using(session_id)",self.sql)
+        self.assertIn("FIRST_EVENT_IN_TARGET_DETAIL_SESSION",self.sql)
+        self.assertNotIn("target_first_detail",self.sql)
+
+
 if __name__=="__main__":
     unittest.main()
