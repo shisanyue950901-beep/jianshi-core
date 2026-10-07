@@ -30,7 +30,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (view === "home") {
-      const [statsQ, catalogQ, githubQ] = await Promise.all([
+      const [statsQ, catalogQ, githubQ, featuresQ] = await Promise.all([
         db.from("public_system_stats_v01").select("*").single(),
         db.from("public_opportunity_catalog_v01")
           .select("*")
@@ -40,11 +40,13 @@ Deno.serve(async (req: Request) => {
           .select("full_name,summary_zh,html_url,language,stars,forks,quality_score,heat_score,rank_score,matched_queries")
           .order("rank_score", { ascending: false })
           .limit(8),
+        db.rpc("get_public_feature_flags_v01"),
       ]);
 
       if (statsQ.error) throw statsQ.error;
       if (catalogQ.error) throw catalogQ.error;
       if (githubQ.error) throw githubQ.error;
+      if (featuresQ.error) throw featuresQ.error;
 
       const catalog = (catalogQ.data ?? []).map(({ opportunity_id, ...rest }: any) => rest);
       return json({
@@ -54,6 +56,7 @@ Deno.serve(async (req: Request) => {
           engine_version: "OPP_V0.2",
         },
         generated_at: new Date().toISOString(),
+        features: featuresQ.data ?? { account_auth: false },
         stats: statsQ.data,
         opportunities: catalog.filter((x: any) => x.public_ready),
         watchlist: catalog.filter((x: any) => !x.public_ready).slice(0, 8),

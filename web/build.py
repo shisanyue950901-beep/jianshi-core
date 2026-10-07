@@ -15,7 +15,8 @@ NEWSLETTER_API=os.getenv("JIANSHI_NEWSLETTER_URL","").strip().rstrip("/")
 if not NEWSLETTER_API and API.endswith("/public-feed"):
     NEWSLETTER_API=API[:-len("/public-feed")] + "/newsletter-subscribe"
 
-AUTH_ENABLED=os.getenv("JIANSHI_AUTH_ENABLED","0").strip().lower() in ("1","true","yes","on")
+AUTH_REQUESTED=os.getenv("JIANSHI_AUTH_ENABLED","0").strip().lower() in ("1","true","yes","on")
+AUTH_ENABLED=False
 SUPABASE_URL=os.getenv("JIANSHI_SUPABASE_URL","https://dalfvgehosxfyxkptxwx.supabase.co").strip().rstrip("/")
 SUPABASE_PUBLISHABLE_KEY=os.getenv(
     "JIANSHI_SUPABASE_PUBLISHABLE_KEY",
@@ -504,12 +505,17 @@ def build_detail(data):
     )
 
 def main():
+    global AUTH_ENABLED
     if DIST.exists(): shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
     shutil.copy2(STATIC/"styles.css",DIST/"styles.css")
     shutil.copy2(STATIC/"search.js",DIST/"search.js")
     shutil.copy2(STATIC/"account.js",DIST/"account.js")
     home=api_get("home")
+    remote_auth_enabled=bool((home.get("features") or {}).get("account_auth"))
+    # Local fixture builds may exercise the enabled UI with the env flag alone.
+    # Real API builds require BOTH env intent and the production DB gate.
+    AUTH_ENABLED=AUTH_REQUESTED and (remote_auth_enabled if API else True)
     daily=api_get("daily")
     catalog=api_get("catalog").get("items",[])
     (DIST/"index.html").write_text(build_home(home,daily),encoding="utf-8")
