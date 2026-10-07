@@ -33,16 +33,19 @@ class TestR7DailyProduct(unittest.TestCase):
         ]:
             self.assertTrue(Path(path).exists(),path)
         today=Path("web/dist/today/index.html").read_text(encoding="utf-8")
-        self.assertIn("今日机会",today)
-        self.assertIn("历史正在积累",today)
-        home=Path("web/dist/index.html").read_text(encoding="utf-8")
-        self.assertIn('/build/',home)
-        self.assertIn('/content/',home)
-        self.assertIn('/rising/',home)
+        self.assertIn("综合指标快照",today)
+        self.assertIn("历史序列仍在积累",today)
+        rising=Path("web/dist/rising/index.html").read_text(encoding="utf-8")
+        build=Path("web/dist/build/index.html").read_text(encoding="utf-8")
+        content=Path("web/dist/content/index.html").read_text(encoding="utf-8")
+        self.assertIn("近期信号变化",rising)
+        self.assertIn("执行条件信号",build)
+        self.assertIn("内容传播信号",content)
+        sitemap=Path("web/dist/sitemap.xml").read_text(encoding="utf-8")
+        for route in ["/today/","/rising/","/build/","/content/"]:
+            self.assertIn(route,sitemap)
         rank_sql=Path("db/migrations/0020_r7_rank_policy.sql").read_text(encoding="utf-8")
         self.assertIn("c.public_ready desc,c.overall_score desc",rank_sql)
-        rising=Path("web/dist/rising/index.html").read_text(encoding="utf-8")
-        self.assertIn("当前先按热度展示候选",rising)
 
 if __name__=="__main__":
     unittest.main()
