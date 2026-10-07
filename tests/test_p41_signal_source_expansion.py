@@ -8,7 +8,8 @@ class TestP41SignalSourceExpansion(unittest.TestCase):
     def setUpClass(cls):
         cls.sql=Path("db/migrations/0047_signal_source_expansion_foundation.sql").read_text(encoding="utf-8")
         cls.cfg=json.loads(Path("config/source_expansion_v1.json").read_text(encoding="utf-8"))
-        cls.doc=Path("docs/P41_SIGNAL_SOURCE_EXPANSION_AUDIT.md").read_text(encoding="utf-8")\n        cls.cron=Path("db/migrations/0048_npm_signal_cron.sql").read_text(encoding="utf-8")
+        cls.doc=Path("docs/P41_SIGNAL_SOURCE_EXPANSION_AUDIT.md").read_text(encoding="utf-8")
+        cls.cron=Path("db/migrations/0048_npm_signal_cron.sql").read_text(encoding="utf-8")
 
     def test_source_policy_is_fail_closed(self):
         c=self.cfg["first_wave"]
