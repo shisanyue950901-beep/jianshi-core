@@ -37,6 +37,15 @@ class TestP42FrontendProductization(unittest.TestCase):
         self.assertIn("data-catalog-filter", js)
         self.assertIn("card.dataset.state", js)
 
+    def test_static_snapshot_workflow_tracks_p42_artifacts(self):
+        workflow = (ROOT / ".github" / "workflows" / "publish-static.yml").read_text(encoding="utf-8")
+        self.assertIn("opportunities/**", workflow)
+        self.assertIn("test -f opportunities/index.html", workflow)
+        self.assertIn('grep -q "发现下一个" index.html', workflow)
+        self.assertIn('grep -q "值得做的项目" index.html', workflow)
+        self.assertIn('grep -q "01 · 决策摘要" opportunity/solo-saas/index.html', workflow)
+        self.assertIn("opportunity opportunities today", workflow)
+
     def test_fixture_build_emits_opportunities_page(self):
         env = os.environ.copy()
         env.pop("JIANSHI_API_URL", None)
