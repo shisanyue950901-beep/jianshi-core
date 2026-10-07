@@ -23,8 +23,8 @@ class TestR5Contract(unittest.TestCase):
         self.assertTrue(Path("index.html").exists())
         self.assertTrue(Path("opportunity/solo-saas/index.html").exists())
         index=Path("web/dist/index.html").read_text(encoding="utf-8")
-        self.assertIn("已验证机会",index)
-        self.assertIn("持续观察",index)
+        self.assertIn("首批项目研究",index)
+        self.assertIn("趋势观察 · 辅助信号",index)
 
 if __name__=="__main__":
     unittest.main()
