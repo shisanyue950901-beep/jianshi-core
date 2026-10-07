@@ -237,6 +237,24 @@ if(cfg.enabled&&cfg.url&&cfg.key){
     bindRemoveActions();
   }
 
+  const AUTH_COOLDOWN_MS=60_000;
+  const AUTH_COOLDOWN_KEY="jianshi_auth_otp_cooldown_until";
+
+  function authCooldownRemaining(){
+    try{
+      const until=Number(localStorage.getItem(AUTH_COOLDOWN_KEY)||0);
+      return Math.max(0,until-Date.now());
+    }catch(_err){
+      return 0;
+    }
+  }
+
+  function setAuthCooldown(){
+    try{
+      localStorage.setItem(AUTH_COOLDOWN_KEY,String(Date.now()+AUTH_COOLDOWN_MS));
+    }catch(_err){}
+  }
+
   const form=$("[data-auth-email-form]");
   if(form){
     form.addEventListener("submit",async(event)=>{
@@ -246,6 +264,12 @@ if(cfg.enabled&&cfg.url&&cfg.key){
       const input=$('input[name="email"]',form);
       const email=input?input.value.trim():"";
       if(!email) return;
+
+      const remaining=authCooldownRemaining();
+      if(remaining>0){
+        setStatus(status,"登录链接刚刚请求过，请约 "+Math.ceil(remaining/1000)+" 秒后再试。","error");
+        return;
+      }
 
       button.disabled=true;
       setStatus(status,"正在发送登录链接…","loading");
@@ -260,7 +284,8 @@ if(cfg.enabled&&cfg.url&&cfg.key){
           options:{emailRedirectTo:redirect.toString(),shouldCreateUser:true}
         });
         if(result.error) throw result.error;
-        setStatus(status,"登录链接已请求发送，请检查邮箱。","sent");
+        setAuthCooldown();
+        setStatus(status,"登录链接已请求发送，请检查邮箱。60 秒内请勿重复请求。","sent");
       }catch(err){
         setStatus(status,(err&&err.message)||"登录邮件发送失败，请稍后重试。","error");
       }finally{
