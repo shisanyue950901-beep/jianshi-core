@@ -46,3 +46,25 @@ footer{border-top:1px solid var(--line);padding:35px 0 50px;color:var(--muted);f
 @media(max-width:760px){.catalog-toolbar{align-items:stretch;flex-direction:column}.catalog-filters button{flex:1}.detail-status{display:block;margin:8px 0 0}}
 
 .privacy-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 8px}.privacy-actions button{border:1px solid var(--ink);background:var(--ink);color:white;padding:10px 13px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.privacy-actions button.secondary{background:transparent;color:var(--ink)}.analytics-privacy-status{min-height:20px;color:var(--muted);font-size:12px}
+
+
+/* P4.6A concrete opportunity research prototypes */
+.concrete-hero .decision-note{margin-top:1rem}
+.evidence-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1rem 0 1.25rem}
+.evidence-facts>div{padding:1rem;border:1px solid var(--line,#e7e7e7);border-radius:14px;background:var(--panel,#fff)}
+.evidence-facts b{display:block;font-size:1.45rem;margin-bottom:.2rem}
+.evidence-facts span{font-size:.82rem;color:var(--muted,#6f737a)}
+.research-list{margin:.8rem 0 0;padding-left:1.25rem}
+.research-list li{margin:.48rem 0;line-height:1.7}
+.channel-intro{margin-bottom:1rem}
+.channel-table-wrap{overflow-x:auto}
+.channel-table{width:100%;border-collapse:collapse;min-width:760px}
+.channel-table th,.channel-table td{padding:.85rem .9rem;border-top:1px solid var(--line,#e7e7e7);vertical-align:top;text-align:left;line-height:1.6}
+.channel-table thead th{font-size:.8rem;color:var(--muted,#6f737a);border-top:0}
+.channel-table tbody th{width:16%;font-weight:700}
+.channel-table td:nth-child(2),.channel-table td:nth-child(3){width:20%}
+.concrete-aside{position:sticky;top:88px}
+@media (max-width:800px){
+  .evidence-facts{grid-template-columns:1fr}
+  .concrete-aside{position:static}
+}
