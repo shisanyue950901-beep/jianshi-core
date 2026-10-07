@@ -68,3 +68,26 @@ footer{border-top:1px solid var(--line);padding:35px 0 50px;color:var(--muted);f
   .evidence-facts{grid-template-columns:1fr}
   .concrete-aside{position:static}
 }
+
+
+/* P4.8A controlled user path */
+.research-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.research-card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);padding:22px;min-height:286px;transition:.18s}
+.research-card:hover{border-color:#a9a297;transform:translateY(-1px)}
+.research-card.compact{min-height:238px}
+.research-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.research-card-top>span:last-child{font-size:11px;color:var(--muted)}
+.research-card h3{font-size:22px;line-height:1.3;margin:16px 0 8px}
+.research-card>p{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 18px}
+.research-card-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid var(--line);padding-top:14px;margin-top:auto}
+.research-card-meta span{font-size:11px;color:var(--muted)}
+.research-card-meta b{display:block;font-size:18px;color:var(--ink);margin-bottom:2px}
+.research-card-fit{font-size:12px;color:var(--muted);margin-top:13px}
+.research-card-link{font-size:13px;font-weight:800;margin-top:14px}
+.section-footnote{max-width:900px;color:var(--muted);font-size:13px;line-height:1.7;margin:16px 0 0}
+.project-library-note{max-width:none;color:var(--muted);font-size:13px;line-height:1.7;margin-top:18px}
+.project-library-note strong{color:var(--ink)}
+.related-research{margin-top:58px}
+.related-grid{margin-bottom:0}
+.aside-link{display:inline-block;margin-top:10px;padding-left:0}
+@media(max-width:900px){.research-grid{grid-template-columns:1fr}.research-card,.research-card.compact{min-height:0}}
