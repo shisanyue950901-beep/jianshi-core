@@ -1076,6 +1076,135 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
         robots="noindex,nofollow",
     )
 
+
+def verdict(item):
+    return (
+        "当前满足系统设定的多源证据门槛。"
+        if item.get("public_ready")
+        else "当前尚未满足系统设定的多源证据门槛。"
+    )
+
+def decision_label(item):
+    return (
+        ("多源门槛满足","good")
+        if item.get("public_ready")
+        else ("证据观察中","watch")
+    )
+
+def _signal_row(item, metric_key, metric_label, rank=None):
+    rank_html=f'<span class="daily-rank">#{rank}</span>' if rank else ""
+    gate="多源门槛满足" if item.get("public_ready") else "证据观察中"
+    gate_cls="good" if item.get("public_ready") else "watch"
+    return f"""<a class="daily-row" href="/opportunity/{esc(item.get("slug"))}/">
+<div class="daily-title">{rank_html}<div><div class="daily-name"><strong>{esc(item.get("title"))}</strong><span class="badge {gate_cls}">{gate}</span></div><small>{fmt_int(item.get("source_count"))} 类来源 · {fmt_int(item.get("evidence_count"))} 条证据</small></div></div>
+<div class="daily-change">{esc(change_label(item))}</div>
+<div class="daily-metric"><b>{fmt_score(item.get(metric_key))}</b><span>{esc(metric_label)}</span></div>
+<div class="daily-evidence"><b>{fmt_int(item.get("evidence_count"))}</b><span>证据记录</span></div>
+</a>"""
+
+def build_daily_page(kind, daily):
+    cfg={
+      "today":("综合信号","综合指标快照","综合指标","overall_score","按当前 OPP_V0.2 指标展示研究对象，不构成项目推荐。"),
+      "rising":("热度变化","近期信号变化","趋势热度","heat_score","用于观察信号强弱变化；热度不等于商业价值。"),
+      "build":("可执行性指标","执行条件信号","可执行性","build_score","系统内部可执行性指标，仅用于研究比较，不代表实际落地难度。"),
+      "content":("传播指标","内容传播信号","内容价值","content_score","系统内部内容传播指标，不代表商业成立或用户应采取行动。"),
+    }
+    title,heading,metric_label,metric_key,lead=cfg[kind]
+    rows=daily.get(kind) or daily.get("today") or []
+    ready=daily.get("history_ready") or {}
+    history_note = (
+      "已形成 7 日历史序列。"
+      if ready.get("seven_day") else
+      "历史序列仍在积累。"
+    )
+    body=f"""<main class="wrap daily-page">
+<section class="list-hero"><span class="section-kicker">SYSTEM SIGNALS</span><h1>{esc(heading)}</h1><p>{esc(lead)}</p>
+<div class="history-note">{esc(history_note)}</div></section>
+<section class="daily-list">{"".join(_signal_row(x,metric_key,metric_label,i+1) for i,x in enumerate(rows))}</section>
+<section class="panel daily-explain"><h2>指标口径</h2>
+<p>本页展示的是系统研究指标，不是商业事实本身，也不是“值得做 / 不值得做”的行动建议。商业证据请以公开挂牌样本和来源字段为准。</p></section>
+</main>"""
+    return shell(f"{title}｜见势",body,lead,f"/{kind}/")
+
+def _legacy_market_table(rows):
+    if not rows:
+        return '<div class="table-empty">当前没有可展示的商业样本。</div>'
+    body=''.join(f"""<tr>
+<td><span class="listing-id">#{fmt_int(x.get("listing_number"))}</span><strong>{esc(x.get("public_title") or "—")}</strong></td>
+<td class="num">{_metric(x.get("average_monthly_gross_revenue"),"money")}</td>
+<td class="num">{_metric(x.get("average_monthly_net_profit"),"money")}</td>
+<td class="num">{_metric(x.get("profit_margin"),"pct")}</td>
+<td class="num">{_metric(x.get("hours_worked_per_week"),"hours")}</td>
+<td class="num">{_metric(x.get("listing_price"),"money")}</td>
+</tr>""" for x in rows)
+    return f"""<div class="evidence-table-wrap-v2"><table class="evidence-table-v2">
+<thead><tr><th>挂牌记录</th><th>月营收</th><th>月净利润</th><th>利润率</th><th>周工时</th><th>挂牌报价</th></tr></thead>
+<tbody>{body}</tbody></table></div>"""
+
+def _legacy_github_table(rows):
+    if not rows:
+        return '<div class="table-empty">当前没有可展示的技术样本。</div>'
+    body=''.join(f"""<tr>
+<td><strong>{esc(x.get("full_name") or "—")}</strong></td>
+<td>{esc(x.get("language") or "—")}</td>
+<td class="num">{fmt_int(x.get("stars"))}</td>
+<td class="num">{fmt_int(x.get("forks"))}</td>
+<td class="num">{fmt_score(x.get("rank_score"))}</td>
+</tr>""" for x in rows)
+    return f"""<div class="evidence-table-wrap-v2"><table class="evidence-table-v2 tech-evidence-table-v2">
+<thead><tr><th>Repository</th><th>语言</th><th>Stars</th><th>Forks</th><th>系统排序分</th></tr></thead>
+<tbody>{body}</tbody></table></div>"""
+
+def build_detail(data):
+    x=data["item"]
+    gate="多源证据门槛：满足" if x.get("public_ready") else "多源证据门槛：未满足"
+    market=(data.get("evidence") or {}).get("marketplace") or []
+    github=(data.get("evidence") or {}).get("github") or []
+    slug=str(x.get("slug") or "").strip()
+    body=f"""<main class="wrap research-detail-v2">
+<section class="research-hero-v2">
+<a class="breadcrumb-v2" href="/today/">趋势信号 / 返回</a>
+<div class="eyebrow">SYSTEM SIGNAL PROFILE</div>
+<h1>{esc(x.get("title"))}</h1>
+<div class="source-line-v2"><span>{esc(gate)}</span><span>指标版本：OPP_V0.2</span><span>{fmt_int(x.get("source_count"))} 类来源 · {fmt_int(x.get("evidence_count"))} 条证据</span></div>
+</section>
+
+<section class="research-kpis-v2 signal-kpis">
+<div><span>趋势热度</span><b>{fmt_score(x.get("heat_score"))}</b></div>
+<div><span>内容指标</span><b>{fmt_score(x.get("content_score"))}</b></div>
+<div><span>可执行性指标</span><b>{fmt_score(x.get("build_score"))}</b></div>
+<div><span>商业质量指标</span><b>{fmt_score(x.get("business_score"))}</b></div>
+<div><span>综合指标</span><b>{fmt_score(x.get("overall_score"))}</b></div>
+<div><span>证据记录</span><b>{fmt_int(x.get("evidence_count"))}</b></div>
+</section>
+
+<section class="detail-section-v2">
+<div class="section-title-v2"><div><span>COMMERCIAL EVIDENCE</span><h2>商业样本</h2></div><p>仅展示来源公开字段；挂牌报价不等于成交价。</p></div>
+{_legacy_market_table(market)}
+</section>
+
+<section class="detail-section-v2">
+<div class="section-title-v2"><div><span>TECHNICAL EVIDENCE</span><h2>技术样本</h2></div><p>技术热度只代表供给与关注信号，不直接证明商业成立。</p></div>
+{_legacy_github_table(github)}
+</section>
+
+<section class="evidence-boundary-v2">
+<div><span>INTERPRETATION LIMIT</span><h2>解释边界</h2></div>
+<ul>
+<li>OPP_V0.2 为见势内部研究指标，不是外部来源事实。</li>
+<li>系统分数不能替代商业尽调，也不能推导收益。</li>
+<li>公开商业字段以来源披露为准；挂牌报价不等于成交价。</li>
+<li>技术样本与商业样本分别呈现，不用技术热度替代商业证据。</li>
+</ul>
+</section>
+</main>"""
+    return shell(
+        f'{esc(x.get("title"))}｜见势趋势信号',
+        body,
+        "见势趋势信号档案：展示系统指标及其技术、商业证据记录。",
+        canonical_path=f"/opportunity/{slug}/" if slug else "/",
+    )
+
 def main():
     global AUTH_ENABLED
     if DIST.exists(): shutil.rmtree(DIST)
