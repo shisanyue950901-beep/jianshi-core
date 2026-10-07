@@ -1,0 +1,150 @@
+{
+  "version": "P4.7A-V1",
+  "as_of": "2026-10-07",
+  "product_core": "海外已验证的一人公司 / 小团队项目 → 筛选 → 中文解释 → 推荐给中国用户",
+  "evidence_source_diversity": 1,
+  "evidence_source_note": "当前商业候选池的直接商业样本均来自同一合法商业来源。样本数不等于来源数。",
+  "counting_rule": "优先按 public_title 的主业务类型识别并按 listing 去重，避免一个 listing 因多个 monetization 被重复当成多个项目。",
+  "one_person_rule": "来源未提供可靠团队规模字段，因此“适合一人/小团队”仅为见势编辑筛选，不作为来源事实。",
+  "candidates": [
+    {
+      "rank": 1,
+      "slug": "vertical-industry-saas",
+      "title": "垂直行业 SaaS",
+      "direct_samples": 4,
+      "evidence_rule": "active listing 且主标题明确为 SaaS Business",
+      "solo_small_team_fit": "HIGH",
+      "recommendation": "优先研究",
+      "why_for_chinese_user": "模式清楚，可从很窄的行业问题开始，适合先验证需求再产品化。",
+      "next_action": "DETAIL_PAGE"
+    },
+    {
+      "rank": 2,
+      "slug": "digital-product-business",
+      "title": "数字产品业务",
+      "direct_samples": 9,
+      "evidence_rule": "active listing 且主标题明确为 Digital Product Business",
+      "solo_small_team_fit": "HIGH",
+      "recommendation": "优先研究",
+      "why_for_chinese_user": "交付数字化、库存压力低，适合个人从专业知识、模板、工具或内容资产切入。",
+      "next_action": "DETAIL_PAGE"
+    },
+    {
+      "rank": 3,
+      "slug": "affiliate-content-site",
+      "title": "联盟营销 / 内容站",
+      "direct_samples": 11,
+      "evidence_rule": "active listing 且主标题明确为 Affiliate Site / Amazon Associates Site / Display Advertising Site",
+      "solo_small_team_fit": "HIGH",
+      "recommendation": "优先研究",
+      "why_for_chinese_user": "可通过细分内容、搜索流量和联盟佣金形成资产，但需要长期内容和流量能力。",
+      "next_action": "DETAIL_PAGE"
+    },
+    {
+      "rank": 4,
+      "slug": "amazon-kdp-publishing",
+      "title": "Amazon KDP 数字出版",
+      "direct_samples": 8,
+      "evidence_rule": "active listing 且主标题明确为 Amazon KDP Business",
+      "solo_small_team_fit": "HIGH",
+      "recommendation": "优先研究",
+      "why_for_chinese_user": "项目结构相对清晰，数字出版天然适合个人试错，但题材、版权和平台规则必须单独研究。",
+      "next_action": "DETAIL_PAGE"
+    },
+    {
+      "rank": 5,
+      "slug": "agency-business",
+      "title": "垂直服务 / Agency 业务",
+      "direct_samples": 4,
+      "evidence_rule": "active listing 且主标题明确为 Agency Business",
+      "solo_small_team_fit": "HIGH",
+      "recommendation": "优先研究",
+      "why_for_chinese_user": "最容易从个人技能和服务开始验证，先有人付费，再决定是否标准化或产品化。",
+      "next_action": "DETAIL_PAGE"
+    },
+    {
+      "rank": 6,
+      "slug": "application-business",
+      "title": "垂直应用 / App 订阅业务",
+      "direct_samples": 3,
+      "evidence_rule": "active listing 且主标题明确为 Application Business",
+      "solo_small_team_fit": "MEDIUM_HIGH",
+      "recommendation": "值得研究",
+      "why_for_chinese_user": "能从单一场景切入，但开发、分发、留存和平台依赖需要更强产品能力。",
+      "next_action": "SECOND_BATCH"
+    },
+    {
+      "rank": 7,
+      "slug": "youtube-channel-business",
+      "title": "YouTube 垂直频道业务",
+      "direct_samples": 16,
+      "evidence_rule": "active listing 且主标题明确为 YouTube Channel",
+      "solo_small_team_fit": "MEDIUM_HIGH",
+      "recommendation": "值得研究",
+      "why_for_chinese_user": "这是明确存在的海外内容资产模式；对中文用户的价值在于研究其商业结构，而不是默认要求转型做海外自媒体。",
+      "next_action": "SECOND_BATCH"
+    },
+    {
+      "rank": 8,
+      "slug": "amazon-merch-business",
+      "title": "Amazon Merch 按需印刷业务",
+      "direct_samples": 4,
+      "evidence_rule": "active listing 且主标题明确为 Amazon Merch Business",
+      "solo_small_team_fit": "MEDIUM_HIGH",
+      "recommendation": "值得研究",
+      "why_for_chinese_user": "数字设计与平台履约降低部分供应链复杂度，但高度依赖平台、设计能力和选题。",
+      "next_action": "SECOND_BATCH"
+    },
+    {
+      "rank": 9,
+      "slug": "non-amazon-ecommerce-brand",
+      "title": "非 Amazon 电商品牌",
+      "direct_samples": 22,
+      "evidence_rule": "active listing 且主标题明确为 eCommerce Business，并排除 Amazon FBA / FBM monetization",
+      "solo_small_team_fit": "MEDIUM",
+      "recommendation": "值得研究",
+      "why_for_chinese_user": "真实商业样本多，但供应链、流量、客服和品牌运营复杂度明显高于数字业务。",
+      "next_action": "DETAIL_PAGE"
+    },
+    {
+      "rank": 10,
+      "slug": "amazon-fba-niche-brand",
+      "title": "Amazon FBA 细分品牌",
+      "direct_samples": 69,
+      "evidence_rule": "active listing 且主标题明确为 Amazon FBA Business",
+      "solo_small_team_fit": "MEDIUM",
+      "recommendation": "值得研究",
+      "why_for_chinese_user": "海外样本非常丰富，中国用户可能具备供应链接近度，但库存、合规和平台风险较高。",
+      "next_action": "EXISTING_PROTOTYPE"
+    },
+    {
+      "rank": 11,
+      "slug": "dropshipping-niche-store",
+      "title": "细分品类 Dropshipping 商店",
+      "direct_samples": 4,
+      "evidence_rule": "active listing 且主标题明确为 DropShipping Site",
+      "solo_small_team_fit": "MEDIUM",
+      "recommendation": "继续观察",
+      "why_for_chinese_user": "启动门槛相对低，但竞争、广告成本、履约体验和可持续性需要更谨慎验证。",
+      "next_action": "WATCHLIST"
+    },
+    {
+      "rank": 12,
+      "slug": "newsletter-business",
+      "title": "垂直 Newsletter 业务",
+      "direct_samples": 1,
+      "evidence_rule": "active listing 且主标题明确为 Newsletter Business",
+      "solo_small_team_fit": "HIGH",
+      "recommendation": "继续观察",
+      "why_for_chinese_user": "模式适合个人，但当前直接商业样本太少，暂时不应因为概念流行就优先推荐。",
+      "next_action": "WATCHLIST"
+    }
+  ],
+  "detail_page_next_batch": [
+    "digital-product-business",
+    "affiliate-content-site",
+    "amazon-kdp-publishing",
+    "agency-business",
+    "non-amazon-ecommerce-brand"
+  ]
+}
