@@ -9,6 +9,7 @@ DIST=ROOT/"dist"
 COMPAT_DIRS=[REPO_ROOT/"dist", REPO_ROOT/"public"]
 STATIC=ROOT/"static"
 FIXTURE=ROOT/"fixtures"/"api.json"
+CONCRETE_PROTOTYPES=REPO_ROOT/"config"/"p46a_concrete_opportunity_prototypes.json"
 API=os.getenv("JIANSHI_API_URL","").strip().rstrip("/")
 SITE=os.getenv("JIANSHI_SITE_URL","https://jianshi-bua.pages.dev").strip().rstrip("/")
 NEWSLETTER_API=os.getenv("JIANSHI_NEWSLETTER_URL","").strip().rstrip("/")
@@ -557,6 +558,115 @@ def github_acceleration_block(acc):
 <p>这组数据来自见势连续 GitHub 快照，只用于解释技术侧是否还在加速，不替代真实商业证据。</p>
 </section>"""
 
+def bullet_list(items):
+    values=[x for x in (items or []) if x]
+    if not values:
+        return '<p class="unknown-note">当前没有足够信息。</p>'
+    return '<ul class="research-list">'+''.join(f'<li>{esc(x)}</li>' for x in values)+'</ul>'
+
+def build_concrete_prototype(x, global_disclaimer):
+    evidence=x.get("overseas_validation") or {}
+    screening=x.get("china_screening") or {}
+    direct=evidence.get("direct_samples")
+    source_div=evidence.get("commercial_source_diversity")
+    observed=evidence.get("observed_niches") or []
+    niche_bits=[]
+    if evidence.get("observed_niche_count") is not None:
+        niche_bits.append(f'{fmt_int(evidence.get("observed_niche_count"))} 个公开细分类目')
+    if observed:
+        niche_bits.append("样本涉及："+ "、".join(str(v) for v in observed[:9]))
+    niche_note="；".join(niche_bits) if niche_bits else "当前样本覆盖多个公开分类。"
+
+    body=f"""<main class="wrap">
+<section class="detail-hero concrete-hero">
+<span class="badge validate">{esc(x.get("status") or "值得研究")}</span>
+<span class="detail-status">海外已验证项目 · 中文筛选</span>
+<h1>{esc(x.get("title"))}</h1>
+<p class="lead">{esc(x.get("one_liner") or "")}</p>
+</section>
+
+<div class="detail-grid"><div>
+<section class="panel verdict-panel">
+<span class="section-kicker">01 · 见势推荐</span>
+<h2>{esc(x.get("editorial_judgement") or "")}</h2>
+<p>{esc(global_disclaimer)}</p>
+</section>
+
+<section class="panel">
+<span class="section-kicker">02 · 这个项目是什么</span>
+<h2>先看生意模型，再决定要不要继续研究。</h2>
+<p>{esc(x.get("what_it_is") or "")}</p>
+<div class="kv">
+<div>项目类型</div><div>{esc(x.get("project_type") or "—")}</div>
+<div>当前状态</div><div>{esc(x.get("status") or "值得研究")}</div>
+</div>
+</section>
+
+<section class="panel">
+<span class="section-kicker">03 · 海外真实验证</span>
+<h2>先确认这种项目在海外真实存在。</h2>
+<div class="evidence-facts">
+<div><b>{fmt_int(direct)}</b><span>直接商业样本</span></div>
+<div><b>{fmt_int(source_div)}</b><span>商业来源种类</span></div>
+<div><b>{esc(evidence.get("as_of") or "—")}</b><span>证据快照日期</span></div>
+</div>
+<p><strong>证据口径：</strong>{esc(evidence.get("evidence_scope") or "—")}</p>
+<p><strong>能证明什么：</strong>{esc(evidence.get("conclusion") or "—")}</p>
+<p>{esc(niche_note)}</p>
+<div class="disclosure">{esc(evidence.get("caveat") or "")}</div>
+</section>
+
+<section class="panel">
+<span class="section-kicker">04 · 对中国用户有没有参考价值</span>
+<h2>不是照搬项目，而是判断什么值得复制。</h2>
+<p>{esc(screening.get("why_relevant") or "")}</p>
+<div class="kv">
+<div>更适合谁</div><div>{esc("、".join(screening.get("suitable_for") or []) or "—")}</div>
+<div>不太适合谁</div><div>{esc("、".join(screening.get("not_ideal_for") or []) or "—")}</div>
+<div>一人公司适配</div><div>{esc(screening.get("solo_fit") or "—")}</div>
+<div>可以复制什么</div><div>{esc(screening.get("copy_path") or "—")}</div>
+<div>为什么推荐</div><div>{esc(screening.get("recommendation_reason") or "—")}</div>
+</div>
+</section>
+
+<section class="panel">
+<span class="section-kicker">05 · 第一轮怎么验证</span>
+<h2>不要先重投入，先验证最关键的假设。</h2>
+{bullet_list(x.get("first_validation") or [])}
+</section>
+
+<section class="panel">
+<span class="section-kicker">06 · 风险与未知</span>
+<h2>哪些事情现在还不能替你下结论？</h2>
+<h3>主要风险</h3>
+{bullet_list(x.get("risks") or [])}
+<h3>当前未知</h3>
+{bullet_list(x.get("unknowns") or [])}
+</section>
+</div>
+
+<aside>
+<section class="panel concrete-aside">
+<h3>这页解决什么问题？</h3>
+<div class="kv">
+<div>我们找什么</div><div>海外真实项目</div>
+<div>我们做什么</div><div>筛选、中文解释、推荐</div>
+<div>目标用户</div><div>寻找项目方向的中国用户</div>
+<div>当前结论</div><div>{esc(x.get("status") or "值得研究")}</div>
+</div>
+</section>
+<div class="disclosure">见势不会把海外案例直接包装成“中国也一定能做”。我们只把已验证的项目结构、证据和可复制部分整理出来，供你继续判断。</div>
+</aside></div>
+</main>"""
+    slug=str(x.get("slug") or "").strip()
+    return shell(
+        f'{esc(x.get("title"))}｜见势项目研究',
+        body,
+        x.get("one_liner") or "见势海外项目中文筛选",
+        canonical_path=f"/opportunity/{slug}/",
+        robots="noindex,nofollow",
+    )
+
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
     label,cls=decision_label(x)
@@ -644,6 +754,23 @@ def main():
     account_out.mkdir(parents=True,exist_ok=True)
     (account_out/"index.html").write_text(build_account_page(),encoding="utf-8")
     search=[]
+
+    prototype_count=0
+    if CONCRETE_PROTOTYPES.exists():
+        prototype_data=json.loads(CONCRETE_PROTOTYPES.read_text(encoding="utf-8"))
+        prototype_disclaimer=prototype_data.get("disclaimer") or ""
+        for prototype in prototype_data.get("opportunities") or []:
+            prototype_slug=str(prototype.get("slug") or "").strip()
+            if not prototype_slug:
+                continue
+            prototype_out=DIST/"opportunity"/prototype_slug
+            prototype_out.mkdir(parents=True,exist_ok=True)
+            (prototype_out/"index.html").write_text(
+                build_concrete_prototype(prototype,prototype_disclaimer),
+                encoding="utf-8",
+            )
+            prototype_count+=1
+
     for item in catalog:
         slug=item.get("slug")
         if not slug: continue
@@ -685,8 +812,9 @@ def main():
     print(json.dumps({
         "status":"PASS",
         "api":"live" if API else "fixture",
-        "pages":7+len(search),
+        "pages":7+len(search)+prototype_count,
         "opportunities":len(catalog),
+        "prototype_opportunities":prototype_count,
         "outputs":["web/dist","dist","public","repo-root-runtime"]
     },ensure_ascii=False))
 
