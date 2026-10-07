@@ -34,5 +34,8 @@
     "SOURCE_OUTBOUND_RATE",
     "RETURN_AFTER_7D"
   ],
-  "auth_events": "DEFERRED_UNTIL_AUTH_LAUNCH"
+  "auth_events": "DEFERRED_UNTIL_AUTH_LAUNCH",
+  "internal_qa_session_param": "qa=1",
+  "internal_qa_session_reset_param": "qa=0",
+  "internal_qa_storage": "SESSION_STORAGE"
 }
