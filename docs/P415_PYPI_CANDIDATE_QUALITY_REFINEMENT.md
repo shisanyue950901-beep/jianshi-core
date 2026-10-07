@@ -71,3 +71,93 @@ BigQuery download trend 的价值不在“再发现一个 package”，而在区
 如果 candidate 本身质量不足，则不引入 BigQuery，避免给低质量候选增加复杂度。
 
 本阶段不创建 Google Cloud 资源、不请求用户绑定信用卡、不执行 BigQuery 查询。
+
+
+## Staging 最终实测
+
+P415_V1 最终运行：
+
+- RSS items = 80
+- unique discovered = 76
+- accepted packages = 60
+- metadata success rate = 100%
+- candidate count = 12
+- candidate match rate = 20%
+- HIGH = 5
+- MEDIUM = 7
+- LOW = 48
+- exact GitHub overlap with current JianShi corpus = 0
+- GitHub-linked projects not in current corpus = 40
+- candidate GitHub-linked projects not in current corpus = 9
+- candidate with non-GitHub project URL = 7
+- package content stored = false
+- BigQuery used = false
+- scoring changed = false
+
+当前版本化候选 View：
+
+`pypi_candidate_shadow_v01`
+
+只认：
+
+`candidate_rule_version = P415_V1`
+
+因此旧实验规则产生的 candidate_match 不会混入当前候选集。
+
+当前 View：
+
+- HIGH = 5，其中独立非 GitHub URL = 5
+- MEDIUM = 7，其中独立非 GitHub URL = 2
+- exact GitHub overlap = 0
+
+## GitHub 重合结论修正
+
+P4.1.4 中“候选大量带 GitHub URL”不能解释为“与现有 GitHub 数据重复”。
+
+P4.1.5 采用 owner/repo 精确匹配后确认：
+
+- 当前样本中带 GitHub URL 的 package 很多；
+- 但与 JianShi 当前 github_repositories 精确重合 = 0；
+- PyPI 实际在补充 GitHub Query 当前没有覆盖的新项目。
+
+因此：
+
+```
+PYPI_GITHUB_URL_PRESENCE != CURRENT_CORPUS_DUPLICATION
+```
+
+## BigQuery 决策
+
+结论：
+
+`PYPI_BIGQUERY_ADOPTION_SIGNAL = RECOMMENDED_SEPARATE_EXPERIMENT`
+
+原因：
+- RSS + JSON 已经证明 PyPI 能发现新的技术项目；
+- 当前欠缺的是“是否真的有人持续采用”，不是“还能不能发现项目”；
+- PyPI 官方 BigQuery file_downloads 可以提供真实下载采用信号；
+- 下载趋势适合用于区分“刚发布”与“持续被采用/增长”；
+- 它仍然只能是 technical adoption，不是商业收入证明。
+
+BigQuery 不作为 Production Shadow 前置条件。
+
+本阶段不创建 Google Cloud Project、不配置凭据、不产生查询费用。
+
+## P4.1.5 最终冻结
+
+```
+P415_TECHNICAL_GATE = PASS
+P415_QUALITY_FILTER = PASS
+P415_CURRENT_CANDIDATES = 12
+P415_HIGH = 5
+P415_MEDIUM = 7
+P415_EXACT_GITHUB_OVERLAP = 0
+P415_INCREMENTAL_DISCOVERY = HIGH
+P415_PRODUCTION_SHADOW_READINESS = PASS
+P415_BIGQUERY = RECOMMENDED_LATER
+P415_COMMERCIAL_PROOF = NONE
+P415_SCORING_IMPACT = NONE
+P415_PRODUCTION_CHANGE = FALSE
+```
+
+下一阶段如果获准，只做 P4.1.6：将 PyPI 按当前 shadow-only 合同推 Production，不改变 OPP_V0.2 / public_ready，不同时引入 BigQuery。
