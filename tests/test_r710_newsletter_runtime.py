@@ -28,7 +28,7 @@ class TestR710NewsletterRuntime(unittest.TestCase):
 
     def test_confirmation_dispatch_fail_closed(self):
         fn=Path("supabase/functions/newsletter-dispatch-confirmations/index.ts").read_text(encoding="utf-8")
-        self.assertIn("newsletter_provider_ready_v01",fn)
+        self.assertIn("newsletter_launch_ready_v01",fn)
         self.assertIn("WAITLIST",fn)
         self.assertIn("prepare_waitlist_confirmation_v01",fn)
         self.assertIn("revert_pending_confirmation_to_waitlist_v01",fn)
