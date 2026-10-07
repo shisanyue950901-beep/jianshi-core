@@ -24,14 +24,23 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         )
         self.assertEqual(self.data["audience"],"寻找创业项目与方向的中国中文用户")
 
-    def test_exactly_two_first_prototypes(self):
+    def test_first_four_prototypes(self):
         items=self.data["opportunities"]
-        self.assertEqual(len(items),2)
+        self.assertEqual(len(items),4)
         self.assertEqual(
             {x["slug"] for x in items},
-            {"vertical-industry-saas","amazon-fba-niche-brand"},
+            {
+                "vertical-industry-saas",
+                "amazon-fba-niche-brand",
+                "digital-product-business",
+                "affiliate-content-site",
+            },
         )
-        self.assertTrue(all(x["status"]=="值得研究" for x in items))
+        by_slug={x["slug"]:x for x in items}
+        self.assertEqual(by_slug["vertical-industry-saas"]["status"],"值得研究")
+        self.assertEqual(by_slug["amazon-fba-niche-brand"]["status"],"值得研究")
+        self.assertEqual(by_slug["digital-product-business"]["status"],"优先研究")
+        self.assertEqual(by_slug["affiliate-content-site"]["status"],"优先研究")
 
     def test_default_channel_matrix_is_removed(self):
         for item in self.data["opportunities"]:
@@ -65,7 +74,12 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         env.pop("JIANSHI_API_URL",None)
         subprocess.run([sys.executable,str(BUILD)],cwd=ROOT,env=env,check=True,
                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
-        for slug in ["vertical-industry-saas","amazon-fba-niche-brand"]:
+        for slug in [
+            "vertical-industry-saas",
+            "amazon-fba-niche-brand",
+            "digital-product-business",
+            "affiliate-content-site",
+        ]:
             page=ROOT/"web"/"dist"/"opportunity"/slug/"index.html"
             self.assertTrue(page.exists(),slug)
             html=page.read_text(encoding="utf-8")
@@ -76,6 +90,12 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             self.assertIn("06 · 风险与未知",html)
             self.assertNotIn("渠道矩阵",html)
             self.assertIn("noindex,nofollow",html)
+        digital=(ROOT/"web"/"dist"/"opportunity"/"digital-product-business"/"index.html").read_text(encoding="utf-8")
+        affiliate=(ROOT/"web"/"dist"/"opportunity"/"affiliate-content-site"/"index.html").read_text(encoding="utf-8")
+        self.assertIn("数字产品业务",digital)
+        self.assertIn("9",digital)
+        self.assertIn("联盟营销 / 内容站",affiliate)
+        self.assertIn("11",affiliate)
 
 
 if __name__=="__main__":
