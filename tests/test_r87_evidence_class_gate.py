@@ -15,6 +15,7 @@ class TestR87EvidenceClassGate(unittest.TestCase):
         ]:
             self.assertIn(token,sql)
         self.assertIn("m.evidence_count>=5",sql)
+        self.assertIn("count(distinct oe.entity_id)",sql)
 
     def test_public_ready_is_not_raw_source_count(self):
         sql=Path("db/migrations/0038_evidence_class_validation_gate.sql").read_text(encoding="utf-8")
