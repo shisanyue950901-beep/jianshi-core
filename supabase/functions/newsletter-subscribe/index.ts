@@ -110,12 +110,12 @@ Deno.serve(async (req: Request) => {
   }
 
   const sourcePath = String(body?.source_path ?? "/").slice(0, 200);
-  const { data: providerReady, error: providerReadyError } = await db.rpc("newsletter_provider_ready_v01");
-  if (providerReadyError) {
-    return json({ ok: false, error: "PROVIDER_STATE_FAILED", message: "暂时无法提交，请稍后再试。" }, 500);
+  const { data: launchReady, error: launchReadyError } = await db.rpc("newsletter_launch_ready_v01");
+  if (launchReadyError) {
+    return json({ ok: false, error: "LAUNCH_STATE_FAILED", message: "暂时无法提交，请稍后再试。" }, 500);
   }
 
-  if (providerReady !== true) {
+  if (launchReady !== true) {
     const { data: waitlistState, error: waitlistError } = await db.rpc(
       "request_newsletter_waitlist_v01",
       { p_email: email, p_source_path: sourcePath },
