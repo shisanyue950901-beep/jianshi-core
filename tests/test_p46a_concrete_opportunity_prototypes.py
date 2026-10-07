@@ -39,10 +39,16 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             },
         )
         by_slug={x["slug"]:x for x in items}
-        self.assertEqual(by_slug["digital-product-business"]["status"],"优先研究")
-        self.assertEqual(by_slug["affiliate-content-site"]["status"],"优先研究")
-        self.assertEqual(by_slug["amazon-kdp-publishing"]["status"],"优先研究")
-        self.assertEqual(by_slug["agency-business"]["status"],"优先研究")
+        expected_status={
+            "vertical-industry-saas":"优先研究",
+            "amazon-fba-niche-brand":"值得研究",
+            "digital-product-business":"优先研究",
+            "affiliate-content-site":"优先研究",
+            "amazon-kdp-publishing":"优先研究",
+            "agency-business":"优先研究",
+        }
+        for slug,status in expected_status.items():
+            self.assertEqual(by_slug[slug]["status"],status,slug)
 
     def test_default_channel_matrix_is_removed(self):
         for item in self.data["opportunities"]:
