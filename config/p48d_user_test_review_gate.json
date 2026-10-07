@@ -1,0 +1,84 @@
+{
+  "version": "P4.8D-V1",
+  "status": "FROZEN_FOR_FIRST_REAL_USER_REVIEW",
+  "epoch_start": "2026-10-07T15:49:06Z",
+  "target_project_count": 6,
+  "minimum_target_detail_sessions_before_first_review": 30,
+  "first_review_gate": "target_detail_sessions >= 30",
+  "fixed_success_thresholds": false,
+  "primary_metrics": [
+    "entry_click_rate_pct",
+    "engaged_30s_rate_pct",
+    "scroll_90_rate_pct",
+    "second_target_project_rate_pct"
+  ],
+  "pre_gate_allowed_changes": [
+    "FUNCTIONAL_BUG",
+    "FACTUAL_ERROR",
+    "SEVERE_MISLEADING_COPY",
+    "ANALYTICS_FAILURE",
+    "ACCESSIBILITY_BLOCKER"
+  ],
+  "pre_gate_prohibited_changes": [
+    "RECOMMENDATION_STATUS",
+    "OPP_V0.2",
+    "PROJECT_RANKING",
+    "SOURCE_EXPANSION",
+    "NOINDEX_BOUNDARY",
+    "AUTH_LAUNCH"
+  ],
+  "first_review_questions": [
+    "用户能否理解见势主要帮助什么决策",
+    "用户是否愿意从入口进入至少一个具体项目",
+    "详情页是否产生持续阅读",
+    "用户是否会读到页面深处",
+    "用户是否会比较第二个首批项目",
+    "流失主要发生在入口、项目卡、详情阅读还是跨项目比较"
+  ],
+  "diagnostic_order": [
+    {
+      "layer": "ENTRY",
+      "signal": "entry_click_rate_pct",
+      "interpretation": "入口到具体项目的选择意愿",
+      "if_weak_review": [
+        "首页价值表达",
+        "首批项目卡标题与一句话说明",
+        "首页与机会库的信息优先级"
+      ]
+    },
+    {
+      "layer": "DETAIL_ENGAGEMENT",
+      "signal": "engaged_30s_rate_pct",
+      "interpretation": "项目卡承诺与详情内容是否匹配，首屏是否值得继续读",
+      "if_weak_review": [
+        "详情首屏结论",
+        "项目是什么",
+        "海外验证表达是否过重或过抽象"
+      ]
+    },
+    {
+      "layer": "DEEP_READING",
+      "signal": "scroll_90_rate_pct",
+      "interpretation": "详情结构、长度和信息密度是否支持深读",
+      "if_weak_review": [
+        "六问信息层级",
+        "重复信息",
+        "风险与未知的位置",
+        "移动端长页体验"
+      ]
+    },
+    {
+      "layer": "CROSS_PROJECT",
+      "signal": "second_target_project_rate_pct",
+      "interpretation": "用户是否把见势当成项目比较工具，而不是只看单页",
+      "if_weak_review": [
+        "继续比较模块",
+        "项目差异表达",
+        "机会库返回路径",
+        "跨项目可比字段"
+      ]
+    }
+  ],
+  "final_rule": "先定位最大产品摩擦，再做最小改动；一次只改一层，并开启下一测试 Epoch。",
+  "outreach_sent": false
+}
