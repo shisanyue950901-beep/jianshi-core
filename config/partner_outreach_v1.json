@@ -1,0 +1,21 @@
+{
+  "version": "P3.4-V1",
+  "status": "READY_FOR_REVIEW",
+  "first_wave": ["acquire", "microns", "flippa"],
+  "second_wave": ["quiet_light", "startupmkt", "fe_international"],
+  "send_requires_user_confirmation": true,
+  "request_mode": "LIMITED_PUBLIC_FIELDS_PLUS_ATTRIBUTION_AND_REFERRAL",
+  "full_listing_mirror": false,
+  "private_data_request": false,
+  "paid_license_auto_accept": false,
+  "follow_up_business_days": [7, 14],
+  "reply_states": [
+    "APPROVED",
+    "PARTIAL_APPROVAL",
+    "NEED_MORE_INFO",
+    "PARTNER_PROGRAM_ROUTE",
+    "PAID_LICENSE",
+    "REJECTED",
+    "NO_RESPONSE"
+  ]
+}
