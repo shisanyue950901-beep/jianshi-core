@@ -121,9 +121,9 @@ def shell(title, body, description="见势：看见正在发生的生意机会�
 <meta property="og:type" content="website"><meta property="og:url" content="{esc(canonical)}">
 <link rel="stylesheet" href="/styles.css"></head><body>
 <header><div class="wrap nav"><a class="brand" href="/">见势</a>
-<nav><a href="/today/">今日机会</a><a href="/rising/">正在起势</a><a href="/build/">值得做</a><a href="/content/">值得讲</a><a href="/#method">我们怎么判断</a>{account_nav}</nav></div></header>
+<nav><a href="/opportunities/">发现机会</a><a href="/today/">今日推荐</a><a href="/rising/">正在起势</a><a href="/content/">内容选题</a><a href="/#method">我们怎么判断</a>{account_nav}</nav></div></header>
 {body}
-<footer id="about"><div class="wrap">见势｜商业机会与趋势情报。数据和评分用于研究与发现，不构成投资、收益或经营承诺。 · <a href="/privacy/">隐私说明</a></div></footer>
+<footer id="about"><div class="wrap">见势｜商业机会发现与决策平台。数据和评分用于研究与发现，不构成投资、收益或经营承诺。 · <a href="/privacy/">隐私说明</a></div></footer>
 <script src="/search.js" defer></script>{auth_boot}</body></html>"""
 
 def score_row(item):
@@ -150,18 +150,32 @@ def verdict(item):
         return "趋势明显升温，但目前更适合观察，不建议仅凭热度直接下结论。"
     return "已有值得关注的信号，但证据还不够完整，继续观察。"
 
+
+def decision_label(item):
+    business=num(item.get("business_score"))
+    build=num(item.get("build_score"))
+    heat=num(item.get("heat_score"))
+    content=num(item.get("content_score"))
+    if item.get("public_ready") and business>=70:
+        return "值得深入研究", "good"
+    if item.get("public_ready"):
+        return "值得研究", "good"
+    if build>=65 or heat>=75 or content>=85:
+        return "值得验证", "validate"
+    return "持续观察", "watch"
+
 def card(item, watch=False, compact=False):
     slug=esc(item.get("slug"))
-    label="持续观察" if watch else "已验证机会"
-    cls="watch" if watch else "good"
+    label,cls=decision_label(item)
+    state="validated" if item.get("public_ready") else "watch"
+    state_text="多源已验证" if item.get("public_ready") else "证据未完整"
     compact_cls=" compact" if compact else ""
-    return f"""<a class="card{compact_cls}" data-card href="/opportunity/{slug}/">
-<div class="card-top"><span class="badge {cls}">{label}</span><span class="card-score">综合 {fmt_score(item.get("overall_score"))}</span></div>
+    return f"""<a class="card{compact_cls}" data-card data-state="{state}" href="/opportunity/{slug}/">
+<div class="card-top"><span class="badge {cls}">{esc(label)}</span><span class="card-score">{state_text} · 综合 {fmt_score(item.get("overall_score"))}</span></div>
 <h3>{esc(item.get("title"))}</h3>
 <p class="card-verdict">{esc(verdict(item))}</p>
 {score_row(item)}
-<div class="meta">{fmt_int(item.get("evidence_count"))} 条证据 · {fmt_int(item.get("source_count"))} 类独立数据源</div></a>"""
-
+<div class="meta">{fmt_int(item.get("evidence_count"))} 条有效证据 · {fmt_int(item.get("source_count"))} 类独立数据源</div></a>"""
 def change_label(item):
     if item.get("previous_date") is None:
         return "历史积累中"
@@ -288,85 +302,106 @@ def build_home(data, daily=None):
     daily=daily or {"today":[],"rising":[],"build":[],"content":[],"history_ready":{}}
 
     top_validated=max(opps,key=lambda x:num(x.get("overall_score")),default=None)
-    rising=(daily.get("rising") or sorted(watch,key=lambda x:num(x.get("heat_score")),reverse=True))[:3]
+    rising=(daily.get("rising") or sorted(catalog,key=lambda x:num(x.get("heat_score")),reverse=True))[:3]
     build_rank=(daily.get("build") or sorted(catalog,key=lambda x:num(x.get("build_score")),reverse=True))[:3]
     content_rank=(daily.get("content") or sorted(catalog,key=lambda x:num(x.get("content_score")),reverse=True))[:3]
 
-    hero_feature=card(top_validated,False,True) if top_validated else '<div class="empty">今天还没有通过多源验证的机会，我们会继续自动扫描。</div>'
-
+    hero_feature=card(top_validated,False,True) if top_validated else '<div class="empty">今天还没有达到多源验证门槛的机会，我们会继续扫描和核对证据。</div>'
     stats_html="".join([
-      f'<div class="stat"><b>{fmt_int(stats.get("marketplace_listings"))}</b><span>真实商业样本</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("github_repositories"))}</b><span>技术项目样本</span></div>',
       f'<div class="stat"><b>{fmt_int(stats.get("validated_opportunities"))}</b><span>已验证机会</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("watch_opportunities"))}</b><span>持续观察方向</span></div>',
-      '<div class="stat"><b>6 小时</b><span>自动更新一次</span></div>'
+      f'<div class="stat"><b>{fmt_int(stats.get("watch_opportunities"))}</b><span>观察方向</span></div>',
+      f'<div class="stat"><b>{fmt_int(stats.get("marketplace_listings"))}</b><span>商业样本</span></div>',
+      f'<div class="stat"><b>{fmt_int(stats.get("github_repositories"))}</b><span>技术样本</span></div>',
+      '<div class="stat"><b>6 小时</b><span>信号更新周期</span></div>'
     ])
 
-    opp_html=''.join(card(x,False) for x in opps) or '<div class="empty">当前没有通过多源验证的机会。</div>'
-    watch_html=''.join(card(x,True) for x in watch)
+    opp_html=''.join(card(x,False) for x in opps[:6]) or '<div class="empty">当前没有通过多源验证的机会。</div>'
+    watch_html=''.join(card(x,True) for x in watch[:6]) or '<div class="empty">当前没有新的观察方向。</div>'
     rising_html=''.join(rank_card(x,f"趋势第 {i+1}","heat_score") for i,x in enumerate(rising))
     build_html=''.join(rank_card(x,f"可执行第 {i+1}","build_score") for i,x in enumerate(build_rank))
     content_html=''.join(rank_card(x,f"内容第 {i+1}","content_score") for i,x in enumerate(content_rank))
     tech_html=''.join(
       f'<a class="tech-row" href="{esc(x.get("html_url"))}" target="_blank" rel="noopener"><div><b>{esc(x.get("full_name"))}</b><br><small>{esc(tech_summary(x))}</small></div><div>{esc(x.get("language") or "—")}</div><div>{fmt_int(x.get("stars"))} 星标</div><div>趋势 {fmt_score(x.get("rank_score"))}</div></a>'
-      for x in tech
+      for x in tech[:6]
     )
 
     body=f"""<main>
 <section class="hero wrap">
 <div class="hero-copy">
-<span class="kicker">互联网商业机会与趋势情报平台</span>
-<h1>每天帮你从海量项目里，<br><em>筛出真正值得行动的机会。</em></h1>
-<p class="hero-lead">见势自动扫描开源项目和真实商业交易市场，把杂乱的数据整理成三种结论：<strong>什么值得做、什么值得讲、什么值得继续盯。</strong></p>
-<div class="hero-actions"><a class="btn primary" href="/build/">我想找项目</a><a class="btn" href="/content/">我想找选题</a><a class="text-link" href="#method">它是怎么判断的？</a></div>
+<span class="kicker">商业机会发现与决策平台</span>
+<h1>发现下一个<br><em>值得做的项目。</em></h1>
+<p class="hero-lead">见势持续扫描真实商业、产品与技术信号，把分散的信息整理成<strong>项目机会、四维评分和行动判断</strong>，帮助中国个人创业者更快决定“什么值得研究”。</p>
+<div class="hero-actions"><a class="btn primary" href="/opportunities/">发现机会</a><a class="btn" href="/today/">看今日推荐</a><a class="text-link" href="/content/">我是内容创作者 →</a></div>
 </div>
 <div class="hero-explain">
-<div class="explain-label">一句话看懂见势</div>
-<p><strong>别人告诉你“什么火”，见势告诉你“这个火点有没有真实商业价值，以及你能不能做”。</strong></p>
-<div class="mini-flow"><span>发现趋势</span><i>→</i><span>找赚钱证据</span><i>→</i><span>交叉验证</span><i>→</i><span>给行动结论</span></div>
+<div class="explain-label">见势解决什么问题？</div>
+<p><strong>不是告诉你“什么火”，而是帮助你判断：这个方向有没有商业价值、证据够不够、你值不值得继续投入时间。</strong></p>
+<div class="mini-flow"><span>发现信号</span><i>→</i><span>交叉证据</span><i>→</i><span>项目评分</span><i>→</i><span>行动判断</span></div>
 </div>
 </section>
 
 <section class="wrap stats">{stats_html}</section>
 
 <section class="wrap usecases">
-<div class="usecase"><span>01</span><h3>你想做一个项目</h3><p>看“值得做”，优先找需求明确、个人能落地、商业证据更扎实的方向。</p><a href="/build/">看今天值得做什么 →</a></div>
-<div class="usecase"><span>02</span><h3>你想做内容选题</h3><p>看“值得讲”，优先找反差大、故事强、普通人容易理解的话题。</p><a href="/content/">看今天值得讲什么 →</a></div>
-<div class="usecase"><span>03</span><h3>你想早点发现趋势</h3><p>看“正在起势”，发现还没完全商业化、但已经出现明显增长信号的方向。</p><a href="/rising/">看哪些方向在升温 →</a></div>
+<div class="usecase"><span>01</span><h3>找项目</h3><p>从已验证和正在起势的方向中，筛选更适合个人或小团队继续研究的机会。</p><a href="/opportunities/">进入机会库 →</a></div>
+<div class="usecase"><span>02</span><h3>做判断</h3><p>不只看热度，同时看商业质量、可执行性和证据是否完整，减少追错风口。</p><a href="/today/">看今天优先研究什么 →</a></div>
+<div class="usecase"><span>03</span><h3>找选题</h3><p>把同一套真实项目证据转化为商业、科技和创业内容的选题线索。</p><a href="/content/">进入内容选题 →</a></div>
 </section>
 
 <section class="wrap spotlight" id="today">
-<div class="section-head"><div><span class="section-kicker">今天先看这个</span><h2>已经被技术趋势和真实商业同时验证</h2></div><div class="section-note">不是“热门推荐”，而是证据交叉后的结果</div></div>
+<div class="section-head"><div><span class="section-kicker">今日推荐</span><h2>如果今天只研究一个方向，先看这个</h2></div><a class="section-more" href="/today/">查看今日榜单 →</a></div>
 {hero_feature}
 </section>
 
+<section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据更完整，适合深入研究</h2></div><a class="section-more" href="/opportunities/">查看全部机会 →</a></div><div class="grid">{opp_html}</div></section>
+
 <section class="wrap decision-grid">
-<div class="decision-block" id="rising"><div class="section-head compact-head"><div><span class="section-kicker">正在起势</span><h2>哪些方向正在变热？</h2></div><a class="section-more" href="/rising/">查看完整榜单 →</a></div>{rising_html}</div>
-<div class="decision-block" id="build"><div class="section-head compact-head"><div><span class="section-kicker">值得做</span><h2>如果今天要做项目</h2></div><a class="section-more" href="/build/">查看完整榜单 →</a></div>{build_html}</div>
-<div class="decision-block" id="content"><div class="section-head compact-head"><div><span class="section-kicker">值得讲</span><h2>如果今天要做内容</h2></div><a class="section-more" href="/content/">查看完整榜单 →</a></div>{content_html}</div>
+<div class="decision-block"><div class="section-head compact-head"><div><span class="section-kicker">正在起势</span><h2>哪些方向正在升温</h2></div><a class="section-more" href="/rising/">完整榜单 →</a></div>{rising_html}</div>
+<div class="decision-block"><div class="section-head compact-head"><div><span class="section-kicker">更容易落地</span><h2>个人更值得研究什么</h2></div><a class="section-more" href="/build/">完整榜单 →</a></div>{build_html}</div>
+<div class="decision-block"><div class="section-head compact-head"><div><span class="section-kicker">内容选题</span><h2>哪些方向值得讲</h2></div><a class="section-more" href="/content/">完整榜单 →</a></div>{content_html}</div>
 </section>
 
-{newsletter_block()}
-
-<section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据比较完整，可以深入研究</h2></div><div class="section-note">技术供给证据与真实商业证据同时支持</div></div><div class="grid">{opp_html}</div></section>
-
-<section class="wrap section" id="watch"><div class="section-head"><div><span class="section-kicker">持续观察</span><h2>有信号，但还不能急着下结论</h2></div><div class="section-note">热度不等于机会，继续等待更多证据</div></div>
-<div class="searchbox"><input data-search placeholder="搜索方向、机会或关键词…" aria-label="搜索机会"></div><div class="grid">{watch_html}</div></section>
+<section class="wrap section"><div class="section-head"><div><span class="section-kicker">待验证方向</span><h2>有信号，但现在还不应该急着做</h2></div><a class="section-more" href="/opportunities/">进入机会库筛选 →</a></div><div class="grid">{watch_html}</div></section>
 
 <section class="method" id="method"><div class="wrap">
-<div class="section-head light"><div><span class="section-kicker">我们怎么判断</span><h2>不预测风口，只把证据摆到一起</h2></div></div>
+<div class="section-head light"><div><span class="section-kicker">我们怎么判断</span><h2>先找机会，再要求证据</h2></div></div>
 <div class="method-flow">
-<div><b>1</b><h3>先看什么正在变热</h3><p>跟踪 GitHub 等公开技术信号，观察项目热度、增长和活跃度。</p></div>
-<div><b>2</b><h3>再看有没有人赚钱</h3><p>读取允许使用的真实商业市场数据，看收入、利润、售价和运营强度。</p></div>
-<div><b>3</b><h3>必须交叉验证</h3><p>单一来源只能进入“持续观察”；不同类型证据同时出现，才升级为已验证机会。</p></div>
-<div><b>4</b><h3>最后给行动分数</h3><p>分别判断趋势热度、内容价值、可执行性和商业质量，不用一个总分掩盖差异。</p></div>
+<div><b>1</b><h3>发现真实信号</h3><p>持续观察技术供给、产品变化、需求和允许使用的商业市场数据。</p></div>
+<div><b>2</b><h3>把信号变成机会</h3><p>单个 repo、帖子或挂牌不是项目推荐，只有归到同一商业问题后才形成 Opportunity。</p></div>
+<div><b>3</b><h3>交叉验证商业价值</h3><p>热度不能替代赚钱证据。当前公开验证仍要求技术供给与真实商业证明同时存在。</p></div>
+<div><b>4</b><h3>给出可解释判断</h3><p>分别展示趋势热度、内容价值、可执行性和商业质量，并明确哪些事情还不知道。</p></div>
 </div></div></section>
 
-<section class="wrap section" id="tech"><div class="section-head"><div><span class="section-kicker">底层趋势证据</span><h2>技术项目里，哪些正在升温</h2></div><div class="section-note">这里只是早期信号，不直接等于商业机会</div></div><div class="tech-list">{tech_html}</div></section>
-</main>"""
-    return shell("见势｜每天发现值得做、值得讲、值得盯的商业机会",body,
-                 "见势每天扫描全球开源项目与真实商业市场，帮你发现值得做的项目、值得讲的内容和正在起势的商业机会。")
+<section class="wrap section" id="tech"><div class="section-head"><div><span class="section-kicker">证据库一角</span><h2>这些技术项目正在形成供给信号</h2></div><div class="section-note">技术热度只是证据之一，不等于商业机会</div></div><div class="tech-list">{tech_html}</div></section>
 
+{newsletter_block()}
+</main>"""
+    return shell("见势｜发现下一个值得做的项目",body,
+                 "见势是面向中国个人创业者与内容创作者的商业机会发现与决策平台，提供项目发现、四维评分、商业证据与行动判断。")
+
+
+def build_opportunities_page(catalog):
+    items=sorted(catalog,key=lambda x:(not bool(x.get("public_ready")),-num(x.get("overall_score"))))
+    validated=sum(1 for x in items if x.get("public_ready"))
+    watching=max(0,len(items)-validated)
+    cards=''.join(card(x,not bool(x.get("public_ready"))) for x in items) or '<div class="empty">机会库正在扩充。</div>'
+    body=f"""<main class="wrap catalog-page">
+<section class="list-hero catalog-hero"><span class="section-kicker">发现机会</span><h1>把值得研究的项目放到一张桌面上。</h1>
+<p>先看结论，再比较四维评分和证据强度。热度高但证据不足的方向会明确标为“值得验证”或“持续观察”。</p>
+<div class="catalog-summary"><span><b>{fmt_int(len(items))}</b> 当前方向</span><span><b>{fmt_int(validated)}</b> 已验证</span><span><b>{fmt_int(watching)}</b> 待验证</span></div></section>
+<section class="catalog-toolbar">
+<input data-catalog-search placeholder="搜索机会、类别或关键词…" aria-label="搜索机会">
+<div class="catalog-filters" role="group" aria-label="机会筛选">
+<button type="button" class="active" data-catalog-filter="all">全部</button>
+<button type="button" data-catalog-filter="validated">已验证</button>
+<button type="button" data-catalog-filter="watch">待验证</button>
+</div></section>
+<section class="grid catalog-grid" data-catalog-grid>{cards}</section>
+<section class="panel catalog-help"><h2>怎么使用机会库？</h2><p>“值得深入研究”表示当前证据更完整，不代表保证赚钱；“值得验证”表示存在明显信号，但关键商业证据仍需要补齐。真正决定是否行动前，请进入详情页查看证据、目标客户、商业模式和未知项。</p></section>
+</main>"""
+    return shell("发现机会｜见势",body,
+                 "浏览见势机会库，按验证状态、四维评分和证据强度比较值得研究的创业项目。",
+                 "/opportunities/")
 def evidence_github(rows):
     if not rows: return '<div class="evidence-row"><small>暂无开源项目证据。</small></div>'
     return ''.join(
@@ -503,21 +538,49 @@ def github_acceleration_block(acc):
 
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
-    badge=f'<span class="badge {"good" if is_ready else "watch"}">{"已验证机会" if is_ready else "持续观察"}</span>'
-    body=f"""<main class="wrap"><section class="detail-hero">{badge}<h1>{esc(x.get("title"))}</h1><p class="lead">{esc(x.get("thesis") or "")}</p></section>
+    label,cls=decision_label(x)
+    badge=f'<span class="badge {cls}">{esc(label)}</span>'
+    validation="多源已验证" if is_ready else "证据仍未完整"
+    body=f"""<main class="wrap">
+<section class="detail-hero">{badge}<span class="detail-status">{validation}</span><h1>{esc(x.get("title"))}</h1><p class="lead">{esc(x.get("thesis") or "")}</p></section>
 <div class="detail-grid"><div>
-<section class="panel verdict-panel"><span class="section-kicker">一句话结论</span><h2>{esc(verdict(x))}</h2>{score_row(x)}<div class="kv">
-<div>要解决的问题</div><div>{esc(x.get("problem") or "—")}</div><div>目标用户</div><div>{esc(x.get("target_customer") or "—")}</div>
-<div>商业模式</div><div>{esc(x.get("business_model") or "—")}</div><div>中国化适配</div><div>{fmt_score(x.get("china_fit"))}/100</div>
-<div>一人公司适配</div><div>{fmt_score(x.get("solo_founder_fit"))}/100</div></div></section>
-<section class="panel"><h2>开源项目证据</h2>{evidence_github((data.get("evidence") or {}).get("github") or [])}</section>
-<section class="panel"><h2>真实商业样本</h2>{evidence_market((data.get("evidence") or {}).get("marketplace") or [])}</section>
+<section class="panel verdict-panel"><span class="section-kicker">01 · 决策摘要</span><h2>{esc(verdict(x))}</h2>{score_row(x)}
+<div class="decision-note">见势结论用于决定“是否值得继续研究”，不是收益预测或投资建议。</div></section>
+
+<section class="panel"><span class="section-kicker">02 · 机会说明</span><h2>它解决谁的什么问题？</h2><div class="kv">
+<div>要解决的问题</div><div>{esc(x.get("problem") or "—")}</div>
+<div>目标用户</div><div>{esc(x.get("target_customer") or "—")}</div>
+<div>商业模式</div><div>{esc(x.get("business_model") or "—")}</div></div></section>
+
+<section class="panel"><span class="section-kicker">03 · 商业验证</span><h2>有没有真实商业样本？</h2>{evidence_market((data.get("evidence") or {}).get("marketplace") or [])}
+<div class="disclosure">挂牌价格、公开收入或利润字段只按来源允许的口径展示；asking price 不等于真实成交价。</div></section>
 {sold_activity_block(x)}
-{github_acceleration_block(data.get("acceleration") or {})}</div>
-<aside><section class="panel"><h3>证据强度</h3><div class="kv"><div>数据源</div><div>{fmt_int(x.get("source_count"))}</div>
-<div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div><div>GitHub</div><div>{fmt_int(x.get("github_repo_count"))}</div>
-<div>商业挂牌</div><div>{fmt_int(x.get("market_listing_count"))}</div><div>综合分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
-<div class="disclosure">{"该方向已经同时获得技术供给证据与真实商业证据支持。评分只用于研究与发现，不代表收益承诺。" if is_ready else "该方向目前仍在持续观察，还缺少技术供给或真实商业中的关键一类证据，不应视为已经验证的商业机会。"}</div>{account_action_block(x)}</aside></div></main>"""
+
+<section class="panel"><span class="section-kicker">04 · 执行判断</span><h2>对个人创业者意味着什么？</h2><div class="kv">
+<div>中国化适配</div><div>{fmt_score(x.get("china_fit"))}/100</div>
+<div>一人公司适配</div><div>{fmt_score(x.get("solo_founder_fit"))}/100</div>
+<div>MVP 难度</div><div>尚未完成编辑审查</div>
+<div>资金强度</div><div>尚未完成编辑审查</div>
+<div>获客难度</div><div>尚未完成编辑审查</div></div>
+<p class="unknown-note">我们宁愿明确写“未知”，也不会为了让报告看起来完整而编造成本、周期或收入。</p></section>
+
+<section class="panel"><span class="section-kicker">05 · 内容机会</span><h2>这个方向适不适合做选题？</h2>
+<p>当前内容价值评分为 <strong>{fmt_score(x.get("content_score"))}/100</strong>。高分表示这个方向更容易形成可理解、可传播的商业内容；具体选题角度仍需要结合下面的真实证据，不自动生成夸大结论。</p></section>
+
+<section class="panel"><span class="section-kicker">06 · 证据与来源</span><h2>技术供给证据</h2>{evidence_github((data.get("evidence") or {}).get("github") or [])}</section>
+{github_acceleration_block(data.get("acceleration") or {})}
+</div>
+<aside>
+<section class="panel"><h3>证据强度</h3><div class="kv">
+<div>验证状态</div><div>{validation}</div>
+<div>数据源</div><div>{fmt_int(x.get("source_count"))}</div>
+<div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div>
+<div>技术证据</div><div>{fmt_int(x.get("technical_evidence_count") or x.get("github_repo_count"))}</div>
+<div>商业证据</div><div>{fmt_int(x.get("commercial_evidence_count") or x.get("market_listing_count"))}</div>
+<div>综合参考分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
+<div class="disclosure">{"该方向已经同时获得技术供给证据与真实商业证据支持。" if is_ready else "该方向仍缺少技术供给或真实商业中的关键一类证据，因此只能作为验证候选。"}</div>
+{account_action_block(x)}
+</aside></div></main>"""
     slug=str(x.get("slug") or "").strip()
     canonical_path=f"/opportunity/{slug}/" if slug else "/"
     return shell(
@@ -526,7 +589,6 @@ def build_detail(data):
         x.get("thesis") or "见势机会研究",
         canonical_path=canonical_path,
     )
-
 def main():
     global AUTH_ENABLED
     if DIST.exists(): shutil.rmtree(DIST)
@@ -542,6 +604,10 @@ def main():
     daily=api_get("daily")
     catalog=api_get("catalog").get("items",[])
     (DIST/"index.html").write_text(build_home(home,daily),encoding="utf-8")
+
+    opportunities_out=DIST/"opportunities"
+    opportunities_out.mkdir(parents=True,exist_ok=True)
+    (opportunities_out/"index.html").write_text(build_opportunities_page(catalog),encoding="utf-8")
 
     for kind in ("today","rising","build","content"):
         out=DIST/kind
@@ -567,7 +633,7 @@ def main():
     (DIST/"search-index.json").write_text(json.dumps(search,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     (DIST/"404.html").write_text(shell("未找到｜见势",'<main class="wrap"><section class="hero"><h1>这里还没有信号。</h1><p><a href="/">返回见势首页 →</a></p></section></main>',canonical_path="/404"),encoding="utf-8")
 
-    urls=["/","/today/","/rising/","/build/","/content/","/privacy/"]+[f"/opportunity/{x['slug']}/" for x in search]
+    urls=["/","/opportunities/","/today/","/rising/","/build/","/content/","/privacy/"]+[f"/opportunity/{x['slug']}/" for x in search]
     sitemap='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(
         f'<url><loc>{esc(SITE+u)}</loc></url>' for u in urls
     )+'</urlset>'
@@ -588,7 +654,7 @@ def main():
     # are not committed; they exist only in the ephemeral build workspace.
     for name in ("index.html","404.html","styles.css","search.js","account.js","search-index.json","sitemap.xml","robots.txt"):
         shutil.copy2(DIST/name, REPO_ROOT/name)
-    for dirname in ("opportunity","today","rising","build","content","privacy","account"):
+    for dirname in ("opportunity","opportunities","today","rising","build","content","privacy","account"):
         target=REPO_ROOT/dirname
         if target.exists():
             shutil.rmtree(target)
@@ -597,7 +663,7 @@ def main():
     print(json.dumps({
         "status":"PASS",
         "api":"live" if API else "fixture",
-        "pages":6+len(search),
+        "pages":7+len(search),
         "opportunities":len(catalog),
         "outputs":["web/dist","dist","public","repo-root-runtime"]
     },ensure_ascii=False))

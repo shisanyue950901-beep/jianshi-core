@@ -6,16 +6,17 @@ class TestR6ChineseHome(unittest.TestCase):
         subprocess.run([sys.executable,"web/build.py"],check=True,capture_output=True,text=True)
         index=Path("web/dist/index.html").read_text(encoding="utf-8")
         for text in [
-            "互联网商业机会与趋势情报平台",
-            "筛出真正值得行动的机会",
-            "什么值得做、什么值得讲、什么值得继续盯",
-            "我想找项目",
-            "我想找选题",
-            "一句话看懂见势",
+            "商业机会发现与决策平台",
+            "发现下一个",
+            "值得做的项目",
+            "项目机会、四维评分和行动判断",
+            "发现机会",
+            "看今日推荐",
+            "我是内容创作者",
+            "见势解决什么问题",
             "我们怎么判断",
             "正在起势",
-            "值得做",
-            "值得讲",
+            "内容选题",
         ]:
             self.assertIn(text,index)
 
