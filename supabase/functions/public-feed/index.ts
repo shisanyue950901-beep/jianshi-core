@@ -9,8 +9,73 @@ const CORS = {
   "content-type": "application/json; charset=utf-8",
 };
 
+const RESEARCH_RULES: Record<string, { title: string; patterns: string[]; sampleDefinition: string }> = {
+  "vertical-industry-saas": {
+    title: "垂直行业软件订阅服务（SaaS）",
+    patterns: ["SaaS Business"],
+    sampleDefinition: "在售挂牌中，公开标题明确归类为 SaaS Business 的商业资产。",
+  },
+  "amazon-fba-niche-brand": {
+    title: "亚马逊物流（FBA）细分品牌",
+    patterns: ["Amazon FBA Business"],
+    sampleDefinition: "在售挂牌中，公开标题明确归类为 Amazon FBA Business 的商业资产。",
+  },
+  "digital-product-business": {
+    title: "数字产品业务",
+    patterns: ["Digital Product Business"],
+    sampleDefinition: "在售挂牌中，公开标题明确归类为 Digital Product Business 的商业资产。",
+  },
+  "affiliate-content-site": {
+    title: "联盟营销 / 内容站",
+    patterns: ["Affiliate Site", "Amazon Associates Site", "Display Advertising Site"],
+    sampleDefinition: "在售挂牌中，公开标题明确归类为 Affiliate Site、Amazon Associates Site 或 Display Advertising Site 的商业资产。",
+  },
+  "amazon-kdp-publishing": {
+    title: "亚马逊 KDP 数字出版",
+    patterns: ["Amazon KDP Business"],
+    sampleDefinition: "在售挂牌中，公开标题明确归类为 Amazon KDP Business 的商业资产。",
+  },
+  "agency-business": {
+    title: "专业服务业务（Agency）",
+    patterns: ["Agency Business"],
+    sampleDefinition: "在售挂牌中，公开标题明确归类为 Agency Business 的商业资产。",
+  },
+};
+
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: CORS });
+}
+
+function toNumber(value: unknown): number | null {
+  if (value === null || value === undefined || value === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function median(rows: any[], key: string): number | null {
+  const values = rows
+    .map((row) => toNumber(row[key]))
+    .filter((value): value is number => value !== null)
+    .sort((a, b) => a - b);
+  if (!values.length) return null;
+  const mid = Math.floor(values.length / 2);
+  if (values.length % 2) return values[mid];
+  return (values[mid - 1] + values[mid]) / 2;
+}
+
+function nicheDistribution(rows: any[]) {
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    for (const niche of Array.isArray(row.niches) ? row.niches : []) {
+      const label = String(niche || "").trim();
+      if (!label) continue;
+      counts.set(label, (counts.get(label) || 0) + 1);
+    }
+  }
+  return [...counts.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+    .slice(0, 12);
 }
 
 Deno.serve(async (req: Request) => {
@@ -94,6 +159,97 @@ Deno.serve(async (req: Request) => {
       if (error) throw error;
       const items = (data ?? []).map(({ opportunity_id, ...rest }: any) => rest);
       return json({ generated_at: new Date().toISOString(), items });
+    }
+
+    if (view === "research") {
+      const slug = (url.searchParams.get("slug") || "").trim();
+      const rule = RESEARCH_RULES[slug];
+      if (!rule) return json({ error: "RESEARCH_NOT_FOUND" }, 404);
+
+      let listingQ = db.from("marketplace_listings")
+        .select([
+          "listing_number",
+          "public_title",
+          "listing_status",
+          "listing_price",
+          "average_monthly_gross_revenue",
+          "average_monthly_net_profit",
+          "profit_margin",
+          "hours_worked_per_week",
+          "country_code",
+          "niches",
+          "first_made_money_at",
+          "source_updated_at",
+        ].join(","))
+        .eq("active", true);
+
+      if (rule.patterns.length === 1) {
+        listingQ = listingQ.ilike("public_title", `%${rule.patterns[0]}%`);
+      } else {
+        listingQ = listingQ.or(
+          rule.patterns.map((pattern) => `public_title.ilike.%${pattern}%`).join(","),
+        );
+      }
+
+      const [listingResult, sourceResult] = await Promise.all([
+        listingQ,
+        db.from("data_sources")
+          .select("name,homepage_url,access_method,last_success_at")
+          .eq("code", "empire_flippers")
+          .maybeSingle(),
+      ]);
+
+      if (listingResult.error) throw listingResult.error;
+      if (sourceResult.error) throw sourceResult.error;
+
+      const rows = listingResult.data ?? [];
+      const priced = rows.filter((row: any) => toNumber(row.listing_price) !== null);
+      const sorted = [...rows].sort((a: any, b: any) =>
+        String(b.source_updated_at || "").localeCompare(String(a.source_updated_at || ""))
+      );
+
+      return json({
+        generated_at: new Date().toISOString(),
+        slug,
+        title: rule.title,
+        sample_definition: rule.sampleDefinition,
+        evidence_source: sourceResult.data ?? {
+          name: "Empire Flippers",
+          homepage_url: "https://empireflippers.com",
+          access_method: "OFFICIAL_API",
+          last_success_at: null,
+        },
+        active_sample_count: rows.length,
+        priced_sample_count: priced.length,
+        metrics: {
+          median_asking_price: median(rows, "listing_price"),
+          median_monthly_gross_revenue: median(rows, "average_monthly_gross_revenue"),
+          median_monthly_net_profit: median(rows, "average_monthly_net_profit"),
+          median_profit_margin_pct: median(rows, "profit_margin"),
+          median_hours_worked_per_week: median(rows, "hours_worked_per_week"),
+        },
+        niche_distribution: nicheDistribution(rows),
+        samples: sorted.slice(0, 6).map((row: any) => ({
+          listing_number: row.listing_number,
+          public_title: row.public_title,
+          listing_status: row.listing_status,
+          listing_price: toNumber(row.listing_price),
+          average_monthly_gross_revenue: toNumber(row.average_monthly_gross_revenue),
+          average_monthly_net_profit: toNumber(row.average_monthly_net_profit),
+          profit_margin: toNumber(row.profit_margin),
+          hours_worked_per_week: toNumber(row.hours_worked_per_week),
+          country_code: row.country_code,
+          niches: row.niches ?? [],
+          first_made_money_at: row.first_made_money_at,
+          source_updated_at: row.source_updated_at,
+        })),
+        evidence_boundary: [
+          "财务、工时和报价字段来自挂牌方公开披露，见势未对其进行独立审计。",
+          "挂牌报价不等于最终成交价。",
+          "当前该研究分类仅来自一个独立商业来源，不构成多源商业验证。",
+          "这些样本不能用于证明团队规模、中国市场适配性、可复制性或未来收益。",
+        ],
+      });
     }
 
     if (view === "detail") {

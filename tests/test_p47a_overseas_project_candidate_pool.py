@@ -45,7 +45,7 @@ class TestP47AOverseasProjectCandidatePool(unittest.TestCase):
         by_slug={x["slug"]:x for x in self.data["candidates"]}
         self.assertEqual(by_slug["vertical-industry-saas"]["title"],"垂直行业软件订阅服务（SaaS）")
         self.assertEqual(by_slug["amazon-fba-niche-brand"]["title"],"亚马逊物流（FBA）细分品牌")
-        self.assertEqual(by_slug["agency-business"]["title"],"垂直服务型业务")
+        self.assertEqual(by_slug["agency-business"]["title"],"专业服务业务（Agency）")
         self.assertEqual(by_slug["newsletter-business"]["title"],"垂直邮件订阅媒体（Newsletter）")
         self.assertIn("language_policy",self.data)
         self.assertIn("中文优先",self.data["language_policy"]["default"])

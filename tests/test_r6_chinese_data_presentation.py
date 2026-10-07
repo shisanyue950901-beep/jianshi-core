@@ -13,10 +13,12 @@ class TestR6ChineseDataPresentation(unittest.TestCase):
         index=Path("web/dist/index.html").read_text(encoding="utf-8")
         detail=Path("web/dist/opportunity/solo-saas/index.html").read_text(encoding="utf-8")
         self.assertNotIn("Agent framework example",index)
-        self.assertNotIn("$20K Per Month SaaS Business",detail)
-        self.assertIn("技术供给证据",detail)
-        self.assertIn("商业验证",detail)
-        self.assertIn("互联网商业样本",detail)
+        # Evidence tables preserve the source's public listing title verbatim.
+        self.assertIn("$20K Per Month SaaS Business",detail)
+        self.assertIn("商业样本",detail)
+        self.assertIn("技术样本",detail)
+        self.assertIn("挂牌报价不等于成交价",detail)
+        self.assertIn("解释边界",detail)
 
 if __name__=="__main__":
     unittest.main()
