@@ -24,9 +24,9 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         )
         self.assertEqual(self.data["audience"],"寻找创业项目与方向的中国中文用户")
 
-    def test_first_four_prototypes(self):
+    def test_first_six_prototypes(self):
         items=self.data["opportunities"]
-        self.assertEqual(len(items),4)
+        self.assertEqual(len(items),6)
         self.assertEqual(
             {x["slug"] for x in items},
             {
@@ -34,13 +34,15 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
                 "amazon-fba-niche-brand",
                 "digital-product-business",
                 "affiliate-content-site",
+                "amazon-kdp-publishing",
+                "agency-business",
             },
         )
         by_slug={x["slug"]:x for x in items}
-        self.assertEqual(by_slug["vertical-industry-saas"]["status"],"值得研究")
-        self.assertEqual(by_slug["amazon-fba-niche-brand"]["status"],"值得研究")
         self.assertEqual(by_slug["digital-product-business"]["status"],"优先研究")
         self.assertEqual(by_slug["affiliate-content-site"]["status"],"优先研究")
+        self.assertEqual(by_slug["amazon-kdp-publishing"]["status"],"优先研究")
+        self.assertEqual(by_slug["agency-business"]["status"],"优先研究")
 
     def test_default_channel_matrix_is_removed(self):
         for item in self.data["opportunities"]:
@@ -49,6 +51,18 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             self.assertIn("china_screening",item)
         for token in ["抖音","小红书","B站","YouTube","TikTok"]:
             self.assertNotIn(token,self.raw)
+
+    def test_user_facing_language_is_chinese_first(self):
+        self.assertIn("language_policy",self.data)
+        self.assertIn("中文优先",self.data["language_policy"]["default"])
+        by_slug={x["slug"]:x for x in self.data["opportunities"]}
+        self.assertEqual(by_slug["vertical-industry-saas"]["title"],"垂直行业软件订阅服务（SaaS）")
+        self.assertEqual(by_slug["amazon-fba-niche-brand"]["title"],"亚马逊物流（FBA）细分品牌")
+        self.assertEqual(by_slug["amazon-kdp-publishing"]["title"],"亚马逊 KDP 数字出版")
+        self.assertEqual(by_slug["agency-business"]["title"],"垂直服务型业务")
+        titles="\n".join(x["title"] for x in self.data["opportunities"])
+        self.assertNotIn("Agency Business",titles)
+        self.assertNotIn("Amazon FBA",titles)
 
     def test_evidence_and_recommendation_stay_separate(self):
         for item in self.data["opportunities"]:
@@ -79,6 +93,8 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             "amazon-fba-niche-brand",
             "digital-product-business",
             "affiliate-content-site",
+            "amazon-kdp-publishing",
+            "agency-business",
         ]:
             page=ROOT/"web"/"dist"/"opportunity"/slug/"index.html"
             self.assertTrue(page.exists(),slug)
@@ -96,6 +112,12 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         self.assertIn("9",digital)
         self.assertIn("联盟营销 / 内容站",affiliate)
         self.assertIn("11",affiliate)
+        kdp=(ROOT/"web"/"dist"/"opportunity"/"amazon-kdp-publishing"/"index.html").read_text(encoding="utf-8")
+        agency=(ROOT/"web"/"dist"/"opportunity"/"agency-business"/"index.html").read_text(encoding="utf-8")
+        self.assertIn("亚马逊 KDP 数字出版",kdp)
+        self.assertIn("8",kdp)
+        self.assertIn("垂直服务型业务",agency)
+        self.assertIn("4",agency)
 
 
 if __name__=="__main__":
