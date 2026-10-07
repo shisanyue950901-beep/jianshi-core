@@ -19,9 +19,9 @@
       "what_it_is": "重点不是做一个功能很多的平台，而是找到一个足够具体、重复发生、有人愿意付费解决的问题，再把解决方案产品化。",
       "overseas_validation": {
         "as_of": "2026-10-07",
-        "direct_samples": 8,
+        "direct_samples": 4,
         "commercial_source_diversity": 1,
-        "evidence_scope": "公开商业样本中，主标题明确为 SaaS Business、monetization 包含 SaaS、且 niche 非空。",
+        "evidence_scope": "当前 Production 中主标题明确为 SaaS Business 的 active listing；按 listing 去重计数。",
         "observed_niches": [
           "Business",
           "Technology",
@@ -32,7 +32,7 @@
           "Digital Media"
         ],
         "conclusion": "海外市场中确实存在不同垂直领域的 SaaS 商业资产样本。",
-        "caveat": "当前商业样本来自同一来源，只能证明这种生意形态真实存在，不能视为多源验证，也不能据此推导未来收入。"
+        "caveat": "当前严格口径下有 4 个直接商业样本，来自同一商业来源。此前 8 的数字来自 niche 展开后的重复计数，已纠正；当前数字不能视为多源验证，也不能据此推导未来收入。"
       },
       "china_screening": {
         "why_relevant": "中国个人创业者可以借鉴“窄行业、窄问题、持续收费”的产品思路，而不是照搬某个海外 SaaS。",
