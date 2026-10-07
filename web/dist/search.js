@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         if(!resp.ok||data.ok===false) throw new Error(data.message||"暂时无法提交，请稍后再试。");
         status.textContent=data.message||"订阅请求已记录。";
         status.dataset.state=data.state||"ok";
-        if(["WAITLIST","CHECK_EMAIL","PENDING_CONFIRMATION","ACTIVE"].includes(data.state)) form.reset();
+        if(["WAITLIST","CHECK_EMAIL","PENDING_CONFIRMATION","CONFIRMATION_QUEUED","ACTIVE"].includes(data.state)) form.reset();
       }catch(err){
         status.textContent=err?.message||"暂时无法提交，请稍后再试。";
         status.dataset.state="error";
