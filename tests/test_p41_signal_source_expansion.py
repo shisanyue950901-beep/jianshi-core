@@ -10,6 +10,7 @@ class TestP41SignalSourceExpansion(unittest.TestCase):
         cls.cfg = json.loads(Path("config/source_expansion_v1.json").read_text(encoding="utf-8"))
         cls.doc = Path("docs/P41_SIGNAL_SOURCE_EXPANSION_AUDIT.md").read_text(encoding="utf-8")
         cls.cron = Path("db/migrations/0048_npm_signal_cron.sql").read_text(encoding="utf-8")
+        cls.fk_fix = Path("db/migrations/0049_external_signal_fk_index.sql").read_text(encoding="utf-8")
 
     def test_source_policy_is_fail_closed(self):
         c = self.cfg["first_wave"]
@@ -48,6 +49,10 @@ class TestP41SignalSourceExpansion(unittest.TestCase):
         self.assertIn("jianshi-npm-signals-6h", self.cron)
         self.assertIn("27 */6 * * *", self.cron)
         self.assertIn("jianshi_publishable_key", self.cron)
+
+    def test_external_signal_evidence_fk_is_indexed(self):
+        self.assertIn("idx_external_signal_queries_evidence_type", self.fk_fix)
+        self.assertIn("external_signal_queries(evidence_type)", self.fk_fix)
 
     def test_quality_not_source_count(self):
         self.assertFalse(self.cfg["source_count_is_kpi"])
