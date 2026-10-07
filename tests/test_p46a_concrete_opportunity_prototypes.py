@@ -65,28 +65,30 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         self.assertEqual(by_slug["vertical-industry-saas"]["title"],"垂直行业软件订阅服务（SaaS）")
         self.assertEqual(by_slug["amazon-fba-niche-brand"]["title"],"亚马逊物流（FBA）细分品牌")
         self.assertEqual(by_slug["amazon-kdp-publishing"]["title"],"亚马逊 KDP 数字出版")
-        self.assertEqual(by_slug["agency-business"]["title"],"垂直服务型业务")
+        self.assertEqual(by_slug["agency-business"]["title"],"专业服务业务（Agency）")
         titles="\n".join(x["title"] for x in self.data["opportunities"])
         self.assertNotIn("Agency Business",titles)
         self.assertNotIn("Amazon FBA",titles)
 
-    def test_evidence_and_recommendation_stay_separate(self):
+    def test_public_display_is_evidence_only(self):
+        policy=self.data["public_display_policy"]
+        self.assertEqual(policy["mode"],"EVIDENCE_ONLY")
+        self.assertIn("china_screening",policy["excluded_editorial_fields"])
+        self.assertIn("editorial_judgement",policy["excluded_editorial_fields"])
+        self.assertIn("first_validation",policy["excluded_editorial_fields"])
         for item in self.data["opportunities"]:
             ev=item["overseas_validation"]
             self.assertEqual(ev["commercial_source_diversity"],1)
             self.assertTrue(ev["caveat"])
-            self.assertTrue(item["editorial_judgement"])
-            self.assertTrue(item["china_screening"]["copy_path"])
-            self.assertTrue(item["unknowns"])
 
     def test_direct_sample_counts_match_frozen_strict_rules(self):
         by_slug={x["slug"]:x for x in self.data["opportunities"]}
         expected={
             "vertical-industry-saas":4,
-            "amazon-fba-niche-brand":69,
+            "amazon-fba-niche-brand":70,
             "digital-product-business":9,
             "affiliate-content-site":11,
-            "amazon-kdp-publishing":8,
+            "amazon-kdp-publishing":9,
             "agency-business":4,
         }
         for slug,count in expected.items():
@@ -94,6 +96,10 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         self.assertEqual(
             by_slug["amazon-fba-niche-brand"]["overseas_validation"]["observed_niche_count"],
             33,
+        )
+        self.assertEqual(
+            by_slug["amazon-kdp-publishing"]["overseas_validation"]["observed_niche_count"],
+            16,
         )
         self.assertIn(
             "挂牌项目去重计数",
@@ -127,11 +133,15 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         self.assertIn("prototype_count",self.build)
         self.assertNotIn('search.append({"slug":prototype_slug',self.build)
 
-    def test_fixture_build_renders_simplified_six_section_template(self):
+    def test_fixture_build_renders_evidence_first_template(self):
         env=dict(os.environ)
         env.pop("JIANSHI_API_URL",None)
         subprocess.run([sys.executable,str(BUILD)],cwd=ROOT,env=env,check=True,
                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        forbidden=[
+            "优先研究","值得研究","一人公司适配","适合谁","不太适合谁",
+            "可以复制什么","为什么推荐","第一轮怎么验证","风险与未知",
+        ]
         for slug in [
             "vertical-industry-saas",
             "amazon-fba-niche-brand",
@@ -143,30 +153,21 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             page=ROOT/"web"/"dist"/"opportunity"/slug/"index.html"
             self.assertTrue(page.exists(),slug)
             html=page.read_text(encoding="utf-8")
-            self.assertIn("海外已验证项目 · 中文筛选",html)
-            self.assertIn("03 · 海外真实验证",html)
-            self.assertIn("04 · 对中国用户有没有参考价值",html)
-            self.assertIn("05 · 第一轮怎么验证",html)
-            self.assertIn("06 · 风险与未知",html)
-            self.assertNotIn("渠道矩阵",html)
+            self.assertIn("MARKET EVIDENCE BRIEF",html)
+            self.assertIn("样本纳入规则",html)
+            self.assertIn("挂牌样本摘要",html)
+            self.assertIn("证据边界",html)
             self.assertIn("noindex,nofollow",html)
+            for token in forbidden:
+                self.assertNotIn(token,html,slug)
         fba=(ROOT/"web"/"dist"/"opportunity"/"amazon-fba-niche-brand"/"index.html").read_text(encoding="utf-8")
         self.assertIn("亚马逊物流（FBA）细分品牌",fba)
-        self.assertIn(">69<",fba)
-        self.assertNotIn("Production",fba)
-        self.assertNotIn("active listing",fba)
-        digital=(ROOT/"web"/"dist"/"opportunity"/"digital-product-business"/"index.html").read_text(encoding="utf-8")
-        affiliate=(ROOT/"web"/"dist"/"opportunity"/"affiliate-content-site"/"index.html").read_text(encoding="utf-8")
-        self.assertIn("数字产品业务",digital)
-        self.assertIn("9",digital)
-        self.assertIn("联盟营销 / 内容站",affiliate)
-        self.assertIn("11",affiliate)
+        self.assertIn(">70<",fba)
         kdp=(ROOT/"web"/"dist"/"opportunity"/"amazon-kdp-publishing"/"index.html").read_text(encoding="utf-8")
-        agency=(ROOT/"web"/"dist"/"opportunity"/"agency-business"/"index.html").read_text(encoding="utf-8")
         self.assertIn("亚马逊 KDP 数字出版",kdp)
-        self.assertIn("8",kdp)
-        self.assertIn("垂直服务型业务",agency)
-        self.assertIn("4",agency)
+        self.assertIn(">9<",kdp)
+        agency=(ROOT/"web"/"dist"/"opportunity"/"agency-business"/"index.html").read_text(encoding="utf-8")
+        self.assertIn("专业服务业务（Agency）",agency)
 
 
     def test_controlled_user_path_surfaces_projects_without_indexing_them(self):
@@ -178,18 +179,17 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         catalog=(ROOT/"web"/"dist"/"opportunities"/"index.html").read_text(encoding="utf-8")
         prototype_slugs=[x["slug"] for x in self.data["opportunities"]]
 
-        self.assertIn("海外已验证项目 · 中文筛选",home)
-        self.assertIn('id="validated-projects"',home)
-        self.assertIn("首批项目研究",catalog)
-        self.assertIn("趋势方向 · 辅助观察",catalog)
+        self.assertIn("先看证据",home)
+        self.assertIn("项目研究库",catalog)
+        self.assertIn("公开商业挂牌样本",catalog)
         for slug in prototype_slugs:
             href=f'/opportunity/{slug}/'
             self.assertIn(href,home,slug)
             self.assertIn(href,catalog,slug)
 
         saas=(ROOT/"web"/"dist"/"opportunity"/"vertical-industry-saas"/"index.html").read_text(encoding="utf-8")
-        self.assertIn("继续比较",saas)
-        self.assertIn("/opportunities/#validated-projects",saas)
+        self.assertIn("其他研究分类",saas)
+        self.assertIn("/opportunities/",saas)
         self.assertIn("/opportunity/digital-product-business/",saas)
 
         search=json.loads((ROOT/"web"/"dist"/"search-index.json").read_text(encoding="utf-8"))
@@ -199,10 +199,10 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             self.assertNotIn(slug,indexed_slugs)
             self.assertNotIn(f"/opportunity/{slug}/",sitemap)
 
-    def test_controlled_user_path_keeps_original_scoring_as_auxiliary_layer(self):
-        self.assertIn("趋势观察 · 辅助信号",self.build)
-        self.assertIn("四维评分保留",self.build)
-        self.assertIn("不替代具体项目研究",self.build)
+
+    def test_signal_layer_is_separate_from_market_evidence(self):
+        self.assertIn("趋势信号与商业样本分开看",self.build)
+        self.assertIn("技术热度、内容传播和系统评分保留在独立模块",self.build)
         self.assertNotIn("AUTO_OPPORTUNITY_VALIDATION",self.build)
 
 
