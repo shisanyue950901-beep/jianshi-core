@@ -9,7 +9,7 @@ class TestP412StackExchangeDemandSignals(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.sql = (ROOT / "db/migrations/0051_stackexchange_demand_queries.sql").read_text(encoding="utf-8")
-        cls.cron = (ROOT / "db/migrations/0052_stackexchange_signal_cron.sql").read_text(encoding="utf-8")
+        cls.hold = (ROOT / "db/migrations/0052_stackexchange_signal_cron.sql").read_text(encoding="utf-8")
         cls.edge = (ROOT / "supabase/functions/collect-stackexchange-signals/index.ts").read_text(encoding="utf-8")
 
     def test_queries_use_shadow_demand_evidence(self):
@@ -40,10 +40,12 @@ class TestP412StackExchangeDemandSignals(unittest.TestCase):
         self.assertNotIn("public_opportunity_catalog_v01", lower)
         self.assertIn("scoring_changed: false", self.edge)
 
-    def test_six_hour_cron(self):
-        self.assertIn("jianshi-stackexchange-signals-6h", self.cron)
-        self.assertIn("37 */6 * * *", self.cron)
-        self.assertIn("collect-stackexchange-signals", self.cron)
+    def test_low_signal_source_is_fail_closed(self):
+        self.assertIn("HOLD_LOW_SIGNAL", self.hold)
+        self.assertIn("auto_collect=false", self.hold)
+        self.assertIn("enabled=false", self.hold)
+        self.assertIn("cron.unschedule", self.hold)
+        self.assertNotIn("cron.schedule(", self.hold)
 
 
 if __name__ == "__main__":
