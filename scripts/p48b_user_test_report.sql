@@ -64,20 +64,19 @@ target_session_rollup as (
   join target_events e using(session_id)
   group by d.session_id
 ),
-target_first_detail as (
-  select distinct on (session_id)
-    session_id,
-    visitor_id,
-    opportunity_slug,
-    device_class,
-    referrer_domain,
-    utm_source,
-    utm_medium,
-    utm_campaign,
-    received_at
-  from target_events
-  where event_type='OPPORTUNITY_DETAIL_VIEW'
-  order by session_id,received_at
+target_session_acquisition as (
+  select distinct on (e.session_id)
+    e.session_id,
+    e.visitor_id,
+    e.device_class,
+    e.referrer_domain,
+    e.utm_source,
+    e.utm_medium,
+    e.utm_campaign,
+    e.received_at
+  from epoch_events e
+  join target_detail_sessions d using(session_id)
+  order by e.session_id,e.received_at,e.event_id
 ),
 per_project as (
   select
@@ -108,7 +107,7 @@ entry_source as (
 ),
 device_mix as (
   select device_class,count(*) as detail_sessions
-  from target_first_detail
+  from target_session_acquisition
   group by device_class
 ),
 acquisition_mix as (
@@ -118,7 +117,7 @@ acquisition_mix as (
     coalesce(nullif(utm_campaign,''),'(none)') as utm_campaign,
     coalesce(nullif(referrer_domain,''),'(direct/unknown)') as referrer_domain,
     count(*) as detail_sessions
-  from target_first_detail
+  from target_session_acquisition
   group by 1,2,3,4
 ),
 summary_values as (
@@ -148,6 +147,7 @@ select jsonb_build_object(
     'epoch_start',(select epoch_start from params),
     'minimum_detail_sessions_before_decision',(select minimum_detail_sessions_before_decision from params),
     'target_project_count',(select count(*) from target_slugs),
+    'acquisition_attribution','FIRST_EVENT_IN_TARGET_DETAIL_SESSION',
     'decision_state',case
       when (select target_detail_sessions from summary_values) >=
            (select minimum_detail_sessions_before_decision from params)
