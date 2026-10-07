@@ -41,6 +41,15 @@ class TestP47AOverseasProjectCandidatePool(unittest.TestCase):
         }
         self.assertEqual({k:by_slug[k]["direct_samples"] for k in expected},expected)
 
+    def test_candidate_titles_are_chinese_first(self):
+        by_slug={x["slug"]:x for x in self.data["candidates"]}
+        self.assertEqual(by_slug["vertical-industry-saas"]["title"],"垂直行业软件订阅服务（SaaS）")
+        self.assertEqual(by_slug["amazon-fba-niche-brand"]["title"],"亚马逊物流（FBA）细分品牌")
+        self.assertEqual(by_slug["agency-business"]["title"],"垂直服务型业务")
+        self.assertEqual(by_slug["newsletter-business"]["title"],"垂直邮件订阅媒体（Newsletter）")
+        self.assertIn("language_policy",self.data)
+        self.assertIn("中文优先",self.data["language_policy"]["default"])
+
     def test_one_person_is_editorial_not_source_fact(self):
         self.assertIn("仅为见势编辑筛选",self.data["one_person_rule"])
         self.assertEqual(self.data["evidence_source_diversity"],1)
