@@ -54,7 +54,8 @@ class TestP45BChildEvidenceMapping(unittest.TestCase):
         lower=self.sql.lower()
         self.assertNotIn("opportunity_rank_current",lower)
         self.assertNotIn("public_opportunity_catalog_v01",lower)
-        self.assertNotIn("public_ready",lower)
+        self.assertNotIn("create or replace view public_opportunity_catalog_v01",lower)
+        self.assertNotIn("update opportunities set",lower)
         self.assertIn("P4.5B does not create a Production schedule",self.sql)
 
     def test_no_cron(self):
