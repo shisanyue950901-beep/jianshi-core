@@ -9,6 +9,7 @@ DIST=ROOT/"dist"
 COMPAT_DIRS=[REPO_ROOT/"dist", REPO_ROOT/"public"]
 STATIC=ROOT/"static"
 FIXTURE=ROOT/"fixtures"/"api.json"
+CONCRETE_PROTOTYPES=REPO_ROOT/"content"/"p46a_concrete_opportunity_prototypes.json"
 API=os.getenv("JIANSHI_API_URL","").strip().rstrip("/")
 SITE=os.getenv("JIANSHI_SITE_URL","https://jianshi-bua.pages.dev").strip().rstrip("/")
 NEWSLETTER_API=os.getenv("JIANSHI_NEWSLETTER_URL","").strip().rstrip("/")
@@ -557,6 +558,142 @@ def github_acceleration_block(acc):
 <p>这组数据来自见势连续 GitHub 快照，只用于解释技术侧是否还在加速，不替代真实商业证据。</p>
 </section>"""
 
+def bullet_list(items):
+    values=[x for x in (items or []) if x]
+    if not values:
+        return '<p class="unknown-note">当前没有足够信息。</p>'
+    return '<ul class="research-list">'+''.join(f'<li>{esc(x)}</li>' for x in values)+'</ul>'
+
+def channel_matrix(rows):
+    if not rows:
+        return '<p class="unknown-note">渠道仍待编辑审查。</p>'
+    body=[]
+    for row in rows:
+        china="、".join(row.get("china") or []) or "—"
+        overseas="、".join(row.get("overseas") or []) or "—"
+        body.append(
+            '<tr>'
+            f'<th>{esc(row.get("goal") or "")}</th>'
+            f'<td>{esc(china)}</td>'
+            f'<td>{esc(overseas)}</td>'
+            f'<td>{esc(row.get("note") or "")}</td>'
+            '</tr>'
+        )
+    return (
+        '<div class="channel-table-wrap"><table class="channel-table">'
+        '<thead><tr><th>目标</th><th>中国渠道</th><th>海外渠道</th><th>怎么理解</th></tr></thead>'
+        '<tbody>'+''.join(body)+'</tbody></table></div>'
+    )
+
+def build_concrete_prototype(x, global_disclaimer):
+    evidence=x.get("evidence") or {}
+    china=x.get("china_view") or {}
+    direct=evidence.get("direct_samples")
+    source_div=evidence.get("commercial_source_diversity")
+    niche_bits=[]
+    if evidence.get("observed_niche_count") is not None:
+        niche_bits.append(f'{fmt_int(evidence.get("observed_niche_count"))} 个公开细分类目')
+    observed=evidence.get("observed_niches") or []
+    if observed:
+        niche_bits.append("样本涉及："+ "、".join(str(v) for v in observed[:9]))
+    niche_note="；".join(niche_bits) if niche_bits else "当前样本覆盖多个公开分类。"
+
+    body=f"""<main class="wrap">
+<section class="detail-hero concrete-hero">
+<span class="badge validate">{esc(x.get("status") or "值得研究")}</span>
+<span class="detail-status">具体创业机会 · 中文用户研究样板</span>
+<h1>{esc(x.get("title"))}</h1>
+<p class="lead">{esc(x.get("one_liner") or "")}</p>
+<div class="decision-note">{esc(x.get("user_question") or "")}</div>
+</section>
+
+<div class="detail-grid"><div>
+<section class="panel verdict-panel">
+<span class="section-kicker">01 · 当前判断</span>
+<h2>{esc(x.get("editorial_judgement") or "")}</h2>
+<p>{esc(global_disclaimer)}</p>
+</section>
+
+<section class="panel">
+<span class="section-kicker">02 · 这是一个什么项目</span>
+<h2>先把生意讲清楚，再谈风口。</h2>
+<p>{esc(x.get("what_it_is") or "")}</p>
+<div class="kv">
+<div>谁会买单</div><div>{esc("、".join(x.get("who_pays") or []) or "—")}</div>
+<div>怎么赚钱</div><div>{esc("、".join(x.get("revenue_models") or []) or "—")}</div>
+<div>母赛道</div><div>{esc(x.get("parent_track") or "—")}</div>
+</div>
+</section>
+
+<section class="panel">
+<span class="section-kicker">03 · 当前真实证据</span>
+<h2>先证明这种生意真实存在。</h2>
+<div class="evidence-facts">
+<div><b>{fmt_int(direct)}</b><span>直接商业样本</span></div>
+<div><b>{fmt_int(source_div)}</b><span>商业来源种类</span></div>
+<div><b>{esc(evidence.get("as_of") or "—")}</b><span>证据快照日期</span></div>
+</div>
+<p><strong>识别口径：</strong>{esc(evidence.get("direct_sample_definition") or "—")}</p>
+<p>{esc(niche_note)}</p>
+<div class="disclosure">{esc(evidence.get("caveat") or "")}</div>
+</section>
+
+<section class="panel">
+<span class="section-kicker">04 · 中国创业者视角</span>
+<h2>不是把海外案例直接翻译成中文。</h2>
+<div class="kv">
+<div>当前适配判断</div><div>{esc(china.get("fit") or "—")}</div>
+<div>做中国市场</div><div>{esc(china.get("domestic") or "—")}</div>
+<div>做出海市场</div><div>{esc(china.get("outbound") or "—")}</div>
+<div>路线建议</div><div>{esc(china.get("route_advice") or "—")}</div>
+</div>
+</section>
+
+<section class="panel">
+<span class="section-kicker">05 · 渠道矩阵</span>
+<h2>抖音、YouTube 都要看，但用途不能混在一起。</h2>
+<p class="channel-intro">下面是见势的编辑建议，不是平台效果承诺。尤其是国内内容热度不能替代海外购买需求，播放量也不能替代真实转化。</p>
+{channel_matrix(x.get("channel_matrix") or [])}
+</section>
+
+<section class="panel">
+<span class="section-kicker">06 · 第一轮怎么验证</span>
+<h2>先验证问题和付费，再增加投入。</h2>
+{bullet_list(x.get("first_validation") or [])}
+</section>
+
+<section class="panel">
+<span class="section-kicker">07 · 风险与未知</span>
+<h2>哪些事情现在还不能替你下结论？</h2>
+<h3>主要风险</h3>
+{bullet_list(x.get("risks") or [])}
+<h3>当前未知</h3>
+{bullet_list(x.get("unknowns") or [])}
+</section>
+</div>
+
+<aside>
+<section class="panel concrete-aside">
+<h3>怎么看这份研究？</h3>
+<div class="kv">
+<div>当前状态</div><div>{esc(x.get("status") or "值得研究")}</div>
+<div>目标用户</div><div>中国中文创业者</div>
+<div>证据口径</div><div>事实与编辑建议分开</div>
+<div>商业来源</div><div>{fmt_int(source_div)} 类</div>
+</div>
+</section>
+<div class="disclosure">当前页面是具体机会研究样板，尚未进入“值得做”状态。不会用单一数据源、挂牌价或内容热度推导收益结论。</div>
+</aside></div>
+</main>"""
+    slug=str(x.get("slug") or "").strip()
+    return shell(
+        f'{esc(x.get("title"))}｜见势具体机会研究',
+        body,
+        x.get("one_liner") or "见势具体创业机会研究",
+        canonical_path=f"/opportunity/{slug}/",
+        robots="noindex,nofollow",
+    )
+
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
     label,cls=decision_label(x)
@@ -644,6 +781,23 @@ def main():
     account_out.mkdir(parents=True,exist_ok=True)
     (account_out/"index.html").write_text(build_account_page(),encoding="utf-8")
     search=[]
+
+    prototype_count=0
+    if CONCRETE_PROTOTYPES.exists():
+        prototype_data=json.loads(CONCRETE_PROTOTYPES.read_text(encoding="utf-8"))
+        prototype_disclaimer=prototype_data.get("disclaimer") or ""
+        for prototype in prototype_data.get("opportunities") or []:
+            prototype_slug=str(prototype.get("slug") or "").strip()
+            if not prototype_slug:
+                continue
+            prototype_out=DIST/"opportunity"/prototype_slug
+            prototype_out.mkdir(parents=True,exist_ok=True)
+            (prototype_out/"index.html").write_text(
+                build_concrete_prototype(prototype,prototype_disclaimer),
+                encoding="utf-8",
+            )
+            prototype_count+=1
+
     for item in catalog:
         slug=item.get("slug")
         if not slug: continue
@@ -685,8 +839,9 @@ def main():
     print(json.dumps({
         "status":"PASS",
         "api":"live" if API else "fixture",
-        "pages":7+len(search),
+        "pages":7+len(search)+prototype_count,
         "opportunities":len(catalog),
+        "prototype_opportunities":prototype_count,
         "outputs":["web/dist","dist","public","repo-root-runtime"]
     },ensure_ascii=False))
 
