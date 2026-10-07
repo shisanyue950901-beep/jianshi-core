@@ -62,6 +62,15 @@ const CATEGORY_RULES: Array<[string,RegExp]> = [
   ["DEVTOOLS",/\b(cli|sdk|developer tool|testing|debug|api client|codegen|linter|formatter)\b/i],
 ];
 
+const EXPANSION_CATEGORIES = new Set([
+  "AUTOMATION",
+  "DATA_ANALYTICS",
+  "SAAS_INFRA",
+  "ECOMMERCE",
+  "CREATOR_MEDIA",
+  "MARKETING_GROWTH",
+]);
+
 function candidateCategories(info:Record<string,any>):string[] {
   const text=[
     info.name,info.summary,
@@ -69,6 +78,71 @@ function candidateCategories(info:Record<string,any>):string[] {
     ...(Array.isArray(info.classifiers)?info.classifiers:[]),
   ].filter(Boolean).join(" ");
   return CATEGORY_RULES.filter(([,re])=>re.test(text)).map(([name])=>name);
+}
+
+function canonicalGithubFullName(urlValue:unknown):string|null {
+  if(typeof urlValue!=="string") return null;
+  try{
+    const u=new URL(urlValue);
+    if(u.hostname.toLowerCase()!=="github.com") return null;
+    const parts=u.pathname.split("/").filter(Boolean);
+    if(parts.length<2) return null;
+    const owner=parts[0];
+    const repo=parts[1].replace(/\.git$/i,"");
+    if(!owner||!repo) return null;
+    return `${owner}/${repo}`;
+  }catch{
+    return null;
+  }
+}
+
+function githubFullName(projectUrls:Record<string,unknown>):string|null {
+  for(const value of Object.values(projectUrls)){
+    const full=canonicalGithubFullName(value);
+    if(full) return full;
+  }
+  return null;
+}
+
+function hasNonGithubProjectUrl(projectUrls:Record<string,unknown>):boolean {
+  for(const value of Object.values(projectUrls)){
+    if(typeof value!=="string") continue;
+    try{
+      const u=new URL(value);
+      const host=u.hostname.toLowerCase();
+      if(host!=="github.com" && host!=="pypi.org" && !host.endsWith(".pypi.org")) return true;
+    }catch{}
+  }
+  return false;
+}
+
+function maturityPoints(classifiers:string[]):number {
+  const text=classifiers.join(" | ");
+  if(/Development Status :: (5 - Production\/Stable|6 - Mature)/i.test(text)) return 2;
+  if(/Development Status :: 4 - Beta/i.test(text)) return 1;
+  return 0;
+}
+
+function candidateQuality(
+  categories:string[],
+  classifiers:string[],
+  keywordCount:number,
+  hasNonGithub:boolean,
+):{score:number,priority:"HIGH"|"MEDIUM"|"LOW",match:boolean} {
+  let score=0;
+  const hasExpansion=categories.some((x)=>EXPANSION_CATEGORIES.has(x));
+  const hasAi=categories.includes("AI_AGENT");
+  const hasDevtools=categories.includes("DEVTOOLS");
+
+  if(hasExpansion) score+=3;
+  if(hasNonGithub) score+=2;
+  if(hasAi && !hasExpansion) score+=1;
+  if(hasDevtools && !hasExpansion) score+=1;
+  score+=maturityPoints(classifiers);
+  if(keywordCount>=3) score+=1;
+
+  const priority: "HIGH"|"MEDIUM"|"LOW" = score>=6 ? "HIGH" : score>=4 ? "MEDIUM" : "LOW";
+  return {score,priority,match:score>=4};
 }
 
 async function fetchJson(name:string):Promise<any> {
@@ -192,15 +266,19 @@ Deno.serve(async (req:Request)=>{
         const info=payload.info as Record<string,any>;
         const name=String(info.name);
         const categories=candidateCategories(info);
-        const projectUrls=(info.project_urls&&typeof info.project_urls==="object")
+        const rawProjectUrls=(info.project_urls&&typeof info.project_urls==="object")
           ? Object.fromEntries(Object.entries(info.project_urls).slice(0,12))
           : {};
+        const projectUrls=rawProjectUrls as Record<string,unknown>;
         const classifiers=Array.isArray(info.classifiers)
           ? info.classifiers.filter((x:any)=>typeof x==="string").slice(0,25)
           : [];
         const keywordCount=Array.isArray(info.keywords)
           ? info.keywords.length
           : (typeof info.keywords==="string"&&info.keywords.trim()?info.keywords.split(/[ ,]+/).filter(Boolean).length:0);
+        const ghFullName=githubFullName(projectUrls);
+        const hasNonGithub=hasNonGithubProjectUrl(projectUrls);
+        const quality=candidateQuality(categories,classifiers,keywordCount,hasNonGithub);
 
         normalized.push({
           source_external_id:name,
@@ -214,11 +292,20 @@ Deno.serve(async (req:Request)=>{
             project_urls:projectUrls,
             keyword_count:keywordCount,
             candidate_categories:categories,
-            candidate_match:categories.length>0,
+            candidate_quality_score:quality.score,
+            candidate_priority:quality.priority,
+            candidate_match:quality.match,
+            github_full_name:ghFullName,
+            has_non_github_project_url:hasNonGithub,
             full_description_stored:false,
             deprecated_downloads_used:false,
           },
           candidate_categories:categories,
+          candidate_quality_score:quality.score,
+          candidate_priority:quality.priority,
+          candidate_match:quality.match,
+          github_full_name:ghFullName,
+          has_non_github_project_url:hasNonGithub,
         });
       }
 
@@ -228,6 +315,28 @@ Deno.serve(async (req:Request)=>{
     const successRate=metadataAttempts?metadataSuccess/metadataAttempts:0;
     if(normalized.length<20||successRate<0.80){
       throw new Error(`QUALITY_GATE_FAILED normalized=${normalized.length} metadata_success_rate=${successRate.toFixed(3)}`);
+    }
+
+    const {data:currentGithub,error:githubError}=await admin
+      .from("github_repositories")
+      .select("full_name");
+    if(githubError) throw githubError;
+
+    const currentGithubSet=new Set(
+      (currentGithub??[])
+        .map((x:any)=>String(x.full_name||"").toLowerCase())
+        .filter(Boolean)
+    );
+
+    for(const row of normalized){
+      const full=String(row.github_full_name||"").toLowerCase();
+      const overlap=Boolean(full&&currentGithubSet.has(full));
+      row.github_overlap_current_corpus=overlap;
+      row.cross_source_role=overlap
+        ? "TECHNICAL_ECOSYSTEM_CONFIRMATION"
+        : "TECHNICAL_DISCOVERY";
+      row.metadata.github_overlap_current_corpus=overlap;
+      row.metadata.cross_source_role=row.cross_source_role;
     }
 
     const entityRows=normalized.map((row)=>({
@@ -270,18 +379,29 @@ Deno.serve(async (req:Request)=>{
       const entityId=idByName.get(String(row.source_external_id).toLowerCase());
       if(!entityId) continue;
       const metrics={
-        candidate_match:row.candidate_categories.length>0?1:0,
+        candidate_match:row.candidate_match?1:0,
         candidate_category_count:row.candidate_categories.length,
+        candidate_quality_score:row.candidate_quality_score,
+        github_overlap_current_corpus:row.github_overlap_current_corpus?1:0,
+        has_non_github_project_url:row.has_non_github_project_url?1:0,
       };
       snapshots.push({
         entity_id:entityId,
         source_id:source.source_id,
         observed_at:new Date().toISOString(),
-        snapshot_hash:await sha256({version:row.metadata.latest_version,categories:row.candidate_categories}),
+        snapshot_hash:await sha256({
+          version:row.metadata.latest_version,
+          categories:row.candidate_categories,
+          quality:row.candidate_quality_score,
+          overlap:row.github_overlap_current_corpus,
+        }),
         metrics,
         metadata:{
           latest_version:row.metadata.latest_version,
           candidate_categories:row.candidate_categories,
+          candidate_priority:row.candidate_priority,
+          github_full_name:row.github_full_name,
+          cross_source_role:row.cross_source_role,
           full_description_stored:false,
           deprecated_downloads_used:false,
         },
@@ -296,11 +416,19 @@ Deno.serve(async (req:Request)=>{
       newSnapshots=inserted?.length??0;
     }
 
-    const candidateCount=normalized.filter((x)=>x.candidate_categories.length>0).length;
+    const candidates=normalized.filter((x)=>x.candidate_match);
+    const candidateCount=candidates.length;
     const categoryCounts:Record<string,number>={};
+    const priorityCounts:Record<string,number>={HIGH:0,MEDIUM:0,LOW:0};
     for(const row of normalized){
       for(const cat of row.candidate_categories) categoryCounts[cat]=(categoryCounts[cat]??0)+1;
+      priorityCounts[row.candidate_priority]=(priorityCounts[row.candidate_priority]??0)+1;
     }
+    const exactOverlap=normalized.filter((x)=>x.github_overlap_current_corpus).length;
+    const githubLinkedNew=normalized.filter((x)=>x.github_full_name&&!x.github_overlap_current_corpus).length;
+    const candidateExactOverlap=candidates.filter((x)=>x.github_overlap_current_corpus).length;
+    const candidateGithubLinkedNew=candidates.filter((x)=>x.github_full_name&&!x.github_overlap_current_corpus).length;
+    const candidateNonGithub=candidates.filter((x)=>x.has_non_github_project_url).length;
 
     await admin.from("pipeline_runs").update({
       status:"SUCCESS",
@@ -318,11 +446,17 @@ Deno.serve(async (req:Request)=>{
         candidate_count:candidateCount,
         candidate_match_rate:Number((candidateCount/normalized.length).toFixed(4)),
         candidate_categories:categoryCounts,
+        priority_counts:priorityCounts,
+        exact_github_overlap:exactOverlap,
+        github_linked_not_in_current_corpus:githubLinkedNew,
+        candidate_exact_github_overlap:candidateExactOverlap,
+        candidate_github_linked_not_in_current_corpus:candidateGithubLinkedNew,
+        candidate_with_non_github_project_url:candidateNonGithub,
         new_snapshots:newSnapshots,
         bigquery_used:false,
         package_content_stored:false,
         deprecated_json_downloads_used:false,
-        source_role:"TECHNICAL_SUPPLY_DISCOVERY_SHADOW_ONLY",
+        source_role:"TECHNICAL_DISCOVERY_OR_ECOSYSTEM_CONFIRMATION_SHADOW_ONLY",
         scoring_changed:false,
       },
     }).eq("id",run.id);
@@ -338,6 +472,12 @@ Deno.serve(async (req:Request)=>{
       candidate_count:candidateCount,
       candidate_match_rate:Number((candidateCount/normalized.length).toFixed(4)),
       candidate_categories:categoryCounts,
+      priority_counts:priorityCounts,
+      exact_github_overlap:exactOverlap,
+      github_linked_not_in_current_corpus:githubLinkedNew,
+      candidate_exact_github_overlap:candidateExactOverlap,
+      candidate_github_linked_not_in_current_corpus:candidateGithubLinkedNew,
+      candidate_with_non_github_project_url:candidateNonGithub,
       new_snapshots:newSnapshots,
       bigquery_used:false,
       package_content_stored:false,
