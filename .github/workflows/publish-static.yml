@@ -14,6 +14,7 @@ on:
       - account.js
       - search-index.json
       - opportunity/**
+      - opportunities/**
       - today/**
       - rising/**
       - build/**
@@ -53,6 +54,7 @@ jobs:
           test -f dist/index.html
           test -f public/index.html
           test -f index.html
+          test -f opportunities/index.html
           test -f today/index.html
           test -f rising/index.html
           test -f build/index.html
@@ -63,14 +65,17 @@ jobs:
           test -f sitemap.xml
           test -f robots.txt
           grep -q "见势" index.html
-          grep -q "筛出真正值得行动的机会" index.html
+          grep -q "发现下一个值得做的项目" index.html
+          grep -q "把值得研究的项目放到一张桌面上" opportunities/index.html
+          grep -q "01 · 决策摘要" opportunity/solo-saas/index.html
+          grep -q "06 · 证据与来源" opportunity/solo-saas/index.html
           grep -q "账户功能正在完成最后的邮件登录配置" account/index.html
 
       - name: Commit generated snapshot
         run: |
           git config user.name "jianshi-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html 404.html styles.css search.js account.js search-index.json sitemap.xml robots.txt opportunity today rising build content privacy account dist public
+          git add index.html 404.html styles.css search.js account.js search-index.json sitemap.xml robots.txt opportunity opportunities today rising build content privacy account dist public
           git add -f web/dist
           if git diff --cached --quiet; then
             echo "STATIC_SNAPSHOT_NO_CHANGE"
