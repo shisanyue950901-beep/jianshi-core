@@ -1,0 +1,47 @@
+name: JianShi Database Backup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 18 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    if: ${{ vars.JIANSHI_DB_BACKUP_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Create encrypted database backup
+        env:
+          JIANSHI_DATABASE_URL: ${{ secrets.JIANSHI_DATABASE_URL }}
+          BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.JIANSHI_BACKUP_PASSPHRASE }}
+        run: bash ops/db/backup_postgres.sh
+
+      - name: Verify encrypted backup
+        env:
+          BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.JIANSHI_BACKUP_PASSPHRASE }}
+        run: |
+          file="$(ls backup-output/*.dump.enc | head -n 1)"
+          manifest="${file%.dump.enc}.sha256"
+          bash ops/db/verify_backup.sh "$file" "$manifest"
+
+      - name: Upload private backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jianshi-db-backup-${{ github.run_id }}
+          path: |
+            backup-output/*.dump.enc
+            backup-output/*.sha256
+          retention-days: 30
+          if-no-files-found: error
