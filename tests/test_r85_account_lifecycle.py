@@ -27,8 +27,10 @@ class TestR85AccountLifecycle(unittest.TestCase):
             "mark_my_alert_read_v01",
         ]:
             self.assertIn(token,js)
-        self.assertIn('$$(["[data-alert-id]"])'.replace('["','"').replace('"]','"'),js)
-        self.assertNotIn('$(["[data-alert-id]"]).forEach'.replace('["','"').replace('"]','"'),js)
+        self.assertIn('document.querySelectorAll("[data-alert-id]")',js)
+        self.assertIn('document.querySelectorAll("[data-remove-kind]")',js)
+        self.assertNotIn('$("[data-alert-id]").forEach',js)
+        self.assertNotIn('$("[data-remove-kind]").forEach',js)
 
     def test_enabled_account_has_management_ui(self):
         env=os.environ.copy()
