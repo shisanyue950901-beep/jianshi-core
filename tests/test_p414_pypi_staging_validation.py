@@ -39,6 +39,20 @@ class TestP414PyPIStagingValidation(unittest.TestCase):
         self.assertNotIn("opportunity_rank_current",lower)
         self.assertNotIn("public_opportunity_catalog_v01",lower)
 
+    def test_quality_filter_prioritizes_business_breadth(self):
+        self.assertIn("EXPANSION_CATEGORIES", self.edge)
+        self.assertIn("candidateQuality", self.edge)
+        self.assertIn("candidate_quality_score", self.edge)
+        self.assertIn('priority:"HIGH"|"MEDIUM"|"LOW"', self.edge)
+        self.assertIn("score>=4", self.edge)
+
+    def test_github_cross_evidence_is_exact_not_url_presence(self):
+        self.assertIn("github_repositories", self.edge)
+        self.assertIn("github_overlap_current_corpus", self.edge)
+        self.assertIn("TECHNICAL_ECOSYSTEM_CONFIRMATION", self.edge)
+        self.assertIn("TECHNICAL_DISCOVERY", self.edge)
+        self.assertIn("candidate_github_linked_not_in_current_corpus", self.edge)
+
     def test_no_cron_in_staging_experiment(self):
         self.assertNotIn("cron.schedule",self.sql.lower())
         self.assertNotIn("cron.schedule",self.edge.lower())
