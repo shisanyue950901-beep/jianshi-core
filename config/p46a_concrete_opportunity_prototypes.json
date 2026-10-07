@@ -342,7 +342,7 @@
     },
     {
       "slug": "agency-business",
-      "title": "垂直服务型业务",
+      "title": "专业服务业务（Agency）",
       "status": "优先研究",
       "project_type": "专业服务 / 小团队服务",
       "one_liner": "围绕一个明确客户群和具体业务问题提供专业服务，并通过流程标准化、长期合同或团队协作形成可持续业务。",
@@ -414,5 +414,27 @@
       "邮件订阅媒体（Newsletter）",
       "无货源代发（Dropshipping）"
     ]
+  },
+  "public_display_policy": {
+    "mode": "EVIDENCE_ONLY",
+    "public_fields": [
+      "样本纳入规则",
+      "当前在售样本",
+      "独立商业来源",
+      "挂牌披露财务",
+      "挂牌披露工时",
+      "来源分类",
+      "公开样本记录",
+      "证据边界"
+    ],
+    "excluded_editorial_fields": [
+      "status",
+      "editorial_judgement",
+      "china_screening",
+      "first_validation",
+      "risks",
+      "unknowns"
+    ],
+    "rule": "缺少明确来源支持的编辑判断不得进入公开研究主界面。"
   }
 }
