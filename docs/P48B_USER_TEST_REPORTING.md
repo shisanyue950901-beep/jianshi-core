@@ -59,6 +59,20 @@ Epoch 起点采用 P4.8A Static Snapshot #69 完成并已确认线上生效后�
 
 这里不直接使用全站 SECOND_OPPORTUNITY_VIEW 作为分子，而是从首批 6 个项目的真实 detail view 重新计算，避免旧趋势页混入。
 
+## 来源归因规则
+
+UTM / referrer 不从详情页事件本身读取，而从“最终进入首批项目详情的 session 的第一个事件”读取。
+
+原因：用户常常先访问带 UTM 的首页，再点击内部链接进入详情页。内部跳转后的详情 URL 不再携带 UTM；如果只看详情事件，会错误地把这类流量记成无来源。
+
+冻结规则：
+
+```text
+ACQUISITION_ATTRIBUTION = FIRST_EVENT_IN_TARGET_DETAIL_SESSION
+```
+
+这样首页、机会库或直接详情落地都能按 session 的原始入口归因。
+
 ## 辅助诊断
 
 报告同时输出：
