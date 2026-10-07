@@ -8,6 +8,7 @@ class TestP45BChildEvidenceMapping(unittest.TestCase):
     def setUpClass(cls):
         cls.sql=(ROOT/"db/migrations/0055_child_evidence_mapping_shadow.sql").read_text(encoding="utf-8")
         cls.doc=(ROOT/"docs/P45B_CHILD_EVIDENCE_MAPPING_STAGING.md").read_text(encoding="utf-8")
+        cls.fk=(ROOT/"db/migrations/0056_child_evidence_mapping_fk_indexes.sql").read_text(encoding="utf-8")
 
     def test_internal_shadow_tables_exist(self):
         for name in [
@@ -57,6 +58,11 @@ class TestP45BChildEvidenceMapping(unittest.TestCase):
         self.assertNotIn("create or replace view public_opportunity_catalog_v01",lower)
         self.assertNotIn("update opportunities set",lower)
         self.assertIn("P4.5B does not create a Production schedule",self.sql)
+
+    def test_foreign_keys_have_covering_indexes(self):
+        self.assertIn("idx_child_registry_parent_opportunity", self.fk)
+        self.assertIn("idx_child_evidence_matches_rule_id", self.fk)
+        self.assertIn("idx_child_evidence_matches_source_id", self.fk)
 
     def test_no_cron(self):
         self.assertNotIn("cron.schedule",self.sql.lower())
