@@ -49,6 +49,9 @@ if(cfg.enabled&&cfg.url&&cfg.key){
       const item=document.createElement("a");
       item.className="account-list-item";
       item.href=row.slug?"/opportunity/"+encodeURIComponent(String(row.slug))+"/":"#";
+      if(kind==="alerts"&&row.alert_id!=null){
+        item.dataset.alertId=String(row.alert_id);
+      }
 
       const main=document.createElement("div");
       main.appendChild(textNode("b",row.headline_zh||row.title||"未命名"));
@@ -102,6 +105,18 @@ if(cfg.enabled&&cfg.url&&cfg.key){
     renderRows(container,result.data||[],"alerts");
   }
 
+  function bindAlertRead(){
+    $("[data-alert-id]").forEach((node)=>{
+      node.addEventListener("click",async()=>{
+        const id=Number(node.dataset.alertId||0);
+        if(!id) return;
+        try{
+          await supabase.rpc("mark_my_alert_read_v01",{p_alert_id:id});
+        }catch(_err){}
+      },{once:true});
+    });
+  }
+
   async function renderAccount(session){
     const loggedOut=$("[data-auth-logged-out]");
     const loggedIn=$("[data-auth-logged-in]");
@@ -125,6 +140,7 @@ if(cfg.enabled&&cfg.url&&cfg.key){
     }
 
     await Promise.all([loadSaved(),loadWatch(),loadAlerts()]);
+    bindAlertRead();
   }
 
   const form=$("[data-auth-email-form]");
@@ -185,10 +201,9 @@ if(cfg.enabled&&cfg.url&&cfg.key){
 
       button.disabled=true;
       setStatus(status,"正在收藏…","loading");
-      const result=await supabase.from("saved_opportunities").upsert(
-        {user_id:session.user.id,opportunity_id:button.dataset.saveOpportunity},
-        {onConflict:"user_id,opportunity_id"}
-      );
+      const result=await supabase.rpc("save_my_opportunity_v01",{
+        p_opportunity_id:button.dataset.saveOpportunity
+      });
       button.disabled=false;
       setStatus(status,result.error?"收藏失败，请稍后重试。":"已收藏到我的见势。",result.error?"error":"ok");
     });
@@ -204,23 +219,9 @@ if(cfg.enabled&&cfg.url&&cfg.key){
       button.disabled=true;
       setStatus(status,"正在加入观察…","loading");
 
-      const listResult=await supabase
-        .from("watchlists")
-        .select("id")
-        .eq("is_default",true)
-        .limit(1)
-        .maybeSingle();
-
-      if(listResult.error||!listResult.data||!listResult.data.id){
-        button.disabled=false;
-        setStatus(status,"默认观察清单不可用，请稍后重试。","error");
-        return;
-      }
-
-      const result=await supabase.from("watchlist_items").upsert(
-        {watchlist_id:listResult.data.id,opportunity_id:button.dataset.watchOpportunity},
-        {onConflict:"watchlist_id,opportunity_id"}
-      );
+      const result=await supabase.rpc("watch_my_opportunity_v01",{
+        p_opportunity_id:button.dataset.watchOpportunity
+      });
       button.disabled=false;
       setStatus(status,result.error?"加入观察失败，请稍后重试。":"已加入观察清单。",result.error?"error":"ok");
     });
