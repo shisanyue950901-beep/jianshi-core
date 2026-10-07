@@ -773,6 +773,309 @@ def build_detail(data):
         x.get("thesis") or "见势机会研究",
         canonical_path=canonical_path,
     )
+
+# P4.9 evidence-first public research UI.
+# User-facing research pages deliberately exclude editorial suitability, replication,
+# recommendation and execution advice unless backed by explicit source evidence.
+_RESEARCH_CACHE={}
+
+def _research_fallback(item):
+    evidence=item.get("overseas_validation") or {}
+    return {
+        "slug":item.get("slug"),
+        "title":item.get("title"),
+        "sample_definition":evidence.get("evidence_scope") or "当前暂无可公开的样本纳入规则。",
+        "evidence_source":{
+            "name":"Empire Flippers",
+            "homepage_url":"https://empireflippers.com",
+            "access_method":"OFFICIAL_API",
+            "last_success_at":evidence.get("as_of"),
+        },
+        "active_sample_count":evidence.get("direct_samples"),
+        "priced_sample_count":None,
+        "metrics":{
+            "median_asking_price":None,
+            "median_monthly_gross_revenue":None,
+            "median_monthly_net_profit":None,
+            "median_profit_margin_pct":None,
+            "median_hours_worked_per_week":None,
+        },
+        "niche_distribution":[],
+        "samples":[],
+        "evidence_boundary":[
+            "当前构建环境仅加载已冻结的样本数量，详细财务与原始样本记录需由生产研究接口提供。",
+            "挂牌报价不等于最终成交价。",
+            "当前该研究分类仅来自一个独立商业来源。",
+            "这些样本不能用于证明团队规模、中国市场适配性、可复制性或未来收益。",
+        ],
+    }
+
+def research_for(item):
+    slug=str(item.get("slug") or "").strip()
+    if not slug:
+        return _research_fallback(item)
+    if slug in _RESEARCH_CACHE:
+        return _RESEARCH_CACHE[slug]
+    data=None
+    if API:
+        try:
+            data=api_get("research",slug=slug)
+        except Exception:
+            data=None
+    if not isinstance(data,dict) or not data.get("slug"):
+        data=_research_fallback(item)
+    _RESEARCH_CACHE[slug]=data
+    return data
+
+def _source_method(value):
+    return {
+        "OFFICIAL_API":"官方 API",
+        "PUBLIC_API":"公开 API",
+        "PUBLIC_WEB":"公开网页",
+    }.get(str(value or "").upper(),str(value or "—"))
+
+def _fmt_research_time(value):
+    if not value:
+        return "—"
+    s=str(value).replace("T"," ")
+    return s[:16]+" UTC" if len(s)>=16 else s
+
+def _metric(value, kind="number"):
+    if value in (None,""):
+        return "—"
+    if kind=="money":
+        return fmt_money(value)
+    if kind=="pct":
+        try:return f"{float(value):.1f}%"
+        except:return "—"
+    if kind=="hours":
+        try:return f"{float(value):.1f} h"
+        except:return "—"
+    return fmt_int(value)
+
+def shell(title, body, description="见势：基于公开商业市场数据的项目研究。", canonical_path="/", robots="index,follow"):
+    canonical=SITE + (canonical_path if canonical_path.startswith("/") else "/"+canonical_path)
+    account_nav='<a href="/account/">账户</a>' if AUTH_ENABLED else ''
+    auth_boot = (
+        '<script>window.JIANSHI_AUTH_CONFIG='
+        + json.dumps({
+            "enabled":AUTH_ENABLED,
+            "url":SUPABASE_URL,
+            "key":SUPABASE_PUBLISHABLE_KEY,
+            "site":SITE,
+        },ensure_ascii=False,separators=(",",":"))
+        + ';</script><script type="module" src="/account.js"></script>'
+        if AUTH_ENABLED else ""
+    )
+    analytics_boot = (
+        '<script>window.JIANSHI_ANALYTICS_CONFIG='
+        + json.dumps({
+            "enabled":bool(ANALYTICS_API),
+            "endpoint":ANALYTICS_API,
+        },ensure_ascii=False,separators=(",",":"))
+        + ';</script><script src="/analytics.js" defer></script>'
+    )
+    return f"""<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="robots" content="{esc(robots)}">
+<link rel="canonical" href="{esc(canonical)}">
+<meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}">
+<meta property="og:type" content="website"><meta property="og:url" content="{esc(canonical)}">
+<link rel="stylesheet" href="/styles.css"></head><body>
+<header class="site-header"><div class="wrap nav-v2"><a class="brand-v2" href="/"><strong>见势</strong><span>JIANSHI</span></a>
+<nav><a href="/opportunities/">项目研究库</a><a href="/today/">趋势信号</a><a href="/#method">数据口径</a><a href="/privacy/">隐私</a>{account_nav}</nav></div></header>
+{body}
+<footer><div class="wrap footer-v2"><div><strong>见势 JIANSHI</strong><span>公开商业数据研究工具</span></div><p>数据用于研究与信息整理，不构成投资、经营或收益承诺。</p></div></footer>
+<script src="/search.js" defer></script>{auth_boot}{analytics_boot}</body></html>"""
+
+def prototype_card(item, compact=False):
+    research=research_for(item)
+    slug=esc(item.get("slug"))
+    source=research.get("evidence_source") or {}
+    metrics=research.get("metrics") or {}
+    compact_cls=" compact" if compact else ""
+    return f"""<a class="research-card-v2{compact_cls}" data-card data-state="research" href="/opportunity/{slug}/">
+<div class="research-card-v2-head"><span>商业资产分类</span><span>{esc(source.get("name") or "—")}</span></div>
+<h3>{esc(research.get("title") or item.get("title"))}</h3>
+<div class="research-card-v2-grid">
+<div><span>在售样本</span><b>{fmt_int(research.get("active_sample_count"))}</b></div>
+<div><span>月营收中位数</span><b>{_metric(metrics.get("median_monthly_gross_revenue"),"money")}</b></div>
+<div><span>月净利润中位数</span><b>{_metric(metrics.get("median_monthly_net_profit"),"money")}</b></div>
+<div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b></div>
+</div>
+<div class="research-card-v2-foot"><span>挂牌披露数据</span><span>查看证据档案 →</span></div>
+</a>"""
+
+def build_home(data, daily=None, prototypes=None):
+    prototypes=prototypes or []
+    research=[research_for(x) for x in prototypes]
+    total_samples=sum(int(num(x.get("active_sample_count"))) for x in research)
+    source_names=sorted({str((x.get("evidence_source") or {}).get("name") or "") for x in research if (x.get("evidence_source") or {}).get("name")})
+    latest=max([str((x.get("evidence_source") or {}).get("last_success_at") or "") for x in research] or [""])
+    cards=''.join(prototype_card(x) for x in prototypes)
+    body=f"""<main>
+<section class="hero-v2 wrap">
+<div class="eyebrow">MARKET EVIDENCE / 海外商业项目研究</div>
+<h1>先看证据，<br>再判断项目。</h1>
+<p>见势把公开商业市场中的真实挂牌样本整理成结构化研究档案。当前首批项目只展示能够被来源数据直接支持的事实，不替用户推断“适不适合”“能不能复制”或“未来能赚多少”。</p>
+<div class="hero-actions-v2"><a class="primary-link" href="/opportunities/">进入项目研究库</a><a href="/#method">查看数据口径</a></div>
+</section>
+
+<section class="wrap terminal-strip">
+<div><span>研究分类</span><b>{fmt_int(len(prototypes))}</b></div>
+<div><span>当前在售样本</span><b>{fmt_int(total_samples)}</b></div>
+<div><span>独立商业来源</span><b>{fmt_int(len(source_names))}</b></div>
+<div><span>采集方式</span><b>官方 API</b></div>
+<div><span>最近源更新</span><b>{esc(_fmt_research_time(latest))}</b></div>
+</section>
+
+<section class="wrap research-section">
+<div class="section-title-v2"><div><span>RESEARCH UNIVERSE</span><h2>首批研究分类</h2></div><p>所有卡片均来自公开商业挂牌数据，不使用编辑推荐分数排序。</p></div>
+<div class="research-grid-v2">{cards}</div>
+</section>
+
+<section class="method-v2" id="method"><div class="wrap">
+<div class="section-title-v2 light"><div><span>METHODOLOGY</span><h2>公开页面只陈述可被证据支持的内容</h2></div></div>
+<div class="method-grid-v2">
+<div><b>01</b><h3>样本存在</h3><p>确认某一商业资产类型在公开市场中存在真实在售挂牌。</p></div>
+<div><b>02</b><h3>数据口径</h3><p>样本按公开标题分类并按挂牌记录去重；样本数量与来源数量分开计算。</p></div>
+<div><b>03</b><h3>挂牌披露</h3><p>营收、净利润、利润率、工时与报价均按来源公开字段展示，不进行二次包装。</p></div>
+<div><b>04</b><h3>证据边界</h3><p>挂牌价不等于成交价；单一来源不等于多源验证；公开样本不能证明可复制性或未来收益。</p></div>
+</div></div></section>
+
+<section class="wrap signal-link-section">
+<div><div class="eyebrow">SEPARATE SIGNAL LAYER</div><h2>趋势信号与商业样本分开看</h2><p>技术热度、内容传播和系统评分保留在独立模块，不与商业资产证据混成一个结论。</p></div>
+<a href="/today/">查看趋势信号 →</a>
+</section>
+</main>"""
+    return shell(
+        "见势｜海外商业项目研究",
+        body,
+        "基于公开商业市场数据的项目研究。展示样本、挂牌披露与证据边界，不替用户推断收益或可复制性。",
+    )
+
+def build_opportunities_page(catalog, prototypes=None):
+    prototypes=prototypes or []
+    cards=''.join(prototype_card(x) for x in prototypes)
+    research=[research_for(x) for x in prototypes]
+    total_samples=sum(int(num(x.get("active_sample_count"))) for x in research)
+    body=f"""<main class="wrap catalog-v2">
+<section class="catalog-hero-v2">
+<div class="eyebrow">PROJECT RESEARCH DATABASE</div>
+<h1>项目研究库</h1>
+<p>按公开商业挂牌样本浏览项目类型。当前只纳入能够明确识别业务类型、具有可复核字段并允许公开再展示的数据。</p>
+<div class="catalog-meta-v2"><span>{fmt_int(len(prototypes))} 个研究分类</span><span>{fmt_int(total_samples)} 个当前在售样本</span><span>1 个独立商业来源</span></div>
+</section>
+<section class="research-section">
+<div class="section-title-v2"><div><span>MARKETPLACE EVIDENCE</span><h2>商业资产分类</h2></div><p>卡片中的财务数字均为当前样本的中位数，字段来自挂牌方公开披露。</p></div>
+<div class="research-grid-v2">{cards}</div>
+</section>
+<section class="evidence-policy-v2">
+<h2>当前证据边界</h2>
+<div class="boundary-grid">
+<div><span>来源覆盖</span><strong>1 个独立商业来源</strong><p>样本多不等于来源多。</p></div>
+<div><span>价格含义</span><strong>挂牌报价</strong><p>不等于最终成交价。</p></div>
+<div><span>财务字段</span><strong>挂牌方披露</strong><p>见势未独立审计。</p></div>
+<div><span>不可推断</span><strong>适配 / 可复制 / 未来收益</strong><p>当前证据不支持这些结论。</p></div>
+</div>
+</section>
+<section class="secondary-link-v2"><span>趋势评分是另一层数据。</span><a href="/today/">进入趋势信号 →</a></section>
+</main>"""
+    return shell(
+        "项目研究库｜见势",
+        body,
+        "见势项目研究库：基于公开商业挂牌样本展示不同商业资产类型的样本数量、财务披露和证据边界。",
+        "/opportunities/",
+    )
+
+def _sample_rows(research):
+    rows=[]
+    for sample in research.get("samples") or []:
+        rows.append(f"""<tr>
+<td><span class="listing-id">#{fmt_int(sample.get("listing_number"))}</span><strong>{esc(sample.get("public_title") or "—")}</strong></td>
+<td>{esc(sample.get("country_code") or "—")}</td>
+<td class="num">{_metric(sample.get("average_monthly_gross_revenue"),"money")}</td>
+<td class="num">{_metric(sample.get("average_monthly_net_profit"),"money")}</td>
+<td class="num">{_metric(sample.get("profit_margin"),"pct")}</td>
+<td class="num">{_metric(sample.get("hours_worked_per_week"),"hours")}</td>
+<td class="num">{_metric(sample.get("listing_price"),"money")}</td>
+</tr>""")
+    return ''.join(rows) or '<tr><td colspan="7" class="table-empty">当前构建环境未加载原始样本记录。</td></tr>'
+
+def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
+    research=research_for(x)
+    metrics=research.get("metrics") or {}
+    source=research.get("evidence_source") or {}
+    boundaries=research.get("evidence_boundary") or []
+    niches=research.get("niche_distribution") or []
+    slug=str(x.get("slug") or "").strip()
+    related=[p for p in (all_prototypes or []) if str(p.get("slug") or "")!=slug][:3]
+    related_html=''.join(prototype_card(p,True) for p in related)
+    niche_html=''.join(
+        f'<span class="taxonomy-chip">{esc(n.get("name"))}<b>{fmt_int(n.get("count"))}</b></span>'
+        for n in niches
+    ) or '<span class="taxonomy-empty">暂无可展示分类分布。</span>'
+    boundary_html=''.join(f'<li>{esc(v)}</li>' for v in boundaries)
+    body=f"""<main class="wrap research-detail-v2">
+<section class="research-hero-v2">
+<a class="breadcrumb-v2" href="/opportunities/">项目研究库 / 返回</a>
+<div class="eyebrow">MARKET EVIDENCE BRIEF</div>
+<h1>{esc(research.get("title") or x.get("title"))}</h1>
+<div class="source-line-v2"><span>数据来源：<strong>{esc(source.get("name") or "—")}</strong></span><span>采集：{esc(_source_method(source.get("access_method")))}</span><span>源更新时间：{esc(_fmt_research_time(source.get("last_success_at")))}</span></div>
+</section>
+
+<section class="research-kpis-v2">
+<div><span>当前在售样本</span><b>{fmt_int(research.get("active_sample_count"))}</b></div>
+<div><span>有报价样本</span><b>{fmt_int(research.get("priced_sample_count")) if research.get("priced_sample_count") is not None else "—"}</b></div>
+<div><span>月营收中位数</span><b>{_metric(metrics.get("median_monthly_gross_revenue"),"money")}</b><small>挂牌披露</small></div>
+<div><span>月净利润中位数</span><b>{_metric(metrics.get("median_monthly_net_profit"),"money")}</b><small>挂牌披露</small></div>
+<div><span>利润率中位数</span><b>{_metric(metrics.get("median_profit_margin_pct"),"pct")}</b><small>挂牌披露</small></div>
+<div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b><small>挂牌披露</small></div>
+</section>
+
+<section class="detail-section-v2">
+<div class="section-title-v2"><div><span>INCLUSION RULE</span><h2>样本纳入规则</h2></div></div>
+<div class="scope-box-v2"><p>{esc(research.get("sample_definition") or "—")}</p><dl><dt>统计对象</dt><dd>当前在售挂牌</dd><dt>去重单位</dt><dd>挂牌记录</dd><dt>独立商业来源</dt><dd>1</dd></dl></div>
+</section>
+
+<section class="detail-section-v2">
+<div class="section-title-v2"><div><span>DISTRIBUTION</span><h2>挂牌样本摘要</h2></div><p>中位数用于降低极端样本对观察结果的影响。</p></div>
+<div class="distribution-grid-v2">
+<div><span>挂牌报价中位数</span><b>{_metric(metrics.get("median_asking_price"),"money")}</b></div>
+<div><span>月营收中位数</span><b>{_metric(metrics.get("median_monthly_gross_revenue"),"money")}</b></div>
+<div><span>月净利润中位数</span><b>{_metric(metrics.get("median_monthly_net_profit"),"money")}</b></div>
+<div><span>利润率中位数</span><b>{_metric(metrics.get("median_profit_margin_pct"),"pct")}</b></div>
+<div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b></div>
+</div>
+<div class="taxonomy-v2"><div class="taxonomy-label">来源分类（原文）</div><div>{niche_html}</div></div>
+</section>
+
+<section class="detail-section-v2">
+<div class="section-title-v2"><div><span>OBSERVED LISTINGS</span><h2>最近更新的公开样本</h2></div><p>保留来源公开标题，不做语义改写。</p></div>
+<div class="evidence-table-wrap-v2"><table class="evidence-table-v2">
+<thead><tr><th>挂牌记录</th><th>国家</th><th>月营收</th><th>月净利润</th><th>利润率</th><th>周工时</th><th>挂牌报价</th></tr></thead>
+<tbody>{_sample_rows(research)}</tbody>
+</table></div>
+</section>
+
+<section class="evidence-boundary-v2">
+<div><span>DATA LIMITATIONS</span><h2>证据边界</h2></div>
+<ul>{boundary_html}</ul>
+</section>
+
+<section class="detail-section-v2 related-v2">
+<div class="section-title-v2"><div><span>RELATED RESEARCH</span><h2>其他研究分类</h2></div><a href="/opportunities/">查看全部 →</a></div>
+<div class="research-grid-v2 compact-grid">{related_html}</div>
+</section>
+</main>"""
+    return shell(
+        f'{esc(research.get("title") or x.get("title"))}｜见势项目研究',
+        body,
+        f'基于公开商业挂牌数据的{research.get("title") or x.get("title")}研究档案。',
+        canonical_path=f"/opportunity/{slug}/",
+        robots="noindex,nofollow",
+    )
+
 def main():
     global AUTH_ENABLED
     if DIST.exists(): shutil.rmtree(DIST)
