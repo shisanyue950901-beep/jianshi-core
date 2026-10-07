@@ -1,0 +1,38 @@
+{
+  "version": "P4.3-V1",
+  "status": "IMPLEMENTING",
+  "mode": "FIRST_PARTY_PSEUDONYMOUS",
+  "third_party_ad_trackers": false,
+  "persist_ip": false,
+  "persist_user_agent": false,
+  "persist_email_or_name": false,
+  "persist_full_search_text": false,
+  "visitor_id_storage": "FIRST_PARTY_LOCAL_STORAGE_ROTATE_90D",
+  "session_id_storage": "SESSION_STORAGE",
+  "respect_global_privacy_control": true,
+  "respect_do_not_track": true,
+  "raw_event_retention_days": 90,
+  "session_rate_limit_per_minute": 60,
+  "events": [
+    "PAGE_VIEW",
+    "OPPORTUNITY_CARD_CLICK",
+    "OPPORTUNITY_DETAIL_VIEW",
+    "SECOND_OPPORTUNITY_VIEW",
+    "CATALOG_SEARCH",
+    "CATALOG_FILTER",
+    "SOURCE_OUTBOUND_CLICK",
+    "ENGAGED_30S",
+    "SCROLL_50",
+    "SCROLL_90"
+  ],
+  "primary_validation_metrics": [
+    "UNIQUE_VISITORS",
+    "HOME_TO_DETAIL",
+    "SECOND_OPPORTUNITY_VIEW_RATE",
+    "DETAIL_ENGAGED_30S_RATE",
+    "DETAIL_SCROLL_90_RATE",
+    "SOURCE_OUTBOUND_RATE",
+    "RETURN_AFTER_7D"
+  ],
+  "auth_events": "DEFERRED_UNTIL_AUTH_LAUNCH"
+}

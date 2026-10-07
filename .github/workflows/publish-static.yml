@@ -12,6 +12,7 @@ on:
       - styles.css
       - search.js
       - account.js
+      - analytics.js
       - search-index.json
       - opportunity/**
       - opportunities/**
@@ -62,6 +63,7 @@ jobs:
           test -f privacy/index.html
           test -f account/index.html
           test -f account.js
+          test -f analytics.js
           test -f sitemap.xml
           test -f robots.txt
           grep -q "见势" index.html
@@ -76,7 +78,7 @@ jobs:
         run: |
           git config user.name "jianshi-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html 404.html styles.css search.js account.js search-index.json sitemap.xml robots.txt opportunity opportunities today rising build content privacy account dist public
+          git add index.html 404.html styles.css search.js account.js analytics.js search-index.json sitemap.xml robots.txt opportunity opportunities today rising build content privacy account dist public
           git add -f web/dist
           if git diff --cached --quiet; then
             echo "STATIC_SNAPSHOT_NO_CHANGE"
