@@ -121,7 +121,7 @@ if(cfg.enabled&&cfg.url&&cfg.key){
   }
 
   function bindAlertRead(){
-    $("[data-alert-id]").forEach((node)=>{
+    document.querySelectorAll("[data-alert-id]").forEach((node)=>{
       node.addEventListener("click",async()=>{
         const id=Number(node.dataset.alertId||0);
         if(!id) return;
@@ -133,7 +133,7 @@ if(cfg.enabled&&cfg.url&&cfg.key){
   }
 
   function bindRemoveActions(){
-    $("[data-remove-kind]").forEach((button)=>{
+    document.querySelectorAll("[data-remove-kind]").forEach((button)=>{
       button.addEventListener("click",async()=>{
         const kind=button.dataset.removeKind;
         const opportunityId=button.dataset.opportunityId;
