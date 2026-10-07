@@ -189,6 +189,22 @@ def card(item, watch=False, compact=False):
 <p class="card-verdict">{esc(verdict(item))}</p>
 {score_row(item)}
 <div class="meta">{fmt_int(item.get("evidence_count"))} 条有效证据 · {fmt_int(item.get("source_count"))} 类独立数据源</div></a>"""
+
+def prototype_card(item, compact=False):
+    evidence=item.get("overseas_validation") or {}
+    screening=item.get("china_screening") or {}
+    slug=esc(item.get("slug"))
+    compact_cls=" compact" if compact else ""
+    solo_fit=str(screening.get("solo_fit") or "—").split("。",1)[0]
+    return f"""<a class="research-card{compact_cls}" data-card data-state="validated" href="/opportunity/{slug}/">
+<div class="research-card-top"><span class="badge validate">{esc(item.get("status") or "值得研究")}</span><span>海外已验证项目</span></div>
+<h3>{esc(item.get("title"))}</h3>
+<p>{esc(item.get("one_liner") or "")}</p>
+<div class="research-card-meta"><span><b>{fmt_int(evidence.get("direct_samples"))}</b>直接商业样本</span><span><b>{fmt_int(evidence.get("commercial_source_diversity"))}</b>商业来源种类</span></div>
+<div class="research-card-fit">一人公司适配：{esc(solo_fit)}</div>
+<span class="research-card-link">查看完整研究 →</span>
+</a>"""
+
 def change_label(item):
     if item.get("previous_date") is None:
         return "历史积累中"
@@ -315,12 +331,13 @@ def tech_summary(item):
         return "SaaS 相关开源项目，聚焦在线软件产品、开发框架或商业化基础设施。"
     return "大模型相关开源项目，聚焦 LLM 应用、开发工具或工作流。"
 
-def build_home(data, daily=None):
+def build_home(data, daily=None, prototypes=None):
     stats=data.get("stats") or {}
     opps=data.get("opportunities") or []
     watch=data.get("watchlist") or []
     tech=data.get("tech_signals") or []
     catalog=opps+watch
+    prototypes=prototypes or []
     daily=daily or {"today":[],"rising":[],"build":[],"content":[],"history_ready":{}}
 
     top_validated=max(opps,key=lambda x:num(x.get("overall_score")),default=None)
@@ -328,16 +345,29 @@ def build_home(data, daily=None):
     build_rank=(daily.get("build") or sorted(catalog,key=lambda x:num(x.get("build_score")),reverse=True))[:3]
     content_rank=(daily.get("content") or sorted(catalog,key=lambda x:num(x.get("content_score")),reverse=True))[:3]
 
-    hero_feature=card(top_validated,False,True) if top_validated else '<div class="empty">今天还没有达到多源验证门槛的机会，我们会继续扫描和核对证据。</div>'
-    stats_html="".join([
-      f'<div class="stat"><b>{fmt_int(stats.get("validated_opportunities"))}</b><span>已验证机会</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("watch_opportunities"))}</b><span>观察方向</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("marketplace_listings"))}</b><span>商业样本</span></div>',
-      f'<div class="stat"><b>{fmt_int(stats.get("github_repositories"))}</b><span>技术样本</span></div>',
-      '<div class="stat"><b>6 小时</b><span>信号更新周期</span></div>'
-    ])
+    hero_feature=card(top_validated,False,True) if top_validated else '<div class="empty">今天还没有达到多源验证门槛的趋势方向，我们会继续扫描和核对证据。</div>'
+    if prototypes:
+        direct_samples=sum(int(num((x.get("overseas_validation") or {}).get("direct_samples"))) for x in prototypes)
+        source_diversity=max([int(num((x.get("overseas_validation") or {}).get("commercial_source_diversity"))) for x in prototypes] or [0])
+        priority_count=sum(1 for x in prototypes if x.get("status")=="优先研究")
+        stats_html="".join([
+          f'<div class="stat"><b>{fmt_int(len(prototypes))}</b><span>首批项目研究</span></div>',
+          f'<div class="stat"><b>{fmt_int(direct_samples)}</b><span>直接商业样本</span></div>',
+          f'<div class="stat"><b>{fmt_int(source_diversity)}</b><span>商业来源种类</span></div>',
+          f'<div class="stat"><b>{fmt_int(priority_count)}</b><span>优先研究项目</span></div>',
+          '<div class="stat"><b>6 小时</b><span>信号更新周期</span></div>'
+        ])
+    else:
+        stats_html="".join([
+          f'<div class="stat"><b>{fmt_int(stats.get("validated_opportunities"))}</b><span>已验证机会</span></div>',
+          f'<div class="stat"><b>{fmt_int(stats.get("watch_opportunities"))}</b><span>观察方向</span></div>',
+          f'<div class="stat"><b>{fmt_int(stats.get("marketplace_listings"))}</b><span>商业样本</span></div>',
+          f'<div class="stat"><b>{fmt_int(stats.get("github_repositories"))}</b><span>技术样本</span></div>',
+          '<div class="stat"><b>6 小时</b><span>信号更新周期</span></div>'
+        ])
 
-    opp_html=''.join(card(x,False) for x in opps[:6]) or '<div class="empty">当前没有通过多源验证的机会。</div>'
+    prototype_html=''.join(prototype_card(x) for x in prototypes[:6]) or '<div class="empty">首批项目研究正在整理。</div>'
+    opp_html=''.join(card(x,False) for x in opps[:6]) or '<div class="empty">当前没有通过多源验证的趋势方向。</div>'
     watch_html=''.join(card(x,True) for x in watch[:6]) or '<div class="empty">当前没有新的观察方向。</div>'
     rising_html=''.join(rank_card(x,f"趋势第 {i+1}","heat_score") for i,x in enumerate(rising))
     build_html=''.join(rank_card(x,f"可执行第 {i+1}","build_score") for i,x in enumerate(build_rank))
@@ -350,32 +380,36 @@ def build_home(data, daily=None):
     body=f"""<main>
 <section class="hero wrap">
 <div class="hero-copy">
-<span class="kicker">商业机会发现与决策平台</span>
-<h1>发现下一个<br><em>值得做的项目。</em></h1>
-<p class="hero-lead">见势持续扫描真实商业、产品与技术信号，把分散的信息整理成<strong>项目机会、四维评分和行动判断</strong>，帮助中国个人创业者更快决定“什么值得研究”。</p>
-<div class="hero-actions"><a class="btn primary" href="/opportunities/">发现机会</a><a class="btn" href="/today/">看今日推荐</a><a class="text-link" href="/content/">我是内容创作者 →</a></div>
+<span class="kicker">海外已验证项目 · 中文筛选</span>
+<h1>看懂海外已经跑通的项目，<br><em>找到你值得验证的方向。</em></h1>
+<p class="hero-lead">见势先从海外真实商业样本里确认一种项目形态<strong>确实存在</strong>，再替中国用户做筛选、中文解释和第一轮低成本验证路径。不是照抄项目，也不是收益承诺。</p>
+<div class="hero-actions"><a class="btn primary" href="/opportunities/#validated-projects">先看首批项目</a><a class="btn" href="/#method">我们怎么判断</a><a class="text-link" href="/opportunities/#trend-directions">趋势观察 →</a></div>
 </div>
 <div class="hero-explain">
 <div class="explain-label">见势解决什么问题？</div>
-<p><strong>不是告诉你“什么火”，而是帮助你判断：这个方向有没有商业价值、证据够不够、你值不值得继续投入时间。</strong></p>
-<div class="mini-flow"><span>发现信号</span><i>→</i><span>交叉证据</span><i>→</i><span>项目评分</span><i>→</i><span>行动判断</span></div>
+<p><strong>不是告诉你“什么火”，而是先回答：海外有没有真实项目、为什么值得中国用户看、第一轮应该怎么验证。</strong></p>
+<div class="mini-flow"><span>海外项目</span><i>→</i><span>商业证据</span><i>→</i><span>中国适配</span><i>→</i><span>低成本验证</span></div>
 </div>
 </section>
 
 <section class="wrap stats">{stats_html}</section>
 
+<section class="wrap section" id="validated-projects"><div class="section-head"><div><span class="section-kicker">首批项目研究</span><h2>先看具体项目，再决定值不值得花时间验证</h2></div><a class="section-more" href="/opportunities/#validated-projects">查看全部项目 →</a></div>
+<div class="research-grid">{prototype_html}</div>
+<p class="section-footnote">这些项目只说明对应商业形态在海外真实存在，并经过见势的中文筛选；当前商业样本仍来自单一商业来源，不能把挂牌信息当成收益承诺。</p></section>
+
 <section class="wrap usecases">
-<div class="usecase"><span>01</span><h3>找项目</h3><p>从已验证和正在起势的方向中，筛选更适合个人或小团队继续研究的机会。</p><a href="/opportunities/">进入机会库 →</a></div>
-<div class="usecase"><span>02</span><h3>做判断</h3><p>不只看热度，同时看商业质量、可执行性和证据是否完整，减少追错风口。</p><a href="/today/">看今天优先研究什么 →</a></div>
-<div class="usecase"><span>03</span><h3>找选题</h3><p>把同一套真实项目证据转化为商业、科技和创业内容的选题线索。</p><a href="/content/">进入内容选题 →</a></div>
+<div class="usecase"><span>01</span><h3>找项目</h3><p>先确认海外确实存在真实商业样本，再看项目结构，而不是只追热门关键词。</p><a href="/opportunities/#validated-projects">进入首批项目 →</a></div>
+<div class="usecase"><span>02</span><h3>判断适配</h3><p>直接看更适合谁、不太适合谁，以及哪些部分值得中国个人创业者借鉴。</p><a href="/opportunities/#validated-projects">比较项目 →</a></div>
+<div class="usecase"><span>03</span><h3>低成本验证</h3><p>每个项目都给出第一轮验证路径，先验证需求和付费，再决定是否投入开发、库存或团队。</p><a href="/opportunities/#validated-projects">看验证路径 →</a></div>
 </section>
 
-<section class="wrap spotlight" id="today">
-<div class="section-head"><div><span class="section-kicker">今日推荐</span><h2>如果今天只研究一个方向，先看这个</h2></div><a class="section-more" href="/today/">查看今日榜单 →</a></div>
+<section class="wrap spotlight" id="trend-signals">
+<div class="section-head"><div><span class="section-kicker">趋势观察 · 辅助信号</span><h2>宽泛方向可以帮你发现变化，但不等于具体项目推荐</h2></div><a class="section-more" href="/today/">查看趋势榜单 →</a></div>
 {hero_feature}
 </section>
 
-<section class="wrap section" id="opportunities"><div class="section-head"><div><span class="section-kicker">已验证机会</span><h2>证据更完整，适合深入研究</h2></div><a class="section-more" href="/opportunities/">查看全部机会 →</a></div><div class="grid">{opp_html}</div></section>
+<section class="wrap section" id="trend-directions"><div class="section-head"><div><span class="section-kicker">已验证趋势方向</span><h2>保留原有四维评分，用来补充观察，不替代具体项目研究</h2></div><a class="section-more" href="/opportunities/#trend-directions">查看全部趋势 →</a></div><div class="grid">{opp_html}</div></section>
 
 <section class="wrap decision-grid">
 <div class="decision-block"><div class="section-head compact-head"><div><span class="section-kicker">正在起势</span><h2>哪些方向正在升温</h2></div><a class="section-more" href="/rising/">完整榜单 →</a></div>{rising_html}</div>
@@ -383,47 +417,57 @@ def build_home(data, daily=None):
 <div class="decision-block"><div class="section-head compact-head"><div><span class="section-kicker">内容选题</span><h2>哪些方向值得讲</h2></div><a class="section-more" href="/content/">完整榜单 →</a></div>{content_html}</div>
 </section>
 
-<section class="wrap section"><div class="section-head"><div><span class="section-kicker">待验证方向</span><h2>有信号，但现在还不应该急着做</h2></div><a class="section-more" href="/opportunities/">进入机会库筛选 →</a></div><div class="grid">{watch_html}</div></section>
+<section class="wrap section"><div class="section-head"><div><span class="section-kicker">待验证趋势</span><h2>有信号，但现在还不应该急着做</h2></div><a class="section-more" href="/opportunities/#trend-directions">进入趋势观察 →</a></div><div class="grid">{watch_html}</div></section>
 
 <section class="method" id="method"><div class="wrap">
-<div class="section-head light"><div><span class="section-kicker">我们怎么判断</span><h2>先找机会，再要求证据</h2></div></div>
+<div class="section-head light"><div><span class="section-kicker">我们怎么判断</span><h2>先确认项目真实存在，再讨论是否适合你</h2></div></div>
 <div class="method-flow">
-<div><b>1</b><h3>发现真实信号</h3><p>持续观察技术供给、产品变化、需求和允许使用的商业市场数据。</p></div>
-<div><b>2</b><h3>把信号变成机会</h3><p>单个 repo、帖子或挂牌不是项目推荐，只有归到同一商业问题后才形成 Opportunity。</p></div>
-<div><b>3</b><h3>交叉验证商业价值</h3><p>热度不能替代赚钱证据。当前公开验证仍要求技术供给与真实商业证明同时存在。</p></div>
-<div><b>4</b><h3>给出可解释判断</h3><p>分别展示趋势热度、内容价值、可执行性和商业质量，并明确哪些事情还不知道。</p></div>
+<div><b>1</b><h3>找到海外真实项目</h3><p>先从允许使用的公开商业市场和产品信号里确认：这种项目形态不是想象出来的。</p></div>
+<div><b>2</b><h3>锁定商业证据</h3><p>样本数量和来源数量分开计算；公开挂牌价不当成真实成交价，也不把技术热度当成赚钱证据。</p></div>
+<div><b>3</b><h3>做中国用户筛选</h3><p>再判断适合谁、不适合谁、哪些结构值得借鉴。一人公司适配属于编辑判断，不伪装成来源事实。</p></div>
+<div><b>4</b><h3>给出第一轮验证</h3><p>优先设计低成本验证动作，让用户先验证需求、付费或渠道，再决定是否继续投入。</p></div>
 </div></div></section>
 
-<section class="wrap section" id="tech"><div class="section-head"><div><span class="section-kicker">证据库一角</span><h2>这些技术项目正在形成供给信号</h2></div><div class="section-note">技术热度只是证据之一，不等于商业机会</div></div><div class="tech-list">{tech_html}</div></section>
+<section class="wrap section" id="tech"><div class="section-head"><div><span class="section-kicker">证据库一角</span><h2>这些技术项目正在形成供给信号</h2></div><div class="section-note">技术热度只是辅助证据，不等于商业机会</div></div><div class="tech-list">{tech_html}</div></section>
 
 {newsletter_block()}
 </main>"""
-    return shell("见势｜发现下一个值得做的项目",body,
-                 "见势是面向中国个人创业者与内容创作者的商业机会发现与决策平台，提供项目发现、四维评分、商业证据与行动判断。")
+    return shell("见势｜海外已验证项目中文筛选",body,
+                 "见势从海外真实商业样本中寻找已经存在的项目形态，替中国用户做筛选、中文解释和第一轮低成本验证。")
 
-
-def build_opportunities_page(catalog):
+def build_opportunities_page(catalog, prototypes=None):
+    prototypes=prototypes or []
     items=sorted(catalog,key=lambda x:(not bool(x.get("public_ready")),-num(x.get("overall_score"))))
     validated=sum(1 for x in items if x.get("public_ready"))
     watching=max(0,len(items)-validated)
-    cards=''.join(card(x,not bool(x.get("public_ready"))) for x in items) or '<div class="empty">机会库正在扩充。</div>'
+    project_cards=''.join(prototype_card(x) for x in prototypes) or '<div class="empty">首批项目研究正在整理。</div>'
+    cards=''.join(card(x,not bool(x.get("public_ready"))) for x in items) or '<div class="empty">趋势方向正在扩充。</div>'
+    direct_samples=sum(int(num((x.get("overseas_validation") or {}).get("direct_samples"))) for x in prototypes)
+    priority_count=sum(1 for x in prototypes if x.get("status")=="优先研究")
     body=f"""<main class="wrap catalog-page">
-<section class="list-hero catalog-hero"><span class="section-kicker">发现机会</span><h1>把值得研究的项目放到一张桌面上。</h1>
-<p>先看结论，再比较四维评分和证据强度。热度高但证据不足的方向会明确标为“值得验证”或“持续观察”。</p>
-<div class="catalog-summary"><span><b>{fmt_int(len(items))}</b> 当前方向</span><span><b>{fmt_int(validated)}</b> 已验证</span><span><b>{fmt_int(watching)}</b> 待验证</span></div></section>
+<section class="list-hero catalog-hero"><span class="section-kicker">发现项目</span><h1>先看海外已经真实存在的项目，再决定你要验证什么。</h1>
+<p>见势先把海外商业样本整理成具体项目研究，再补充趋势评分。样本证明项目形态存在，不代表复制后一定获得相同结果。</p>
+<div class="catalog-summary"><span><b>{fmt_int(len(prototypes))}</b> 首批项目研究</span><span><b>{fmt_int(priority_count)}</b> 优先研究</span><span><b>{fmt_int(direct_samples)}</b> 直接商业样本</span><span><b>{fmt_int(len(items))}</b> 趋势方向</span></div></section>
+
+<section class="section" id="validated-projects"><div class="section-head"><div><span class="section-kicker">首批项目研究</span><h2>每个项目都回答六个最重要的问题</h2></div><div class="section-note">项目是什么 · 海外验证 · 中国参考价值 · 适合谁 · 怎么验证 · 风险未知</div></div>
+<div class="research-grid">{project_cards}</div>
+<div class="panel project-library-note"><strong>当前证据边界：</strong>首批项目的商业样本来自 1 类商业来源。样本数量不等于来源数量，挂牌价不等于真实成交价；“一人公司适配”是见势的编辑筛选，不是来源事实。</div></section>
+
+<section class="section" id="trend-directions"><div class="section-head"><div><span class="section-kicker">趋势方向 · 辅助观察</span><h2>四维评分保留，但不再冒充具体创业项目</h2></div><div class="section-note">{fmt_int(validated)} 个已验证趋势 · {fmt_int(watching)} 个待验证趋势</div></div>
 <section class="catalog-toolbar">
-<input data-catalog-search placeholder="搜索机会、类别或关键词…" aria-label="搜索机会">
-<div class="catalog-filters" role="group" aria-label="机会筛选">
+<input data-catalog-search placeholder="搜索趋势方向、类别或关键词…" aria-label="搜索趋势方向">
+<div class="catalog-filters" role="group" aria-label="趋势方向筛选">
 <button type="button" class="active" data-catalog-filter="all">全部</button>
 <button type="button" data-catalog-filter="validated">已验证</button>
 <button type="button" data-catalog-filter="watch">待验证</button>
 </div></section>
 <section class="grid catalog-grid" data-catalog-grid>{cards}</section>
-<section class="panel catalog-help"><h2>怎么使用机会库？</h2><p>“值得深入研究”表示当前证据更完整，不代表保证赚钱；“值得验证”表示存在明显信号，但关键商业证据仍需要补齐。真正决定是否行动前，请进入详情页查看证据、目标客户、商业模式和未知项。</p></section>
+<section class="panel catalog-help"><h2>怎么使用这两层信息？</h2><p>先用上面的“首批项目研究”判断一个具体项目值不值得继续验证；下面的趋势方向只用于补充观察技术供给、内容价值和市场变化。趋势高，不等于你应该直接做。</p></section></section>
 </main>"""
-    return shell("发现机会｜见势",body,
-                 "浏览见势机会库，按验证状态、四维评分和证据强度比较值得研究的创业项目。",
+    return shell("发现项目｜见势",body,
+                 "浏览见势首批海外已验证项目研究，并用趋势方向作为辅助观察。",
                  "/opportunities/")
+
 def evidence_github(rows):
     if not rows: return '<div class="evidence-row"><small>暂无开源项目证据。</small></div>'
     return ''.join(
@@ -564,7 +608,7 @@ def bullet_list(items):
         return '<p class="unknown-note">当前没有足够信息。</p>'
     return '<ul class="research-list">'+''.join(f'<li>{esc(x)}</li>' for x in values)+'</ul>'
 
-def build_concrete_prototype(x, global_disclaimer):
+def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
     evidence=x.get("overseas_validation") or {}
     screening=x.get("china_screening") or {}
     direct=evidence.get("direct_samples")
@@ -576,6 +620,14 @@ def build_concrete_prototype(x, global_disclaimer):
     if observed:
         niche_bits.append("样本涉及："+ "、".join(str(v) for v in observed[:9]))
     niche_note="；".join(niche_bits) if niche_bits else "当前样本覆盖多个公开分类。"
+    slug=str(x.get("slug") or "").strip()
+    related=[p for p in (all_prototypes or []) if str(p.get("slug") or "")!=slug]
+    related=sorted(related,key=lambda p:(p.get("status")!="优先研究",str(p.get("title") or "")))[:3]
+    related_html=''.join(prototype_card(p,True) for p in related)
+    related_section=f"""<section class="section related-research">
+<div class="section-head"><div><span class="section-kicker">继续比较</span><h2>再看 1–2 个项目，比较后再决定方向</h2></div><a class="section-more" href="/opportunities/#validated-projects">查看全部项目 →</a></div>
+<div class="research-grid related-grid">{related_html}</div>
+</section>""" if related_html else ""
 
     body=f"""<main class="wrap">
 <section class="detail-hero concrete-hero">
@@ -654,11 +706,12 @@ def build_concrete_prototype(x, global_disclaimer):
 <div>目标用户</div><div>寻找项目方向的中国用户</div>
 <div>当前结论</div><div>{esc(x.get("status") or "值得研究")}</div>
 </div>
+<a class="text-link aside-link" href="/opportunities/#validated-projects">返回首批项目 →</a>
 </section>
 <div class="disclosure">见势不会把海外案例直接包装成“中国也一定能做”。我们只把已验证的项目结构、证据和可复制部分整理出来，供你继续判断。</div>
 </aside></div>
+{related_section}
 </main>"""
-    slug=str(x.get("slug") or "").strip()
     return shell(
         f'{esc(x.get("title"))}｜见势项目研究',
         body,
@@ -728,6 +781,14 @@ def main():
     shutil.copy2(STATIC/"search.js",DIST/"search.js")
     shutil.copy2(STATIC/"account.js",DIST/"account.js")
     shutil.copy2(STATIC/"analytics.js",DIST/"analytics.js")
+    prototype_data={}
+    prototypes=[]
+    prototype_disclaimer=""
+    if CONCRETE_PROTOTYPES.exists():
+        prototype_data=json.loads(CONCRETE_PROTOTYPES.read_text(encoding="utf-8"))
+        prototypes=prototype_data.get("opportunities") or []
+        prototype_disclaimer=prototype_data.get("disclaimer") or ""
+
     home=api_get("home")
     remote_auth_enabled=bool((home.get("features") or {}).get("account_auth"))
     # Local fixture builds may exercise the enabled UI with the env flag alone.
@@ -735,11 +796,11 @@ def main():
     AUTH_ENABLED=AUTH_REQUESTED and (remote_auth_enabled if API else True)
     daily=api_get("daily")
     catalog=api_get("catalog").get("items",[])
-    (DIST/"index.html").write_text(build_home(home,daily),encoding="utf-8")
+    (DIST/"index.html").write_text(build_home(home,daily,prototypes),encoding="utf-8")
 
     opportunities_out=DIST/"opportunities"
     opportunities_out.mkdir(parents=True,exist_ok=True)
-    (opportunities_out/"index.html").write_text(build_opportunities_page(catalog),encoding="utf-8")
+    (opportunities_out/"index.html").write_text(build_opportunities_page(catalog,prototypes),encoding="utf-8")
 
     for kind in ("today","rising","build","content"):
         out=DIST/kind
@@ -756,20 +817,17 @@ def main():
     search=[]
 
     prototype_count=0
-    if CONCRETE_PROTOTYPES.exists():
-        prototype_data=json.loads(CONCRETE_PROTOTYPES.read_text(encoding="utf-8"))
-        prototype_disclaimer=prototype_data.get("disclaimer") or ""
-        for prototype in prototype_data.get("opportunities") or []:
-            prototype_slug=str(prototype.get("slug") or "").strip()
-            if not prototype_slug:
-                continue
-            prototype_out=DIST/"opportunity"/prototype_slug
-            prototype_out.mkdir(parents=True,exist_ok=True)
-            (prototype_out/"index.html").write_text(
-                build_concrete_prototype(prototype,prototype_disclaimer),
-                encoding="utf-8",
-            )
-            prototype_count+=1
+    for prototype in prototypes:
+        prototype_slug=str(prototype.get("slug") or "").strip()
+        if not prototype_slug:
+            continue
+        prototype_out=DIST/"opportunity"/prototype_slug
+        prototype_out.mkdir(parents=True,exist_ok=True)
+        (prototype_out/"index.html").write_text(
+            build_concrete_prototype(prototype,prototype_disclaimer,prototypes),
+            encoding="utf-8",
+        )
+        prototype_count+=1
 
     for item in catalog:
         slug=item.get("slug")

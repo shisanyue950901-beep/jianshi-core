@@ -169,5 +169,42 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
         self.assertIn("4",agency)
 
 
+    def test_controlled_user_path_surfaces_projects_without_indexing_them(self):
+        env=dict(os.environ)
+        env.pop("JIANSHI_API_URL",None)
+        subprocess.run([sys.executable,str(BUILD)],cwd=ROOT,env=env,check=True,
+                       stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        home=(ROOT/"web"/"dist"/"index.html").read_text(encoding="utf-8")
+        catalog=(ROOT/"web"/"dist"/"opportunities"/"index.html").read_text(encoding="utf-8")
+        prototype_slugs=[x["slug"] for x in self.data["opportunities"]]
+
+        self.assertIn("海外已验证项目 · 中文筛选",home)
+        self.assertIn('id="validated-projects"',home)
+        self.assertIn("首批项目研究",catalog)
+        self.assertIn("趋势方向 · 辅助观察",catalog)
+        for slug in prototype_slugs:
+            href=f'/opportunity/{slug}/'
+            self.assertIn(href,home,slug)
+            self.assertIn(href,catalog,slug)
+
+        saas=(ROOT/"web"/"dist"/"opportunity"/"vertical-industry-saas"/"index.html").read_text(encoding="utf-8")
+        self.assertIn("继续比较",saas)
+        self.assertIn("/opportunities/#validated-projects",saas)
+        self.assertIn("/opportunity/digital-product-business/",saas)
+
+        search=json.loads((ROOT/"web"/"dist"/"search-index.json").read_text(encoding="utf-8"))
+        indexed_slugs={x["slug"] for x in search}
+        sitemap=(ROOT/"web"/"dist"/"sitemap.xml").read_text(encoding="utf-8")
+        for slug in prototype_slugs:
+            self.assertNotIn(slug,indexed_slugs)
+            self.assertNotIn(f"/opportunity/{slug}/",sitemap)
+
+    def test_controlled_user_path_keeps_original_scoring_as_auxiliary_layer(self):
+        self.assertIn("趋势观察 · 辅助信号",self.build)
+        self.assertIn("四维评分保留",self.build)
+        self.assertIn("不替代具体项目研究",self.build)
+        self.assertNotIn("AUTO_OPPORTUNITY_VALIDATION",self.build)
+
+
 if __name__=="__main__":
     unittest.main()
