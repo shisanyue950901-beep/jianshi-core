@@ -1,0 +1,18 @@
+{
+  "version": "P4.1.3-V1",
+  "status": "FROZEN_AUDIT",
+  "source_count_is_kpi": false,
+  "production_change": false,
+  "ranking": [
+    {"rank":1,"source":"pypi","decision":"NEXT_STAGING_TARGET","score":8.3},
+    {"rank":2,"source":"hugging_face","decision":"HIGH_PRIORITY_AFTER_PYPI","score":8.5},
+    {"rank":3,"source":"wordpress_plugins","decision":"POLICY_REVIEW_THEN_INTEGRATE","score":8.4},
+    {"rank":4,"source":"atlassian_marketplace","decision":"HOLD_API_TRANSITION","score":7.5},
+    {"rank":5,"source":"envato_market","decision":"HOLD_COMMERCIAL_TERMS","score":7.6},
+    {"rank":6,"source":"docker_hub","decision":"DEFER_LOW_INCREMENTAL_VALUE","score":7.0},
+    {"rank":7,"source":"jetbrains_marketplace","decision":"HOLD_WRITTEN_PERMISSION","score":6.3},
+    {"rank":8,"source":"youtube_data_api","decision":"HOLD_POLICY_MISMATCH","score":7.3}
+  ],
+  "policy_veto_overrides_score": true,
+  "next_step": "PYPI_STAGING_ONLY"
+}
