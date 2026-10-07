@@ -181,12 +181,21 @@ def rank_card(item, label, metric_key):
 <span>{esc(label)}</span><strong>{esc(item.get("title"))}</strong>
 <b>{fmt_score(item.get(metric_key))}</b><small>{esc(verdict(item))}</small></a>"""
 
+def acceleration_label(item):
+    count=int(num(item.get("rising_repo_count")))
+    velocity=num(item.get("recent_stars_per_day_sum"))
+    if count<=0:
+        return ""
+    if velocity>=1:
+        return f"{count} 个技术项目近期仍在增星 · 合计约 {velocity:.0f} 星/天"
+    return f"{count} 个技术项目近期仍在增星"
+
 def daily_row(item, metric_key, metric_label, rank=None):
     rank_html=f'<span class="daily-rank">#{rank}</span>' if rank else ""
     status="已验证" if item.get("public_ready") else "持续观察"
     status_cls="good" if item.get("public_ready") else "watch"
     return f"""<a class="daily-row" href="/opportunity/{esc(item.get("slug"))}/">
-<div class="daily-title">{rank_html}<div><div class="daily-name"><strong>{esc(item.get("title"))}</strong><span class="badge {status_cls}">{status}</span></div><small>{esc(item.get("change_summary_zh") or verdict(item))}</small></div></div>
+<div class="daily-title">{rank_html}<div><div class="daily-name"><strong>{esc(item.get("title"))}</strong><span class="badge {status_cls}">{status}</span></div><small>{esc(item.get("change_summary_zh") or verdict(item))}</small>{f'<small class="acceleration-note">{esc(acceleration_label(item))}</small>' if acceleration_label(item) else ''}</div></div>
 <div class="daily-change">{esc(change_label(item))}</div>
 <div class="daily-metric"><b>{fmt_score(item.get(metric_key))}</b><span>{esc(metric_label)}</span></div>
 <div class="daily-evidence"><b>{fmt_int(item.get("evidence_count"))}</b><span>有效证据</span></div>
@@ -479,6 +488,19 @@ def build_account_page():
                  "登录见势，收藏机会、建立个人观察清单并查看变化提醒。",
                  "/account/",robots="noindex,nofollow")
 
+def github_acceleration_block(acc):
+    count=int(num(acc.get("rising_repo_count")))
+    if count<=0:
+        return """<section class="panel acceleration-panel"><span class="section-kicker">技术加速度</span><h2>近期还没有足够的增星加速样本。</h2><p>这不会影响机会的商业验证状态，只表示当前 GitHub 动量不足以单独解释“正在起势”。</p></section>"""
+    return f"""<section class="panel acceleration-panel"><span class="section-kicker">技术加速度</span><h2>{fmt_int(count)} 个相关技术项目近期仍在增星</h2>
+<div class="exit-metrics">
+<div><b>{fmt_score(acc.get("recent_stars_per_day_sum"))}</b><span>合计约星标/天</span></div>
+<div><b>{fmt_score(acc.get("avg_recent_velocity_score"))}</b><span>平均加速度分</span></div>
+<div><b>{fmt_score(acc.get("avg_observation_window_hours"))}h</b><span>平均观察窗口</span></div>
+</div>
+<p>这组数据来自见势连续 GitHub 快照，只用于解释技术侧是否还在加速，不替代真实商业证据。</p>
+</section>"""
+
 def build_detail(data):
     x=data["item"]; is_ready=bool(x.get("public_ready"))
     badge=f'<span class="badge {"good" if is_ready else "watch"}">{"已验证机会" if is_ready else "持续观察"}</span>'
@@ -490,7 +512,8 @@ def build_detail(data):
 <div>一人公司适配</div><div>{fmt_score(x.get("solo_founder_fit"))}/100</div></div></section>
 <section class="panel"><h2>开源项目证据</h2>{evidence_github((data.get("evidence") or {}).get("github") or [])}</section>
 <section class="panel"><h2>真实商业样本</h2>{evidence_market((data.get("evidence") or {}).get("marketplace") or [])}</section>
-{sold_activity_block(x)}</div>
+{sold_activity_block(x)}
+{github_acceleration_block(data.get("acceleration") or {})}</div>
 <aside><section class="panel"><h3>证据强度</h3><div class="kv"><div>数据源</div><div>{fmt_int(x.get("source_count"))}</div>
 <div>有效证据</div><div>{fmt_int(x.get("evidence_count"))}</div><div>GitHub</div><div>{fmt_int(x.get("github_repo_count"))}</div>
 <div>商业挂牌</div><div>{fmt_int(x.get("market_listing_count"))}</div><div>综合分</div><div>{fmt_score(x.get("overall_score"))}</div></div></section>
