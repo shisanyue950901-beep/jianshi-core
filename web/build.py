@@ -947,6 +947,7 @@ def build_home(data, daily=None, prototypes=None):
 <div><div class="eyebrow">SEPARATE SIGNAL LAYER</div><h2>趋势信号与商业样本分开看</h2><p>技术热度、内容传播和系统评分保留在独立模块，不与商业资产证据混成一个结论。</p></div>
 <a href="/today/">查看趋势信号 →</a>
 </section>
+{newsletter_block()}
 </main>"""
     return shell(
         "见势｜海外商业项目研究",
@@ -1122,7 +1123,7 @@ def build_daily_page(kind, daily):
 <div class="history-note">{esc(history_note)}</div></section>
 <section class="daily-list">{"".join(_signal_row(x,metric_key,metric_label,i+1) for i,x in enumerate(rows))}</section>
 <section class="panel daily-explain"><h2>指标口径</h2>
-<p>本页展示的是系统研究指标，不是商业事实本身，也不是“值得做 / 不值得做”的行动建议。商业证据请以公开挂牌样本和来源字段为准。</p></section>
+<p>本页展示的是系统研究指标，不是商业事实本身，也不构成行动建议。商业证据请以公开挂牌样本和来源字段为准。</p></section>
 </main>"""
     return shell(f"{title}｜见势",body,lead,f"/{kind}/")
 
@@ -1197,6 +1198,7 @@ def build_detail(data):
 <li>技术样本与商业样本分别呈现，不用技术热度替代商业证据。</li>
 </ul>
 </section>
+{account_action_block(x)}
 </main>"""
     return shell(
         f'{esc(x.get("title"))}｜见势趋势信号',
@@ -1204,6 +1206,21 @@ def build_detail(data):
         "见势趋势信号档案：展示系统指标及其技术、商业证据记录。",
         canonical_path=f"/opportunity/{slug}/" if slug else "/",
     )
+
+
+def newsletter_block():
+    endpoint=esc(NEWSLETTER_API)
+    return f"""<section class="newsletter research-newsletter"><div class="wrap newsletter-inner">
+<div class="newsletter-copy"><span class="section-kicker">研究更新</span><h2>订阅见势研究更新</h2>
+<p>无需注册。提交邮箱后需完成确认；只有确认成功后才会发送更新，可随时退订。</p></div>
+<form class="newsletter-form" data-newsletter-form data-endpoint="{endpoint}">
+<label class="sr-only" for="newsletter-email">邮箱</label>
+<input id="newsletter-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="name@example.com" required>
+<input class="hp-field" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit">订阅研究更新</button>
+<p class="newsletter-consent">提交后将先发送确认邮件；未确认前不会进入正式发送名单。<a href="/privacy/">隐私说明</a></p>
+<p class="newsletter-status" data-newsletter-status role="status" aria-live="polite"></p>
+</form></div></section>"""
 
 def main():
     global AUTH_ENABLED
