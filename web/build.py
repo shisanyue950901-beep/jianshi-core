@@ -452,6 +452,26 @@ def build_account_page():
 <section class="panel"><h2>我的观察</h2><div data-watch-list><p class="muted">正在读取…</p></div></section>
 <section class="panel"><h2>最新提醒</h2><div data-alert-list><p class="muted">正在读取…</p></div></section>
 </div>
+<div class="account-settings-grid">
+<section class="panel">
+<span class="section-kicker">提醒偏好</span><h2>我想收到哪些提醒？</h2>
+<form class="account-preferences" data-alert-preferences-form>
+<label><input type="checkbox" name="in_app_enabled" checked> 站内提醒</label>
+<label><input type="checkbox" name="email_enabled"> 邮件提醒</label>
+<label><input type="checkbox" name="daily_digest_enabled"> 每日摘要</label>
+<label><input type="checkbox" name="weekly_digest_enabled"> 每周摘要</label>
+<button type="submit">保存提醒偏好</button>
+<p class="account-action-status" data-preferences-status role="status" aria-live="polite"></p>
+</form>
+<p class="auth-hint">邮件提醒只有在邮件服务和登录邮箱都完成验证后才会真正发送。</p>
+</section>
+<section class="panel danger-zone">
+<span class="section-kicker">隐私与数据</span><h2>清空我的见势数据</h2>
+<p>清空收藏、观察清单和站内提醒，并把提醒偏好恢复为默认值。不会删除你的登录账号。</p>
+<button type="button" class="secondary" data-clear-my-data>清空收藏与观察数据</button>
+<p class="account-action-status" data-clear-my-data-status role="status" aria-live="polite"></p>
+</section>
+</div>
 </section>
 </main>"""
     return shell("我的见势｜收藏与观察",body,
