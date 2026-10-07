@@ -35,7 +35,7 @@ class TestR75SubscriptionAndMultisource(unittest.TestCase):
         self.assertIn("Honeypot",fn)
         self.assertIn("sha256Hex",fn)
         self.assertIn("WAITLIST",fn)
-        self.assertIn("newsletter_provider_ready_v01",fn)
+        self.assertIn("newsletter_launch_ready_v01",fn)
         self.assertIn("request_newsletter_waitlist_v01",fn)
         self.assertIn("CONFIRMATION_QUEUED",fn)
         self.assertNotIn('message: "确认邮件已发送',fn)

@@ -63,14 +63,14 @@ Deno.serve(async (req: Request) => {
   const body = await req.json().catch(() => ({}));
   const subscriberLimit = Math.max(1, Math.min(500, Number(body.subscriber_limit ?? 100)));
 
-  const { data: ready, error: readyError } = await db.rpc("newsletter_provider_ready_v01");
+  const { data: ready, error: readyError } = await db.rpc("newsletter_launch_ready_v01");
   if (readyError) return json({ ok: false, error: "PROVIDER_STATE_FAILED" }, 500);
   if (ready !== true) {
     return json({
       ok: true,
-      provider_ready: false,
+      launch_ready: false,
       queued: 0,
-      message: "EMAIL_PROVIDER_NOT_CONFIGURED",
+      message: "NEWSLETTER_LAUNCH_GATE_CLOSED",
     });
   }
 
@@ -135,7 +135,7 @@ Deno.serve(async (req: Request) => {
 
   return json({
     ok: errors === 0,
-    provider_ready: true,
+    launch_ready: true,
     send_date: sendDate,
     top_items: items.length,
     active_selected: subscribers?.length ?? 0,
