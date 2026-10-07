@@ -109,7 +109,7 @@ Deno.serve(async (req: Request) => {
       if (itemError) throw itemError;
       if (!item) return json({ error: "NOT_FOUND" }, 404);
 
-      const [githubQ, marketQ, historyQ] = await Promise.all([
+      const [githubQ, marketQ, historyQ, accelerationQ] = await Promise.all([
         db.from("public_github_evidence_v01")
           .select("*")
           .eq("opportunity_id", item.opportunity_id)
@@ -126,11 +126,16 @@ Deno.serve(async (req: Request) => {
           .eq("score_version", "OPP_V0.2")
           .order("calculated_at", { ascending: false })
           .limit(40),
+        db.from("opportunity_github_acceleration_v01")
+          .select("rising_repo_count,recent_stars_per_day_sum,recent_stars_per_day_avg,avg_recent_velocity_score,max_recent_velocity_score,avg_observation_window_hours")
+          .eq("opportunity_id", item.opportunity_id)
+          .maybeSingle(),
       ]);
 
       if (githubQ.error) throw githubQ.error;
       if (marketQ.error) throw marketQ.error;
       if (historyQ.error) throw historyQ.error;
+      if (accelerationQ.error) throw accelerationQ.error;
 
       const { opportunity_id, ...publicItem } = item as any;
       const publicGithub = (githubQ.data ?? []).map(({ opportunity_id: _o, github_repository_id: _g, ...rest }: any) => rest);
@@ -143,6 +148,14 @@ Deno.serve(async (req: Request) => {
           marketplace: publicMarketplace,
         },
         score_history: historyQ.data ?? [],
+        acceleration: accelerationQ.data ?? {
+          rising_repo_count: 0,
+          recent_stars_per_day_sum: 0,
+          recent_stars_per_day_avg: 0,
+          avg_recent_velocity_score: 0,
+          max_recent_velocity_score: 0,
+          avg_observation_window_hours: 0,
+        },
         disclosure: item.public_ready
           ? "该机会已通过当前版本的多源共振 Gate。评分是研究工具，不代表收益承诺。"
           : "该条目仍处于单源观察池，尚未通过多源共振 Gate，不应视为已验证商业机会。",
