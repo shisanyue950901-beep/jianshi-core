@@ -1,0 +1,219 @@
+{
+  "version": "P4.4-V1",
+  "status": "DESIGN_FROZEN_NO_PRODUCTION_CHANGE",
+  "model": {
+    "parent_tracks": "EXISTING_6_OPPORTUNITIES_RETAINED_AS_EVIDENCE_AGGREGATION_LAYER",
+    "user_facing_unit": "CONCRETE_OPPORTUNITY",
+    "parent_evidence_inheritance": "CONTEXT_ONLY_NOT_VALIDATION",
+    "child_public_validation": "REQUIRES_CHILD_SPECIFIC_EVIDENCE"
+  },
+  "candidates": [
+    {
+      "rank": 1,
+      "slug": "vertical-micro-saas",
+      "title": "垂直行业 Micro SaaS",
+      "parent": "solo-saas",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_SAAS_6",
+        "GITHUB_SAAS_QUERY"
+      ],
+      "commercial_status": "DIRECT_PARENT_CATEGORY_STRONG_CHILD_MAPPING_REQUIRED"
+    },
+    {
+      "rank": 2,
+      "slug": "affiliate-seo-content-site",
+      "title": "联盟营销 / SEO 内容站",
+      "parent": "affiliate-content",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_AFFILIATE_10",
+        "MARKETPLACE_DISPLAY_ADS_12",
+        "MARKETPLACE_AMAZON_ASSOCIATES_8",
+        "GITHUB_AFFILIATE_MARKETING"
+      ],
+      "commercial_status": "STRONG"
+    },
+    {
+      "rank": 3,
+      "slug": "amazon-fba-niche-brand",
+      "title": "Amazon FBA 细分品牌",
+      "parent": "ecommerce-brands",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_AMAZON_FBA_77"
+      ],
+      "commercial_status": "STRONG"
+    },
+    {
+      "rank": 4,
+      "slug": "youtube-niche-media",
+      "title": "YouTube 垂直媒体资产",
+      "parent": "creator-media",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_YOUTUBE_16",
+        "GITHUB_YOUTUBE_QUERY"
+      ],
+      "commercial_status": "STRONG"
+    },
+    {
+      "rank": 5,
+      "slug": "digital-product-business",
+      "title": "数字产品业务",
+      "parent": "creator-media",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_DIGITAL_PRODUCT_15"
+      ],
+      "commercial_status": "STRONG"
+    },
+    {
+      "rank": 6,
+      "slug": "newsletter-media-business",
+      "title": "Newsletter 订阅媒体",
+      "parent": "creator-media",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_NEWSLETTER_2",
+        "MARKETPLACE_SUBSCRIPTION_14",
+        "GITHUB_NEWSLETTER_QUERY"
+      ],
+      "commercial_status": "MEDIUM_DIRECT"
+    },
+    {
+      "rank": 7,
+      "slug": "amazon-kdp-publishing",
+      "title": "Amazon KDP 数字出版",
+      "parent": "affiliate-content",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_AMAZON_KDP_11"
+      ],
+      "commercial_status": "STRONG"
+    },
+    {
+      "rank": 8,
+      "slug": "crossborder-dtc-brand",
+      "title": "跨境 DTC / 独立站品牌",
+      "parent": "ecommerce-brands",
+      "stage": "EDITORIAL_PRIORITY",
+      "evidence_basis": [
+        "MARKETPLACE_ECOMMERCE_52"
+      ],
+      "commercial_status": "STRONG_PARENT_CATEGORY_CHILD_MAPPING_REQUIRED"
+    },
+    {
+      "rank": 9,
+      "slug": "referral-affiliate-saas",
+      "title": "推荐 / 联盟营销 SaaS",
+      "parent": "solo-saas",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_REFREF",
+        "GITHUB_AFFILIATE_MARKETING"
+      ],
+      "commercial_status": "NEEDS_CHILD_COMMERCIAL_PROOF"
+    },
+    {
+      "rank": 10,
+      "slug": "email-marketing-saas",
+      "title": "邮件营销 / Newsletter SaaS",
+      "parent": "solo-saas",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_LISTMONK",
+        "GITHUB_BILLIONMAIL",
+        "MARKETPLACE_SAAS_6"
+      ],
+      "commercial_status": "NEEDS_CHILD_COMMERCIAL_MAPPING"
+    },
+    {
+      "rank": 11,
+      "slug": "ai-ecommerce-video-tool",
+      "title": "AI 电商短视频生成工具",
+      "parent": "ai-agent-tools",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_CLIPCAT"
+      ],
+      "commercial_status": "TECH_ONLY"
+    },
+    {
+      "rank": 12,
+      "slug": "ai-job-search-assistant",
+      "title": "AI 求职 / 简历 / 职位匹配助手",
+      "parent": "ai-agent-tools",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_CAREER_OPS"
+      ],
+      "commercial_status": "TECH_ONLY"
+    },
+    {
+      "rank": 13,
+      "slug": "ai-web-research-data-tool",
+      "title": "AI 网页研究 / 数据采集工具",
+      "parent": "llm-tools",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_FIRECRAWL",
+        "GITHUB_AGENT_REACH"
+      ],
+      "commercial_status": "TECH_ONLY"
+    },
+    {
+      "rank": 14,
+      "slug": "smb-agent-workflow-automation",
+      "title": "中小企业 Agent 工作流自动化",
+      "parent": "ai-agent-tools",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_AI_AGENTS_QUERY"
+      ],
+      "commercial_status": "TECH_ONLY_BROAD"
+    },
+    {
+      "rank": 15,
+      "slug": "open-source-saas-alternative",
+      "title": "开源 SaaS 替代 / 私有部署工具",
+      "parent": "solo-saas",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_AWESOME_OSS_ALTERNATIVES",
+        "GITHUB_SAAS_QUERY"
+      ],
+      "commercial_status": "NEEDS_CHILD_COMMERCIAL_PROOF"
+    },
+    {
+      "rank": 16,
+      "slug": "headless-commerce-tooling",
+      "title": "无头电商 / 电商基础设施工具",
+      "parent": "ecommerce-brands",
+      "stage": "RESEARCH_CANDIDATE",
+      "evidence_basis": [
+        "GITHUB_MEDUSA",
+        "GITHUB_SALEOR",
+        "GITHUB_SPREE",
+        "GITHUB_BAGISTO"
+      ],
+      "commercial_status": "TECH_ONLY"
+    }
+  ],
+  "first_editorial_batch": [
+    "vertical-micro-saas",
+    "affiliate-seo-content-site",
+    "amazon-fba-niche-brand",
+    "youtube-niche-media",
+    "digital-product-business",
+    "newsletter-media-business",
+    "amazon-kdp-publishing",
+    "crossborder-dtc-brand"
+  ],
+  "forbidden": [
+    "AUTO_PUBLISH_CANDIDATES",
+    "INHERIT_PARENT_PUBLIC_READY_TO_CHILD",
+    "INHERIT_ALL_PARENT_EVIDENCE_AS_CHILD_VALIDATION",
+    "CREATE_30_50_ITEMS_WITHOUT_EDITORIAL_REVIEW"
+  ]
+}
