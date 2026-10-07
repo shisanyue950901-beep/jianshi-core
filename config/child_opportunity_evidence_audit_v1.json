@@ -1,0 +1,178 @@
+{
+  "version": "P4.5A-V1",
+  "status": "EVIDENCE_AUDIT_FROZEN_NO_PRODUCTION_CHANGE",
+  "commercial_source_diversity": 1,
+  "commercial_source_codes": [
+    "empire_flippers"
+  ],
+  "rules": {
+    "direct_sample_count_is_not_source_diversity": true,
+    "parent_evidence_is_context_only": true,
+    "child_validation_requires_child_specific_evidence": true,
+    "direct_single_source_can_prove_existence_but_not_multi_source_validation": true,
+    "auto_publish": false
+  },
+  "archetype_profiles": {
+    "SOFTWARE": {
+      "required_for_high_confidence": [
+        "CHILD_SPECIFIC_COMMERCIAL_PROOF",
+        "CHILD_SPECIFIC_TECHNICAL_SUPPLY"
+      ],
+      "note": "软件类不能仅凭母赛道 SaaS 样本继承验证。"
+    },
+    "CONTENT_ASSET": {
+      "required_for_high_confidence": [
+        "DIRECT_COMMERCIAL_PROOF",
+        "SECOND_INDEPENDENT_SOURCE_OR_EQUIVALENT_CORROBORATION"
+      ],
+      "note": "内容/媒体资产不强制 GitHub 技术证据。"
+    },
+    "COMMERCE_ASSET": {
+      "required_for_high_confidence": [
+        "DIRECT_COMMERCIAL_PROOF",
+        "SECOND_INDEPENDENT_SOURCE_OR_EQUIVALENT_CORROBORATION"
+      ],
+      "note": "电商品牌不强制 GitHub 技术证据。"
+    }
+  },
+  "children": [
+    {
+      "slug": "vertical-micro-saas",
+      "current_title": "垂直行业 Micro SaaS",
+      "recommended_title": "垂直行业 SaaS",
+      "parent": "solo-saas",
+      "archetype": "SOFTWARE",
+      "direct_marketplace_rule": "monetizations contains SaaS",
+      "direct_marketplace_count": 6,
+      "direct_github_query": "saas",
+      "direct_github_repo_count": 50,
+      "github_directness": "PARTIAL_PARENT_LEVEL",
+      "evidence_strength": "DIRECT_MEDIUM_SINGLE_SOURCE",
+      "naming_issue": "MICRO_NOT_SUPPORTED",
+      "editorial_decision": "RENAME_AND_WORTH_RESEARCH",
+      "high_confidence_validated": false
+    },
+    {
+      "slug": "affiliate-seo-content-site",
+      "current_title": "联盟营销 / SEO 内容站",
+      "recommended_title": "联盟营销 / 内容站",
+      "parent": "affiliate-content",
+      "archetype": "CONTENT_ASSET",
+      "direct_marketplace_rule": "title contains Site AND monetizations intersects Affiliate/Amazon Associates/Display Advertising",
+      "direct_marketplace_count": 11,
+      "direct_github_query": "affiliate_marketing",
+      "direct_github_repo_count": 34,
+      "github_directness": "CONTEXT_ONLY",
+      "evidence_strength": "DIRECT_STRONG_SINGLE_SOURCE",
+      "naming_issue": "SEO_NOT_SUPPORTED_FOR_ALL_SAMPLES",
+      "editorial_decision": "RENAME_AND_WORTH_RESEARCH",
+      "high_confidence_validated": false
+    },
+    {
+      "slug": "amazon-fba-niche-brand",
+      "current_title": "Amazon FBA 细分品牌",
+      "recommended_title": "Amazon FBA 细分品牌",
+      "parent": "ecommerce-brands",
+      "archetype": "COMMERCE_ASSET",
+      "direct_marketplace_rule": "monetizations contains Amazon FBA",
+      "direct_marketplace_count": 77,
+      "direct_github_query": null,
+      "direct_github_repo_count": 0,
+      "github_directness": "NOT_REQUIRED_FOR_ARCHETYPE",
+      "evidence_strength": "DIRECT_VERY_STRONG_SINGLE_SOURCE",
+      "naming_issue": null,
+      "editorial_decision": "WORTH_RESEARCH",
+      "high_confidence_validated": false
+    },
+    {
+      "slug": "youtube-niche-media",
+      "current_title": "YouTube 垂直媒体资产",
+      "recommended_title": "YouTube 垂直媒体资产",
+      "parent": "creator-media",
+      "archetype": "CONTENT_ASSET",
+      "direct_marketplace_rule": "monetizations contains YouTube",
+      "direct_marketplace_count": 16,
+      "direct_github_query": "youtube",
+      "direct_github_repo_count": 50,
+      "github_directness": "CONTEXT_ONLY",
+      "evidence_strength": "DIRECT_STRONG_SINGLE_SOURCE",
+      "naming_issue": null,
+      "editorial_decision": "WORTH_RESEARCH",
+      "high_confidence_validated": false
+    },
+    {
+      "slug": "digital-product-business",
+      "current_title": "数字产品业务",
+      "recommended_title": "数字产品业务",
+      "parent": "creator-media",
+      "archetype": "CONTENT_ASSET",
+      "direct_marketplace_rule": "monetizations contains Digital Product",
+      "direct_marketplace_count": 15,
+      "direct_github_query": null,
+      "direct_github_repo_count": 0,
+      "github_directness": "NOT_REQUIRED_FOR_ARCHETYPE",
+      "evidence_strength": "DIRECT_STRONG_SINGLE_SOURCE",
+      "naming_issue": null,
+      "editorial_decision": "WORTH_RESEARCH",
+      "high_confidence_validated": false
+    },
+    {
+      "slug": "newsletter-media-business",
+      "current_title": "Newsletter 订阅媒体",
+      "recommended_title": "Newsletter 订阅媒体",
+      "parent": "creator-media",
+      "archetype": "CONTENT_ASSET",
+      "direct_marketplace_rule": "monetizations contains Newsletter",
+      "direct_marketplace_count": 2,
+      "direct_github_query": "newsletter",
+      "direct_github_repo_count": 50,
+      "github_directness": "CONTEXT_ONLY",
+      "evidence_strength": "DIRECT_LOW_SAMPLE_SINGLE_SOURCE",
+      "naming_issue": null,
+      "editorial_decision": "WORTH_RESEARCH_LOW_CONFIDENCE",
+      "high_confidence_validated": false
+    },
+    {
+      "slug": "amazon-kdp-publishing",
+      "current_title": "Amazon KDP 数字出版",
+      "recommended_title": "Amazon KDP 数字出版",
+      "parent": "affiliate-content",
+      "archetype": "CONTENT_ASSET",
+      "direct_marketplace_rule": "monetizations contains Amazon KDP",
+      "direct_marketplace_count": 11,
+      "direct_github_query": null,
+      "direct_github_repo_count": 0,
+      "github_directness": "NOT_REQUIRED_FOR_ARCHETYPE",
+      "evidence_strength": "DIRECT_STRONG_SINGLE_SOURCE",
+      "naming_issue": null,
+      "editorial_decision": "WORTH_RESEARCH",
+      "high_confidence_validated": false
+    },
+    {
+      "slug": "crossborder-dtc-brand",
+      "current_title": "跨境 DTC / 独立站品牌",
+      "recommended_title": "非 Amazon 电商品牌",
+      "parent": "ecommerce-brands",
+      "archetype": "COMMERCE_ASSET",
+      "direct_marketplace_rule": "monetizations contains eCommerce AND excludes Amazon FBA/FBM",
+      "direct_marketplace_count": 24,
+      "direct_github_query": "ecommerce",
+      "direct_github_repo_count": 50,
+      "github_directness": "CONTEXT_ONLY",
+      "evidence_strength": "DIRECT_STRONG_SINGLE_SOURCE",
+      "naming_issue": "CROSSBORDER_DTC_INDEPENDENT_SITE_NOT_SUPPORTED",
+      "editorial_decision": "RENAME_AND_WORTH_RESEARCH",
+      "high_confidence_validated": false
+    }
+  ],
+  "publication_summary": {
+    "worth_research": 8,
+    "worth_doing": 0,
+    "high_confidence_validated": 0,
+    "rename_before_publish": [
+      "vertical-micro-saas",
+      "affiliate-seo-content-site",
+      "crossborder-dtc-brand"
+    ]
+  }
+}
