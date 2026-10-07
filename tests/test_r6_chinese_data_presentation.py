@@ -14,8 +14,8 @@ class TestR6ChineseDataPresentation(unittest.TestCase):
         detail=Path("web/dist/opportunity/solo-saas/index.html").read_text(encoding="utf-8")
         self.assertNotIn("Agent framework example",index)
         self.assertNotIn("$20K Per Month SaaS Business",detail)
-        self.assertIn("开源项目证据",detail)
-        self.assertIn("真实商业样本",detail)
+        self.assertIn("技术供给证据",detail)
+        self.assertIn("商业验证",detail)
         self.assertIn("互联网商业样本",detail)
 
 if __name__=="__main__":
