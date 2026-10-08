@@ -146,11 +146,9 @@
     }
   };
 
-  const classifyHost=host=>{
-    if(host==="github.com"||host.endsWith(".github.com")) return "GITHUB";
-    if(/(empireflippers|acquire|flippa|microns|feinternational)\./.test(host)) return "MARKETPLACE";
-    return "OTHER";
-  };
+  // Public client never includes proprietary source-domain dictionaries.
+  // The referrer category is intentionally coarse, not a source inventory.
+  const classifyHost=host=>host?"EXTERNAL":"DIRECT";
 
   document.addEventListener("DOMContentLoaded",()=>{
     document.querySelectorAll("[data-analytics-opt-out]").forEach(btn=>{
