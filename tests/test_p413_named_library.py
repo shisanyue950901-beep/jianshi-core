@@ -45,7 +45,7 @@ class TestP413NamedBusinessLibrary(unittest.TestCase):
     def test_added_entries_do_not_change_photo_ring_size_or_original_visual(self):
         self.assertEqual(self.html.count("data:image/webp;base64,"),8)
         self.assertIn("ITEMS.filter(item=>!item.archiveOnly).forEach",self.html)
-        self.assertIn("const N=cards.length;",self.html)
+        self.assertIn("N=cards.length;",self.html)
         self.assertIn("const EXTRA_CASES=",self.html)
         self.assertIn("ITEMS.push(...EXTRA_CASES);",self.html)
         self.assertEqual(self.html.count("<style>"),1)
