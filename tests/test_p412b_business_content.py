@@ -51,7 +51,7 @@ class TestP412BBusinessContent(unittest.TestCase):
         self.assertIn("商业模式类别",self.content["editorial_rule"]["classification"])
 
     def test_prototype_content_is_in_sync_with_reviewed_json(self):
-        match=re.search(r"const data=(\{.*?\});\s*const home=",self.html,re.S)
+        match=re.search(r"const data=(\{.*?\});\s*const (?:home|caseProfiles)=",self.html,re.S)
         self.assertIsNotNone(match,"Static preview content not embedded as JSON")
         rendered=json.loads(match.group(1))
         self.assertEqual(set(rendered),{x["id"] for x in self.models})

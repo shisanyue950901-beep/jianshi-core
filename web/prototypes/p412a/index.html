@@ -102,6 +102,14 @@ body,.site-head,.project-card,.satellite,.note-panel,.note-item,.detail-cta,
 @media(prefers-reduced-motion:reduce){body,.site-head,.project-card,.satellite,.note-panel,.note-item,.detail-cta,.filter,.pill,.theme-toggle,.orb,.head-right{transition:none!important}}
 
 .card-income{color:var(--ink);opacity:.78;font-size:12px;margin-top:12px;font-weight:550}
+
+.case-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.case-card{min-height:330px}
+.case-facts{padding-left:1.35em;color:var(--muted);line-height:1.95}
+.case-facts li{margin-bottom:9px}
+.case-facts li::marker{color:var(--ink)}
+#case-view .detail-cover{min-height:270px}
+@media(max-width:760px){.case-grid{grid-template-columns:1fr}.case-card{min-height:290px}}
 </style>
 </head><body>
 <header class="site-head"><div class="wrap head-row"><a href="#top" class="logo" aria-label="见势首页">见势 <small>JIANSHI</small></a><nav class="head-right" id="menu"><a href="#projects" data-home-link>发现项目</a><a href="#approach" data-home-link>我们提供什么</a><a href="#about" data-home-link>关于见势</a></nav><button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换为浅色模式" aria-pressed="false" title="切换为浅色模式"><span class="theme-toggle-icon" aria-hidden="true">☀</span><span class="theme-toggle-label">浅色</span></button><button class="menu-toggle" id="menu-toggle" aria-label="打开菜单" aria-controls="menu" aria-expanded="false">☰</button></div></header>
@@ -116,9 +124,39 @@ body,.site-head,.project-card,.satellite,.note-panel,.note-item,.detail-cta,
 <button class="project-card" data-group="commerce" data-project="fba"><div class="card-top"><span>05 / 商品零售</span><span>商品销售</span></div><div class="card-mark">E</div><h3>跨境电商品牌</h3><p>围绕实物商品组织采购、展示、库存和线上销售。</p><p class="card-income">主要收入：商品零售</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
 <button class="project-card" data-group="service" data-project="agency"><div class="card-top"><span>06 / 专业服务</span><span>服务收费</span></div><div class="card-mark">A</div><h3>专业服务</h3><p>依靠可交付的专业能力，为特定客户解决具体问题。</p><p class="card-income">主要收入：服务合同</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
 </div></section>
+<section class="section wrap" id="named-cases">
+<div class="section-head"><div><div class="eyebrow">海外项目参考</div><h2>看看真实在经营的产品。</h2></div><p>以下是两份可核对产品或作品的具名案例。产品存在不等于获利能力已核实。</p></div>
+<div class="project-grid case-grid">
+<button class="project-card case-card" data-case="easlo" aria-label="查看 Easlo 数字模板项目">
+<div class="card-top"><span>数字产品实例</span><span>现有商品可查</span></div>
+<div class="card-mark" aria-hidden="true">E</div>
+<h3>Easlo｜数字效率模板</h3><p>销售现成的数字工作模板，让用户更快整理任务、学习和日常工作。</p>
+<div class="card-end"><span>查看具名案例</span><b>→</b></div></button>
+<button class="project-card case-card" data-case="louise-lennox" aria-label="查看 Louise Lennox 图书出版项目">
+<div class="card-top"><span>数字出版实例</span><span>作品与出版经历可查</span></div>
+<div class="card-mark" aria-hidden="true">L</div>
+<h3>Louise Lennox｜爱情小说出版</h3><p>创作有明确读者群的系列小说，通过图书销售和出版渠道触达读者。</p>
+<div class="card-end"><span>查看具名案例</span><b>→</b></div></button>
+</div></section>
 <section class="note-panel" id="approach"><div class="wrap note-layout"><div class="reveal"><div class="eyebrow">选择一门生意时</div><h2>先看它做什么。<br>再判断要不要研究。</h2><p>找项目之前，先理解客户、产品、收入与经营环节。不同模式的难点并不相同。</p></div><div class="note-grid"><div class="note-item reveal"><b>01</b><h3>这是什么业务</h3><span>产品、服务及客户</span></div><div class="note-item reveal"><b>02</b><h3>收入从哪里来</h3><span>商业模式和主要交易</span></div><div class="note-item reveal"><b>03</b><h3>有哪些海外案例</h3><span>观察数据和信息性质</span></div><div class="note-item reveal"><b>04</b><h3>还需要核实什么</h3><span>成本、门槛和未知条件</span></div></div></div></section>
 </main>
 <main id="detail-view" hidden><div class="wrap"><div class="detail-cover"><div class="subhead"><button id="back-projects">← 返回项目</button><span>／</span><span id="detail-breadcrumb">数字出版</span></div><div class="eyebrow" style="margin-top:35px">了解这门生意</div><h1 id="detail-title">亚马逊数字出版</h1><p id="detail-intro"></p><div id="detail-tags" class="detail-meta"></div></div><div class="detail-columns"><aside class="detail-aside"><div class="eyebrow">商业模式速览</div><strong>先看生意，<br>再看数字。</strong><p>以下是商业模式介绍，并非声称已经核实每个具体项目的全部运营情况。</p></aside><div class="detail-article"><article><div class="eyebrow">业务简介</div><h2>这个项目在做什么？</h2><p id="detail-business"></p></article><article><div class="eyebrow">客户群体</div><h2>卖给谁？</h2><p id="detail-customer"></p></article><article><div class="eyebrow">收入方式</div><h2>收入从哪里来？</h2><p id="detail-revenue"></p></article><article><div class="eyebrow">经营环节</div><h2>通常需要哪些工作？</h2><p id="detail-operation"></p><p class="explain">以上是常见经营环节，不代表任何单个企业一定采用相同流程。</p></article><article><div class="eyebrow">成本构成</div><h2>通常有哪些成本？</h2><p id="detail-costs"></p></article><article><div class="eyebrow">海外参考</div><h2>目前可以参考什么？</h2><p id="detail-evidence"></p><p class="explain">经营记录不能代替对具体项目的核实，也不能用于预测未来收益。</p></article><article><div class="eyebrow">需要核实</div><h2>还需要确认什么？</h2><p id="detail-unknowns"></p></article><article><div class="eyebrow">继续研究</div><h2>如果继续研究，可以先问什么？</h2><p id="detail-questions"></p></article><div class="detail-cta"><strong>继续了解另一门生意</strong><button data-switch="digital">数字产品 ↗</button><button data-switch="kdp">数字出版 ↗</button></div></div></div></div></main>
+<main id="case-view" hidden><div class="wrap"><div class="detail-cover">
+<div class="subhead"><button id="back-cases">← 返回项目</button><span>／</span><span id="case-breadcrumb">海外项目</span></div>
+<div class="eyebrow" style="margin-top:35px">真实产品参考</div><h1 id="case-title"></h1>
+<p id="case-intro"></p></div>
+<div class="detail-columns"><aside class="detail-aside"><div class="eyebrow">具体项目介绍</div>
+<strong>先看产品。<br>再看商业事实。</strong>
+<p>商品展示和出版经历可以核对，但实际利润与投入仍需要独立核实。</p></aside>
+<div class="detail-article">
+<article><div class="eyebrow">项目简介</div><h2>它具体销售什么？</h2><p id="case-offering"></p></article>
+<article><div class="eyebrow">客户群体</div><h2>谁可能购买？</h2><p id="case-buyer"></p></article>
+<article><div class="eyebrow">收入方式</div><h2>主要如何收费？</h2><p id="case-revenue"></p></article>
+<article><div class="eyebrow">已核实的信息</div><h2>可以确认哪些事实？</h2><ul id="case-facts" class="case-facts"></ul></article>
+<article><div class="eyebrow">项目观察</div><h2>这门生意值得观察什么？</h2><p id="case-observation"></p></article>
+<article><div class="eyebrow">仍待核实</div><h2>哪些经营结果还不知道？</h2><p id="case-income"></p><ul id="case-unknowns" class="case-facts"></ul></article>
+<div class="detail-cta"><strong>继续了解相关商业模式</strong><button id="case-related-model">了解业务类型 →</button></div>
+</div></div></div></main>
 <footer class="footer wrap" id="about"><div><div class="footer-logo">见势</div><p>把海外商业模式讲清楚，帮助你做自己的判断。</p></div><p>商业模式介绍用于理解常见业务形态；实际成本与平台规则需结合具体项目核实。</p></footer>
 <script>
 (()=>{'use strict';
@@ -261,8 +299,76 @@ const data={
     "misconception": "有客户就等于可规模化并不成立；规模扩大也可能意味着更多人工投入。"
   }
 };
-const home=document.getElementById('home-view'),detail=document.getElementById('detail-view');function showProject(key){const x=data[key];if(!x)return;document.getElementById('detail-title').textContent=x.title;document.getElementById('detail-breadcrumb').textContent=x.title;document.getElementById('detail-intro').textContent=x.lead;document.getElementById('detail-tags').replaceChildren(...x.tags.map(t=>{const s=document.createElement('span');s.textContent=t;return s}));for(const k of ['business','customer','revenue','operation','costs','evidence','unknowns','questions'])document.getElementById('detail-'+k).textContent=x[k];home.hidden=true;detail.hidden=false;window.scrollTo({top:0,behavior:'instant'});document.title=x.title+'｜见势';}function showHome(){detail.hidden=true;home.hidden=false;document.title='见势｜海外商业项目发现与研究';}
-function route(){const m=location.hash.match(/^#project-([a-z]+)$/);if(m&&data[m[1]])showProject(m[1]);else {showHome();if(location.hash==='#projects')document.getElementById('projects').scrollIntoView();}}document.querySelectorAll('[data-project]').forEach(e=>e.addEventListener('click',()=>{location.hash='project-'+e.dataset.project;route()}));document.querySelectorAll('[data-switch]').forEach(e=>e.addEventListener('click',()=>{location.hash='project-'+e.dataset.switch;route()}));document.getElementById('back-projects').addEventListener('click',()=>{location.hash='projects';route()});addEventListener('hashchange',route);document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));document.querySelectorAll('.project-card').forEach(card=>card.hidden=btn.dataset.filter!=='all'&&card.dataset.group!==btn.dataset.filter)}));const menuToggle=document.getElementById('menu-toggle'),menu=document.getElementById('menu');menuToggle.addEventListener('click',()=>{const open=menu.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'关闭菜单':'打开菜单')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');if(detail.hidden===false){showHome();setTimeout(()=>document.querySelector(a.getAttribute('href'))?.scrollIntoView(),0)}}));
+const caseProfiles={
+  "easlo": {
+    "id": "easlo",
+    "name": "Easlo",
+    "zh_category": "数字产品",
+    "category_id": "digital",
+    "display_title": "Easlo｜数字效率模板",
+    "brief": "围绕日程、学习、财务和工作管理，提供可直接使用的 Notion 模板。",
+    "what_sells": "付费与免费模板，包括工作管理、个人效率、预算和知识管理等用途。",
+    "buyer": "需要快速搭建数字工作空间、又不愿从零配置模板的个人与团队。",
+    "revenue_model": "通过付费模板和模板组合的使用权销售获得收入；部分模板可免费获取。",
+    "confirmed": [
+      "项目官网有公开模板目录，并区分免费与付费产品。",
+      "Notion 官方模板市场存在 Easlo 创作者页面，并列出其模板。"
+    ],
+    "income_status": "实际营业收入、净利润和当前销量暂无独立核实数据。",
+    "business_observation": "这是将细分使用场景产品化、让用户付费获得现成工具的具体实例。可以学习其产品组织方式，但不能由公开标价推导经营利润。",
+    "unknowns": [
+      "当前实际付费订单与退款情况",
+      "持续获客与产品维护投入",
+      "目前的团队规模及人员分工"
+    ],
+    "action": "研究其商品如何按具体场景区分，而不是照搬模板内容。"
+  },
+  "louise-lennox": {
+    "id": "louise-lennox",
+    "name": "Louise Lennox",
+    "zh_category": "亚马逊数字出版",
+    "category_id": "kdp",
+    "display_title": "Louise Lennox｜爱情小说出版",
+    "brief": "围绕爱情小说题材持续创作图书作品，并通过电子书和纸质书渠道面向读者。",
+    "what_sells": "原创小说和系列图书；作者自有网站展示作品，也提供部分签名纸质书商品。",
+    "buyer": "喜欢特定爱情小说题材、希望阅读单本作品或持续追读系列故事的读者。",
+    "revenue_model": "通过作品销售获得收入；亚马逊曾介绍她使用 Kindle 直接出版。不同销售渠道和出版形式的实际结算可能不同。",
+    "confirmed": [
+      "作者官网可查阅多部小说及图书系列。",
+      "亚马逊官方作者专题明确介绍她通过 Kindle 直接出版作品的经历。",
+      "作者官网还公开展示部分纸质书商品。"
+    ],
+    "income_status": "当前 KDP 版税、总销量、净利润及个人投入均无足够公开证据独立核实。",
+    "business_observation": "这个案例体现了以作品和系列主题面向固定读者的出版方式。不能仅凭平台采访推导今天的销售表现。",
+    "unknowns": [
+      "不同渠道的真实销量及版税贡献",
+      "编辑、设计、印刷和推广成本",
+      "作者是否独立完成出版运营及团队规模"
+    ],
+    "action": "观察其作品主题与系列结构，不能把题材热度等同于销量保证。"
+  }
+};
+const caseView=document.getElementById('case-view');
+const fillText=(id,value)=>{document.getElementById(id).textContent=value||''};
+const fillBullets=(id,items)=>{const target=document.getElementById(id);target.replaceChildren(...(items||[]).map(s=>{const li=document.createElement('li');li.textContent=s;return li}))};
+function showNamedCase(id){
+ const c=caseProfiles[id];if(!c)return;
+ fillText('case-title',c.display_title);fillText('case-breadcrumb',c.zh_category);
+ fillText('case-intro',c.brief);fillText('case-offering',c.what_sells);
+ fillText('case-buyer',c.buyer);fillText('case-revenue',c.revenue_model);
+ fillText('case-observation',c.business_observation);
+ fillText('case-income',c.income_status);
+ fillBullets('case-facts',c.confirmed);fillBullets('case-unknowns',c.unknowns);
+ document.getElementById('case-related-model').dataset.related=c.category_id;
+ home.hidden=true;detail.hidden=true;caseView.hidden=false;window.scrollTo({top:0,behavior:'instant'});
+ document.title=c.display_title+'｜见势';
+}
+document.querySelectorAll('[data-case]').forEach(el=>el.addEventListener('click',()=>{location.hash='case-'+el.dataset.case}));
+document.getElementById('back-cases').addEventListener('click',()=>{location.hash='named-cases'});
+document.getElementById('case-related-model').addEventListener('click',e=>{location.hash='project-'+e.currentTarget.dataset.related});
+
+const home=document.getElementById('home-view'),detail=document.getElementById('detail-view');function showProject(key){const x=data[key];if(!x)return;document.getElementById('detail-title').textContent=x.title;document.getElementById('detail-breadcrumb').textContent=x.title;document.getElementById('detail-intro').textContent=x.lead;document.getElementById('detail-tags').replaceChildren(...x.tags.map(t=>{const s=document.createElement('span');s.textContent=t;return s}));for(const k of ['business','customer','revenue','operation','costs','evidence','unknowns','questions'])document.getElementById('detail-'+k).textContent=x[k];home.hidden=true;detail.hidden=false;caseView.hidden=true;window.scrollTo({top:0,behavior:'instant'});document.title=x.title+'｜见势';}function showHome(){detail.hidden=true;caseView.hidden=true;home.hidden=false;document.title='见势｜海外商业项目发现与研究';}
+function route(){const c=location.hash.match(/^#case-([a-z-]+)$/);if(c&&caseProfiles[c[1]]){showNamedCase(c[1]);return}const m=location.hash.match(/^#project-([a-z]+)$/);if(m&&data[m[1]])showProject(m[1]);else {showHome();if(location.hash==='#projects'||location.hash==='#named-cases')document.getElementById(location.hash.slice(1)).scrollIntoView();}}document.querySelectorAll('[data-project]').forEach(e=>e.addEventListener('click',()=>{location.hash='project-'+e.dataset.project;route()}));document.querySelectorAll('[data-switch]').forEach(e=>e.addEventListener('click',()=>{location.hash='project-'+e.dataset.switch;route()}));document.getElementById('back-projects').addEventListener('click',()=>{location.hash='projects';route()});addEventListener('hashchange',route);document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));document.querySelectorAll('.project-card').forEach(card=>card.hidden=btn.dataset.filter!=='all'&&card.dataset.group!==btn.dataset.filter)}));const menuToggle=document.getElementById('menu-toggle'),menu=document.getElementById('menu');menuToggle.addEventListener('click',()=>{const open=menu.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'关闭菜单':'打开菜单')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');if(!detail.hidden||!caseView.hidden){showHome();setTimeout(()=>document.querySelector(a.getAttribute('href'))?.scrollIntoView(),0)}}));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(!reduce){const hero=document.getElementById('hero-art');hero.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const b=hero.getBoundingClientRect();const x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;hero.style.setProperty('--rx',(y*7)+'deg');hero.style.setProperty('--ry',(x*10)+'deg')});hero.addEventListener('pointerleave',()=>{hero.style.setProperty('--rx','0deg');hero.style.setProperty('--ry','0deg')})}if('IntersectionObserver' in window&&!reduce){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>io.observe(e))}else document.querySelectorAll('.reveal').forEach(e=>e.classList.add('visible'));route();
 })();
 </script>
