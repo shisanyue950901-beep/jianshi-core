@@ -22,10 +22,10 @@ class TestP42FrontendProductization(unittest.TestCase):
     def test_public_detail_is_evidence_first(self):
         build = (ROOT / "web" / "build.py").read_text(encoding="utf-8")
         for token in [
-            "MARKET EVIDENCE BRIEF",
+            "项目研究档案",
             "样本纳入规则",
             "挂牌样本摘要",
-            "OBSERVED LISTINGS",
+            "中文案例",
             "证据边界",
         ]:
             self.assertIn(token, build)
@@ -43,7 +43,7 @@ class TestP42FrontendProductization(unittest.TestCase):
         self.assertIn("test -f opportunities/index.html", workflow)
         self.assertIn('grep -q "先看证据" index.html', workflow)
         self.assertIn('grep -q "项目研究库" opportunities/index.html', workflow)
-        self.assertIn('grep -q "SYSTEM SIGNAL PROFILE" opportunity/solo-saas/index.html', workflow)
+        self.assertIn('grep -q "趋势指标档案" opportunity/solo-saas/index.html', workflow)
         self.assertIn("opportunity opportunities today", workflow)
 
     def test_fixture_build_emits_opportunities_page(self):
@@ -62,7 +62,7 @@ class TestP42FrontendProductization(unittest.TestCase):
         self.assertTrue(out.exists())
         html = out.read_text(encoding="utf-8")
         self.assertIn("项目研究库", html)
-        self.assertIn("公开商业挂牌样本", html)
+        self.assertIn("中文整理的海外项目类别", html)
         self.assertIn("当前证据边界", html)
 
 
