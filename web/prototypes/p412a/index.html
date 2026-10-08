@@ -100,24 +100,26 @@ body,.site-head,.project-card,.satellite,.note-panel,.note-item,.detail-cta,
 }
 @media(max-width:365px){.theme-toggle{gap:6px;padding:8px 10px}.theme-toggle-label{font-size:11px}}
 @media(prefers-reduced-motion:reduce){body,.site-head,.project-card,.satellite,.note-panel,.note-item,.detail-cta,.filter,.pill,.theme-toggle,.orb,.head-right{transition:none!important}}
+
+.card-income{color:var(--ink);opacity:.78;font-size:12px;margin-top:12px;font-weight:550}
 </style>
 </head><body>
 <header class="site-head"><div class="wrap head-row"><a href="#top" class="logo" aria-label="见势首页">见势 <small>JIANSHI</small></a><nav class="head-right" id="menu"><a href="#projects" data-home-link>发现项目</a><a href="#approach" data-home-link>我们提供什么</a><a href="#about" data-home-link>关于见势</a></nav><button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换为浅色模式" aria-pressed="false" title="切换为浅色模式"><span class="theme-toggle-icon" aria-hidden="true">☀</span><span class="theme-toggle-label">浅色</span></button><button class="menu-toggle" id="menu-toggle" aria-label="打开菜单" aria-controls="menu" aria-expanded="false">☰</button></div></header>
 <main id="home-view">
 <section class="hero wrap" id="top"><div class="hero-content reveal"><div class="eyebrow">DISCOVER BUSINESSES / 发现海外商业机会</div><h1 class="hero-title">世界另一端，<br>有人已经把想法<br><em>做成了生意。</em></h1><p class="hero-lead">见势带你了解真实存在的海外商业模式：它们卖什么、靠什么赚钱、如何运作，以及有哪些值得进一步研究的案例。</p><div class="hero-actions"><a class="pill" href="#projects">探索项目 <span>↗</span></a><a class="muted-link" href="#approach">见势能帮你了解什么 →</a></div></div>
-<div class="hero-art" id="hero-art" aria-label="六种商业模式组成的探索图谱"><div class="orb"><div class="axis"></div><div class="art-center"><small>THE BUSINESS ARCHIVE</small><b>发现 · 理解<br>再做判断</b></div></div><button class="satellite s1" data-project="digital"><span>01</span><strong>数字产品</strong></button><button class="satellite s2" data-project="kdp"><span>02</span><strong>数字出版</strong></button><button class="satellite s3" data-project="saas"><span>03</span><strong>软件订阅</strong></button><button class="satellite s4" data-project="content"><span>04</span><strong>内容生意</strong></button></div><div class="hero-bottom"><span>INDEPENDENT BUSINESS DISCOVERY</span><span>SCROLL TO EXPLORE ↓</span></div></section>
-<section class="section wrap" id="projects"><div class="section-head reveal"><div><div class="eyebrow">BROWSE THE MODELS / 按商业模式探索</div><h2>从一门生意开始。</h2></div><p>不是抽象的热门赛道，而是先了解不同生意怎样创造价值、获得收入，再选择值得深入研究的方向。</p></div><div class="filters" role="group" aria-label="按商业模式筛选"><button class="filter" data-filter="all" aria-pressed="true">全部</button><button class="filter" data-filter="digital" aria-pressed="false">软件与数字产品</button><button class="filter" data-filter="content" aria-pressed="false">内容与出版</button><button class="filter" data-filter="commerce" aria-pressed="false">商品零售</button><button class="filter" data-filter="service" aria-pressed="false">专业服务</button></div><div class="project-grid" id="project-grid">
-<button class="project-card" data-group="digital" data-project="saas"><div class="card-top"><span>01 / SOFTWARE</span><span>订阅型</span></div><div class="card-mark">S</div><h3>行业软件订阅</h3><p>为某个行业提供持续使用的软件工具，通常以周期订阅或服务费用获得收入。</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
-<button class="project-card" data-group="digital" data-project="digital"><div class="card-top"><span>02 / DIGITAL PRODUCTS</span><span>数字交付</span></div><div class="card-mark">D</div><h3>数字产品</h3><p>把模板、素材、软件工具或知识产品数字化交付，通过单次购买或授权收费。</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
-<button class="project-card" data-group="content" data-project="content"><div class="card-top"><span>03 / MEDIA</span><span>内容变现</span></div><div class="card-mark">C</div><h3>内容与联盟营销</h3><p>通过持续提供内容积累受众，以广告、推荐佣金或相关产品获得收入。</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
-<button class="project-card" data-group="content" data-project="kdp"><div class="card-top"><span>04 / PUBLISHING</span><span>图书销售</span></div><div class="card-mark">P</div><h3>亚马逊数字出版</h3><p>制作并出版电子书或纸质书，通过读者购买和平台结算获得收入。</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
-<button class="project-card" data-group="commerce" data-project="fba"><div class="card-top"><span>05 / E-COMMERCE</span><span>商品销售</span></div><div class="card-mark">E</div><h3>跨境电商品牌</h3><p>围绕具体消费产品建立经营业务，收入主要来自商品销售，运营涉及采购、库存和履约。</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
-<button class="project-card" data-group="service" data-project="agency"><div class="card-top"><span>06 / SERVICES</span><span>服务收费</span></div><div class="card-mark">A</div><h3>专业服务</h3><p>为企业或个人解决明确的问题，通过项目制、合同制或长期服务获得收入。</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
+<div class="hero-art" id="hero-art" aria-label="六种商业模式组成的探索图谱"><div class="orb"><div class="axis"></div><div class="art-center"><small>THE BUSINESS ARCHIVE</small><b>发现 · 理解<br>再做判断</b></div></div><button class="satellite s1" data-project="digital"><span>01</span><strong>数字产品</strong></button><button class="satellite s2" data-project="kdp"><span>02</span><strong>数字出版</strong></button><button class="satellite s3" data-project="saas"><span>03</span><strong>软件订阅</strong></button><button class="satellite s4" data-project="content"><span>04</span><strong>内容生意</strong></button></div><div class="hero-bottom"><span>探索海外商业模式</span><span>SCROLL TO EXPLORE ↓</span></div></section>
+<section class="section wrap" id="projects"><div class="section-head reveal"><div><div class="eyebrow">按商业模式探索</div><h2>从一门生意开始。</h2></div><p>不是抽象的热门赛道，而是先了解不同生意怎样创造价值、获得收入，再选择值得深入研究的方向。</p></div><div class="filters" role="group" aria-label="按商业模式筛选"><button class="filter" data-filter="all" aria-pressed="true">全部</button><button class="filter" data-filter="digital" aria-pressed="false">软件与数字产品</button><button class="filter" data-filter="content" aria-pressed="false">内容与出版</button><button class="filter" data-filter="commerce" aria-pressed="false">商品零售</button><button class="filter" data-filter="service" aria-pressed="false">专业服务</button></div><div class="project-grid" id="project-grid">
+<button class="project-card" data-group="digital" data-project="saas"><div class="card-top"><span>01 / 软件服务</span><span>订阅型</span></div><div class="card-mark">S</div><h3>行业软件订阅</h3><p>把某个行业的重复工作变成持续使用的软件服务。</p><p class="card-income">主要收入：订阅与使用费</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
+<button class="project-card" data-group="digital" data-project="digital"><div class="card-top"><span>02 / 数字产品</span><span>数字交付</span></div><div class="card-mark">D</div><h3>数字产品</h3><p>把专业知识或工具做成可以在线购买和交付的商品。</p><p class="card-income">主要收入：商品购买与授权</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
+<button class="project-card" data-group="content" data-project="content"><div class="card-top"><span>03 / 内容业务</span><span>内容变现</span></div><div class="card-mark">C</div><h3>内容与联盟营销</h3><p>用内容帮助用户做选择，再通过广告或推荐获得收入。</p><p class="card-income">主要收入：广告及推荐佣金</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
+<button class="project-card" data-group="content" data-project="kdp"><div class="card-top"><span>04 / 图书出版</span><span>图书销售</span></div><div class="card-mark">P</div><h3>亚马逊数字出版</h3><p>制作并发行图书作品，通过读者购买形成出版收入。</p><p class="card-income">主要收入：图书销售版税</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
+<button class="project-card" data-group="commerce" data-project="fba"><div class="card-top"><span>05 / 商品零售</span><span>商品销售</span></div><div class="card-mark">E</div><h3>跨境电商品牌</h3><p>围绕实物商品组织采购、展示、库存和线上销售。</p><p class="card-income">主要收入：商品零售</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
+<button class="project-card" data-group="service" data-project="agency"><div class="card-top"><span>06 / 专业服务</span><span>服务收费</span></div><div class="card-mark">A</div><h3>专业服务</h3><p>依靠可交付的专业能力，为特定客户解决具体问题。</p><p class="card-income">主要收入：服务合同</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
 </div></section>
-<section class="note-panel" id="approach"><div class="wrap note-layout"><div class="reveal"><div class="eyebrow">THE JIANSHI APPROACH</div><h2>少一点行业黑话。<br>多一点有用的信息。</h2><p>我们把业务本身、商业参考数据和仍然未知的部分分开呈现。看懂一种生意，不需要先理解数据系统如何工作。</p></div><div class="note-grid"><div class="note-item reveal"><b>01</b><h3>这是什么业务</h3><span>产品、服务及客户</span></div><div class="note-item reveal"><b>02</b><h3>收入从哪里来</h3><span>商业模式和主要交易</span></div><div class="note-item reveal"><b>03</b><h3>有哪些海外案例</h3><span>观察数据和信息性质</span></div><div class="note-item reveal"><b>04</b><h3>还需要核实什么</h3><span>成本、门槛和未知条件</span></div></div></div></section>
+<section class="note-panel" id="approach"><div class="wrap note-layout"><div class="reveal"><div class="eyebrow">选择一门生意时</div><h2>先看它做什么。<br>再判断要不要研究。</h2><p>找项目之前，先理解客户、产品、收入与经营环节。不同模式的难点并不相同。</p></div><div class="note-grid"><div class="note-item reveal"><b>01</b><h3>这是什么业务</h3><span>产品、服务及客户</span></div><div class="note-item reveal"><b>02</b><h3>收入从哪里来</h3><span>商业模式和主要交易</span></div><div class="note-item reveal"><b>03</b><h3>有哪些海外案例</h3><span>观察数据和信息性质</span></div><div class="note-item reveal"><b>04</b><h3>还需要核实什么</h3><span>成本、门槛和未知条件</span></div></div></div></section>
 </main>
-<main id="detail-view" hidden><div class="wrap"><div class="detail-cover"><div class="subhead"><button id="back-projects">← 返回项目</button><span>／</span><span id="detail-breadcrumb">数字出版</span></div><div class="eyebrow" style="margin-top:35px">A BUSINESS TO UNDERSTAND / 了解一门生意</div><h1 id="detail-title">亚马逊数字出版</h1><p id="detail-intro"></p><div id="detail-tags" class="detail-meta"></div></div><div class="detail-columns"><aside class="detail-aside"><div class="eyebrow">BUSINESS NOTES</div><strong>先看生意，<br>再看数字。</strong><p>以下是商业模式介绍，并非声称已经核实每个具体项目的全部运营情况。</p></aside><div class="detail-article"><article><div class="eyebrow">01 / BUSINESS</div><h2>这个项目在做什么？</h2><p id="detail-business"></p></article><article><div class="eyebrow">02 / REVENUE</div><h2>收入从哪里来？</h2><p id="detail-revenue"></p></article><article><div class="eyebrow">03 / OPERATIONS</div><h2>通常需要哪些工作？</h2><p id="detail-operation"></p><p class="explain">这里介绍商业模式的一般运作环节，不代表某个匿名案例的真实操作细节。</p></article><article><div class="eyebrow">04 / OBSERVATION</div><h2>目前可以参考什么？</h2><p id="detail-evidence"></p><p class="explain">这是设计样板，正式统计结果须由上线时的安全汇总数据校验，且不能据此推断单个新项目的预期收益。</p></article><article><div class="eyebrow">05 / DUE DILIGENCE</div><h2>还需要确认什么？</h2><p id="detail-unknowns"></p></article><div class="detail-cta"><strong>继续了解另一门生意</strong><button data-switch="digital">数字产品 ↗</button><button data-switch="kdp">数字出版 ↗</button></div></div></div></div></main>
-<footer class="footer wrap" id="about"><div><div class="footer-logo">见势</div><p>把海外商业模式讲清楚，帮助你做自己的判断。</p></div><p>商业模式介绍用于信息研究；实际成本、平台规则和市场表现以最新可核实资料为准。此页面为独立设计样板，不代表已发布的网站。</p></footer>
+<main id="detail-view" hidden><div class="wrap"><div class="detail-cover"><div class="subhead"><button id="back-projects">← 返回项目</button><span>／</span><span id="detail-breadcrumb">数字出版</span></div><div class="eyebrow" style="margin-top:35px">了解这门生意</div><h1 id="detail-title">亚马逊数字出版</h1><p id="detail-intro"></p><div id="detail-tags" class="detail-meta"></div></div><div class="detail-columns"><aside class="detail-aside"><div class="eyebrow">商业模式速览</div><strong>先看生意，<br>再看数字。</strong><p>以下是商业模式介绍，并非声称已经核实每个具体项目的全部运营情况。</p></aside><div class="detail-article"><article><div class="eyebrow">业务简介</div><h2>这个项目在做什么？</h2><p id="detail-business"></p></article><article><div class="eyebrow">客户群体</div><h2>卖给谁？</h2><p id="detail-customer"></p></article><article><div class="eyebrow">收入方式</div><h2>收入从哪里来？</h2><p id="detail-revenue"></p></article><article><div class="eyebrow">经营环节</div><h2>通常需要哪些工作？</h2><p id="detail-operation"></p><p class="explain">以上是常见经营环节，不代表任何单个企业一定采用相同流程。</p></article><article><div class="eyebrow">成本构成</div><h2>通常有哪些成本？</h2><p id="detail-costs"></p></article><article><div class="eyebrow">海外参考</div><h2>目前可以参考什么？</h2><p id="detail-evidence"></p><p class="explain">经营记录不能代替对具体项目的核实，也不能用于预测未来收益。</p></article><article><div class="eyebrow">需要核实</div><h2>还需要确认什么？</h2><p id="detail-unknowns"></p></article><article><div class="eyebrow">继续研究</div><h2>如果继续研究，可以先问什么？</h2><p id="detail-questions"></p></article><div class="detail-cta"><strong>继续了解另一门生意</strong><button data-switch="digital">数字产品 ↗</button><button data-switch="kdp">数字出版 ↗</button></div></div></div></div></main>
+<footer class="footer wrap" id="about"><div><div class="footer-logo">见势</div><p>把海外商业模式讲清楚，帮助你做自己的判断。</p></div><p>商业模式介绍用于理解常见业务形态；实际成本与平台规则需结合具体项目核实。</p></footer>
 <script>
 (()=>{'use strict';
 const THEME_KEY='jianshi_preview_theme';
@@ -144,14 +146,122 @@ const followSystem=()=>{if(!readTheme())applyTheme(systemTheme.matches?'light':'
 if(systemTheme.addEventListener)systemTheme.addEventListener('change',followSystem);
 else if(systemTheme.addListener)systemTheme.addListener(followSystem);
 const data={
- kdp:{title:'亚马逊数字出版',lead:'利用数字出版平台发行电子书或纸质书，把内容作品作为可销售的产品。',tags:['内容产品','平台销售','数字与纸质出版'],business:'这类业务以作品为核心。经营者选择一个读者主题，制作图书内容与封面，再通过出版平台完成上架。不同题材、不同作品之间的市场表现可能相差很大。',revenue:'典型收入来自图书销售后按平台规则结算的版税或销售收入。具体定价、分成和履约费用与出版形式、销售市场和平台政策有关，不能直接用挂牌业务的利润推算新书收益。',operation:'题材研究、内容制作或编辑、封面与版式设计、商品页制作、上架、持续维护与推广。不同项目可能自行完成，也可能外包部分环节。',evidence:'我们正在整理海外经营中的数字出版业务参考案例。匿名统计能够说明市场上存在这类业务，但不足以反推出具体书籍的销量、获客方式或利润结构。',unknowns:'作品版权与使用授权、出版平台最新规则、制作和营销费用、题材竞争强度，以及是否具备长期形成作品组合的能力，都需要单独核实。'},
- digital:{title:'数字产品',lead:'把可重复使用的知识、工具或创意成果做成可下载或线上使用的产品。',tags:['数字交付','产品销售','可重复授权'],business:'数字产品可以是模板、设计素材、专业资料、学习产品或小型工具。客户购买的是明确的使用价值，交付通常通过下载或在线授权完成。',revenue:'常见方式包括单次购买、组合包、付费升级或许可授权。并非所有数字产品都采用订阅，也不能把一次销售直接理解为可持续收入。',operation:'界定目标问题、制作可交付版本、建立商品介绍和交付方式、处理客户反馈、维护兼容性或更新内容；具体环节取决于产品形式。',evidence:'海外已有多种数字产品业务存在公开经营样本。不同项目的客群、销售渠道和利润构成差异很大，汇总样本数据不能替代对单个产品的研究。',unknowns:'需确认目标客户是否确有需求、交付成本、获客方式、授权与版权、退货规则，以及产品是否依赖持续更新。'},
- saas:{title:'行业软件订阅',lead:'为明确的业务问题提供软件服务，通过持续使用形成经常性收费。',tags:['软件服务','订阅收费'],business:'某一行业或工作流程可能需要长期使用工具，经营者围绕稳定需求提供软件产品。',revenue:'常见收费方式是按月、按年或按使用规模付费。',operation:'产品开发、客户支持、持续维护和问题迭代。',evidence:'可观察到相关海外商业资产，但现阶段样板尚未对单个企业展开研究。',unknowns:'获客成本、维护成本、客户留存和功能需求仍待核实。'},
- content:{title:'内容与联盟营销',lead:'用内容帮助人们了解和选择产品，以广告或推荐佣金获得收入。',tags:['内容业务','广告与佣金'],business:'围绕一个持续有人关注的主题提供文字、视频或其他内容。',revenue:'可能来自广告、联盟佣金与相关产品销售。',operation:'选题、内容制作、信息维护和传播。',evidence:'海外存在公开经营样本，但尚不足以判断具体流量来源和获客稳定性。',unknowns:'流量渠道依赖、转化率和平台政策需要核实。'},
- fba:{title:'跨境电商品牌',lead:'围绕具体消费品开展商品销售，管理选品、库存与履约。',tags:['商品业务','零售收入'],business:'从商品需求出发组织货源、产品展示和交付。',revenue:'主要来自商品销售收入，不等同于销售额扣除全部成本后的利润。',operation:'商品研发或采购、库存计划、客户服务、推广与售后。',evidence:'海外存在相关资产，但汇总数据不能证明任何新商品一定具备相同收益。',unknowns:'供应链、现金流、合规、库存和销售平台政策。'},
- agency:{title:'专业服务',lead:'用明确的专业技能解决客户问题，通过交付获得服务收入。',tags:['客户服务','合同收费'],business:'围绕一个具体客户场景提供专业服务，既可能由个人也可能由团队完成。',revenue:'通常依项目、服务周期或合同约定收费。',operation:'客户沟通、方案设计、交付和质量维护。',evidence:'当前公开信息未能证明某一匿名业务一定由一人经营。',unknowns:'客户集中度、团队投入、交付成本和客户续约。'}
+  "saas": {
+    "title": "行业软件订阅",
+    "lead": "把某个行业的重复工作变成持续使用的软件服务。",
+    "tags": [
+      "软件服务",
+      "周期收费",
+      "持续交付"
+    ],
+    "business": "这类生意通常围绕一个反复出现的问题展开。客户购买的不是一次性的文件，而是在日常工作中持续可用的软件功能。例如预约安排、客户资料管理或业务报表，都是便于理解的软件用途，并不代表已核实的具体企业案例。 与一次购买即可交付的模板不同，这类软件通常还需要持续运行、维护和支持。",
+    "customer": "有明确业务流程、愿意为效率或管理能力付费的企业或个人。",
+    "revenue": "常见收费方式包括月度或年度订阅、按使用量计费，以及与软件配套的实施或服务费用。收费方式需要和实际交付范围区分：订阅收入也可能伴随大量人工服务成本。",
+    "operation": "找出一类用户反复遇到的具体问题。；设计并维护能解决该问题的软件流程。；处理使用中的故障、反馈、安全与数据问题。；管理客户订阅、续费与功能迭代。。",
+    "costs": "开发或外包费用、服务器及第三方软件服务、客户支持与实施、获客、销售及维护。",
+    "evidence": "海外市场存在这一类型的经营项目，但业务类别的存在本身不能证明某个产品具有良好的客户留存、持续盈利或单人经营能力。未完成个别企业核验前，不公开虚构的公司案例。",
+    "unknowns": "客户是否真的会长期使用；获取一个付费客户需要多少投入；客户流失与续费情况；服务维护是否严重依赖人工。",
+    "questions": "目标用户现在使用什么替代方案？；这项功能多久会被真实使用一次？；收费是否足以覆盖支持和维护成本？。",
+    "offering": "软件工具、账号使用权及必要的持续服务。",
+    "misconception": "订阅收费不等于自动获得稳定收入；还需要考虑获客、留存和维护。"
+  },
+  "digital": {
+    "title": "数字产品",
+    "lead": "把专业知识或工具做成可以在线购买和交付的商品。",
+    "tags": [
+      "数字交付",
+      "单次购买",
+      "产品授权"
+    ],
+    "business": "数字产品的核心是将某项明确用途做成可以重复交付的商品。例如预算表模板、设计素材包或行业操作手册，属于便于理解的产品形态，并不是见势已经核实的经营案例。用户购买后，通常通过下载、在线访问或授权取得产品。 与需要持续提供在线功能的软件订阅不同，部分数字商品在一次购买后即可完成主要交付；是否包括更新或售后，要看具体产品承诺。",
+    "customer": "有具体工作、学习或创作需求，希望购买现成解决方案的个人或组织。",
+    "revenue": "常见方式是单次购买、组合套装、使用授权或功能升级。只有实际提供持续服务的产品才适合讨论订阅；不要把数字交付和经常性收入画等号。",
+    "operation": "明确一个足够具体的用户问题，观察现有解决办法。；制作可实际使用的产品，而不仅是介绍页面。；说明交付内容、使用范围和购买后的支持方式。；根据用户反馈解决兼容、质量和更新问题。。",
+    "costs": "制作和验证产品的时间、软件工具与素材授权、支付手续费、退款和售后、获得有效客户所需的推广。",
+    "evidence": "海外市场能够观察到数字产品经营这一商业形态。匿名汇总数据不等于单件产品的销量报告，也不能证明模板、资料或工具在新市场会获得相同需求。",
+    "unknowns": "是否存在明确付费需求；实际流量和购买转化；内容或素材是否拥有合法授权；是否需要长期更新和售后。",
+    "questions": "用户购买之后具体省下了什么时间或工作？；有没有愿意提前试用或支付费用的目标用户？；客户停止使用时最常见的原因是什么？。",
+    "offering": "模板、素材、文件、工具授权、在线资料或数字化学习产品。",
+    "misconception": "没有实体库存不等于没有成本，更不意味着产品上架后就会自动出售。"
+  },
+  "content": {
+    "title": "内容与联盟营销",
+    "lead": "用内容帮助用户做选择，再通过广告或推荐获得收入。",
+    "tags": [
+      "内容资产",
+      "广告收入",
+      "推荐佣金"
+    ],
+    "business": "内容业务先解决信息需求，再通过广告、联盟推荐或自有商品形成商业化。一篇购买指南可以解释产品差异，但阅读量本身不是收入，推荐链接被点击也不等于交易已经发生。",
+    "customer": "需要研究、比较或购买某类产品与服务的读者和观众；部分收入由广告主或商家支付。",
+    "revenue": "广告收入通常与展示、点击或其他计费方式有关；联盟营销常按满足规则的有效交易或指定行为结算佣金。不同计划的归因、佣金及合规要求各不相同。",
+    "operation": "选择读者确实会反复查找的问题。；研究并制作可靠、可更新的内容。；通过搜索、订阅或其他渠道接触真实受众。；跟踪内容质量、交易转化和广告/联盟规则变化。。",
+    "costs": "内容研究与制作、网站或视频运营、更新和事实核查、流量获取及用户支持。",
+    "evidence": "有内容与佣金类业务的海外经营记录，但目前无法仅凭分类汇总判断某个网站的访客渠道、转化率、流量稳定性或结算来源。",
+    "unknowns": "真实访客从哪里来；内容和购买需求是否匹配；佣金政策与结算条件；流量渠道是否高度集中。",
+    "questions": "目标读者真正想解决什么决策问题？；内容有无足够的原创信息和更新能力？；如果平台或搜索规则变化，业务会受到怎样的影响？。",
+    "offering": "围绕具体问题的测评、教程、对比、指南和持续更新的信息内容。",
+    "misconception": "访问量多不代表成交多；也不能认定所有内容网站都依靠搜索流量。"
+  },
+  "kdp": {
+    "title": "亚马逊数字出版",
+    "lead": "制作并发行图书作品，通过读者购买形成出版收入。",
+    "tags": [
+      "图书产品",
+      "销售版税",
+      "内容版权"
+    ],
+    "business": "亚马逊 Kindle 直接出版（KDP）允许出版者发行符合平台要求的电子书和部分纸质书。出版者需要负责内容、版权、书籍制作和商品信息；部分纸质书可采用按需印刷。平台提供发布、销售和部分履约能力，不等于替作者完成选题、质量审查或读者获取。",
+    "customer": "对特定题材、知识、故事或实用内容感兴趣的读者。",
+    "revenue": "出版者可能通过电子书或纸质书的销售获得版税或销售结算。电子书的分成方案、纸质书的印刷成本、销售地区与定价都会影响实际收益，因此不能拿某类挂牌业务的利润直接套用到一本新书上。",
+    "operation": "研究读者群和选题，明确作品提供什么价值。；完成原创内容或合法取得素材与授权。；制作封面、排版、书籍介绍并按平台要求发布。；根据销售和读者反馈更新内容，管理版权与推广。。",
+    "costs": "写作、编辑和校对、封面设计与版式制作、适用的印刷与配送成本、推广、翻译及版权处理。",
+    "evidence": "海外市场存在数字出版类经营记录，但现阶段公开资料不支持推断任何一本书的实际销量、畅销原因或作者个人投入。没有经过审核的独立出版者档案时，不把匿名统计案例冒充真实企业故事。",
+    "unknowns": "细分题材的读者需求；版权与内容授权是否完善；销售地区及出版格式限制；制作、推广和印刷成本。",
+    "questions": "这本书解决读者什么具体需求？；同类作品的差异在哪里？；选择电子书或纸质书后，实际结算和成本如何核算？。",
+    "offering": "电子书、平装书及符合平台规则的其他出版形式。",
+    "misconception": "平台提供发行和按需印刷，不代表内容无需投入，也不代表上架后自然有读者购买。"
+  },
+  "fba": {
+    "title": "跨境电商品牌",
+    "lead": "围绕实物商品组织采购、展示、库存和线上销售。",
+    "tags": [
+      "实物商品",
+      "库存履约",
+      "零售收入"
+    ],
+    "business": "这类业务需要选择产品、组织供应链、提供商品信息并完成销售。部分商家采用亚马逊物流（FBA）承担仓储和订单履约环节，但产品责任、选品、库存与营销仍需经营者管理。",
+    "customer": "有相应消费需求、通过线上平台或独立商店购买商品的消费者。",
+    "revenue": "收入主要来自实际售出的商品。利润不仅取决于售价与采购成本，还会受到运费、平台费用、仓储、广告、退货、税费和库存损耗影响。营业额不能直接当作利润。",
+    "operation": "明确产品与消费者需求，评估竞品和合规要求。；安排采购、质量控制、运输和库存。；维护商品页面、定价与客户服务。；跟踪退货、补货、现金流和经营成本。。",
+    "costs": "采购与库存占用、运输、仓储及履约、营销和平台相关费用、退货、售后及合规。",
+    "evidence": "海外商业市场存在跨境零售类经营资产，但匿名指标无法证明某个商品的竞争优势或可复制性；商品类别和具体品牌必须严格区分。",
+    "unknowns": "单件商品真实贡献利润；库存周转和滞销风险；供应商与质量稳定性；目的国法规、商标及税务。",
+    "questions": "商品与同类竞品有什么明确差异？；考虑全部费用后还有多少利润空间？；库存最差情况下需要占用多少资金？。",
+    "offering": "有明确用途的实物消费商品。",
+    "misconception": "平台帮助履约不等于无库存运营；销售规模也不意味着现金流健康。"
+  },
+  "agency": {
+    "title": "专业服务",
+    "lead": "依靠可交付的专业能力，为特定客户解决具体问题。",
+    "tags": [
+      "专业能力",
+      "项目交付",
+      "合同收费"
+    ],
+    "business": "专业服务业务通常从具体客户问题开始，经营者约定交付范围、期限与责任，再用自身或团队能力完成工作。能否持续经营，取决于客户需求、交付质量和合同管理，而不仅是技能展示。",
+    "customer": "希望外部专业人员解决任务、补充能力的企业或个人。",
+    "revenue": "可能按项目、工时、阶段成果或持续服务合同收费。收款金额需要扣除实际人工、外包、工具、返工和管理成本，才可能接近经营利润。",
+    "operation": "明确目标客户与可以交付的成果。；沟通范围、定价、验收标准和合同。；组织服务实施，处理质量与进度。；跟进客户反馈，维护复购或长期合作。。",
+    "costs": "专业人员时间、协作与外包、交付工具和软件、销售沟通及返工。",
+    "evidence": "海外可观察到专业服务类商业资产，但现有匿名分类信息无法证明某条记录一定由单人经营，也不能反推出特定服务团队规模。",
+    "unknowns": "真实客户获取成本；服务定价和续约；交付是否依赖关键个人；合同风险及回款周期。",
+    "questions": "交付成果如何客观验收？；是否能以明确范围重复服务不同客户？；客户集中度和回款时间是否可接受？。",
+    "offering": "有清晰范围和可验收结果的专业服务，例如设计、内容运营或流程改善。",
+    "misconception": "有客户就等于可规模化并不成立；规模扩大也可能意味着更多人工投入。"
+  }
 };
-const home=document.getElementById('home-view'),detail=document.getElementById('detail-view');function showProject(key){const x=data[key];if(!x)return;document.getElementById('detail-title').textContent=x.title;document.getElementById('detail-breadcrumb').textContent=x.title;document.getElementById('detail-intro').textContent=x.lead;document.getElementById('detail-tags').replaceChildren(...x.tags.map(t=>{const s=document.createElement('span');s.textContent=t;return s}));for(const k of ['business','revenue','operation','evidence','unknowns'])document.getElementById('detail-'+k).textContent=x[k];home.hidden=true;detail.hidden=false;window.scrollTo({top:0,behavior:'instant'});document.title=x.title+'｜见势';}function showHome(){detail.hidden=true;home.hidden=false;document.title='见势｜海外商业项目发现与研究';}
+const home=document.getElementById('home-view'),detail=document.getElementById('detail-view');function showProject(key){const x=data[key];if(!x)return;document.getElementById('detail-title').textContent=x.title;document.getElementById('detail-breadcrumb').textContent=x.title;document.getElementById('detail-intro').textContent=x.lead;document.getElementById('detail-tags').replaceChildren(...x.tags.map(t=>{const s=document.createElement('span');s.textContent=t;return s}));for(const k of ['business','customer','revenue','operation','costs','evidence','unknowns','questions'])document.getElementById('detail-'+k).textContent=x[k];home.hidden=true;detail.hidden=false;window.scrollTo({top:0,behavior:'instant'});document.title=x.title+'｜见势';}function showHome(){detail.hidden=true;home.hidden=false;document.title='见势｜海外商业项目发现与研究';}
 function route(){const m=location.hash.match(/^#project-([a-z]+)$/);if(m&&data[m[1]])showProject(m[1]);else {showHome();if(location.hash==='#projects')document.getElementById('projects').scrollIntoView();}}document.querySelectorAll('[data-project]').forEach(e=>e.addEventListener('click',()=>{location.hash='project-'+e.dataset.project;route()}));document.querySelectorAll('[data-switch]').forEach(e=>e.addEventListener('click',()=>{location.hash='project-'+e.dataset.switch;route()}));document.getElementById('back-projects').addEventListener('click',()=>{location.hash='projects';route()});addEventListener('hashchange',route);document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===btn)));document.querySelectorAll('.project-card').forEach(card=>card.hidden=btn.dataset.filter!=='all'&&card.dataset.group!==btn.dataset.filter)}));const menuToggle=document.getElementById('menu-toggle'),menu=document.getElementById('menu');menuToggle.addEventListener('click',()=>{const open=menu.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'关闭菜单':'打开菜单')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');if(detail.hidden===false){showHome();setTimeout(()=>document.querySelector(a.getAttribute('href'))?.scrollIntoView(),0)}}));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(!reduce){const hero=document.getElementById('hero-art');hero.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const b=hero.getBoundingClientRect();const x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;hero.style.setProperty('--rx',(y*7)+'deg');hero.style.setProperty('--ry',(x*10)+'deg')});hero.addEventListener('pointerleave',()=>{hero.style.setProperty('--rx','0deg');hero.style.setProperty('--ry','0deg')})}if('IntersectionObserver' in window&&!reduce){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>io.observe(e))}else document.querySelectorAll('.reveal').forEach(e=>e.classList.add('visible'));route();
 })();
