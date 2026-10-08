@@ -8,11 +8,11 @@ class TestR6ChineseHome(unittest.TestCase):
         for text in [
             "海外商业项目研究",
             "先看证据",
-            "公开商业市场中的真实挂牌样本",
+            "海外商业项目的公开资料",
             "项目研究库",
-            "当前在售样本",
-            "独立商业来源",
-            "挂牌披露",
+            "已整理项目案例",
+            "中文分类 · 脱敏统计",
+            "数据口径",
             "证据边界",
         ]:
             self.assertIn(text,index)
