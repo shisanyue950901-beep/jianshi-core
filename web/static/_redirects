@@ -1,0 +1,17 @@
+# Emergency deny-by-redirect for accidental repository-root Pages publishing.
+# These are not public website asset directories.
+# Cloudflare Pages _redirects are evaluated before existing static assets.
+/.env.example / 302
+/.gitignore / 302
+/README_CN.md / 302
+/.github/* / 302
+/config/* / 302
+/db/* / 302
+/docs/* / 302
+/fixtures/* / 302
+/ops/* / 302
+/scripts/* / 302
+/src/* / 302
+/supabase/* / 302
+/tests/* / 302
+/web/* / 302
