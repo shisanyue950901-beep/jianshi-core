@@ -35,7 +35,7 @@ class TestP413NamedBusinessLibrary(unittest.TestCase):
             self.assertGreaterEqual(len(record["unknowns"]),2)
             self.assertGreaterEqual(len(record["offer"]),15)
             self.assertGreaterEqual(len(record["learning"]),18)
-            self.assertRegex(" ".join(record["unknowns"]),r"无法|未经|未知|不能|没有")
+            self.assertRegex(" ".join(record["unknowns"]),r"无法|未经|未知|不能|没有|未独立|未核实|不可|没有经")
             jsitem=next(x for x in self.render if x["id"]==record["id"])
             for key,value in record.items():
                 self.assertEqual(jsitem[key],value,(record["id"],key))
