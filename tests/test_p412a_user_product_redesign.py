@@ -66,21 +66,37 @@ class TestP412AUserProductRedesign(unittest.TestCase):
         for value in [
             'data-filter="all"', 'data-filter="digital"', 'data-filter="content"',
             'data-filter="commerce"', 'data-filter="service"',
-            'id="overview"', 'id="detail"', 'id="detail-articles"',
-            'addEventListener("hashchange"', 'aria-pressed',
+            'id="home-view"', 'id="detail-view"', 'id="detail-business"',
+            "addEventListener('hashchange'", 'aria-pressed',
         ]:
             self.assertIn(value,self.html)
 
     def test_content_hierarchy_is_business_first(self):
         for title in [
-            "这门生意具体做什么？",
+            "这是什么生意",
             "收入从哪里来？",
-            "通常需要做哪些工作？",
-            "海外有哪些参考？",
+            "通常怎么运作",
+            "海外参考",
             "还需要确认什么？",
         ]:
             self.assertIn(title,self.html)
         self.assertEqual([x["id"] for x in self.cfg["business_models"] if x["depth"]=="FULL_SAMPLE"],["digital","kdp"])
+
+    def test_light_dark_switch_is_accessible_and_persistent(self):
+        for value in [
+            'id="theme-toggle"',
+            'aria-label="切换为浅色模式"',
+            "jianshi_preview_theme",
+            "prefers-color-scheme: light",
+            'data-theme="light"',
+            "localStorage.setItem",
+            "aria-pressed",
+            "theme-toggle-label",
+            "prefers-reduced-motion",
+        ]:
+            self.assertIn(value,self.html)
+        self.assertIn("#f6f4ef",self.html)
+        self.assertIn("#08090a",self.html)
 
     def test_isolated_from_production_build(self):
         self.assertNotIn("web/prototypes/p412a",self.build)
