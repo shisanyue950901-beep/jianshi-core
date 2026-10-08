@@ -1,0 +1,71 @@
+{
+  "version": "P4.12D-V1",
+  "state": "ISOLATED_PREVIEW_NOT_PUBLIC",
+  "intent": "让用户快速发现商业模式和具体项目，比较经营差异，减少阅读成本",
+  "search": {
+    "placeholder": "搜索业务、产品或收入方式，如模板、小说、软件",
+    "selectable_types": [
+      "全部",
+      "商业模式",
+      "具体项目"
+    ],
+    "groups": [
+      "全部",
+      "软件与数字产品",
+      "内容与出版",
+      "商品零售",
+      "专业服务"
+    ],
+    "search_scope": "当前6种商业模式与2个具名项目，不接入未经审计的匿名原始记录",
+    "empty_state": "没有匹配的内容，试试更宽泛的业务名称。"
+  },
+  "compare": {
+    "min_selection": 2,
+    "max_selection": 3,
+    "allowed_record_kind": "business_model",
+    "default_selection": [
+      "digital",
+      "kdp"
+    ],
+    "columns": [
+      "销售内容",
+      "客户是谁",
+      "主要收入方式",
+      "经营中的工作",
+      "通常涉及的成本",
+      "需要确认的事情"
+    ],
+    "disclaimer": "这里对比的是商业模式的通常做法，不是具体企业的经营表现。",
+    "no_financial_ranking": true
+  },
+  "case_status": {
+    "key": "具名项目参考",
+    "product_exists_label": "已有公开产品或作品",
+    "finances_unknown_label": "实际经营业绩尚未核实",
+    "business_category_label": "商业模式介绍",
+    "case_count_is_not_financial_validation": true
+  },
+  "accessibility": {
+    "keyboard_navigation": true,
+    "live_search_result_count": true,
+    "compare_selection_aria_pressed": true,
+    "compare_selection_maximum_feedback": true,
+    "empty_state_live": true,
+    "mobile_horizontal_scroll_comparison": true,
+    "reduced_motion_respected": true
+  },
+  "forbidden_public_copy": [
+    "数据管道",
+    "Epoch",
+    "Gate",
+    "OPP_V0.2",
+    "采集方式",
+    "爬虫",
+    "脱敏统计",
+    "股票评级",
+    "预计收益",
+    "保证盈利"
+  ],
+  "sensitive_content_policy": "公开预览继续排除采集供应商、原始挂牌标题、编号、采集 URL 和内部证据来源键；只使用已审核的商业模式编辑稿和具名案例白名单。",
+  "production_deployment": false
+}
