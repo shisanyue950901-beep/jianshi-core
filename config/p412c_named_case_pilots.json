@@ -1,0 +1,80 @@
+{
+  "version": "P4.12C-NAMED-CASES-V1",
+  "state": "EDITORIAL_REVIEW_NOT_PUBLIC",
+  "scope": "独立检索并由公开产品及平台资料交叉核对的具名项目样板。与原商业挂牌数据库中的匿名汇总记录无关联。",
+  "as_of": "2026-10-08",
+  "trust_policy": {
+    "identity": "只有项目名称与实际产品/作品可以核对时才创建具名条目",
+    "commercial": "公开标价/购买入口不代表已付款成交，不代表经审计收入",
+    "finances": "不得展示未经核实的销售额、利润、利润率、增长率、作者薪酬",
+    "market": "不得因存在真实海外产品就宣称中国用户可以复制同样收入",
+    "team": "没有明确证据不判断当前是独立经营还是多人团队",
+    "link_policy": "实际官网及资料链接仅进入内部审核文档，不在样板 JS 中暴露商业数据供应渠道",
+    "relationship": "这两份项目并非从受保护的挂牌样本记录关联识别，不得混用或作为该数据集的已认证实体",
+    "publication": "上线前需要业务资料复核、信息授权审查、安全发布目录修复及用户审核"
+  },
+  "cases": [
+    {
+      "id": "easlo",
+      "name": "Easlo",
+      "zh_category": "数字产品",
+      "group": "digital",
+      "category_id": "digital",
+      "display_title": "Easlo｜数字效率模板",
+      "brief": "围绕日程、学习、财务和工作管理，提供可直接使用的 Notion 模板。",
+      "what_sells": "付费与免费模板，包括工作管理、个人效率、预算和知识管理等用途。",
+      "buyer": "需要快速搭建数字工作空间、又不愿从零配置模板的个人与团队。",
+      "revenue_model": "通过付费模板和模板组合的使用权销售获得收入；部分模板可免费获取。",
+      "confirmed": [
+        "项目官网有公开模板目录，并区分免费与付费产品。",
+        "Notion 官方模板市场存在 Easlo 创作者页面，并列出其模板。"
+      ],
+      "income_status": "实际营业收入、净利润和当前销量暂无独立核实数据。",
+      "business_observation": "这是将细分使用场景产品化、让用户付费获得现成工具的具体实例。可以学习其产品组织方式，但不能由公开标价推导经营利润。",
+      "unknowns": [
+        "当前实际付费订单与退款情况",
+        "持续获客与产品维护投入",
+        "目前的团队规模及人员分工"
+      ],
+      "action": "研究其商品如何按具体场景区分，而不是照搬模板内容。",
+      "evidence_class": "PUBLIC_PRODUCT_AND_CREATOR_LISTING",
+      "confidence": "PRODUCT_EXISTS_PRICING_PRESENT_FINANCIALS_UNKNOWN",
+      "source_ref_ids": [
+        "EASLO_OWN_SITE_01",
+        "EASLO_NOTION_02"
+      ]
+    },
+    {
+      "id": "louise-lennox",
+      "name": "Louise Lennox",
+      "zh_category": "亚马逊数字出版",
+      "group": "content",
+      "category_id": "kdp",
+      "display_title": "Louise Lennox｜爱情小说出版",
+      "brief": "围绕爱情小说题材持续创作图书作品，并通过电子书和纸质书渠道面向读者。",
+      "what_sells": "原创小说和系列图书；作者自有网站展示作品，也提供部分签名纸质书商品。",
+      "buyer": "喜欢特定爱情小说题材、希望阅读单本作品或持续追读系列故事的读者。",
+      "revenue_model": "通过作品销售获得收入；亚马逊曾介绍她使用 Kindle 直接出版。不同销售渠道和出版形式的实际结算可能不同。",
+      "confirmed": [
+        "作者官网可查阅多部小说及图书系列。",
+        "亚马逊官方作者专题明确介绍她通过 Kindle 直接出版作品的经历。",
+        "作者官网还公开展示部分纸质书商品。"
+      ],
+      "income_status": "当前 KDP 版税、总销量、净利润及个人投入均无足够公开证据独立核实。",
+      "business_observation": "这个案例体现了以作品和系列主题面向固定读者的出版方式。不能仅凭平台采访推导今天的销售表现。",
+      "unknowns": [
+        "不同渠道的真实销量及版税贡献",
+        "编辑、设计、印刷和推广成本",
+        "作者是否独立完成出版运营及团队规模"
+      ],
+      "action": "观察其作品主题与系列结构，不能把题材热度等同于销量保证。",
+      "evidence_class": "AUTHOR_CATALOG_AND_PLATFORM_FEATURE",
+      "confidence": "BOOK_CATALOG_EXISTS_KDP_ATTESTED_FINANCIALS_UNKNOWN",
+      "source_ref_ids": [
+        "LENNOX_AUTHOR_01",
+        "LENNOX_AMAZON_02",
+        "LENNOX_SHOP_03"
+      ]
+    }
+  ]
+}
