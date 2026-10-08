@@ -1,6 +1,6 @@
 # P4.11｜公开源码泄露与数据库视图 ACL 事故收尾
 
-状态：HOTFIX_PENDING_PUBLIC_REDEPLOY
+状态：LIVE_MITIGATED / CLOUDFLARE_DASHBOARD_FOLLOWUP_REQUIRED
 
 ## 已核实的生产暴露面
 
@@ -46,14 +46,42 @@ Production 曾发现 13 个匿名用户可 SELECT 的技术、商业证据或数
 - PR #52 不合并；
 - 6 个首批研究页继续 noindex,nofollow。
 
+## 2026-10-08 线上复验结果
+
+```text
+PR64 = MERGED
+PR64_MERGE_SHA = 4f6dfb198cf8e8eccf8fe05bc63138618ce1e0f5
+SECURITY_CI = PASS_RUN_225
+STATIC_SNAPSHOT = PASS_RUN_79
+STATIC_SNAPSHOT_SHA = 510b24ab003d204d00367e7bfce5aaa685641f75
+PRODUCTION_SENSITIVE_ACL_REMAINING = 0
+STAGING_SENSITIVE_ACL_REMAINING = 0
+```
+
+已在线逐项检查以下路径，均跳转至网站首页，未再提供内部文件正文：
+
+- /config/p46a_concrete_opportunity_prototypes.json
+- /.github/workflows/publish-static.yml
+- /db/migrations/0052_stackexchange_signal_cron.sql
+- /scripts/security/p411_revoke_source_views.sql
+- /README_CN.md
+- /.env.example
+- /web/static/analytics.js
+- /supabase/functions/public-feed/index.ts
+- /docs/P411_SOURCE_EXPOSURE_INCIDENT.md
+
+首页和首批中文研究详情页保持正常访问。
+
+**限制：** 当前这是路径拦截而非“只部署静态输出”的根本修复。旧 Cloudflare Pages 历史部署可能有独立不可变网址，历史内容也可能被第三方缓存；没有 Cloudflare 平台管理权限，不能宣称这些已经被删除。构建产物的 no-store 策略已经加入，但实时 HTTP 响应头尚未被独立读取验证。
+
 ## 最终 Gate
 
 ```text
 P411_PROD_SENSITIVE_VIEW_ACL = PASS_13_REVOKED
 P411_STAGING_SENSITIVE_VIEW_ACL = PASS_13_REVOKED
-P411_PUBLIC_BUILD_ARTIFACT_AUDIT = CI_PENDING
-P411_STATIC_ROOT_DENY_RULES = DEPLOY_PENDING
-P411_CF_PAGES_OUTPUT_DIRECTORY = PENDING_DASHBOARD
+P411_PUBLIC_BUILD_ARTIFACT_AUDIT = PASS_RUN_225
+P411_STATIC_ROOT_DENY_RULES = PASS_ON_LIVE_DOMAIN
+P411_CF_PAGES_OUTPUT_DIRECTORY = PENDING_DASHBOARD_CONFIRMED_ROOT_EXPOSURE
 P411_OLD_DEPLOYMENT_CLEANUP = PENDING_DASHBOARD
 P411_CACHE_PURGE = PENDING_DASHBOARD
 ```
