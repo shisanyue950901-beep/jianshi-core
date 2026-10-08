@@ -13,7 +13,7 @@ PATTERNS = {
     "original record field": re.compile(
         r"\b(?:listing_number|public_title|source_url|source_updated_at|homepage_url)\b",re.I
     ),
-    "source operation label": re.compile(r"官方\s*API|源更新时间|来源分类（原文）|采集方式",re.I),
+    "source operation label": re.compile(r"官方\s*API|源更新时间[:：]|来源分类（原文）|采集方式[:：]",re.I),
 }
 
 REQUIRED_DENY_RULES = [
