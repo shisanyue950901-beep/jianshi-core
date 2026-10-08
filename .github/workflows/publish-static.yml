@@ -24,6 +24,8 @@ on:
       - account/**
       - sitemap.xml
       - robots.txt
+      - _headers
+      - _redirects
       - dist/**
       - public/**
       - web/dist/**
@@ -66,6 +68,14 @@ jobs:
           test -f analytics.js
           test -f sitemap.xml
           test -f robots.txt
+          test -f _headers
+          test -f _redirects
+          test -f web/dist/_headers
+          test -f web/dist/_redirects
+          grep -q "Cache-Control: no-store" _headers
+          grep -q "/config/\\*" _redirects
+          grep -q "/supabase/\\*" _redirects
+          python scripts/security/p411_audit_public_artifacts.py web/dist
           grep -q "见势" index.html
           grep -q "先看证据" index.html
           grep -q "项目研究库" opportunities/index.html
@@ -87,7 +97,7 @@ jobs:
         run: |
           git config user.name "jianshi-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html 404.html styles.css search.js account.js analytics.js search-index.json sitemap.xml robots.txt opportunity opportunities today rising build content privacy account dist public
+          git add index.html 404.html styles.css search.js account.js analytics.js search-index.json sitemap.xml robots.txt _headers _redirects opportunity opportunities today rising build content privacy account dist public
           git add -f web/dist
           if git diff --cached --quiet; then
             echo "STATIC_SNAPSHOT_NO_CHANGE"

@@ -1207,6 +1207,8 @@ def main():
     shutil.copy2(STATIC/"search.js",DIST/"search.js")
     shutil.copy2(STATIC/"account.js",DIST/"account.js")
     shutil.copy2(STATIC/"analytics.js",DIST/"analytics.js")
+    shutil.copy2(STATIC/"_headers",DIST/"_headers")
+    shutil.copy2(STATIC/"_redirects",DIST/"_redirects")
     prototype_data={}
     prototypes=[]
     prototype_disclaimer=""
@@ -1285,7 +1287,7 @@ def main():
     # If a Pages project is configured to publish the repository root, emit
     # only the generated public entrypoints there at build time. These files
     # are not committed; they exist only in the ephemeral build workspace.
-    for name in ("index.html","404.html","styles.css","search.js","account.js","analytics.js","search-index.json","sitemap.xml","robots.txt"):
+    for name in ("index.html","404.html","styles.css","search.js","account.js","analytics.js","search-index.json","sitemap.xml","robots.txt","_headers","_redirects"):
         shutil.copy2(DIST/name, REPO_ROOT/name)
     for dirname in ("opportunity","opportunities","today","rising","build","content","privacy","account"):
         target=REPO_ROOT/dirname
