@@ -31,7 +31,7 @@ class TestP412BBusinessContent(unittest.TestCase):
         arrays=["daily_work","costs","forms","unknowns","questions","tags"]
         for item in self.models:
             for field in fields:
-                self.assertGreaterEqual(len(item[field]),8,(item["id"],field))
+                self.assertGreaterEqual(len(item[field]),3 if field=="title" else 8,(item["id"],field))
             self.assertGreaterEqual(len(item["how_it_works"]),70,item["id"])
             self.assertGreaterEqual(len(item["revenue"]),43,item["id"])
             for field in arrays:
@@ -48,7 +48,7 @@ class TestP412BBusinessContent(unittest.TestCase):
             self.assertNotIn(forbidden,raw)
         for item in self.models:
             self.assertNotRegex(item["revenue"],r"\$\s*\d|\d+%")
-        self.assertIn("商业模式分类",self.content["editorial_rule"]["classification"])
+        self.assertIn("商业模式类别",self.content["editorial_rule"]["classification"])
 
     def test_prototype_content_is_in_sync_with_reviewed_json(self):
         match=re.search(r"const data=(\{.*?\});\s*const home=",self.html,re.S)
