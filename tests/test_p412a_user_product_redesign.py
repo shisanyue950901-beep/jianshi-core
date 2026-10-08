@@ -56,7 +56,7 @@ class TestP412AUserProductRedesign(unittest.TestCase):
             "原始项目标识不对外展示","中文化与脱敏",
         ]:
             self.assertNotIn(forbidden,self.html)
-        self.assertIn("supplier",self.cfg["content_policy"].get("source_protection","")+" supplier")
+        self.assertIn("数据供应商",self.cfg["content_policy"]["source_protection"])
 
     def test_navigation_filters_and_detail_interaction_exist(self):
         structure=_Structure()
