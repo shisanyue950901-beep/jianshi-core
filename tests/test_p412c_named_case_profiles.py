@@ -74,7 +74,7 @@ class TestP412CNamedCaseProfiles(unittest.TestCase):
             self.assertNotRegex(text,r"\b\d+(?:\.\d+)?\s*(?:万)?美元|\$\d+|\d+%")
             self.assertTrue(any(token in case["income_status"] for token in ["无","未"]))
         self.assertIn("商品展示",self.html)
-        self.assertIn("不能",self.data["trust_policy"]["commercial"])
+        self.assertIn("不代表",self.data["trust_policy"]["commercial"])
 
     def test_internal_claims_have_audit_trail(self):
         audit=AUDIT.read_text(encoding="utf-8")
