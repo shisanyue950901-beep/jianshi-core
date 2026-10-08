@@ -54,7 +54,24 @@
       "手机端直接查看列表",
       "键盘可访问的筛选和详情",
       "可见的焦点样式"
-    ]
+    ],
+    "themes": {
+      "dark": {
+        "background": "#08090a",
+        "text": "#f5f2eb",
+        "concept": "沉浸式暗色档案"
+      },
+      "light": {
+        "background": "#f6f4ef",
+        "text": "#1d2825",
+        "concept": "暖白纸感 / 墨绿色信息层次"
+      },
+      "mode": "USER_SELECTABLE",
+      "default": "FOLLOW_SYSTEM_IF_NO_SAVED_CHOICE",
+      "persistence": "LOCAL_STORAGE_WITH_SAFE_FALLBACK",
+      "keyboard_accessible": true,
+      "respects_reduced_motion": true
+    }
   },
   "detail_sections": [
     "这个项目在做什么",
