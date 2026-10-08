@@ -62,11 +62,11 @@ class TestP412BBusinessContent(unittest.TestCase):
             self.assertEqual(record["business"],item["how_it_works"])
             self.assertEqual(record["customer"],item["buyer"])
             self.assertEqual(record["revenue"],item["revenue"])
-            self.assertEqual(record["operation"],"；".join(item["daily_work"])+"。")
+            self.assertEqual(record["operation"],"；".join(s.rstrip("。；") for s in item["daily_work"])+"。")
             self.assertEqual(record["costs"],"、".join(item["costs"])+"。")
             self.assertEqual(record["evidence"],item["evidence"])
             self.assertEqual(record["unknowns"],"；".join(item["unknowns"])+"。")
-            self.assertEqual(record["questions"],"；".join(item["questions"])+"。")
+            self.assertEqual(record["questions"]," ".join(item["questions"]))
 
     def test_detail_has_customer_cost_and_next_question_sections(self):
         for id_ in ["detail-business","detail-customer","detail-revenue","detail-operation",
