@@ -73,10 +73,10 @@ class TestP412AUserProductRedesign(unittest.TestCase):
 
     def test_content_hierarchy_is_business_first(self):
         for title in [
-            "这是什么生意",
+            "这个项目在做什么？",
             "收入从哪里来？",
-            "通常怎么运作",
-            "海外参考",
+            "通常需要哪些工作？",
+            "目前可以参考什么？",
             "还需要确认什么？",
         ]:
             self.assertIn(title,self.html)
