@@ -36,6 +36,7 @@ class TestP412FMotionQuality(unittest.TestCase):
             "lightbox.inert=!lbOpen",
             "splashNode.inert=splashDone",
             "function keepFocus(e,node)",
+            "syncLock();\n  const clamp=",
         ]:self.assertIn(snippet,self.html)
         self.assertIn("aria-modal=\"true\"",self.html)
         self.assertIn("aria-expanded",self.html)
