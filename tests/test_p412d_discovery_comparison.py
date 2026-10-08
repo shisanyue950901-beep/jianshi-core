@@ -72,6 +72,15 @@ class TestP412DDiscoveryAndComparison(unittest.TestCase):
         self.assertIn("matchesGroup",self.html)
         self.assertIn("matchesTerm",self.html)
 
+    def test_named_cases_appear_before_generic_categories(self):
+        self.assertLess(self.html.index('id="discovery-search"'),self.html.index('id="named-cases"'))
+        self.assertLess(self.html.index('id="named-cases"'),self.html.index('id="project-grid"'))
+        self.assertIn('id="model-list-title"',self.html)
+        self.assertIn("先看看，有人在做什么。",self.html)
+        self.assertIn("从有公开产品和作品的具体例子开始",self.html)
+        self.assertIn("casesSection.hidden=caseCount===0",self.html)
+        self.assertIn("getElementById('model-list-title').hidden=modelCount===0",self.html)
+
     def test_comparison_is_only_between_business_models(self):
         self.assertEqual(self.config["compare"]["min_selection"],2)
         self.assertEqual(self.config["compare"]["max_selection"],3)
