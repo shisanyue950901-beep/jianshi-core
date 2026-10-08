@@ -784,13 +784,8 @@ def _research_fallback(item):
     return {
         "slug":item.get("slug"),
         "title":item.get("title"),
-        "sample_definition":evidence.get("evidence_scope") or "当前暂无可公开的样本纳入规则。",
-        "evidence_source":{
-            "name":"Empire Flippers",
-            "homepage_url":"https://empireflippers.com",
-            "access_method":"OFFICIAL_API",
-            "last_success_at":evidence.get("as_of"),
-        },
+        "sample_definition":"按项目所属业务类型整理并去重，原始数据渠道不对外披露。",
+        "evidence_source":{},
         "active_sample_count":evidence.get("direct_samples"),
         "priced_sample_count":None,
         "metrics":{
@@ -803,9 +798,9 @@ def _research_fallback(item):
         "niche_distribution":[],
         "samples":[],
         "evidence_boundary":[
-            "当前构建环境仅加载已冻结的样本数量，详细财务与原始样本记录需由生产研究接口提供。",
+            "该页面当前仅提供已整理的数据摘要；详细记录保存在内部核验系统。",
             "挂牌报价不等于最终成交价。",
-            "当前该研究分类仅来自一个独立商业来源。",
+            "公开页面不披露具体渠道与原始项目标识。",
             "这些样本不能用于证明团队规模、中国市场适配性、可复制性或未来收益。",
         ],
     }
@@ -840,16 +835,26 @@ def _fmt_research_time(value):
     s=str(value).replace("T"," ")
     return s[:16]+" UTC" if len(s)>=16 else s
 
+def fmt_zh_currency(value):
+    if value in (None, ""): return "—"
+    try:
+        n=float(value)
+        if n>=10000:
+            return f"{n/10000:.2f}万美元"
+        return f"{n:,.0f}美元"
+    except (ValueError, TypeError):
+        return "—"
+
 def _metric(value, kind="number"):
     if value in (None,""):
         return "—"
     if kind=="money":
-        return fmt_money(value)
+        return fmt_zh_currency(value)
     if kind=="pct":
         try:return f"{float(value):.1f}%"
         except:return "—"
     if kind=="hours":
-        try:return f"{float(value):.1f} h"
+        try:return f"{float(value):.1f} 小时"
         except:return "—"
     return fmt_int(value)
 
@@ -895,15 +900,15 @@ def prototype_card(item, compact=False):
     metrics=research.get("metrics") or {}
     compact_cls=" compact" if compact else ""
     return f"""<a class="research-card-v2{compact_cls}" data-card data-state="research" href="/opportunity/{slug}/">
-<div class="research-card-v2-head"><span>商业资产分类</span><span>{esc(source.get("name") or "—")}</span></div>
+<div class="research-card-v2-head"><span>海外项目分类</span><span>见势研究</span></div>
 <h3>{esc(research.get("title") or item.get("title"))}</h3>
 <div class="research-card-v2-grid">
-<div><span>在售样本</span><b>{fmt_int(research.get("active_sample_count"))}</b></div>
+<div><span>项目案例</span><b>{fmt_int(research.get("active_sample_count"))}</b></div>
 <div><span>月营收中位数</span><b>{_metric(metrics.get("median_monthly_gross_revenue"),"money")}</b></div>
 <div><span>月净利润中位数</span><b>{_metric(metrics.get("median_monthly_net_profit"),"money")}</b></div>
 <div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b></div>
 </div>
-<div class="research-card-v2-foot"><span>挂牌披露数据</span><span>查看证据档案 →</span></div>
+<div class="research-card-v2-foot"><span>第三方公开数据整理</span><span>查看证据档案 →</span></div>
 </a>"""
 
 def build_home(data, daily=None, prototypes=None):
@@ -915,36 +920,34 @@ def build_home(data, daily=None, prototypes=None):
     cards=''.join(prototype_card(x) for x in prototypes)
     body=f"""<main>
 <section class="hero-v2 wrap">
-<div class="eyebrow">MARKET EVIDENCE / 海外商业项目研究</div>
+<div class="eyebrow">海外商业项目研究</div>
 <h1>先看证据，<br>再判断项目。</h1>
-<p>见势把公开商业市场中的真实挂牌样本整理成结构化研究档案。当前首批项目只展示能够被来源数据直接支持的事实，不替用户推断“适不适合”“能不能复制”或“未来能赚多少”。</p>
+<p>把海外商业项目的公开资料整理为中文研究档案。展示经过归类的案例、统计指标与数据边界，不公开底层数据渠道和原始项目标识。</p>
 <div class="hero-actions-v2"><a class="primary-link" href="/opportunities/">进入项目研究库</a><a href="/#method">查看数据口径</a></div>
 </section>
 
 <section class="wrap terminal-strip">
 <div><span>研究分类</span><b>{fmt_int(len(prototypes))}</b></div>
-<div><span>当前在售样本</span><b>{fmt_int(total_samples)}</b></div>
-<div><span>独立商业来源</span><b>{fmt_int(len(source_names))}</b></div>
-<div><span>采集方式</span><b>官方 API</b></div>
-<div><span>最近源更新</span><b>{esc(_fmt_research_time(latest))}</b></div>
+<div><span>已整理项目案例</span><b>{fmt_int(total_samples)}</b></div>
+<div><span>内容呈现</span><b>中文分类 · 脱敏统计</b></div>
 </section>
 
 <section class="wrap research-section">
-<div class="section-title-v2"><div><span>RESEARCH UNIVERSE</span><h2>首批研究分类</h2></div><p>所有卡片均来自公开商业挂牌数据，不使用编辑推荐分数排序。</p></div>
+<div class="section-title-v2"><div><span>研究范围</span><h2>首批研究分类</h2></div><p>所有卡片均来自公开商业挂牌数据，不使用编辑推荐分数排序。</p></div>
 <div class="research-grid-v2">{cards}</div>
 </section>
 
 <section class="method-v2" id="method"><div class="wrap">
-<div class="section-title-v2 light"><div><span>METHODOLOGY</span><h2>公开页面只陈述可被证据支持的内容</h2></div></div>
+<div class="section-title-v2 light"><div><span>统计说明</span><h2>公开页面只陈述可被证据支持的内容</h2></div></div>
 <div class="method-grid-v2">
 <div><b>01</b><h3>样本存在</h3><p>确认某一商业资产类型在公开市场中存在真实在售挂牌。</p></div>
-<div><b>02</b><h3>数据口径</h3><p>样本按公开标题分类并按挂牌记录去重；样本数量与来源数量分开计算。</p></div>
-<div><b>03</b><h3>挂牌披露</h3><p>营收、净利润、利润率、工时与报价均按来源公开字段展示，不进行二次包装。</p></div>
-<div><b>04</b><h3>证据边界</h3><p>挂牌价不等于成交价；单一来源不等于多源验证；公开样本不能证明可复制性或未来收益。</p></div>
+<div><b>02</b><h3>数据口径</h3><p>按业务类别对案例去重统计，后台保留原始记录用于核查。</p></div>
+<div><b>03</b><h3>统计指标</h3><p>分类页展示统计中位数；案例页只展示金额区间，避免暴露可反查的原始记录。</p></div>
+<div><b>04</b><h3>证据边界</h3><p>第三方财务数据未独立审计，报价不等于成交价，也不能证明未来收益。</p></div>
 </div></div></section>
 
 <section class="wrap signal-link-section">
-<div><div class="eyebrow">SEPARATE SIGNAL LAYER</div><h2>趋势信号与商业样本分开看</h2><p>技术热度、内容传播和系统评分保留在独立模块，不与商业资产证据混成一个结论。</p></div>
+<div><div class="eyebrow">研究指标</div><h2>趋势信号与商业样本分开看</h2><p>技术热度、内容传播和系统评分保留在独立模块，不与商业资产证据混成一个结论。</p></div>
 <a href="/today/">查看趋势信号 →</a>
 </section>
 {newsletter_block()}
@@ -962,19 +965,19 @@ def build_opportunities_page(catalog, prototypes=None):
     total_samples=sum(int(num(x.get("active_sample_count"))) for x in research)
     body=f"""<main class="wrap catalog-v2">
 <section class="catalog-hero-v2">
-<div class="eyebrow">PROJECT RESEARCH DATABASE</div>
+<div class="eyebrow">海外商业项目档案</div>
 <h1>项目研究库</h1>
-<p>按公开商业挂牌样本浏览项目类型。当前只纳入能够明确识别业务类型、具有可复核字段并允许公开再展示的数据。</p>
-<div class="catalog-meta-v2"><span>{fmt_int(len(prototypes))} 个研究分类</span><span>{fmt_int(total_samples)} 个当前在售样本</span><span>1 个独立商业来源</span></div>
+<p>浏览经过中文整理的海外项目类别及统计摘要。原始渠道、项目标识与逐条精确数据仅限内部核查。</p>
+<div class="catalog-meta-v2"><span>{fmt_int(len(prototypes))} 个研究分类</span><span>{fmt_int(total_samples)} 个项目案例</span><span>中文整理 · 脱敏呈现</span></div>
 </section>
 <section class="research-section">
-<div class="section-title-v2"><div><span>MARKETPLACE EVIDENCE</span><h2>商业资产分类</h2></div><p>卡片中的财务数字均为当前样本的中位数，字段来自挂牌方公开披露。</p></div>
+<div class="section-title-v2"><div><span>项目分类</span><h2>商业资产分类</h2></div><p>卡片中的财务数字均为当前样本的中位数，字段来自挂牌方公开披露。</p></div>
 <div class="research-grid-v2">{cards}</div>
 </section>
 <section class="evidence-policy-v2">
 <h2>当前证据边界</h2>
 <div class="boundary-grid">
-<div><span>来源覆盖</span><strong>1 个独立商业来源</strong><p>样本多不等于来源多。</p></div>
+<div><span>数据保护</span><strong>原始渠道不公开</strong><p>保留内部溯源与核验记录。</p></div>
 <div><span>价格含义</span><strong>挂牌报价</strong><p>不等于最终成交价。</p></div>
 <div><span>财务字段</span><strong>挂牌方披露</strong><p>见势未独立审计。</p></div>
 <div><span>不可推断</span><strong>适配 / 可复制 / 未来收益</strong><p>当前证据不支持这些结论。</p></div>
@@ -993,15 +996,12 @@ def _sample_rows(research):
     rows=[]
     for sample in research.get("samples") or []:
         rows.append(f"""<tr>
-<td><span class="listing-id">#{fmt_int(sample.get("listing_number"))}</span><strong>{esc(sample.get("public_title") or "—")}</strong></td>
-<td>{esc(sample.get("country_code") or "—")}</td>
-<td class="num">{_metric(sample.get("average_monthly_gross_revenue"),"money")}</td>
-<td class="num">{_metric(sample.get("average_monthly_net_profit"),"money")}</td>
-<td class="num">{_metric(sample.get("profit_margin"),"pct")}</td>
-<td class="num">{_metric(sample.get("hours_worked_per_week"),"hours")}</td>
-<td class="num">{_metric(sample.get("listing_price"),"money")}</td>
+<td><strong>{esc(sample.get("display_name") or "未分类项目")}</strong></td>
+<td>{esc(sample.get("monthly_revenue_band") or "未披露")}</td>
+<td>{esc(sample.get("monthly_profit_band") or "未披露")}</td>
+<td>{esc(sample.get("asking_price_band") or "未披露")}</td>
 </tr>""")
-    return ''.join(rows) or '<tr><td colspan="7" class="table-empty">当前构建环境未加载原始样本记录。</td></tr>'
+    return ''.join(rows) or '<tr><td colspan="4" class="table-empty">当前无可公开的匿名案例摘要。</td></tr>'
 
 def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
     research=research_for(x)
@@ -1020,14 +1020,14 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
     body=f"""<main class="wrap research-detail-v2">
 <section class="research-hero-v2">
 <a class="breadcrumb-v2" href="/opportunities/">项目研究库 / 返回</a>
-<div class="eyebrow">MARKET EVIDENCE BRIEF</div>
+<div class="eyebrow">项目研究档案</div>
 <h1>{esc(research.get("title") or x.get("title"))}</h1>
-<div class="source-line-v2"><span>数据来源：<strong>{esc(source.get("name") or "—")}</strong></span><span>采集：{esc(_source_method(source.get("access_method")))}</span><span>源更新时间：{esc(_fmt_research_time(source.get("last_success_at")))}</span></div>
+<div class="source-line-v2"><span>中文整理</span><span>已对渠道信息与原始记录进行脱敏</span></div>
 </section>
 
 <section class="research-kpis-v2">
-<div><span>当前在售样本</span><b>{fmt_int(research.get("active_sample_count"))}</b></div>
-<div><span>有报价样本</span><b>{fmt_int(research.get("priced_sample_count")) if research.get("priced_sample_count") is not None else "—"}</b></div>
+<div><span>项目案例数量</span><b>{fmt_int(research.get("active_sample_count"))}</b></div>
+<div><span>有报价案例</span><b>{fmt_int(research.get("priced_sample_count")) if research.get("priced_sample_count") is not None else "—"}</b></div>
 <div><span>月营收中位数</span><b>{_metric(metrics.get("median_monthly_gross_revenue"),"money")}</b><small>挂牌披露</small></div>
 <div><span>月净利润中位数</span><b>{_metric(metrics.get("median_monthly_net_profit"),"money")}</b><small>挂牌披露</small></div>
 <div><span>利润率中位数</span><b>{_metric(metrics.get("median_profit_margin_pct"),"pct")}</b><small>挂牌披露</small></div>
@@ -1035,12 +1035,12 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
 </section>
 
 <section class="detail-section-v2">
-<div class="section-title-v2"><div><span>INCLUSION RULE</span><h2>样本纳入规则</h2></div></div>
-<div class="scope-box-v2"><p>{esc(research.get("sample_definition") or "—")}</p><dl><dt>统计对象</dt><dd>当前在售挂牌</dd><dt>去重单位</dt><dd>挂牌记录</dd><dt>独立商业来源</dt><dd>1</dd></dl></div>
+<div class="section-title-v2"><div><span>统计口径</span><h2>样本纳入规则</h2></div></div>
+<div class="scope-box-v2"><p>{esc(research.get("sample_definition") or "—")}</p><dl><dt>统计对象</dt><dd>海外商业项目</dd><dt>统计方式</dt><dd>同一项目去重</dd><dt>公开方式</dt><dd>中文化与脱敏</dd></dl></div>
 </section>
 
 <section class="detail-section-v2">
-<div class="section-title-v2"><div><span>DISTRIBUTION</span><h2>挂牌样本摘要</h2></div><p>中位数用于降低极端样本对观察结果的影响。</p></div>
+<div class="section-title-v2"><div><span>数据摘要</span><h2>挂牌样本摘要</h2></div><p>中位数用于降低极端样本对观察结果的影响。</p></div>
 <div class="distribution-grid-v2">
 <div><span>挂牌报价中位数</span><b>{_metric(metrics.get("median_asking_price"),"money")}</b></div>
 <div><span>月营收中位数</span><b>{_metric(metrics.get("median_monthly_gross_revenue"),"money")}</b></div>
@@ -1048,24 +1048,24 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
 <div><span>利润率中位数</span><b>{_metric(metrics.get("median_profit_margin_pct"),"pct")}</b></div>
 <div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b></div>
 </div>
-<div class="taxonomy-v2"><div class="taxonomy-label">来源分类（原文）</div><div>{niche_html}</div></div>
+<div class="taxonomy-v2"><div class="taxonomy-label">业务领域分布</div><div>{niche_html}</div></div>
 </section>
 
 <section class="detail-section-v2">
-<div class="section-title-v2"><div><span>OBSERVED LISTINGS</span><h2>最近更新的公开样本</h2></div><p>展示最近 {fmt_int(len(research.get("samples") or []))} 条 / 当前共 {fmt_int(research.get("active_sample_count"))} 条；保留来源公开标题，不做语义改写。</p></div>
+<div class="section-title-v2"><div><span>中文案例</span><h2>项目案例摘要</h2></div><p>展示 {fmt_int(len(research.get("samples") or []))} 个匿名案例 / 共整理 {fmt_int(research.get("active_sample_count"))} 个；逐条金额以区间呈现。</p></div>
 <div class="evidence-table-wrap-v2"><table class="evidence-table-v2">
-<thead><tr><th>挂牌记录</th><th>国家</th><th>月营收</th><th>月净利润</th><th>利润率</th><th>周工时</th><th>挂牌报价</th></tr></thead>
+<thead><tr><th>中文项目案例</th><th>月营收区间</th><th>月净利润区间</th><th>报价区间</th></tr></thead>
 <tbody>{_sample_rows(research)}</tbody>
 </table></div>
 </section>
 
 <section class="evidence-boundary-v2">
-<div><span>DATA LIMITATIONS</span><h2>证据边界</h2></div>
+<div><span>数据边界</span><h2>证据边界</h2></div>
 <ul>{boundary_html}</ul>
 </section>
 
 <section class="detail-section-v2 related-v2">
-<div class="section-title-v2"><div><span>RELATED RESEARCH</span><h2>其他研究分类</h2></div><a href="/opportunities/">查看全部 →</a></div>
+<div class="section-title-v2"><div><span>关联研究</span><h2>其他研究分类</h2></div><a href="/opportunities/">查看全部 →</a></div>
 <div class="research-grid-v2 compact-grid">{related_html}</div>
 </section>
 </main>"""
@@ -1119,7 +1119,7 @@ def build_daily_page(kind, daily):
       "历史序列仍在积累。"
     )
     body=f"""<main class="wrap daily-page">
-<section class="list-hero"><span class="section-kicker">SYSTEM SIGNALS</span><h1>{esc(heading)}</h1><p>{esc(lead)}</p>
+<section class="list-hero"><span class="section-kicker">趋势信号</span><h1>{esc(heading)}</h1><p>{esc(lead)}</p>
 <div class="history-note">{esc(history_note)}</div></section>
 <section class="daily-list">{"".join(_signal_row(x,metric_key,metric_label,i+1) for i,x in enumerate(rows))}</section>
 <section class="panel daily-explain"><h2>指标口径</h2>
@@ -1128,33 +1128,10 @@ def build_daily_page(kind, daily):
     return shell(f"{title}｜见势",body,lead,f"/{kind}/")
 
 def _legacy_market_table(rows):
-    if not rows:
-        return '<div class="table-empty">当前没有可展示的商业样本。</div>'
-    body=''.join(f"""<tr>
-<td><span class="listing-id">#{fmt_int(x.get("listing_number"))}</span><strong>{esc(x.get("public_title") or "—")}</strong></td>
-<td class="num">{_metric(x.get("average_monthly_gross_revenue"),"money")}</td>
-<td class="num">{_metric(x.get("average_monthly_net_profit"),"money")}</td>
-<td class="num">{_metric(x.get("profit_margin"),"pct")}</td>
-<td class="num">{_metric(x.get("hours_worked_per_week"),"hours")}</td>
-<td class="num">{_metric(x.get("listing_price"),"money")}</td>
-</tr>""" for x in rows)
-    return f"""<div class="evidence-table-wrap-v2"><table class="evidence-table-v2">
-<thead><tr><th>挂牌记录</th><th>月营收</th><th>月净利润</th><th>利润率</th><th>周工时</th><th>挂牌报价</th></tr></thead>
-<tbody>{body}</tbody></table></div>"""
+    return '<div class="scope-box-v2"><p>商业原始记录保留在内部核验系统，公开页面不展示数据渠道或项目标识。</p></div>'
 
 def _legacy_github_table(rows):
-    if not rows:
-        return '<div class="table-empty">当前没有可展示的技术样本。</div>'
-    body=''.join(f"""<tr>
-<td><strong>{esc(x.get("full_name") or "—")}</strong></td>
-<td>{esc(x.get("language") or "—")}</td>
-<td class="num">{fmt_int(x.get("stars"))}</td>
-<td class="num">{fmt_int(x.get("forks"))}</td>
-<td class="num">{fmt_score(x.get("rank_score"))}</td>
-</tr>""" for x in rows)
-    return f"""<div class="evidence-table-wrap-v2"><table class="evidence-table-v2 tech-evidence-table-v2">
-<thead><tr><th>Repository</th><th>语言</th><th>Stars</th><th>Forks</th><th>系统排序分</th></tr></thead>
-<tbody>{body}</tbody></table></div>"""
+    return '<div class="scope-box-v2"><p>技术项目原始记录保留在内部核验系统，公开页面仅展示汇总研究指标。</p></div>'
 
 def build_detail(data):
     x=data["item"]
@@ -1165,7 +1142,7 @@ def build_detail(data):
     body=f"""<main class="wrap research-detail-v2">
 <section class="research-hero-v2">
 <a class="breadcrumb-v2" href="/today/">趋势信号 / 返回</a>
-<div class="eyebrow">SYSTEM SIGNAL PROFILE</div>
+<div class="eyebrow">趋势指标档案</div>
 <h1>{esc(x.get("title"))}</h1>
 <div class="source-line-v2"><span>{esc(gate)}</span><span>指标版本：OPP_V0.2</span><span>{fmt_int(x.get("source_count"))} 类来源 · {fmt_int(x.get("evidence_count"))} 条证据</span></div>
 </section>
@@ -1180,17 +1157,17 @@ def build_detail(data):
 </section>
 
 <section class="detail-section-v2">
-<div class="section-title-v2"><div><span>COMMERCIAL EVIDENCE</span><h2>商业样本</h2></div><p>仅展示来源公开字段；挂牌报价不等于成交价。</p></div>
+<div class="section-title-v2"><div><span>商业数据</span><h2>商业样本</h2></div><p>原始项目标识、技术仓库与渠道信息不对外公开。</p></div>
 {_legacy_market_table(market)}
 </section>
 
 <section class="detail-section-v2">
-<div class="section-title-v2"><div><span>TECHNICAL EVIDENCE</span><h2>技术样本</h2></div><p>技术热度只代表供给与关注信号，不直接证明商业成立。</p></div>
+<div class="section-title-v2"><div><span>技术指标</span><h2>技术样本</h2></div><p>技术热度只代表观察信号，不直接证明商业成立。</p></div>
 {_legacy_github_table(github)}
 </section>
 
 <section class="evidence-boundary-v2">
-<div><span>INTERPRETATION LIMIT</span><h2>解释边界</h2></div>
+<div><span>解释边界</span><h2>解释边界</h2></div>
 <ul>
 <li>OPP_V0.2 为见势内部研究指标，不是外部来源事实。</li>
 <li>系统分数不能替代商业尽调，也不能推导收益。</li>

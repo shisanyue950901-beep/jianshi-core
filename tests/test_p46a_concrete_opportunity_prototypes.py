@@ -153,7 +153,7 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
             page=ROOT/"web"/"dist"/"opportunity"/slug/"index.html"
             self.assertTrue(page.exists(),slug)
             html=page.read_text(encoding="utf-8")
-            self.assertIn("MARKET EVIDENCE BRIEF",html)
+            self.assertIn("项目研究档案",html)
             self.assertIn("样本纳入规则",html)
             self.assertIn("挂牌样本摘要",html)
             self.assertIn("证据边界",html)
@@ -181,7 +181,7 @@ class TestP46AConcreteOpportunityPrototypes(unittest.TestCase):
 
         self.assertIn("先看证据",home)
         self.assertIn("项目研究库",catalog)
-        self.assertIn("公开商业挂牌样本",catalog)
+        self.assertIn("中文整理的海外项目类别",catalog)
         for slug in prototype_slugs:
             href=f'/opportunity/{slug}/'
             self.assertIn(href,home,slug)

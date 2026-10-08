@@ -44,7 +44,7 @@ class TestP49EvidenceFirstResearch(unittest.TestCase):
             "recommendation_reason",
         ]:
             self.assertNotIn(forbidden,research_block)
-        self.assertIn("财务、工时和报价字段来自挂牌方公开披露",research_block)
+        self.assertIn("财务和工时为第三方公开项目资料中的披露值",research_block)
         self.assertIn("挂牌报价不等于最终成交价",research_block)
 
     def test_production_build_uses_live_research_endpoint(self):
@@ -85,9 +85,9 @@ class TestP49EvidenceFirstResearch(unittest.TestCase):
                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         html=(ROOT/"web"/"dist"/"opportunity"/"vertical-industry-saas"/"index.html").read_text(encoding="utf-8")
         for token in [
-            "MARKET EVIDENCE BRIEF",
-            "当前在售样本",
-            "独立商业来源",
+            "项目研究档案",
+            "项目案例数量",
+            "中文化与脱敏",
             "样本纳入规则",
             "挂牌样本摘要",
             "挂牌报价中位数",
@@ -114,7 +114,7 @@ class TestP49EvidenceFirstResearch(unittest.TestCase):
         subprocess.run([sys.executable,str(BUILD)],cwd=ROOT,env=env,check=True,
                        stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         html=(ROOT/"web"/"dist"/"opportunity"/"amazon-fba-niche-brand"/"index.html").read_text(encoding="utf-8")
-        self.assertIn("展示最近 0 条 / 当前共 70 条",html)
+        self.assertIn("展示 0 个匿名案例 / 共整理 70 个",html)
 
 
 if __name__=="__main__":
