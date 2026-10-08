@@ -43,7 +43,7 @@ class TestP412DDiscoveryAndComparison(unittest.TestCase):
         self.assertIn('data-project="digital"',self.html)
         self.assertIn('data-case="easlo"',self.html)
         self.assertIn('data-case="louise-lennox"',self.html)
-        self.assertIn("不代表",self.config["case_status"]["case_count_is_not_financial_validation"] if isinstance(self.config["case_status"]["case_count_is_not_financial_validation"],str) else "产品存在不代表盈利已核实")
+        self.assertTrue(self.config["case_status"]["case_count_is_not_financial_validation"])
 
     def test_search_is_typed_and_has_accessible_feedback(self):
         expected=[
@@ -85,7 +85,7 @@ class TestP412DDiscoveryAndComparison(unittest.TestCase):
         self.assertIn("comparisonSelected.size>=3",self.html)
         self.assertIn("comparisonHead.replaceChildren",self.html)
         self.assertIn("comparisonBody.replaceChildren",self.html)
-        self.assertIn("document.createElement('td')",self.html.replace("compareCell('td'","document.createElement('td')"))
+        self.assertIn("tr.appendChild(compareCell('td',data[id][key]",self.html)
         self.assertIn('scope',''.join(self.html.split('compareCell',1)[1:]))
         self.assertIn("这里比较的是商业模式",self.html)
         self.assertNotIn("预计收益排名",self.html)
