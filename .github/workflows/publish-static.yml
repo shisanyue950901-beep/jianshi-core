@@ -72,13 +72,16 @@ jobs:
           grep -q "当前证据边界" opportunities/index.html
           test -f opportunity/vertical-industry-saas/index.html
           test -f opportunity/amazon-fba-niche-brand/index.html
-          grep -q "MARKET EVIDENCE BRIEF" opportunity/vertical-industry-saas/index.html
+          grep -q "项目研究档案" opportunity/vertical-industry-saas/index.html
           grep -q "证据边界" opportunity/vertical-industry-saas/index.html
           grep -q "noindex,nofollow" opportunity/vertical-industry-saas/index.html
           ! grep -q "vertical-industry-saas" sitemap.xml
-          grep -q "SYSTEM SIGNAL PROFILE" opportunity/solo-saas/index.html
+          grep -q "趋势指标档案" opportunity/solo-saas/index.html
           grep -q "商业样本" opportunity/solo-saas/index.html
           grep -q "账户功能正在完成最后的邮件登录配置" account/index.html
+          grep -q "中文案例" opportunity/amazon-kdp-publishing/index.html
+          ! grep -R -E -i "Empire Flippers|empireflippers|Amazon KDP Business in the|Amazon FBA Business in the|Per Month SaaS Business|OFFICIAL_API|源更新时间：|listing_number" --include="*.html" index.html opportunities opportunity today rising build content
+
 
       - name: Commit generated snapshot
         run: |
