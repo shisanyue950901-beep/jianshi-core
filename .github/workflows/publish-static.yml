@@ -85,7 +85,12 @@ jobs:
           grep -q "/supabase/\\*" _redirects
           python scripts/security/p411_audit_public_artifacts.py web/dist
           grep -q "见势" index.html
-          grep -q "发现海外项目" web/dist/index.html\n          grep -q "Easlo" web/dist/index.html\n          grep -q "Louise Lennox" web/dist/index.html\n          ! grep -q "此文件为独立网站预览" web/dist/index.html\n          grep -q "页面已更新" web/dist/opportunities/index.html\n          grep -q "页面已更新" web/dist/today/index.html
+          grep -q "发现海外项目" web/dist/index.html
+          grep -q "Easlo" web/dist/index.html
+          grep -q "Louise Lennox" web/dist/index.html
+          ! grep -q "此文件为独立网站预览" web/dist/index.html
+          grep -q "页面已更新" web/dist/opportunities/index.html
+          grep -q "页面已更新" web/dist/today/index.html
           grep -q "项目研究库" opportunities/index.html
           grep -q "当前证据边界" opportunities/index.html
           test -f opportunity/vertical-industry-saas/index.html
