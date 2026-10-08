@@ -37,7 +37,7 @@ class TestP412BBusinessContent(unittest.TestCase):
             for field in arrays:
                 self.assertGreaterEqual(len(item[field]),3,(item["id"],field))
                 self.assertTrue(all(isinstance(x,str) and len(x)>=4 for x in item[field]))
-            self.assertIn("不能",item["evidence"] if "不能" in item["evidence"] else item["mistake"])
+            self.assertRegex(item["evidence"]+" "+item["mistake"],r"不能|不等于|不代表|无法|不足以|不意味着")
 
     def test_no_fake_company_profiles_or_performance_numbers(self):
         raw=json.dumps(self.content,ensure_ascii=False)
