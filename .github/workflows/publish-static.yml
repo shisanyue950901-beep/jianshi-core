@@ -51,6 +51,9 @@ jobs:
       - name: Build live static snapshot
         run: python web/build.py
 
+      - name: Prepare user-facing P4.12 artifact
+        run: python scripts/release/p412_build_public.py
+
       - name: Verify public artifact
         run: |
           test -f web/dist/index.html
@@ -73,11 +76,16 @@ jobs:
           test -f web/dist/_headers
           test -f web/dist/_redirects
           grep -q "Cache-Control: no-store" _headers
+          test -f web/dist/privacy/index.html
+          test ! -e web/dist/config
+          test ! -e web/dist/docs
+          test ! -e web/dist/scripts
+          test ! -e web/dist/supabase
           grep -q "/config/\\*" _redirects
           grep -q "/supabase/\\*" _redirects
           python scripts/security/p411_audit_public_artifacts.py web/dist
           grep -q "见势" index.html
-          grep -q "先看证据" index.html
+          grep -q "发现海外项目" web/dist/index.html\n          grep -q "Easlo" web/dist/index.html\n          grep -q "Louise Lennox" web/dist/index.html\n          ! grep -q "此文件为独立网站预览" web/dist/index.html\n          grep -q "页面已更新" web/dist/opportunities/index.html\n          grep -q "页面已更新" web/dist/today/index.html
           grep -q "项目研究库" opportunities/index.html
           grep -q "当前证据边界" opportunities/index.html
           test -f opportunity/vertical-industry-saas/index.html
