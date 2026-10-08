@@ -5,42 +5,50 @@ const CORS = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET,OPTIONS",
   "access-control-allow-headers": "content-type",
-  "cache-control": "public, max-age=120, s-maxage=300, stale-while-revalidate=600",
+  "cache-control": "no-store, max-age=0",
   "content-type": "application/json; charset=utf-8",
 };
 
-const RESEARCH_RULES: Record<string, { title: string; patterns: string[]; sampleDefinition: string }> = {
-  "vertical-industry-saas": {
-    title: "垂直行业软件订阅服务（SaaS）",
-    patterns: ["SaaS Business"],
-    sampleDefinition: "在售挂牌中，公开标题明确归类为 SaaS Business 的商业资产。",
-  },
-  "amazon-fba-niche-brand": {
-    title: "亚马逊物流（FBA）细分品牌",
-    patterns: ["Amazon FBA Business"],
-    sampleDefinition: "在售挂牌中，公开标题明确归类为 Amazon FBA Business 的商业资产。",
-  },
-  "digital-product-business": {
-    title: "数字产品业务",
-    patterns: ["Digital Product Business"],
-    sampleDefinition: "在售挂牌中，公开标题明确归类为 Digital Product Business 的商业资产。",
-  },
-  "affiliate-content-site": {
-    title: "联盟营销 / 内容站",
-    patterns: ["Affiliate Site", "Amazon Associates Site", "Display Advertising Site"],
-    sampleDefinition: "在售挂牌中，公开标题明确归类为 Affiliate Site、Amazon Associates Site 或 Display Advertising Site 的商业资产。",
-  },
-  "amazon-kdp-publishing": {
-    title: "亚马逊 KDP 数字出版",
-    patterns: ["Amazon KDP Business"],
-    sampleDefinition: "在售挂牌中，公开标题明确归类为 Amazon KDP Business 的商业资产。",
-  },
-  "agency-business": {
-    title: "专业服务业务（Agency）",
-    patterns: ["Agency Business"],
-    sampleDefinition: "在售挂牌中，公开标题明确归类为 Agency Business 的商业资产。",
-  },
+const RESEARCH_RULES: Record<string, { title: string; patterns: string[] }> = {
+  "vertical-industry-saas": { title: "行业软件订阅项目", patterns: ["SaaS Business"] },
+  "amazon-fba-niche-brand": { title: "亚马逊物流（FBA）品牌项目", patterns: ["Amazon FBA Business"] },
+  "digital-product-business": { title: "数字产品项目", patterns: ["Digital Product Business"] },
+  "affiliate-content-site": { title: "联盟营销与内容网站", patterns: ["Affiliate Site","Amazon Associates Site","Display Advertising Site"] },
+  "amazon-kdp-publishing": { title: "亚马逊 KDP 出版项目", patterns: ["Amazon KDP Business"] },
+  "agency-business": { title: "专业服务项目", patterns: ["Agency Business"] },
 };
+
+// 英文原始分类仅用于服务端匹配，公开接口绝不返回原词或原始记录。
+const NICHE_ZH: Record<string,string> = {
+  "Personal Care":"个人护理","Medical":"医疗健康","Health & Fitness":"健康健身",
+  "Sports":"体育运动","Information":"信息服务","Business":"商业服务",
+  "Technology":"科技","News & Education":"资讯教育","Gaming":"游戏",
+  "Employment":"招聘就业","Lifestyle":"生活方式","Art":"艺术",
+  "Hobbies":"兴趣爱好","Design":"设计","Digital Media":"数字媒体",
+  "SEO":"搜索引擎优化","Advertising":"广告营销","Home":"家居",
+  "Children":"母婴儿童","Books":"图书","Romance":"文学小说",
+  "Occasions & Gifts":"礼品","Culinary":"食品烹饪",
+  "Religion & Spirituality":"宗教与文化","Office Supply":"办公用品",
+  "Retail & Wholesale":"零售批发","Survival & Security":"安全防护",
+  "Pet Care":"宠物护理","Outdoors":"户外","Automotive":"汽车用品",
+  "Finance":"金融服务","Travel":"旅行","Beauty":"美容",
+  "Equipment":"设备用品","Kitchenware":"厨具","Supplements":"营养补充",
+  "Apparel & Accessories":"服饰配件","Bed & Bath":"家纺卫浴",
+  "Electronics":"电子产品","Pets":"宠物用品"
+};
+function localizedNiche(raw: unknown): string {
+  const text = String(raw || "").trim();
+  return NICHE_ZH[text] || "其他领域";
+}
+function amountBand(v: unknown): string {
+  const value = toNumber(v);
+  if (value === null) return "未披露";
+  if (value < 10000) return "不足1万美元";
+  if (value < 50000) return "1万—5万美元";
+  if (value < 100000) return "5万—10万美元";
+  if (value < 500000) return "10万—50万美元";
+  return "50万美元及以上";
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: CORS });
@@ -64,18 +72,13 @@ function median(rows: any[], key: string): number | null {
 }
 
 function nicheDistribution(rows: any[]) {
-  const counts = new Map<string, number>();
+  const counts = new Map<string,number>();
   for (const row of rows) {
-    for (const niche of Array.isArray(row.niches) ? row.niches : []) {
-      const label = String(niche || "").trim();
-      if (!label) continue;
-      counts.set(label, (counts.get(label) || 0) + 1);
-    }
+    const labels = new Set<string>((Array.isArray(row.niches) ? row.niches : []).map(localizedNiche));
+    for (const label of labels) counts.set(label, (counts.get(label) || 0) + 1);
   }
-  return [...counts.entries()]
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
-    .slice(0, 12);
+  return [...counts.entries()].map(([name,count]) => ({name,count}))
+    .sort((a,b) => b.count - a.count || a.name.localeCompare(b.name,"zh")).slice(0,12);
 }
 
 Deno.serve(async (req: Request) => {
@@ -125,7 +128,7 @@ Deno.serve(async (req: Request) => {
         stats: statsQ.data,
         opportunities: catalog.filter((x: any) => x.public_ready),
         watchlist: catalog.filter((x: any) => !x.public_ready).slice(0, 8),
-        tech_signals: githubQ.data ?? [],
+        tech_signals: [], // 原始仓库、来源及发现路径不公开
       });
     }
 
@@ -164,91 +167,52 @@ Deno.serve(async (req: Request) => {
     if (view === "research") {
       const slug = (url.searchParams.get("slug") || "").trim();
       const rule = RESEARCH_RULES[slug];
-      if (!rule) return json({ error: "RESEARCH_NOT_FOUND" }, 404);
-
-      let listingQ = db.from("marketplace_listings")
-        .select([
-          "listing_number",
-          "public_title",
-          "listing_status",
-          "listing_price",
-          "average_monthly_gross_revenue",
-          "average_monthly_net_profit",
-          "profit_margin",
-          "hours_worked_per_week",
-          "country_code",
-          "niches",
-          "first_made_money_at",
-          "source_updated_at",
-        ].join(","))
-        .eq("active", true);
-
+      if (!rule) return json({error:"RESEARCH_NOT_FOUND"},404);
+      let q = db.from("marketplace_listings")
+        .select("public_title,listing_price,average_monthly_gross_revenue,average_monthly_net_profit,profit_margin,hours_worked_per_week,niches,source_updated_at")
+        .eq("active",true);
       if (rule.patterns.length === 1) {
-        listingQ = listingQ.ilike("public_title", `%${rule.patterns[0]}%`);
+        q = q.ilike("public_title",`%${rule.patterns[0]}%`);
       } else {
-        listingQ = listingQ.or(
-          rule.patterns.map((pattern) => `public_title.ilike.%${pattern}%`).join(","),
-        );
+        q = q.or(rule.patterns.map(x => `public_title.ilike.%${x}%`).join(","));
       }
-
-      const [listingResult, sourceResult] = await Promise.all([
-        listingQ,
-        db.from("data_sources")
-          .select("name,homepage_url,access_method,last_success_at")
-          .eq("code", "empire_flippers")
-          .maybeSingle(),
-      ]);
-
-      if (listingResult.error) throw listingResult.error;
-      if (sourceResult.error) throw sourceResult.error;
-
-      const rows = listingResult.data ?? [];
-      const priced = rows.filter((row: any) => toNumber(row.listing_price) !== null);
-      const sorted = [...rows].sort((a: any, b: any) =>
-        String(b.source_updated_at || "").localeCompare(String(a.source_updated_at || ""))
-      );
-
+      const {data,error} = await q;
+      if (error) throw error;
+      const rows = data ?? [];
+      const priced = rows.filter((r:any) => toNumber(r.listing_price) !== null);
+      // 服务端先完成归类和统计：不可向客户端发送原始标题、平台名、
+      // 接口地址、原始分类、挂牌编号、精确逐条财务或更新时间。
+      const examples = [...rows]
+        .sort((a:any,b:any) => String(b.source_updated_at||"").localeCompare(String(a.source_updated_at||"")))
+        .slice(0,6)
+        .map((r:any,idx:number) => ({
+          display_name: `${localizedNiche((r.niches||[])[0])} · ${rule.title}`,
+          display_order: idx + 1,
+          monthly_revenue_band: amountBand(r.average_monthly_gross_revenue),
+          monthly_profit_band: amountBand(r.average_monthly_net_profit),
+          asking_price_band: amountBand(r.listing_price),
+        }));
       return json({
-        generated_at: new Date().toISOString(),
         slug,
-        title: rule.title,
-        sample_definition: rule.sampleDefinition,
-        evidence_source: sourceResult.data ?? {
-          name: "Empire Flippers",
-          homepage_url: "https://empireflippers.com",
-          access_method: "OFFICIAL_API",
-          last_success_at: null,
+        title:rule.title,
+        sample_definition:"按照公开项目的业务形态归类并去重统计；原始渠道和项目标识不对外展示。",
+        active_sample_count:rows.length,
+        priced_sample_count:priced.length,
+        metrics:{
+          median_asking_price:median(rows,"listing_price"),
+          median_monthly_gross_revenue:median(rows,"average_monthly_gross_revenue"),
+          median_monthly_net_profit:median(rows,"average_monthly_net_profit"),
+          median_profit_margin_pct:median(rows,"profit_margin"),
+          median_hours_worked_per_week:median(rows,"hours_worked_per_week"),
         },
-        active_sample_count: rows.length,
-        priced_sample_count: priced.length,
-        metrics: {
-          median_asking_price: median(rows, "listing_price"),
-          median_monthly_gross_revenue: median(rows, "average_monthly_gross_revenue"),
-          median_monthly_net_profit: median(rows, "average_monthly_net_profit"),
-          median_profit_margin_pct: median(rows, "profit_margin"),
-          median_hours_worked_per_week: median(rows, "hours_worked_per_week"),
-        },
-        niche_distribution: nicheDistribution(rows),
-        samples: sorted.slice(0, 6).map((row: any) => ({
-          listing_number: row.listing_number,
-          public_title: row.public_title,
-          listing_status: row.listing_status,
-          listing_price: toNumber(row.listing_price),
-          average_monthly_gross_revenue: toNumber(row.average_monthly_gross_revenue),
-          average_monthly_net_profit: toNumber(row.average_monthly_net_profit),
-          profit_margin: toNumber(row.profit_margin),
-          hours_worked_per_week: toNumber(row.hours_worked_per_week),
-          country_code: row.country_code,
-          niches: row.niches ?? [],
-          first_made_money_at: row.first_made_money_at,
-          source_updated_at: row.source_updated_at,
-        })),
-        evidence_boundary: [
-          "财务、工时和报价字段来自挂牌方公开披露，见势未对其进行独立审计。",
+        niche_distribution:nicheDistribution(rows),
+        samples:examples,
+        evidence_boundary:[
+          "财务和工时为第三方公开项目资料中的披露值，见势未独立审计。",
           "挂牌报价不等于最终成交价。",
-          "当前该研究分类仅来自一个独立商业来源，不构成多源商业验证。",
-          "这些样本不能用于证明团队规模、中国市场适配性、可复制性或未来收益。",
-        ],
+          "统计代表被观察到的项目，不代表总体市场表现或收益预期。",
+          "具体数据渠道、原始标识及采集方式属于内部研究资产，不对外公布。"
+        ]
       });
     }
 
@@ -300,8 +264,8 @@ Deno.serve(async (req: Request) => {
         generated_at: new Date().toISOString(),
         item: publicItem,
         evidence: {
-          github: publicGithub,
-          marketplace: publicMarketplace,
+          github: [],
+          marketplace: [],
         },
         score_history: historyQ.data ?? [],
         acceleration: accelerationQ.data ?? {
@@ -320,6 +284,6 @@ Deno.serve(async (req: Request) => {
 
     return json({ error: "UNKNOWN_VIEW" }, 404);
   } catch (error) {
-    return json({ error: "PUBLIC_API_FAILED", detail: String(error) }, 500);
+    return json({ error: "PUBLIC_API_FAILED" }, 500);
   }
 });
