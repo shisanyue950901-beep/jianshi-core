@@ -1128,33 +1128,10 @@ def build_daily_page(kind, daily):
     return shell(f"{title}｜见势",body,lead,f"/{kind}/")
 
 def _legacy_market_table(rows):
-    if not rows:
-        return '<div class="table-empty">当前没有可展示的商业样本。</div>'
-    body=''.join(f"""<tr>
-<td><span class="listing-id">#{fmt_int(x.get("listing_number"))}</span><strong>{esc(x.get("public_title") or "—")}</strong></td>
-<td class="num">{_metric(x.get("average_monthly_gross_revenue"),"money")}</td>
-<td class="num">{_metric(x.get("average_monthly_net_profit"),"money")}</td>
-<td class="num">{_metric(x.get("profit_margin"),"pct")}</td>
-<td class="num">{_metric(x.get("hours_worked_per_week"),"hours")}</td>
-<td class="num">{_metric(x.get("listing_price"),"money")}</td>
-</tr>""" for x in rows)
-    return f"""<div class="evidence-table-wrap-v2"><table class="evidence-table-v2">
-<thead><tr><th>挂牌记录</th><th>月营收</th><th>月净利润</th><th>利润率</th><th>周工时</th><th>挂牌报价</th></tr></thead>
-<tbody>{body}</tbody></table></div>"""
+    return '<div class="scope-box-v2"><p>商业原始记录保留在内部核验系统，公开页面不展示数据渠道或项目标识。</p></div>'
 
 def _legacy_github_table(rows):
-    if not rows:
-        return '<div class="table-empty">当前没有可展示的技术样本。</div>'
-    body=''.join(f"""<tr>
-<td><strong>{esc(x.get("full_name") or "—")}</strong></td>
-<td>{esc(x.get("language") or "—")}</td>
-<td class="num">{fmt_int(x.get("stars"))}</td>
-<td class="num">{fmt_int(x.get("forks"))}</td>
-<td class="num">{fmt_score(x.get("rank_score"))}</td>
-</tr>""" for x in rows)
-    return f"""<div class="evidence-table-wrap-v2"><table class="evidence-table-v2 tech-evidence-table-v2">
-<thead><tr><th>Repository</th><th>语言</th><th>Stars</th><th>Forks</th><th>系统排序分</th></tr></thead>
-<tbody>{body}</tbody></table></div>"""
+    return '<div class="scope-box-v2"><p>技术项目原始记录保留在内部核验系统，公开页面仅展示汇总研究指标。</p></div>'
 
 def build_detail(data):
     x=data["item"]
@@ -1180,12 +1157,12 @@ def build_detail(data):
 </section>
 
 <section class="detail-section-v2">
-<div class="section-title-v2"><div><span>商业数据</span><h2>商业样本</h2></div><p>仅展示来源公开字段；挂牌报价不等于成交价。</p></div>
+<div class="section-title-v2"><div><span>商业数据</span><h2>商业样本</h2></div><p>原始项目标识、技术仓库与渠道信息不对外公开。</p></div>
 {_legacy_market_table(market)}
 </section>
 
 <section class="detail-section-v2">
-<div class="section-title-v2"><div><span>技术指标</span><h2>技术样本</h2></div><p>技术热度只代表供给与关注信号，不直接证明商业成立。</p></div>
+<div class="section-title-v2"><div><span>技术指标</span><h2>技术样本</h2></div><p>技术热度只代表观察信号，不直接证明商业成立。</p></div>
 {_legacy_github_table(github)}
 </section>
 
