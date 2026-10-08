@@ -394,6 +394,8 @@ body{font-feature-settings:"kern" 1;}
     const lightbox=$('lb');if(lightbox)lightbox.inert=!lbOpen;
     const splashNode=$('splash');if(splashNode)splashNode.inert=splashDone;
   }
+  // Protect the underlying page from the first splash frame, not only after it closes.
+  syncLock();
   const clamp=(x,min,max)=>Math.max(min,Math.min(max,x));
   function text(el,value){el.textContent=value||''}
   const defer=(fn,ms)=>window.setTimeout(fn,ms);
