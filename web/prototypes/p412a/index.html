@@ -151,27 +151,27 @@ body,.site-head,.project-card,.satellite,.note-panel,.note-item,.detail-cta,
  .compare-table th,.compare-table td{padding:15px 13px}
  .compare-section{padding-top:75px;padding-bottom:75px}
 }
+
+.named-cases-block{padding:20px 0 62px}
+.named-cases-block .section-head{margin-bottom:25px}
+.models-title{border-top:1px solid var(--edge);padding:34px 0 20px}
+.models-title span{display:block;color:var(--muted);font-size:11px;letter-spacing:.12em}
+.models-title h3{font:400 clamp(24px,2.6vw,34px)/1.4 var(--serif);margin:9px 0}
+.models-title p{font-size:12px;line-height:1.85;color:var(--muted);max-width:680px;margin:0}
+#model-list-title[hidden],#named-cases[hidden]{display:none!important}
 </style>
 </head><body>
 <header class="site-head"><div class="wrap head-row"><a href="#top" class="logo" aria-label="见势首页">见势 <small>JIANSHI</small></a><nav class="head-right" id="menu"><a href="#projects" data-home-link>发现项目</a><a href="#compare" data-home-link>对比商业模式</a><a href="#about" data-home-link>关于见势</a></nav><button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换为浅色模式" aria-pressed="false" title="切换为浅色模式"><span class="theme-toggle-icon" aria-hidden="true">☀</span><span class="theme-toggle-label">浅色</span></button><button class="menu-toggle" id="menu-toggle" aria-label="打开菜单" aria-controls="menu" aria-expanded="false">☰</button></div></header>
 <main id="home-view">
 <section class="hero wrap" id="top"><div class="hero-content reveal"><div class="eyebrow">DISCOVER BUSINESSES / 发现海外商业机会</div><h1 class="hero-title">世界另一端，<br>有人已经把想法<br><em>做成了生意。</em></h1><p class="hero-lead">见势带你了解真实存在的海外商业模式：它们卖什么、靠什么赚钱、如何运作，以及有哪些值得进一步研究的案例。</p><div class="hero-actions"><a class="pill" href="#projects">探索项目 <span>↗</span></a><a class="muted-link" href="#approach">见势能帮你了解什么 →</a></div></div>
 <div class="hero-art" id="hero-art" aria-label="六种商业模式组成的探索图谱"><div class="orb"><div class="axis"></div><div class="art-center"><small>THE BUSINESS ARCHIVE</small><b>发现 · 理解<br>再做判断</b></div></div><button class="satellite s1" data-project="digital"><span>01</span><strong>数字产品</strong></button><button class="satellite s2" data-project="kdp"><span>02</span><strong>数字出版</strong></button><button class="satellite s3" data-project="saas"><span>03</span><strong>软件订阅</strong></button><button class="satellite s4" data-project="content"><span>04</span><strong>内容生意</strong></button></div><div class="hero-bottom"><span>探索海外商业模式</span><span>SCROLL TO EXPLORE ↓</span></div></section>
-<section class="section wrap" id="projects"><div class="section-head reveal"><div><div class="eyebrow">按商业模式探索</div><h2 tabindex="-1">从一门生意开始。</h2></div><p>不是抽象的热门赛道，而是先了解不同生意怎样创造价值、获得收入，再选择值得深入研究的方向。</p></div><div class="discovery-controls" role="search" aria-label="查找商业模式与项目">
+<section class="section wrap" id="projects"><div class="section-head reveal"><div><div class="eyebrow">发现海外项目</div><h2 tabindex="-1">先看看，有人在做什么。</h2></div><p>从有公开产品和作品的具体例子开始，再了解相关商业模式。</p></div><div class="discovery-controls" role="search" aria-label="查找商业模式与项目">
 <label for="discovery-search" class="discovery-label">你想了解哪种生意？</label>
 <div class="search-line"><input type="search" id="discovery-search" autocomplete="off" placeholder="搜索业务、产品或收入方式，如模板、小说、软件" aria-describedby="discovery-tip"><button id="discovery-clear" type="button" aria-label="清空搜索" hidden>清空</button></div>
 <p class="discovery-tip" id="discovery-tip">可按关键词查找六种商业模式和两份具体项目介绍。</p>
 <div class="type-filters" role="group" aria-label="选择内容类型">
 <button type="button" data-kind="all" aria-pressed="true">全部内容</button><button type="button" data-kind="model" aria-pressed="false">商业模式</button><button type="button" data-kind="case" aria-pressed="false">具体项目</button>
-</div><p id="discovery-status" class="discovery-status" role="status" aria-live="polite"></p><p id="discovery-empty" class="discovery-empty" hidden>没有匹配的内容。试试“模板”“图书”或更宽泛的业务名称。</p></div><div class="filters" role="group" aria-label="按商业模式筛选"><button class="filter" data-filter="all" aria-pressed="true">全部</button><button class="filter" data-filter="digital" aria-pressed="false">软件与数字产品</button><button class="filter" data-filter="content" aria-pressed="false">内容与出版</button><button class="filter" data-filter="commerce" aria-pressed="false">商品零售</button><button class="filter" data-filter="service" aria-pressed="false">专业服务</button></div><div class="project-grid" id="project-grid">
-<button class="project-card" data-group="digital" data-project="saas"><div class="card-top"><span>01 / 软件服务</span><span>订阅型</span></div><div class="card-mark">S</div><h3>行业软件订阅</h3><p>把某个行业的重复工作变成持续使用的软件服务。</p><p class="card-income">主要收入：订阅与使用费</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
-<button class="project-card" data-group="digital" data-project="digital"><div class="card-top"><span>02 / 数字产品</span><span>数字交付</span></div><div class="card-mark">D</div><h3>数字产品</h3><p>把专业知识或工具做成可以在线购买和交付的商品。</p><p class="card-income">主要收入：商品购买与授权</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
-<button class="project-card" data-group="content" data-project="content"><div class="card-top"><span>03 / 内容业务</span><span>内容变现</span></div><div class="card-mark">C</div><h3>内容与联盟营销</h3><p>用内容帮助用户做选择，再通过广告或推荐获得收入。</p><p class="card-income">主要收入：广告及推荐佣金</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
-<button class="project-card" data-group="content" data-project="kdp"><div class="card-top"><span>04 / 图书出版</span><span>图书销售</span></div><div class="card-mark">P</div><h3>亚马逊数字出版</h3><p>制作并发行图书作品，通过读者购买形成出版收入。</p><p class="card-income">主要收入：图书销售版税</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
-<button class="project-card" data-group="commerce" data-project="fba"><div class="card-top"><span>05 / 商品零售</span><span>商品销售</span></div><div class="card-mark">E</div><h3>跨境电商品牌</h3><p>围绕实物商品组织采购、展示、库存和线上销售。</p><p class="card-income">主要收入：商品零售</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
-<button class="project-card" data-group="service" data-project="agency"><div class="card-top"><span>06 / 专业服务</span><span>服务收费</span></div><div class="card-mark">A</div><h3>专业服务</h3><p>依靠可交付的专业能力，为特定客户解决具体问题。</p><p class="card-income">主要收入：服务合同</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
-</div></section>
-<section class="section wrap" id="named-cases">
+</div><p id="discovery-status" class="discovery-status" role="status" aria-live="polite"></p><p id="discovery-empty" class="discovery-empty" hidden>没有匹配的内容。试试“模板”“图书”或更宽泛的业务名称。</p></div><div class="filters" role="group" aria-label="按商业模式筛选"><button class="filter" data-filter="all" aria-pressed="true">全部</button><button class="filter" data-filter="digital" aria-pressed="false">软件与数字产品</button><button class="filter" data-filter="content" aria-pressed="false">内容与出版</button><button class="filter" data-filter="commerce" aria-pressed="false">商品零售</button><button class="filter" data-filter="service" aria-pressed="false">专业服务</button></div><div class="named-cases-block" id="named-cases">
 <div class="section-head"><div><div class="eyebrow">海外项目参考</div><h2 tabindex="-1">看看具体的海外项目。</h2></div><p>有公开产品或作品的具体例子，可继续了解其提供什么。经营收入尚未核实。</p></div>
 <div class="project-grid case-grid">
 <button class="project-card case-card" data-group="digital" data-case="easlo" aria-label="查看 Easlo 数字模板项目">
@@ -184,7 +184,17 @@ body,.site-head,.project-card,.satellite,.note-panel,.note-item,.detail-cta,
 <div class="card-mark" aria-hidden="true">L</div>
 <h3>Louise Lennox｜爱情小说出版</h3><p>创作有明确读者群的系列小说，通过图书销售和出版渠道触达读者。</p>
 <div class="card-end"><span>查看具名案例</span><b>→</b></div></button>
+</div></div>
+<div class="models-title" id="model-list-title"><span>进一步探索</span><h3>了解六种常见商业模式</h3><p>具体项目与商业模式是两种不同的信息。读完真实产品介绍，再看看同类生意通常怎样运作。</p></div>
+<div class="project-grid" id="project-grid">
+<button class="project-card" data-group="digital" data-project="saas"><div class="card-top"><span>01 / 软件服务</span><span>订阅型</span></div><div class="card-mark">S</div><h3>行业软件订阅</h3><p>把某个行业的重复工作变成持续使用的软件服务。</p><p class="card-income">主要收入：订阅与使用费</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
+<button class="project-card" data-group="digital" data-project="digital"><div class="card-top"><span>02 / 数字产品</span><span>数字交付</span></div><div class="card-mark">D</div><h3>数字产品</h3><p>把专业知识或工具做成可以在线购买和交付的商品。</p><p class="card-income">主要收入：商品购买与授权</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
+<button class="project-card" data-group="content" data-project="content"><div class="card-top"><span>03 / 内容业务</span><span>内容变现</span></div><div class="card-mark">C</div><h3>内容与联盟营销</h3><p>用内容帮助用户做选择，再通过广告或推荐获得收入。</p><p class="card-income">主要收入：广告及推荐佣金</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
+<button class="project-card" data-group="content" data-project="kdp"><div class="card-top"><span>04 / 图书出版</span><span>图书销售</span></div><div class="card-mark">P</div><h3>亚马逊数字出版</h3><p>制作并发行图书作品，通过读者购买形成出版收入。</p><p class="card-income">主要收入：图书销售版税</p><div class="card-end"><span>查看详细样板</span><b>→</b></div></button>
+<button class="project-card" data-group="commerce" data-project="fba"><div class="card-top"><span>05 / 商品零售</span><span>商品销售</span></div><div class="card-mark">E</div><h3>跨境电商品牌</h3><p>围绕实物商品组织采购、展示、库存和线上销售。</p><p class="card-income">主要收入：商品零售</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
+<button class="project-card" data-group="service" data-project="agency"><div class="card-top"><span>06 / 专业服务</span><span>服务收费</span></div><div class="card-mark">A</div><h3>专业服务</h3><p>依靠可交付的专业能力，为特定客户解决具体问题。</p><p class="card-income">主要收入：服务合同</p><div class="card-end"><span>了解这种生意</span><b>→</b></div></button>
 </div></section>
+
 <section class="section wrap compare-section" id="compare">
 <div class="section-head"><div><div class="eyebrow">商业模式对比</div><h2 tabindex="-1">选两种生意，看看差在哪。</h2></div><p>比较产品、客户、收费和日常工作。这里比较的是商业模式，不是任何一家企业的经营业绩。</p></div>
 <div class="compare-controls"><div class="compare-label">选择 2–3 种商业模式</div>
@@ -461,7 +471,7 @@ function updateDiscovery(){
   card.hidden=!(matchesType&&matchesGroup&&matchesTerm);
   if(!card.hidden)caseCount++;
  });
- projectGrid.hidden=modelCount===0;casesSection.hidden=caseCount===0;
+ projectGrid.hidden=modelCount===0;document.getElementById('model-list-title').hidden=modelCount===0;casesSection.hidden=caseCount===0;
  discoveryEmpty.hidden=modelCount+caseCount>0;
  discoveryStatus.textContent='找到 '+modelCount+' 种商业模式、'+caseCount+' 个具体项目';
 }
