@@ -1,0 +1,135 @@
+{
+  "version": "P4.12A-V1",
+  "publication_state": "DESIGN_REVIEW_ONLY",
+  "audience": "正在寻找创业项目、创业方向和商业模式的中文用户",
+  "product_statement": "发现海外已有实际经营案例的商业模式，理解业务和盈利机制，判断是否值得进一步研究。",
+  "content_policy": {
+    "general_knowledge": "可用中文解释商业模式的一般机制，不得借此推断具体案例的经营事实。",
+    "observed_evidence": "来自来源记录的经营指标必须按来源性质标记，只可展示已经通过安全白名单的汇总数据。",
+    "editorial_interpretation": "只有明确说明分析依据并通过编辑审核时才能公开；不把主观适配度包装成客观事实。",
+    "unknown": "缺少可靠资料时留白或标注尚无法核实；不能套模板补造成本、获客、客户数量、团队规模和收益。",
+    "source_protection": "数据供应商、原始标题、项目编号、采集方式、源网址、原始运营记录不得进入公开 HTML、JSON 或 JavaScript。",
+    "project_identity_rule": "商业模式分类不等于一条可核实的真实公司案例。不得把匿名聚合记录命名成具体企业。"
+  },
+  "navigation": [
+    "发现项目",
+    "商业模式",
+    "关于见势"
+  ],
+  "home": {
+    "headline": "世界另一端，有人已经把想法做成了生意。",
+    "supporting": "了解这些生意提供什么、如何获得收入，以及值得进一步查证的信息。",
+    "primary_action": "探索项目"
+  },
+  "design": {
+    "inspiration": "用户提供的 MotionSites 摄影档案交互提示词；仅借鉴视觉层次与动效语言。",
+    "palette": {
+      "background": "#08090a",
+      "surface": "#101315",
+      "ink": "#f5f2eb",
+      "muted": "#aaa9a4",
+      "line": "rgba(241,239,229,.16)"
+    },
+    "typography": {
+      "display": "宋体/衬线中文标题",
+      "body": "系统无衬线中文正文"
+    },
+    "interaction": [
+      "桌面端轻量空间环形导览",
+      "项目卡片悬停与过渡",
+      "可操作分类筛选",
+      "页面内详情切换"
+    ],
+    "excluded": [
+      "野生动物照片与原素材",
+      "强制播放的影片",
+      "全站滚动锁定",
+      "必须操作的三维摄影球体",
+      "自定义鼠标导致的基础可用性下降",
+      "无法跳过的入场动画"
+    ],
+    "accessibility": [
+      "不依赖动画才能操作",
+      "prefers-reduced-motion 降级",
+      "手机端直接查看列表",
+      "键盘可访问的筛选和详情",
+      "可见的焦点样式"
+    ]
+  },
+  "detail_sections": [
+    "这个项目在做什么",
+    "收入从哪里来",
+    "业务通常如何运作",
+    "海外有哪些参考",
+    "尚需核实哪些关键问题",
+    "继续了解相关商业模式"
+  ],
+  "business_models": [
+    {
+      "slug": "vertical-industry-saas",
+      "id": "saas",
+      "group": "digital",
+      "title": "行业软件订阅",
+      "summary": "为具体业务问题提供长期使用的软件服务。",
+      "revenue_model": "按周期订阅、用量或服务合同收费。",
+      "main_offering": "软件工具与后续服务",
+      "evidence_status": "CATEGORY_OBSERVED",
+      "depth": "OVERVIEW"
+    },
+    {
+      "slug": "digital-product-business",
+      "id": "digital",
+      "group": "digital",
+      "title": "数字产品",
+      "summary": "将模板、素材、工具或知识成果做成数字化交付的商品。",
+      "revenue_model": "单次购买、授权或付费升级。",
+      "main_offering": "可重复交付的数字商品",
+      "evidence_status": "CATEGORY_OBSERVED",
+      "depth": "FULL_SAMPLE"
+    },
+    {
+      "slug": "affiliate-content-site",
+      "id": "content",
+      "group": "content",
+      "title": "内容与联盟营销",
+      "summary": "通过内容帮助用户完成了解和选择，再以广告或佣金获得收入。",
+      "revenue_model": "广告收益、推荐佣金或相关商品销售。",
+      "main_offering": "内容与购买决策信息",
+      "evidence_status": "CATEGORY_OBSERVED",
+      "depth": "OVERVIEW"
+    },
+    {
+      "slug": "amazon-kdp-publishing",
+      "id": "kdp",
+      "group": "content",
+      "title": "亚马逊数字出版",
+      "summary": "出版电子书及纸质图书，利用出版平台向读者销售。",
+      "revenue_model": "图书销售后按平台规则结算的收入。",
+      "main_offering": "电子或纸质出版物",
+      "evidence_status": "CATEGORY_OBSERVED",
+      "depth": "FULL_SAMPLE"
+    },
+    {
+      "slug": "amazon-fba-niche-brand",
+      "id": "fba",
+      "group": "commerce",
+      "title": "跨境电商品牌",
+      "summary": "围绕具体商品组织采购、展示、库存及配送。",
+      "revenue_model": "商品销售收入，需另行核算成本。",
+      "main_offering": "实物消费产品",
+      "evidence_status": "CATEGORY_OBSERVED",
+      "depth": "OVERVIEW"
+    },
+    {
+      "slug": "agency-business",
+      "id": "agency",
+      "group": "service",
+      "title": "专业服务",
+      "summary": "利用专业能力为客户解决明确问题。",
+      "revenue_model": "项目费用、服务合同或周期收费。",
+      "main_offering": "专业能力与服务交付",
+      "evidence_status": "CATEGORY_OBSERVED",
+      "depth": "OVERVIEW"
+    }
+  ]
+}
