@@ -379,9 +379,9 @@ body{font-weight:400;line-height:1.72}.top .mark{font-weight:500}
 <div class="find">
 <input class="find__search" id="searchInput" type="search" aria-label="搜索项目或商业模式" placeholder="搜索模板、图书、软件、商品或服务…" autocomplete="off">
 <div class="find__filters" role="group" aria-label="按内容类型筛选">
-<button type="button" data-kind="all" aria-pressed="true">全部</button>
-<button type="button" data-kind="case" aria-pressed="false">具体项目</button>
-<button type="button" data-kind="model" aria-pressed="false">商业模式</button>
+<button id="kindAll" type="button" data-kind="all" aria-pressed="true">全部</button>
+<button id="kindCase" type="button" data-kind="case" aria-pressed="false">具体项目</button>
+<button id="kindModel" type="button" data-kind="model" aria-pressed="false">商业模式</button>
 </div>
 </div>
 <div class="facet-filters" id="facetFilters" role="group" aria-label="具体项目多维筛选">
@@ -792,6 +792,11 @@ if(facetControls.some(x=>x.value)){kind='case';document.querySelectorAll('#archi
 filterTiles();
 }));
 $('facetReset').addEventListener('click',()=>{facetControls.forEach(sel=>sel.value='');filterTiles()});
+$('archive').querySelector('.archive-jump').addEventListener('click',()=>{
+kind='case';search.value='';facetControls.forEach(sel=>sel.value='');
+document.querySelectorAll('.find__filters [data-kind]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.kind==='case')));
+filterTiles();
+});
 search.addEventListener('input',filterTiles);
 document.querySelectorAll('.find__filters [data-kind]').forEach(button=>button.addEventListener('click',()=>{
 kind=button.dataset.kind;
