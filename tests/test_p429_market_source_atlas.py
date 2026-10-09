@@ -75,7 +75,8 @@ class MarketSourceAtlasTest(unittest.TestCase):
         self.assertIn("原作者官方文章",html)
         self.assertEqual(html.count('class="source"'),4)
         self.assertIn("Helploom",html)
-        self.assertIn("noindex", "noindex")  # Unapproved listings are not routed to our catalog.
+        self.assertNotIn('href="/projects/helploom/"',html)
+        self.assertNotIn("已经验证利润",html)
         for forbidden in ("app.acquire.com/public/","flippa.com/buy/","listing_number",
                           "Empire Flippers","source_ref_ids"):
             self.assertNotIn(forbidden,html)
