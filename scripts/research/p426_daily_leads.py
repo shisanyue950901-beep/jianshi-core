@@ -101,14 +101,18 @@ def run(day: date, maximum: int, online: bool) -> dict:
         raise ValueError("Bounded to at most 6 existing backlog companies")
     targets = research_targets(day, maximum)
     rows = []
+    attempted = 0
+    successful = 0
     for candidate in targets:
         # This is a lead query, NOT a verified company claim.
         query = candidate["name"] + " revenue"
         record = {**candidate, "query": query, "status": "UNVERIFIED_DISCOVERY_LEAD",
                   "eligible_for_publication": False, "stories": [], "error": None}
         if online:
+            attempted += 1
             try:
                 record["stories"] = lookup(query)
+                successful += 1  # HTTP success, NOT evidence or any result count.
             except Exception as exc:
                 record["error"] = type(exc).__name__
         else:
@@ -118,11 +122,14 @@ def run(day: date, maximum: int, online: bool) -> dict:
     # No direct or indirect automated extraction of restricted marketplaces.
     discovery_query = DISCOVERY_TOPICS[day.toordinal() % len(DISCOVERY_TOPICS)]
     fresh = []
+    discovery_error = None
     if online:
+        attempted += 1
         try:
             fresh = lookup(discovery_query)
-        except Exception:
-            pass
+            successful += 1
+        except Exception as exc:
+            discovery_error = type(exc).__name__
     return {
         "contract": "P4.26_PRIVATE_RESEARCH_LEADS_V1",
         "run_date_utc": day.isoformat(),
@@ -131,6 +138,13 @@ def run(day: date, maximum: int, online: bool) -> dict:
         "source_scope": "PUBLIC_SEARCH_INDEX_ONLY",
         "candidate_count": len(targets),
         "network_requests_max": MAX_COMPANIES + 1,
+        "network_requests_attempted": attempted,
+        "network_requests_successful": successful,
+        "network_requests_failed": attempted - successful,
+        "scan_health": ("NO_NETWORK_REQUESTS" if not online else
+                        "ALL_REQUESTS_FAILED" if successful == 0 else
+                        "PARTIAL_HTTP_SUCCESS" if successful != attempted else "HTTP_REQUESTS_SUCCEEDED"),
+        "discovery_error": discovery_error,
         "response_bytes_max": MAX_RESPONSE,
         "timeout_seconds_each": TIMEOUT_SECONDS,
         "candidates": rows,
@@ -159,7 +173,8 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"mode": report["mode"], "candidate_count": report["candidate_count"],
-                      "status": "PRIVATE_RESEARCH_ONLY", "published": 0}, ensure_ascii=False))
+                      "status": "PRIVATE_RESEARCH_ONLY", "scan_health": report["scan_health"],
+                      "successful_http": report["network_requests_successful"], "published": 0}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
