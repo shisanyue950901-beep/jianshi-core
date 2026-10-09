@@ -143,6 +143,16 @@ jobs:
               echo "P434_RSS_ACCESS_FAILED_NO_RETRY" > "$RUNNER_TEMP/p434_rss_health.txt"
             fi
 
+            # P4.37: two fixed public GitHub REST API calls only. Verify exact
+            # public repository IDs, owner and official homepage; not revenue.
+            # Failure is recorded independently; never promote to L3/L4.
+            if python scripts/research/p437_official_github_repo_probe.py --online --output "$RUNNER_TEMP/p437_github_metrics.json"; then
+              echo "P437_GITHUB_COLLECTOR_EXECUTED" > "$RUNNER_TEMP/p437_github_health.txt"
+            else
+              echo "P437_GITHUB_COLLECTOR_SCRIPT_FAILED" > "$RUNNER_TEMP/p437_github_health.txt"
+              echo "::warning title=JianShi GitHub Source Error::Official GitHub source failed; core HN/RSS report remains independent."
+            fi
+
             # No new external requests from cleaning/deduplication.
             python scripts/research/p433_private_evidence_etl.py --hn "$RUNNER_TEMP/p426_research_leads.json" "${rss_args[@]}" --output "$RUNNER_TEMP/p433_clean_review.json"
 
@@ -217,6 +227,8 @@ jobs:
             ${{ runner.temp }}/p434_restore_health.txt
             ${{ runner.temp }}/p435_scan_health.json
             ${{ runner.temp }}/p436_unattended_verdict.json
+            ${{ runner.temp }}/p437_github_metrics.json
+            ${{ runner.temp }}/p437_github_health.txt
           if-no-files-found: ignore
           retention-days: 2
 
