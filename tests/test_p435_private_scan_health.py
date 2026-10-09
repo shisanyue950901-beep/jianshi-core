@@ -107,8 +107,8 @@ class PrivateHealthTests(unittest.TestCase):
             files={name:folder/name for name in ("hn.json","delta.json","rss.txt","prior.txt","health.json","summary.txt")}
             files["hn.json"].write_text(json.dumps(scan),encoding="utf-8")
             files["delta.json"].write_text(json.dumps(delta),encoding="utf-8")
-            files["rss.txt"].write_text(rss+"\\n",encoding="utf-8")
-            files["prior.txt"].write_text(prior+"\\n",encoding="utf-8")
+            files["rss.txt"].write_text(rss+"\n",encoding="utf-8")
+            files["prior.txt"].write_text(prior+"\n",encoding="utf-8")
             script=str(ROOT/"scripts/research/p435_private_scan_health.py")
             cmd=[sys.executable,script,
                  "--hn",str(files["hn.json"]),"--rss-health",str(files["rss.txt"]),
