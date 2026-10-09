@@ -62,6 +62,21 @@ class TestP426Digests(unittest.TestCase):
             self.assertNotIn("Empire Flippers",page)
         self.assertFalse((ROOT/"web/dist/projects/easlo/index.html").exists())
 
+    def test_main_ranking_shows_historic_proof_without_financial_inference(self):
+        source=(ROOT/"web/prototypes/p412e/index.html").read_text(encoding="utf-8")
+        from p425_public_admission import public_home
+        html=public_home(source,list(self.cases.values()))
+        self.assertIn("const PUBLIC_EVIDENCE_DIGESTS=",html)
+        self.assertIn("rank-proof",html)
+        self.assertIn("8.366 亿美元",html)
+        self.assertIn("10 万美元 MRR",html)
+        self.assertIn("7,000 多位",html)
+        self.assertIn("未经独立财务审计",html)
+        self.assertIn("经营依据（",html)
+        self.assertNotIn("Easlo｜",html)
+        self.assertEqual(html.count("data:image/webp;base64,"),8)
+        self.assertLess(len(html.encode("utf-8"))+124,260000)
+
     def test_daily_scan_is_bounded_does_not_touch_public_ledger(self):
         before=(ROOT/"config/p424_project_research_evidence.json").read_text(encoding="utf-8")
         report=scanner.run(date(2026,10,9),6,False)
