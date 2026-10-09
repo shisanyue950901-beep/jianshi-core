@@ -97,7 +97,7 @@ class SecPrimaryProbeTest(unittest.TestCase):
     def test_wrong_entity_and_wrong_cik_never_cross_attribute(self):
         sub, facts=fixtures()
         sub["name"]="Totally Different Business"
-        with self.assertRaisesRegex(ValueError,"issuer name"):
+        with self.assertRaisesRegex(ValueError,"[Ii]ssuer name"):
             sec.triage("nerdwallet",sub,facts,{})
         sub, facts=fixtures()
         facts["cik"]=1
