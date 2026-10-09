@@ -169,15 +169,47 @@ def project_page(case: dict) -> str:
     more = ""
     if case.get("additionalEvidenceUrl"):
         more = f'<a href="{txt(safe_url(case["additionalEvidenceUrl"]))}" target="_blank" rel="noopener noreferrer">官方第三方交叉依据 ↗</a>'
+    audit = case.get("research_evidence")
+    if audit:
+        tier = case["evidence_level"]
+        published = audit.get("published_on") or audit["period"]
+        source = txt(safe_url(audit["source_url"]))
+        audited_section = (
+            '<section class="section"><h2>新增项目级经营依据</h2>'
+            f'<p><b>证据等级：</b>L{tier} · {txt(LABELS[tier])}。'
+            f'<b>来源时点：</b>{txt(published)}（不代表当期实时数据）</p>'
+            f'<p>{txt(audit["claim"])}</p>'
+            f'<p><a href="{source}" target="_blank" rel="noopener noreferrer">查看可归属的原始经营证据 ↗</a></p>'
+            f'<p><b>下一步主动核查：</b>{txt(audit["next_research"])}</p></section>'
+        )
+    else:
+        audited_section = (
+            '<section class="section"><h2>当前补证进度</h2><p>'
+            '已整理项目官网及公开产品／收费说明，尚未取得可明确归属于该公司的'
+            '监管申报、创始人经营披露或独立平台经营旁证。继续主动核实，'
+            '暂不推断客户量和利润。</p></section>'
+        )
+    if audit and audit["tier"] == "regulatory_filing":
+        finance_tile='<div class="status"><b>历史公司级财务：有监管披露</b><small>2025 年 SEC 10-K 合并报告；不能证明当前季度和各产品利润</small></div>'
+        findings_intro="存在可归属的历史监管申报财务，但不代表最新经营表现、单一产品利润或获客成本。"
+        finance_boundary="可核实 2025 年公司合并财报的历史财务；当前业绩、业务线及可复制性仍需研究。"
+    elif audit and audit["tier"] == "founder_historical":
+        finance_tile='<div class="status pending"><b>历史收入：创始人／企业公开自述</b><small>历史披露未经独立审计，不代表本期收入</small></div>'
+        findings_intro="找到可归属的创始人或企业历史经营自述，但尚未独立财务审计，不能当成当前净利润。"
+        finance_boundary="有历史公开收入自述，但未独立审计，不能计算当前净利润或投资回报。"
+    else:
+        finance_tile='<div class="status pending"><b>利润／经营成果：待独立核实</b><small>没有能够独立确认当前净利润与成本的记录</small></div>'
+        findings_intro="项目公开展示产品／服务及收费说明，但交易、净利与获客表现仍缺独立核验。"
+        finance_boundary="仍未取得该企业自身可独立核实的财务经营数据。"
     body = f"""<span class="kicker">PROJECT EVIDENCE / 项目证据档案</span>
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
 <p><b>编辑归类：</b>{txt(MODEL_LABELS[case["model"]])}　<b>资料记录：</b>{txt(case["verifiedOn"])}（非实时经营审计）</p>
-<div class="notice"><b>判定结论：</b>项目官方页面公开展示了产品／服务及收费说明；目前没有足够独立证据验证实际成交、客户规模、净利润或可复制性。该结论仅针对本项目的第一方资料，不使用行业匿名挂牌推断它的收入。</div>
+<div class="notice"><b>证据阶段：</b>{txt(findings_intro)} 即使行业方向达标，也不能算作某家企业的经营证明。</div>
 <div class="statusgrid" aria-label="项目商业验证状态">
 <div class="status"><b>产品／服务：有官方依据</b><small>可进入对应官网或产品页核对公开供应</small></div>
 <div class="status"><b>收费机制：有公开说明</b><small>标价或收费方案不代表已成交、已收到款项</small></div>
 <div class="status pending"><b>真实交易／客户：待独立核实</b><small>没有可证明实际销量、续费率或成交规模的项目级证据</small></div>
-<div class="status pending"><b>利润／经营成果：待独立核实</b><small>没有能够独立确认当前净利润与成本的记录</small></div>
+{finance_tile}
 </div>
 <section class="section"><h2>01｜这个项目卖什么</h2><p>{txt(case["offer"])}</p>
 <h3>谁可能购买？</h3><p>{txt(case["buyer"])}</p>
@@ -187,13 +219,14 @@ def project_page(case: dict) -> str:
 <a href="{txt(safe_url(case["sourceUrl"]))}" target="_blank" rel="noopener noreferrer">打开产品／收费核对依据 ↗</a>{more}</div>
 {f'<p>{txt(case["additionalEvidenceNote"])}</p>' if more else ''}
 <p>依据类别：项目自身官网/公开说明；第三方平台资料如有则单独标注。证据页面只支持它明确展示的事实，不证明营业额。</p></section>
+{audited_section}
 <section class="section"><h2>03｜经营环节与可能成本</h2>
 <h3>需要做什么</h3><p>{txt(case["process"])}</p>
 <h3>可能发生哪些成本</h3><p>{txt(case["cost"])}</p>
 <p>以上属于编辑性经营拆解，不代表已获得该企业内部成本表。</p></section>
 <section class="section"><h2>04｜还不能得出哪些结论？</h2>{paragraphs(case["unknowns"])}
 <p><b>独立客户需求：</b>尚无该项目可计入的需求实证；不能将行业级技术或商业证据视为这家企业的客户证据。</p>
-<p><b>项目自身销售／利润：</b>未经核实，不提供数字和赚钱排序。</p></section>
+<p><b>项目自身销售／利润：</b>{txt(finance_boundary)} 本站的排序仅代表资料层级，不是赚钱排名。</p></section>
 <section class="section"><h2>05｜下一步研究</h2><p>{txt(case.get("learning") or "进一步独立核查真实购买需求、履约成本与客户留存。")}</p>
 <p><a href="/validation/">了解同类行业方向的研究边界 →</a> · <a href="/projects/">返回 20 个具名项目档案 →</a></p></section>"""
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
