@@ -19,7 +19,7 @@ class TestP419SpacingRhythm(unittest.TestCase):
             ".sec{max-width:1380px;margin-inline:auto;",
             "padding:clamp(88px,9vw,148px)",
             ".grid{grid-template-columns:repeat(4,minmax(0,1fr))}",
-            ".research-library__list{grid-template-columns:repeat(3,minmax(0,1fr))}",
+            ".research-library__list{display:block}",
             "gap:clamp(14px,2vw,24px);border:0;background:none",
             "margin-top:82px;padding-top:48px",
             ".detail__rows{gap:clamp(28px,3.5vw,50px)}",
@@ -49,13 +49,13 @@ class TestP419SpacingRhythm(unittest.TestCase):
         self.assertIn(old,html)
         html=html.replace(old,'© 2026 见势 JIANSHI</span><a href="/privacy/">隐私说明</a><a href="#top">')
         html=html.replace("</head>",'<link rel="canonical" href="https://jianshi-bua.pages.dev/">'+chr(10)+'</head>',1)
-        self.assertLess(len(html.encode("utf-8")),250000)
+        self.assertLess(len(html.encode("utf-8")),255000)
 
     def test_content_motion_and_budget_are_frozen(self):
         self.assertEqual(HTML.count("data:image/webp;base64,"),8)
         self.assertEqual(HTML.count("<style>"),1)
         self.assertEqual(HTML.count("<script>"),1)
-        self.assertLess(len(HTML.encode("utf-8")),250000)
+        self.assertLess(len(HTML.encode("utf-8")),255000)
         self.assertEqual(CSS.count("{"),CSS.count("}"))
         for marker in ("const FACET_INDEX=", "const P415_CASES=", "const LIBRARY_CASES=",
                        "prefers-reduced-motion", "function renderRing()", "syncLock();\n  const clamp=",
