@@ -64,7 +64,7 @@ def public_home(source: str, cases: list[dict]) -> str:
         raise RuntimeError("Inconsistent public home admission decision")
     # Keep the existing CSS, light/dark theme, 8-WebP gallery and 3D motion,
     # but never ship the 17 non-admitted named case records in its JS payload.
-    cover_rx = r"(const ITEMS=)(\[.*?\])(;ITEMS\.forEach)"
+    cover_rx = r"(const ITEMS=)(\[.*?\])(;\s*ITEMS\.forEach)"
     cover = re.search(cover_rx, source, re.S)
     if not cover:
         raise RuntimeError("Missing exact featured-cover data")
@@ -120,7 +120,7 @@ def public_home(source: str, cases: list[dict]) -> str:
             "正式商业案例须有可归属经营披露。监管财报与创始人历史自述分别注明，不表示当前收益，不以商品售价代替成交。",
         "最近核验榜。": "有商业证据的项目榜。",
         "JIANSHI RESEARCH / 研究榜": "JIANSHI RESEARCH / 严格收录",
-        "资料来源：项目官方网页": "资料依据：项目官方网页",
+        "信息依据：官方公开页面": "信息依据：项目官方公开页面",
         "这是编辑核验更新榜，不代表项目热度。": "正式案例须有经营披露，非赚钱排名。",
         "本期核验 ": "本期公开经营证据项目 ",
         "不是项目热度或收益排名": "不是利润排行",
