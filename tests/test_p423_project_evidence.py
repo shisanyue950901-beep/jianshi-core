@@ -37,6 +37,10 @@ class TestP423NamedEvidence(unittest.TestCase):
                 else:
                     self.assertIn(marker,s,str(p))
             self.assertIn('rel="noopener noreferrer"',s)
+            self.assertIn('data-theme="light"',s)
+            self.assertIn('html[data-theme=dark]',s)
+            self.assertIn('id="themeToggle"',s)
+            self.assertIn("localStorage.setItem('jianshi-theme',next)",s)
             self.assertNotIn("Empire Flippers",s)
             self.assertNotIn("listing_number",s)
             self.assertNotIn("source_url",s)
