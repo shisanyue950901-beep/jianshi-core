@@ -20,7 +20,7 @@ class TestP412ProductionCandidate(unittest.TestCase):
 
     def test_release_home_is_public_product_not_engineering_demo(self):
         content=(DIST/"index.html").read_text(encoding="utf-8")
-        for expected in ["发现海外项目","Easlo","Louise Lennox","Playfair+Display",
+        for expected in ["发现海外项目","Carrd","NerdWallet","Plausible","Playfair+Display",
                          "family=Inter","data:image/webp;base64,","3D","/#item-"]:
             if expected=="3D":
                 self.assertIn('id="ring"',content)
@@ -56,10 +56,13 @@ class TestP412ProductionCandidate(unittest.TestCase):
     def test_public_build_has_no_repository_internal_directories(self):
         for name in [".github","config","db","docs","scripts","src","supabase","tests","fixtures"]:
             self.assertFalse((DIST/name).exists(),name)
-        self.assertEqual((DIST/"sitemap.xml").read_text().count("<url>"),24)
+        self.assertEqual((DIST/"sitemap.xml").read_text().count("<url>"),7)
         self.assertTrue((DIST/"projects"/"index.html").is_file())
         self.assertTrue((DIST/"projects"/"carrd"/"index.html").is_file())
-        self.assertTrue((DIST/"projects"/"easlo"/"index.html").is_file())
+        self.assertFalse((DIST/"projects"/"easlo"/"index.html").exists())
+        self.assertFalse((DIST/"projects"/"tally"/"index.html").exists())
+        self.assertTrue((DIST/"projects"/"nerdwallet"/"index.html").is_file())
+        self.assertTrue((DIST/"projects"/"plausible"/"index.html").is_file())
         self.assertTrue((DIST/"validation"/"index.html").is_file())
         self.assertIn("商业证据研究",(DIST/"validation"/"index.html").read_text(encoding="utf-8"))
         self.assertFalse((DIST/"search-index.json").exists())
