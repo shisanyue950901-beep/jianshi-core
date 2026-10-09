@@ -34,13 +34,13 @@ class NoRedirect(HTTPRedirectHandler):
 
 def load_policy() -> dict:
     registry = json.loads(POLICY.read_text(encoding="utf-8"))
-    if registry.get("contract") != "P432_PRIVATE_SOURCE_ACCESS_V1":
+    if registry.get("contract") != "P437_PRIVATE_SOURCE_ACCESS_V2":
         raise ValueError("Unknown source-rights contract")
     providers = registry.get("sources")
-    if not isinstance(providers, list) or len(providers) != 9:
+    if not isinstance(providers, list) or len(providers) != 10:
         raise ValueError("Unexpected provider matrix")
     by_id = {p["id"]: p for p in providers}
-    if len(by_id) != 9:
+    if len(by_id) != 10:
         raise ValueError("Duplicate source provider")
     if (by_id["fathom-rss"].get("source_url") != URL
             or by_id["fathom-rss"].get("automated_fetch") != "DAILY_EXISTING_SCAN_SLOT_ONCE"
