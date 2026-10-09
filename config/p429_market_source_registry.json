@@ -99,9 +99,9 @@
       "provider": "acquire",
       "type": "ATTRIBUTABLE_FOUNDER_EDITORIAL_CASE",
       "date": "2026-03-24",
-      "title": "Acquire.com｜单人创办 Helploom 并出售的访谈",
+      "title": "Acquire.com｜一人软件产品的经营与出售访谈",
       "url": "https://blog.acquire.com/bootstrapped-profitable-and-acquired-in-four-days/",
-      "summary": "Acquire 的公开创业者访谈介绍 Preet Mishra 从个人开发客服软件到出售公司的经历；属媒体访谈，不等于已审计营收。",
+      "summary": "官方创业者访谈讨论独立开发、寻找客户、经营客服软件以及出售经历；作为原始出处线索，不等于财务审计或可以复制的收入。",
       "takeaway": "单人项目需要寻找窄客户需求，但随着产品扩张，客户支持、集成和交付可能超过个人能力。",
       "publish_as_project": false
     },
@@ -110,9 +110,9 @@
       "provider": "acquire",
       "type": "ATTRIBUTABLE_FOUNDER_EDITORIAL_CASE",
       "date": "2025-04-29",
-      "title": "Acquire.com｜Johann 的独立创业退出案例",
+      "title": "Acquire.com｜无外部融资的独立创业退出访谈",
       "url": "https://blog.acquire.com/how-to-sell-a-bootstrapped-saas-startup-without-vc/",
-      "summary": "公开创始人采访描述无外部融资创办并出售项目的经历，不能直接推断新创业者有同样利润。",
+      "summary": "官方创始人采访介绍精简运营与创业退出过程，只作为商业模式研究参考，不能证明新创业者能获得相同收益。",
       "takeaway": "少人手、低前置投资的商业模式值得核验，但须查客户付费和实际交付成本。",
       "publish_as_project": false
     },
