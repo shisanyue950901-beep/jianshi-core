@@ -1,0 +1,131 @@
+{
+  "version": "P429_SOURCE_RIGHTS_V1",
+  "reviewed_on": "2026-10-09",
+  "objective": "发现一人小资金从零启动且有可归属经营证据的商业案例; 只收录审核通过的公司",
+  "providers": [
+    {
+      "id": "acquire",
+      "name": "Acquire.com",
+      "url": "https://acquire.com/",
+      "category": "商业并购市场",
+      "listing_access": "WRITTEN_PERMISSION_REQUIRED",
+      "automatic_listing_collection": false,
+      "automatic_listing_republication": false,
+      "report_access": "CURATED_OFFICIAL_EDITORIAL_LINKS",
+      "analysis_use": "匿名行业报告用于市场背景;具名访谈用于进一步单独身份核实",
+      "legal_source": "https://acquire.com/buyerseller/",
+      "note": "禁止未经书面许可抓取挂牌、资料页和广告信息，也禁止公开转载挂牌数据；尚未获得许可。"
+    },
+    {
+      "id": "flippa",
+      "name": "Flippa",
+      "url": "https://flippa.com/",
+      "category": "网站与SaaS交易市场",
+      "listing_access": "WRITTEN_PERMISSION_REQUIRED",
+      "automatic_listing_collection": false,
+      "automatic_listing_republication": false,
+      "report_access": "CURATED_OFFICIAL_EDITORIAL_LINKS",
+      "analysis_use": "公开的行业研究仅提供汇总背景，不作为项目财务核验",
+      "legal_source": "https://flippa.com/terms-of-service/",
+      "note": "禁止未经许可提取或重新利用大量挂牌信息与数据汇编；尚未获得许可。"
+    },
+    {
+      "id": "microns",
+      "name": "Microns.io",
+      "url": "https://www.microns.io/",
+      "category": "小型创业项目交易市场",
+      "listing_access": "TERMS_AND_AUTHORIZATION_PENDING",
+      "automatic_listing_collection": false,
+      "automatic_listing_republication": false,
+      "report_access": "DIRECTORY_LINK_ONLY",
+      "analysis_use": "适合发现微型SaaS类别，自动采集前须核实许可及可用接口",
+      "legal_source": "https://www.microns.io/",
+      "note": "尚未核实足够明确的自动使用权，不运行爬虫、不转载挂牌收入。"
+    },
+    {
+      "id": "indiehackers",
+      "name": "Indie Hackers",
+      "url": "https://www.indiehackers.com/series/founder-reports",
+      "category": "创始人公开经营故事",
+      "listing_access": "NOT_APPLICABLE",
+      "automatic_listing_collection": false,
+      "automatic_listing_republication": false,
+      "report_access": "MANUAL_SOURCE_LINKS_ONLY",
+      "analysis_use": "具名创始人的原始文章可作为低置信收入自述线索,归属核实后才决定 L3",
+      "legal_source": "https://www.indiehackers.com/series/founder-reports",
+      "note": "第三方所谓 RSS 非官方 API，本轮不运行该 feed 自动采集。"
+    },
+    {
+      "id": "hackernews",
+      "name": "Hacker News Search",
+      "url": "https://hn.algolia.com/api/",
+      "category": "开放社区新闻发现",
+      "listing_access": "PUBLIC_SEARCH_API",
+      "automatic_listing_collection": true,
+      "automatic_listing_republication": false,
+      "report_access": "SEARCH_METADATA_ONLY",
+      "analysis_use": "公开搜索索引仅产出未核实线索，沿用7请求/日硬限制",
+      "legal_source": "https://hn.algolia.com/api",
+      "note": "自动检索只保存来源标题和讨论/原文链接，不验证任何企业利润，也不自动公开收录。"
+    },
+    {
+      "id": "sec",
+      "name": "SEC EDGAR",
+      "url": "https://www.sec.gov/edgar.shtml",
+      "category": "美国公司监管申报",
+      "listing_access": "PUBLIC_REGULATORY_DOCUMENTS",
+      "automatic_listing_collection": false,
+      "automatic_listing_republication": false,
+      "report_access": "ORIGINAL_FILING_REFERENCE_ONLY",
+      "analysis_use": "归属到合法企业主体后的报表是 L4 候选；自动申报读取尚未部署",
+      "legal_source": "https://www.sec.gov/edgar/developer",
+      "note": "未来接入需符合 SEC 数据访问频率和身份标识要求，现阶段只保留人工审核来源链接。"
+    }
+  ],
+  "editorial_reports": [
+    {
+      "id": "acquire-2025-multiples",
+      "provider": "acquire",
+      "type": "ANONYMIZED_AGGREGATE_REPORT",
+      "date": "2026-02-11",
+      "title": "Acquire.com｜2025 年 SaaS 成交倍数研究",
+      "url": "https://blog.acquire.com/acquire-com-biannual-acquisition-multiples-report-jan-2026/",
+      "summary": "平台基于2025年交易案例讨论利润倍数、盈利质量和买家关注点；报告本身不确认任一未具名挂牌公司的收入。",
+      "takeaway": "先看可持续净利润和客户留存，不能把挂牌要价当实际成交价。",
+      "publish_as_project": false
+    },
+    {
+      "id": "acquire-solo-helploom",
+      "provider": "acquire",
+      "type": "ATTRIBUTABLE_FOUNDER_EDITORIAL_CASE",
+      "date": "2026-03-24",
+      "title": "Acquire.com｜单人创办 Helploom 并出售的访谈",
+      "url": "https://blog.acquire.com/bootstrapped-profitable-and-acquired-in-four-days/",
+      "summary": "Acquire 的公开创业者访谈介绍 Preet Mishra 从个人开发客服软件到出售公司的经历；属媒体访谈，不等于已审计营收。",
+      "takeaway": "单人项目需要寻找窄客户需求，但随着产品扩张，客户支持、集成和交付可能超过个人能力。",
+      "publish_as_project": false
+    },
+    {
+      "id": "acquire-solo-exit",
+      "provider": "acquire",
+      "type": "ATTRIBUTABLE_FOUNDER_EDITORIAL_CASE",
+      "date": "2025-04-29",
+      "title": "Acquire.com｜Johann 的独立创业退出案例",
+      "url": "https://blog.acquire.com/how-to-sell-a-bootstrapped-saas-startup-without-vc/",
+      "summary": "公开创始人采访描述无外部融资创办并出售项目的经历，不能直接推断新创业者有同样利润。",
+      "takeaway": "少人手、低前置投资的商业模式值得核验，但须查客户付费和实际交付成本。",
+      "publish_as_project": false
+    },
+    {
+      "id": "flippa-2026-h1",
+      "provider": "flippa",
+      "type": "AGGREGATE_MARKET_RESEARCH",
+      "date": "2026-07-24",
+      "title": "Flippa｜2026 上半年数字业务并购报告",
+      "url": "https://flippa.com/blog/digital-ma-insights-h1-2026/",
+      "summary": "公开报告讨论数字业务交易和买方验证偏好，属于行业研究，不能直接当成某家企业的财务事实。",
+      "takeaway": "优先检查真实经常性收入、业务韧性和来源可追溯性，不把关注量视为成交。",
+      "publish_as_project": false
+    }
+  ]
+}
