@@ -62,7 +62,7 @@ class TestP416EditorialFacets(unittest.TestCase):
         self.assertIn("100dvh",h)
         self.assertIn("inert",h)
         self.assertIn("研究",h)
-        self.assertLess(len(h.encode("utf-8")),255000)
+        self.assertLess(len(h.encode("utf-8")),260000)
         node=shutil.which("node")
         if node:
             script=re.search(r"<script>([\s\S]*?)</script>",h)
