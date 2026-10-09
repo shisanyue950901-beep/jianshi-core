@@ -55,6 +55,7 @@
 <div class="menu__bar"><button class="menu-btn" id="menuClose">关闭</button></div>
 <nav aria-label="主要导航">
 <a href="/validation/">商业证据</a>
+<a href="/projects/">验证档案</a>
 <a href="#archive">发现项目</a>
 <a href="#models">商业模式</a>
 <a href="#compare">项目比较</a>
@@ -581,6 +582,7 @@ const link=document.createElement('a');link.textContent=title;
 link.href=href;link.target='_blank';link.rel='noopener noreferrer';
 link.className='research-official-link';links.appendChild(link);
 });
+const dossier=document.createElement('a');dossier.href='/projects/'+item.id+'/';dossier.textContent='查看本项目的证据与未核实事项 ↗';links.appendChild(dossier);
 ref.append(label,links);nodes.push(ref);
 }
 }
