@@ -18,8 +18,11 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "web/prototypes/p412e/index.html"
 P413 = ROOT / "config/p413_public_project_library.json"
 P415 = ROOT / "config/p415_public_case_growth.json"
+RESEARCH = ROOT / "config/p424_project_research_evidence.json"
 DEST = ROOT / "web/dist/projects"
 SITE = "https://jianshi-bua.pages.dev"
+LEVELS = {"regulatory_filing":4,"founder_historical":3,"platform_attribution":2,"first_party_offer":1}
+LABELS = {4:"监管历史财务披露",3:"创始人／企业历史自述",2:"第三方平台旁证",1:"官网产品与收费依据"}
 
 ORIGINAL_SOURCES = {
     "easlo": (
@@ -122,6 +125,29 @@ def parse_cases() -> list[dict]:
         for key in ["offer", "buyer", "revenue", "facts", "unknowns"]:
             if not x.get(key):
                 raise RuntimeError("Missing required first-party or unknown evidence")
+    evidence=json.loads(RESEARCH.read_text(encoding="utf-8"))
+    if evidence.get("version")!="P4.24_RESEARCH_EVIDENCE_V1":
+        raise RuntimeError("Unreviewed external evidence version")
+    ids=set()
+    for record in evidence["additional_evidence"]:
+        case_id=record.get("id")
+        if case_id in ids or case_id not in {c["id"] for c in cases}:
+            raise RuntimeError("Duplicate or unknown named-company evidence")
+        ids.add(case_id)
+        if record.get("tier") not in LEVELS or record["tier"]=="first_party_offer":
+            raise RuntimeError("Incorrect external attribution tier")
+        safe_url(record["source_url"])
+        for key in ("source_type","claim","period","financial_status","next_research"):
+            if not isinstance(record.get(key),str) or len(record[key])<7:
+                raise RuntimeError("Insufficient provenance for external finding")
+        if record.get("published_on") is not None:
+            import datetime
+            datetime.date.fromisoformat(record["published_on"])
+        match=next(x for x in cases if x["id"]==case_id)
+        match["research_evidence"]=record
+    for x in cases:
+        record=x.get("research_evidence")
+        x["evidence_level"]=LEVELS[record["tier"]] if record else 1
     return cases
 
 THEME_JS = """<script>(()=>{'use strict';const html=document.documentElement,button=document.getElementById('themeToggle');let current='light';try{if(localStorage.getItem('jianshi-theme')==='dark')current='dark'}catch(_){}function apply(next,persist){current=next;html.dataset.theme=next;button.textContent=next==='light'?'深色模式':'浅色模式';button.setAttribute('aria-pressed',String(next==='dark'));if(persist)try{localStorage.setItem('jianshi-theme',next)}catch(_){}}apply(current,false);button.addEventListener('click',()=>apply(current==='light'?'dark':'light',true));})();</script>"""
