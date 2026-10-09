@@ -1,5 +1,5 @@
 {
-  "contract": "P432_PRIVATE_SOURCE_ACCESS_V1",
+  "contract": "P437_PRIVATE_SOURCE_ACCESS_V2",
   "reviewed_on": "2026-10-09",
   "publication_allowed": false,
   "sources": [
@@ -89,6 +89,30 @@
       "access": "SCRAPING_PROHIBITED",
       "automated_fetch": "FORBIDDEN",
       "classification": "NOT_ADMISSIBLE"
+    },
+    {
+      "id": "github-official-repos",
+      "name": "GitHub REST API（公开官方仓库身份与维护元数据）",
+      "source_url": "https://api.github.com/",
+      "policy_url": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "access": "OFFICIAL_PUBLIC_REST_API",
+      "automated_fetch": "DAILY_EXISTING_SCAN_SLOT_TWO_REQUESTS",
+      "max_requests_per_run": 2,
+      "metadata_only": true,
+      "approved_pinned_repositories": [
+        {
+          "repo": "plausible/analytics",
+          "repo_id": 160427405,
+          "homepage": "https://plausible.io"
+        },
+        {
+          "repo": "plausible/docs",
+          "repo_id": 270703311,
+          "homepage": "https://plausible.io/docs"
+        }
+      ],
+      "classification": "TECHNICAL_PRODUCT_ACTIVITY_NOT_FINANCIAL_EVIDENCE",
+      "notes": "只采官方组织、固定仓库ID、更新日期和数量指标，不下载代码、不读取issues正文、不把stars当收入；公司法定主体仍需核实。"
     }
   ],
   "requirements": [
