@@ -48,7 +48,7 @@ class TestP419SpacingRhythm(unittest.TestCase):
         old='© 2026 见势 JIANSHI</span><a href="#top">'
         self.assertIn(old,html)
         html=html.replace(old,'© 2026 见势 JIANSHI</span><a href="/privacy/">隐私说明</a><a href="#top">')
-        html=html.replace("</head>",'<link rel="canonical" href="https://jianshi-bua.pages.dev/">\\n</head>',1)
+        html=html.replace("</head>",'<link rel="canonical" href="https://jianshi-bua.pages.dev/">'+chr(10)+'</head>',1)
         self.assertLess(len(html.encode("utf-8")),250000)
 
     def test_content_motion_and_budget_are_frozen(self):
