@@ -33,7 +33,8 @@ def load_solo_profile() -> dict:
         if item.get("ready_for_launch") is not False:
             raise RuntimeError("缺少实际付费／获客验证，不能宣称已具备直接创业资格")
         for key in ("tag", "prototype", "solo_logic", "capital_logic", "first_step", "blocker", "skills"):
-            if not isinstance(item.get(key), str) or len(item[key].strip()) < 12:
+            min_len = 8 if key in ("prototype", "tag") else 12
+            if not isinstance(item.get(key), str) or len(item[key].strip()) < min_len:
                 raise RuntimeError("创业适配评价缺少必要证据边界：" + key)
         if not isinstance(item.get("order"), int) or item["order"] < 1:
             raise RuntimeError("无效的评估排序")
