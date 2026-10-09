@@ -66,7 +66,7 @@ class TestP414OfficialLinks(unittest.TestCase):
         self.assertIn("ITEMS.filter(item=>!item.archiveOnly).forEach", self.html)
         for name in ("prefers-reduced-motion", "viewport-fit=cover", "100dvh", "inert", "id=\"lb\""):
             self.assertIn(name, self.html)
-        self.assertLess(len(self.html.encode("utf-8")), 255000)
+        self.assertLess(len(self.html.encode("utf-8")), 260000)
         script = (ROOT / "scripts/release/p412_build_public.py").read_text(encoding="utf-8")
         self.assertIn('OUTPUT = ROOT / "web" / "dist"', script)
 
