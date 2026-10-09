@@ -6,10 +6,12 @@ import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/research"))
 import p433_private_evidence_etl as etl
+import p426_daily_leads as scanner
 
 DAY = date(2026, 10, 9)
 
@@ -190,6 +192,29 @@ class PrivateETL(unittest.TestCase):
         ):
             with self.assertRaises(ValueError):
                 etl.private_path(path)
+
+    def test_bounded_http_receipts_detect_total_and_partial_failure(self):
+        with patch.object(scanner, "lookup", side_effect=[TimeoutError()] * 7) as mocked:
+            failed = scanner.run(DAY, 6, True)
+        self.assertEqual(mocked.call_count, 7)
+        self.assertEqual(failed["network_requests_attempted"], 7)
+        self.assertEqual(failed["network_requests_successful"], 0)
+        self.assertEqual(failed["network_requests_failed"], 7)
+        self.assertEqual(failed["scan_health"], "ALL_REQUESTS_FAILED")
+        cleaned = etl.clean_pipeline(failed, None, today=DAY)
+        self.assertFalse(cleaned["source_health"]["HN"]["successful_requests_confirmed"])
+        self.assertEqual(cleaned["source_health"]["HN"]["scan_health"], "ALL_REQUESTS_FAILED")
+        with patch.object(scanner, "lookup",
+                          side_effect=[[], [], [], TimeoutError(), [], [], []]):
+            partial = scanner.run(DAY, 6, True)
+        self.assertEqual(partial["network_requests_successful"], 6)
+        self.assertEqual(partial["network_requests_failed"], 1)
+        self.assertEqual(partial["scan_health"], "PARTIAL_HTTP_SUCCESS")
+        cleaned = etl.clean_pipeline(partial, None, today=DAY)
+        self.assertTrue(cleaned["source_health"]["HN"]["successful_requests_confirmed"])
+        forged = dict(partial, network_requests_successful=7)
+        with self.assertRaisesRegex(ValueError, "Contradictory"):
+            etl.clean_pipeline(forged, None, today=DAY)
 
     def test_existing_dedicated_daily_slot_not_expanded(self):
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
