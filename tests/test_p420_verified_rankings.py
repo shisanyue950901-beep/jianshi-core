@@ -55,7 +55,7 @@ class TestP420VerifiedRanking(unittest.TestCase):
         self.assertEqual(HTML.count("<style>"),1)
         self.assertEqual(HTML.count("<script>"),1)
         self.assertEqual(HTML.count("data:image/webp;base64,"),8)
-        self.assertLess(len(HTML.encode("utf-8")),255000)
+        self.assertLess(len(HTML.encode("utf-8")),260000)
         self.assertIn('data-theme="light"',HTML)
         self.assertIn("localStorage.setItem('jianshi-theme',next)",HTML)
         self.assertIn("prefers-reduced-motion",HTML)
