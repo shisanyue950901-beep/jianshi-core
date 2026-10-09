@@ -121,8 +121,13 @@ def extract_indicators(text: str, brand: str) -> list[dict]:
     signals = []
     for rx in (FINANCIAL_RE, PAID_RE):
         for match in rx.finditer(text):
-            # Guard against a page mentioning another company's revenue.
-            vicinity = text[max(0, match.start() - 220):min(len(text), match.end() + 100)]
+            # An earlier paragraph mentioning the brand does not attribute a
+            # later company's revenue to this brand. Match only one sentence.
+            boundaries = ".!?;。！？；\\n"
+            left = max([text.rfind(ch, 0, match.start()) for ch in boundaries] + [-1]) + 1
+            right_edges = [text.find(ch, match.end()) for ch in boundaries]
+            right = min([i for i in right_edges if i >= 0] + [len(text)])
+            vicinity = text[max(left, match.start()-220):min(right, match.end()+100)]
             if not re.search(r"(?i)(?<![a-z0-9])" + re.escape(brand) + r"(?![a-z0-9])", vicinity):
                 continue
             if rx is FINANCIAL_RE:
@@ -272,8 +277,7 @@ def main() -> None:
     if not args.leads and not args.snapshots:
         parser.error("Supply a private lead report and/or approved snapshot")
     target = args.output.resolve()
-    if (target == (ROOT / "config/p424_project_research_evidence.json").resolve()
-            or target.is_relative_to((ROOT / "web/dist").resolve())):
+    if target.is_relative_to(ROOT.resolve()):
         raise ValueError("Private evidence must never be written into public artifacts")
     report = build_report(
         leads=load_private_json(args.leads) if args.leads else None,
