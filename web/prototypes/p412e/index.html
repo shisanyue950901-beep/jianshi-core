@@ -30,6 +30,12 @@
 .compare__details summary{cursor:pointer;min-height:48px;padding:12px 0;color:var(--accent);font-size:14px;font-weight:600}
 .compare th,.compare td{font-size:15px;line-height:1.7;padding:22px 20px}.compare tbody th{font-weight:650;background:var(--panel);position:sticky;left:0;z-index:1}.compare thead th{font-size:20px;font-weight:600}.compare td{color:var(--ink)}.compare__money th,.compare__money td{background:color-mix(in srgb,var(--accent) 9%,var(--bg))}.compare__money td{font-weight:550}
 @media(max-width:760px){.compare__quick{grid-template-columns:1fr}.compare__quickcard{gap:9px}.compare th,.compare td{font-size:14px;padding:16px 12px}.compare tbody th{min-width:95px}}
+.hero__evidence{display:block;width:max-content;max-width:100%;pointer-events:auto;font-size:13px;font-weight:650;color:var(--accent);text-underline-offset:5px;margin-top:14px}
+.evidence-teaser{border-bottom:1px solid var(--line)}.evidence-teaser h3{font:500 clamp(33px,4.5vw,60px)/1.25 Georgia,"Songti SC",serif;letter-spacing:-.02em;margin:22px 0}
+.evidence-teaser>p{max-width:750px;font-size:16px;line-height:1.9;color:var(--dim)}.evidence-teaser strong{color:var(--ink)}
+.proof-action{display:inline-flex;align-items:center;justify-content:space-between;gap:25px;min-height:48px;padding:10px 19px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:650;font-size:14px}
+.evidence-teaser .proof-footnote{font-size:12px;margin-top:15px}
+@media(max-width:640px){.hero__evidence{font-size:11px;margin-top:7px}.evidence-teaser h3{font-size:36px}.evidence-teaser>p{font-size:14px}}
 </style>
 </head>
 <body class="locked">
@@ -47,6 +53,7 @@
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="网站导航" aria-hidden="true">
 <div class="menu__bar"><button class="menu-btn" id="menuClose">关闭</button></div>
 <nav aria-label="主要导航">
+<a href="/validation/">商业证据</a>
 <a href="#archive">发现项目</a>
 <a href="#models">商业模式</a>
 <a href="#compare">项目比较</a>
@@ -65,6 +72,7 @@
 <div class="hero__eyebrow">20 个具名项目 · 6 类商业模式</div>
 <h1>发现海外项目，<br>看懂一门生意。</h1>
 <p>从具体产品出发，了解他们提供什么、向谁收费、如何经营。<br>先理解生意，再判断是否继续研究。</p>
+<a class="hero__evidence" href="/validation/">先看真实商业证据与验证缺口 ↗</a>
 <a class="hero__cta" href="#archive">开始研究项目 <span aria-hidden="true">↘</span></a>
 <span class="hint" aria-hidden="true">左右拖动探索 · 点击封面查看</span>
 <div class="hero__aux">
@@ -75,6 +83,13 @@
 </div>
 </section>
 
+<section class="sec evidence-teaser" id="proof" aria-labelledby="proof-h">
+<h2 class="label" id="proof-h"><span>商业证据研究</span><span>TECH × BUSINESS</span></h2>
+<h3>一个方向很热，<br>不代表有生意。</h3>
+<p>见势已在研究六类商业方向：把公开技术供给与同类商业挂牌分开观察，显示哪些类别具备双重证据、哪些还缺商业或需求验证。<strong>这不是具名公司的盈利证明。</strong></p>
+<a href="/validation/" class="proof-action">查看六类方向的证据与缺口 <span aria-hidden="true">↗</span></a>
+<p class="proof-footnote">依据已授权汇总数据；缺乏独立审计和真实获客验证时，不能称为已证实盈利。</p>
+</section>
 <section class="sec" id="archive" aria-labelledby="archive-h">
 <h2 class="label" id="archive-h"><span>发现项目</span><span id="archiveCount">08 ENTRIES</span></h2>
 <h3 class="archive-lead">先看他们卖什么，<br>再看如何收费。</h3>
