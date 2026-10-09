@@ -62,6 +62,7 @@ def public_home(source: str, cases: list[dict]) -> str:
     approved = {case["id"] for case in cases}
     if approved != admitted_ids():
         raise RuntimeError("Inconsistent public home admission decision")
+    source_before = source
     # Keep the existing CSS, light/dark theme, 8-WebP gallery and 3D motion,
     # but never ship the 17 non-admitted named case records in its JS payload.
     cover_rx = r"(const ITEMS=)(\[.*?\])(;\s*ITEMS\.forEach)"
@@ -98,6 +99,13 @@ def public_home(source: str, cases: list[dict]) -> str:
     )
     # The old editorial research records remain in private repo config, not
     # in production public JS and not in the official leaderboard.
+    unapproved_titles = []
+    for key in ("EXTRA_CASES", "P415_CASES"):
+        original = re.search(rf"const {key}=(\[.*?\]);", source_before, re.S)
+        if original:
+            unapproved_titles += [x["title"] for x in json.loads(original.group(1)) if x["id"] not in approved]
+    if any(title in source for title in unapproved_titles):
+        raise RuntimeError("Unapproved named company persisted in public homepage")
     for key in ("EXTRA_CASES", "P415_CASES"):
         rx = rf"(const {key}=)(\[.*?\])(;)"
         match = re.search(rx, source, re.S)
@@ -131,9 +139,6 @@ def public_home(source: str, cases: list[dict]) -> str:
         source = source.replace(old, new)
     # Escape any unintended unapproved titles, names, references (not CSS
     # or generic educational model names).
-    raw_title_ids = {"easlo", "louise"}
-    for key in ("EXTRA_CASES", "P415_CASES"):
-        pass
     if any(name in source for name in ["Easlo｜", "Louise Lennox", "Tally｜", "Bellroy｜", "Gumroad｜"]):
         raise RuntimeError("Non-admitted project detail leaked into public HTML")
     return source
