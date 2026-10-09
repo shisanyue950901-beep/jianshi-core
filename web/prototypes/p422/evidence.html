@@ -94,7 +94,7 @@ const article=el('article','record'),top=el('div','rec-top'),title=el('h3','',x.
 const state=el('span','status'+(x.ready?'':' pending'),x.ready?'已达到证据门槛':'商业证据待补');
 top.append(title,state);const metrics=el('div','metrics');
 [['技术证据',x.tech],['商业证据',x.commercial],['需求证据',x.demand]].forEach(([label,count])=>{const m=el('div','metric');m.append(el('b','',count),el('span','',label));metrics.append(m)});
-const explanation=x.ready?'同类技术与商业挂牌证据均存在；但不能据此证明某家企业盈利。':'目前缺少同时支持的商业证据，不能列为商业验证通过。';
+const explanation=x.ready?'同类技术与商业挂牌证据均存在；但不能据此证明某家企业盈利。':x.commercial===0?'当前没有可计入的同类商业证据，不能列为商业验证通过。':'虽然存在部分证据，但当前仍未达到研究门槛，须继续核对来源权利与证据有效性。';
 article.append(top,metrics,el('p','why',explanation));list.append(article)
 });
 }
