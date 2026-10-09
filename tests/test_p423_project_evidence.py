@@ -63,7 +63,8 @@ class TestP423NamedEvidence(unittest.TestCase):
         self.assertLess(len(HTML.encode("utf-8"))+124,260000)
         release=BASE.read_text(encoding="utf-8")
         self.assertIn("from p423_build_project_proofs import build as build_project_proofs",release)
-        self.assertIn('OUTPUT / "projects"',release)
+        self.assertIn('project_result = build_project_proofs()',release)
+        self.assertIn('DEST = ROOT / "web/dist/projects"',SCRIPT.read_text(encoding="utf-8"))
         self.assertIn("project_result[\"cases\"] != 20",release)
         self.assertIn('OUTPUT = ROOT / "web" / "dist"',release)
 
