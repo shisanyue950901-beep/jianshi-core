@@ -11,6 +11,7 @@ import html
 import json
 import re
 from pathlib import Path
+from p423_build_project_proofs import build as build_project_proofs
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
@@ -97,6 +98,11 @@ def build_release() -> dict:
     proof = OUTPUT / "validation" / "index.html"
     proof.parent.mkdir(parents=True, exist_ok=True)
     proof.write_text(evidence, encoding="utf-8")
+    # Build 20 explicitly sourced *named* company dossiers; never infer
+    # any company's revenue from anonymous industry-level observations.
+    project_result = build_project_proofs()
+    if project_result["cases"] != 20 or project_result["public_pages"] != 21:
+        raise RuntimeError("Named dossier release contract failed")
 
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
@@ -131,7 +137,9 @@ def build_release() -> dict:
         f"<url><loc>{SITE}/</loc></url>"
         f"<url><loc>{SITE}/privacy/</loc></url>"
         f"<url><loc>{SITE}/validation/</loc></url>"
-        '</urlset>\n'
+        f"<url><loc>{SITE}/projects/</loc></url>"
+        + "".join(f"<url><loc>{SITE}/projects/{p.name}/</loc></url>" for p in sorted((OUTPUT/"projects").iterdir()) if p.is_dir())
+        +         '</urlset>\n'
     )
     (OUTPUT / "sitemap.xml").write_text(sitemap, encoding="utf-8")
     (OUTPUT / "robots.txt").write_text(
@@ -152,6 +160,7 @@ def build_release() -> dict:
         "output": "web/dist",
         "inline_covers": 8,
         "evidence_dashboard": "validation/index.html",
+        "named_project_dossiers": 20,
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
         "production_deployed": False,
