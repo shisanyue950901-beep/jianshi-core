@@ -62,7 +62,7 @@ h2{font-size:25px;line-height:1.4}h3{font-size:17px;margin:0 0 7px}
 .links{display:flex;flex-wrap:wrap;gap:12px}.links a{border:1px solid var(--line);background:var(--panel);padding:12px 16px;font-weight:600;font-size:13px}
 .directory{display:grid;gap:12px;margin:24px 0}.directory a{display:block;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:18px 20px;text-decoration:none}
 .directory a:hover,.directory a:focus-visible{border-color:var(--accent)}
-.directory a strong{font-size:19px;display:block}.directory a span{font-size:13px;color:var(--muted);display:block;margin-top:5px}
+.directory a strong{font-size:19px;display:block}.directory a small{color:var(--accent);font-weight:700;font-size:12px;display:block;margin-bottom:5px}.sort-controls{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 8px}.sort-controls button{padding:11px 15px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:13px}.sort-controls button[aria-pressed=true]{border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 11%,var(--bg));font-weight:700}.directory a span{font-size:13px;color:var(--muted);display:block;margin-top:5px}
 input[type=search]{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:14px;font:16px sans-serif;max-width:600px}
 footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
 @media(max-width:590px){.statusgrid{grid-template-columns:1fr}header nav{gap:8px}.lead{font-size:15px}.links{display:grid}}
@@ -232,27 +232,35 @@ def project_page(case: dict) -> str:
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
 
 def index_page(cases: list[dict]) -> str:
+    cases = sorted(cases,key=lambda x:(-x["evidence_level"],x["id"]))
     count = Counter(x["model"] for x in cases)
     tiles = []
-    for item in cases:
+    for rank, item in enumerate(cases, 1):
         classification = MODEL_LABELS[item["model"]]
-        snippet = f"{classification} · 记录于 {item['verifiedOn']} · 经营结果待独立核实"
-        tiles.append(f'<a href="/projects/{txt(item["id"])}/"><strong>{txt(item["title"])}</strong><span>{txt(snippet)}</span><span>{txt(item["desc"])}</span></a>')
+        level = item["evidence_level"]
+        snippet = f"{classification} · L{level} {LABELS[level]} · 编辑资料记录 {item['verifiedOn']}"
+        tiles.append(f'<a href="/projects/{txt(item["id"])}/" data-level="{level}" data-id="{txt(item["id"])}">'
+                     f'<small>#{rank:02d} · {txt(LABELS[level])}</small>'
+                     f'<strong>{txt(item["title"])}</strong><span>{txt(snippet)}</span>'
+                     f'<span>{txt(item["desc"])}</span></a>')
     counts = " · ".join(f"{MODEL_LABELS[k]} {v}" for k,v in sorted(count.items()))
     body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
-<h1>20 个项目，<br>逐项说明证据和缺口。</h1>
+<h1>20 个项目，<br>按真实证据分层排序。</h1>
 <p class="lead">先确认项目实际公开了什么，再区分“产品存在”“收费方案”“实际成交”“独立核实的利润”。我们不会把同一行业的挂牌利润填到某个具名公司名下。</p>
-<div class="notice"><b>当前核验边界：</b>20 项均有第一方公开产品或服务的资料入口；实际销量、净利润、客户数、获客成本与真实需求仍需要进一步核实。资料日期是编辑记录时间，不代表本日重新联网验证。</div>
-<p class="muted">分类：{txt(counts)}</p><label for="projectSearch">搜索项目名称或简介</label>
+<div class="notice"><b>排名解释：</b>默认为资料证据的可核查层级（L4 监管申报历史财务、L3 企业历史自述、L2 平台第三方旁证、L1 官网产品及收费）。同等级按项目 ID 确定性排序，绝不按销售额、利润或创业成功率排名。少数项目已找到历史经营披露，但大多数企业的当前销量与获客成本尚无独立证据。</div>
+<p class="muted">分类：{txt(counts)}</p><div class="sort-controls" role="group" aria-label="项目证据排序"><button type="button" data-sort="depth" aria-pressed="true">证据层级优先</button><button type="button" data-sort="gaps" aria-pressed="false">待补证据优先</button></div><p class="muted" id="sortHelp" aria-live="polite">优先展示具有监管申报、历史经营自述或平台旁证的项目。排名不会代表投资价值。</p><label for="projectSearch">搜索项目名称或简介</label>
 <p><input type="search" id="projectSearch" aria-label="搜索具名项目" placeholder="例如 Carrd、图书出版、设计服务…" autocomplete="off"></p>
 <p id="resultCount" aria-live="polite">{len(cases)} 个可查看的具名项目</p>
 <div class="directory" id="directory">{''.join(tiles)}</div>
 <section class="section"><h2>这些项目通过商业验证了吗？</h2>
-<p>现阶段只核对了公开的产品／服务及收费方式，<b>没有完成项目级独立成交与财务审计</b>。上一页的六类行业方向证据是另一层研究数据，不能自动用于证明这里任意企业已经盈利。</p>
+<p>20 个项目均有公开产品或收费依据。NerdWallet 有历史 SEC 申报的公司级财务记录；Carrd、Plausible 有历史创始人／企业经营自述。<b>其余多数项目仍无独立财务资料，这不等于没有经营活动。</b>行业方向的匿名挂牌数据不能自动证明任何具名企业盈利。</p>
 <a href="/validation/">查看行业商业证据与验证缺口 →</a></section>
 <script>
-(()=>{{const input=document.getElementById('projectSearch'),tiles=[...document.querySelectorAll('#directory a')],count=document.getElementById('resultCount');
-input.addEventListener('input',()=>{{const q=input.value.trim().toLocaleLowerCase('zh-CN');let n=0;for(const tile of tiles){{const show=!q||tile.textContent.toLocaleLowerCase('zh-CN').includes(q);tile.hidden=!show;if(show)n++}}count.textContent=n+' 个匹配的具名项目'}})}})();
+(()=>{{const input=document.getElementById('projectSearch'),directory=document.getElementById('directory'),tiles=[...directory.querySelectorAll('a[data-level]')],count=document.getElementById('resultCount');
+const buttons=[...document.querySelectorAll('[data-sort]')],help=document.getElementById('sortHelp');
+function filter(){{const q=input.value.trim().toLocaleLowerCase('zh-CN');let n=0;for(const tile of tiles){{const show=!q||tile.textContent.toLocaleLowerCase('zh-CN').includes(q);tile.hidden=!show;if(show)n++}}count.textContent=n+' 个匹配的具名项目'}}
+buttons.forEach(btn=>btn.addEventListener('click',()=>{{const invert=btn.dataset.sort==='gaps';tiles.sort((a,b)=>(invert?Number(a.dataset.level)-Number(b.dataset.level):Number(b.dataset.level)-Number(a.dataset.level))||a.dataset.id.localeCompare(b.dataset.id));tiles.forEach((tile,i)=>{{tile.querySelector('small').textContent='#'+String(i+1).padStart(2,'0')+' · '+tile.querySelector('small').textContent.split(' · ').at(-1);directory.append(tile)}});buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));help.textContent=invert?'优先安排公开证据较少的项目开展后续核验；不是商业潜力排名。':'依据已归属的证据层级排序；同层稳定排列，不是盈利或成功率排名。';filter()}}));
+input.addEventListener('input',filter) }})();
 </script>"""
     return shell("20 个具名项目证据档案", "项目的公开产品、收费依据、独立验证缺口及原始官方页面", body, "/projects/")
 
