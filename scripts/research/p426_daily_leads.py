@@ -21,6 +21,10 @@ sys.path.insert(0, str(ROOT / "scripts" / "release"))
 
 API_HOST = "hn.algolia.com"
 MAX_COMPANIES = 6
+# Only public HN Algolia search metadata. Never search or extract protected
+# Acquire/Flippa listing databases via third-party search as a workaround.
+DISCOVERY_TOPICS = ("Show HN revenue", "bootstrapped founder revenue",
+                    "micro SaaS paying customers", "solo founder business")
 MAX_STORIES = 3
 MAX_RESPONSE = 131_072
 TIMEOUT_SECONDS = 4
@@ -44,8 +48,8 @@ def research_targets(day: date, maximum: int) -> list[dict]:
     if not 1 <= maximum <= MAX_COMPANIES:
         raise ValueError("Too many candidates requested")
     unapproved = sorted((c for c in parse_cases() if c["id"] not in admitted_ids()), key=lambda x: x["id"])
-    if len(unapproved) != 17:
-        raise RuntimeError("Research backlog unexpectedly changed; fail closed")
+    if not unapproved:
+        raise RuntimeError("No private candidates remain for bounded research")
     offset = day.toordinal() % len(unapproved)
     order = unapproved[offset:] + unapproved[:offset]
     return [{"slug":c["id"], "name":c["title"].split("｜", 1)[0]} for c in order[:maximum]]
@@ -110,11 +114,13 @@ def run(day: date, maximum: int, online: bool) -> dict:
         else:
             record["status"] = "OFFLINE_DRY_RUN"
         rows.append(record)
-    # Discover new projects separately; do not assume story titles are company names.
+    # Rotate solo-founder stories through the *same* one-query budget.
+    # No direct or indirect automated extraction of restricted marketplaces.
+    discovery_query = DISCOVERY_TOPICS[day.toordinal() % len(DISCOVERY_TOPICS)]
     fresh = []
     if online:
         try:
-            fresh = lookup("Show HN revenue")
+            fresh = lookup(discovery_query)
         except Exception:
             pass
     return {
@@ -128,6 +134,9 @@ def run(day: date, maximum: int, online: bool) -> dict:
         "response_bytes_max": MAX_RESPONSE,
         "timeout_seconds_each": TIMEOUT_SECONDS,
         "candidates": rows,
+        "discovery_query": discovery_query,
+        "discovery_provider": "PUBLIC_HN_ALGOLIA_SEARCH_ONLY",
+        "marketplaces_listing_crawled": False,
         "unmatched_new_project_leads": fresh,
         "publication_allowed": False,
         "notices": [
