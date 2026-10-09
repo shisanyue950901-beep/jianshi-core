@@ -86,8 +86,16 @@ jobs:
           python scripts/security/p411_audit_public_artifacts.py web/dist
           grep -q "见势" index.html
           grep -q "发现海外项目" web/dist/index.html
-          grep -q "Easlo" web/dist/index.html
-          grep -q "Louise Lennox" web/dist/index.html
+          grep -q "Carrd" web/dist/index.html
+          grep -q "NerdWallet" web/dist/index.html
+          grep -q "Plausible" web/dist/index.html
+          ! grep -q "Easlo｜" web/dist/index.html
+          ! grep -q "Louise Lennox" web/dist/index.html
+          ! test -e web/dist/projects/easlo/index.html
+          ! test -e web/dist/projects/tally/index.html
+          test -f web/dist/projects/nerdwallet/index.html
+          test -f web/dist/projects/carrd/index.html
+          test -f web/dist/projects/plausible/index.html
           ! grep -q "此文件为独立网站预览" web/dist/index.html
           grep -q "页面已更新" web/dist/opportunities/index.html
           grep -q "页面已更新" web/dist/today/index.html
