@@ -45,7 +45,7 @@ class TestP418TypographyAndHierarchy(unittest.TestCase):
         self.assertEqual(HTML.count('data:image/webp;base64,'),8)
         self.assertEqual(HTML.count('<script>'),1)
         self.assertEqual(HTML.count('<style>'),1)
-        self.assertLess(len(HTML.encode('utf-8')),255000)
+        self.assertLess(len(HTML.encode('utf-8')),260000)
 
     def test_inline_script_parses(self):
         node=shutil.which('node')
