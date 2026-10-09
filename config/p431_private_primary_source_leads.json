@@ -1,0 +1,46 @@
+{
+  "contract": "P431_PRIVATE_FIRST_PARTY_REVIEW_CANDIDATES_V1",
+  "research_date": "2026-10-09",
+  "source_policy": "PUBLIC_EDITORIAL_LINKS_ONLY_NO_AUTOMATED_FETCH",
+  "publication_allowed": false,
+  "candidates": [
+    {
+      "case_id": "fathom",
+      "brand": "Fathom Analytics",
+      "official_domain": "usefathom.com",
+      "legal_entity_verified": false,
+      "status": "NEEDS_REVIEW",
+      "evidence_tier_candidate": "POTENTIAL_L3_NOT_ADMITTED",
+      "original_text_saved": false,
+      "observations": [
+        {
+          "source_url": "https://usefathom.com/blog/v2",
+          "published_on": "2019-11-04",
+          "claim_summary_cn": "联合创始人 Paul Jarvis 的历史文章讨论 Fathom 从接近停业到月度经常性收入增长约三倍的过程；未披露可直接由该表述推算的 MRR 绝对金额。",
+          "metric_kind": "HISTORICAL_RELATIVE_MRR_GROWTH",
+          "reported_numeric": "3x（标题叙述）",
+          "evidence_quality": "FOUNDER_HISTORICAL_SELF_DISCLOSURE_NOT_AUDITED",
+          "followup": "复核原文具体比较区间、说话人身份和公司主体；避免把增长倍数当绝对收入。"
+        },
+        {
+          "source_url": "https://usefathom.com/blog/new-fathom",
+          "published_on": "2021-06-29",
+          "claim_summary_cn": "公司联合创始人在历史官方公告中自述此前12个月收入和客户人数均增长200%；属公司级未审计自述，不代表2026年当前经营。",
+          "metric_kind": "HISTORICAL_RELATIVE_REVENUE_AND_CUSTOMER_GROWTH",
+          "reported_numeric": "200% 增幅（非营收金额）",
+          "evidence_quality": "COMPANY_HISTORICAL_SELF_DISCLOSURE_NOT_AUDITED",
+          "followup": "核对企业合法主体、收入增长口径、最初基数及期间；不得推算付费客户数或利润。"
+        },
+        {
+          "source_url": "https://usefathom.com/blog/acquired",
+          "published_on": "2024-12-02",
+          "claim_summary_cn": "官方披露联合创始人 Jack Ellis 收购另一位联合创始人 Paul Jarvis 的持股，变为由 Jack 控制；未披露交易对价，不能视作第三方并购市场成交价证据。",
+          "metric_kind": "FOUNDER_OWNERSHIP_EVENT_NOT_REVENUE",
+          "reported_numeric": null,
+          "evidence_quality": "FIRST_PARTY_SELF_DISCLOSED_CORPORATE_EVENT",
+          "followup": "核对法律主体股权情况；不能将标题“被收购”推断为外部买家收购或已验证交易金额。"
+        }
+      ]
+    }
+  ]
+}
