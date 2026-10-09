@@ -484,8 +484,8 @@ const part=k=>parts.find(x=>x.type===k).value,today=[part('year'),part('month'),
 const monday=new Date(today+'T00:00:00Z');monday.setUTCDate(monday.getUTCDate()-((monday.getUTCDay()+6)%7));
 const since=rankPeriod==='today'?today:rankPeriod==='week'?monday.toISOString().slice(0,10):today.slice(0,7)+'-01';
 const hits=libraryEntries.filter(({item})=>(kind==='all'||kind==='case')&&matchesFacets(item)&&(!term||normalize(item.search).includes(term))&&item.verifiedOn>=since&&item.verifiedOn<=today).sort((a,b)=>b.item.verifiedOn.localeCompare(a.item.verifiedOn)||a.item.number-b.item.number);
-hits.forEach(({card},i)=>{card.hidden=!(rankExpanded||i<10);card.querySelector('.rank-number').textContent=String(i+1).padStart(2,'0')});
-libraryEntries.forEach(({card})=>{if(!hits.some(x=>x.card===card))card.hidden=true});
+hits.forEach(({card},i)=>{card.hidden=!(rankExpanded||i<10);card.querySelector('.rank-number').textContent=String(i+1).padStart(2,'0');libraryList.append(card)});
+libraryEntries.forEach(({card})=>{if(!hits.some(x=>x.card===card)){card.hidden=true;libraryList.append(card)}});
 libraryFound=hits.length;found+=hits.length;$('researchLibrary').hidden=kind==='model';
 $('rankMore').hidden=hits.length<=10;$('rankMore').textContent=rankExpanded?'收起榜单 ↑':'查看剩余 '+Math.max(0,hits.length-10)+' 项 ↓';
 text($('rankStatus'),'本期核验 '+hits.length+' 项 · '+since+' 至 '+today+' · 不是项目热度或收益排名');
