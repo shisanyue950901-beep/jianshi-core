@@ -204,7 +204,7 @@ def project_page(case: dict) -> str:
     body = f"""<span class="kicker">PROJECT EVIDENCE / 项目证据档案</span>
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
 <p><b>编辑归类：</b>{txt(MODEL_LABELS[case["model"]])}　<b>资料记录：</b>{txt(case["verifiedOn"])}（非实时经营审计）</p>
-<div class="notice"><b>证据阶段：</b>{txt(findings_intro)} 即使行业方向达标，也不能算作某家企业的经营证明。</div>
+<div class="notice"><b>证据阶段：</b>{txt(findings_intro)} 即使行业方向达标，也不能算作某家企业的经营证明；不使用行业匿名挂牌推断它的收入。</div>
 <div class="statusgrid" aria-label="项目商业验证状态">
 <div class="status"><b>产品／服务：有官方依据</b><small>可进入对应官网或产品页核对公开供应</small></div>
 <div class="status"><b>收费机制：有公开说明</b><small>标价或收费方案不代表已成交、已收到款项</small></div>
