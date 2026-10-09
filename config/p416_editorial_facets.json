@@ -1,0 +1,287 @@
+{
+  "version": "P4.16-FACETS-V1",
+  "status": "EDITORIAL_TAGS_NOT_AUDITED_INVENTORY_OR_FINANCE",
+  "verified_on": "2026-10-09",
+  "description": "编辑分类原型：基于已核项目档案，对20个具名项目做多维标签；允许多种收费方式和多类客户。标签不证明客户结构、经营库存、利润、雇员数或实际成交。",
+  "dimensions": {
+    "delivery": {
+      "d": "数字工具/数字产品",
+      "p": "实体商品或书籍",
+      "s": "人工专业服务",
+      "c": "内容媒体"
+    },
+    "revenue": {
+      "u": "持续订阅",
+      "o": "商品或作品销售",
+      "t": "平台交易手续费",
+      "a": "广告/推荐佣金",
+      "p": "项目制或定制合同"
+    },
+    "audience": {
+      "b": "企业或专业客户",
+      "c": "个人消费者/创作者"
+    }
+  },
+  "projects": [
+    {
+      "id": "easlo",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "o"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "louise",
+      "delivery": [
+        "d",
+        "p"
+      ],
+      "revenue": [
+        "o"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "carrd",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "tally",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "thomas-frank",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "o"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "joanna-penn",
+      "delivery": [
+        "d",
+        "p"
+      ],
+      "revenue": [
+        "o"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "nerdwallet",
+      "delivery": [
+        "c"
+      ],
+      "revenue": [
+        "a"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "the-points-guy",
+      "delivery": [
+        "c"
+      ],
+      "revenue": [
+        "a"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "beardbrand",
+      "delivery": [
+        "p"
+      ],
+      "revenue": [
+        "o"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "ugmonk",
+      "delivery": [
+        "p"
+      ],
+      "revenue": [
+        "o"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "designjoy",
+      "delivery": [
+        "s"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b"
+      ]
+    },
+    {
+      "id": "manypixels",
+      "delivery": [
+        "s"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b"
+      ]
+    },
+    {
+      "id": "plausible",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "fathom",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "buttondown",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "kit",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "u"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "payhip",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "u",
+        "t"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "gumroad",
+      "delivery": [
+        "d"
+      ],
+      "revenue": [
+        "t"
+      ],
+      "audience": [
+        "b",
+        "c"
+      ]
+    },
+    {
+      "id": "bellroy",
+      "delivery": [
+        "p"
+      ],
+      "revenue": [
+        "o"
+      ],
+      "audience": [
+        "c"
+      ]
+    },
+    {
+      "id": "superside",
+      "delivery": [
+        "s"
+      ],
+      "revenue": [
+        "u",
+        "p"
+      ],
+      "audience": [
+        "b"
+      ]
+    }
+  ],
+  "notes": [
+    "客户标签代表产品定位而非真实成交客户分布；官网使用场景可以同时服务企业与个人。",
+    "实体书籍或纸质出版物不等于创作者自营库存；当前筛选不推出是否持有库存。",
+    "平台交易手续费和订阅可以同时出现，按实际公开收费机制做多标签。",
+    "不要把成熟服务团队归为一人创业。",
+    "收入、净利润、规模及获客成本未独立审计。"
+  ]
+}
