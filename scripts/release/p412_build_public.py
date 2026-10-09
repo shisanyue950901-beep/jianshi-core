@@ -11,7 +11,8 @@ import html
 import json
 import re
 from pathlib import Path
-from p423_build_project_proofs import build as build_project_proofs
+from p423_build_project_proofs import build as build_project_proofs, parse_cases
+from p425_public_admission import admitted_ids, eligible_cases, public_home
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
@@ -83,6 +84,9 @@ def build_release() -> dict:
     markup = markup.replace("此文件为独立网站预览，不收集访客信息。", "本站暂不提供在线留言功能，也不会通过本页面收集访客信息。")
     markup = markup.replace('© 2026 见势 JIANSHI</span><a href="#top">', '© 2026 见势 JIANSHI</span><a href="/privacy/">隐私说明</a><a href="#top">')
     markup = markup.replace("</head>", f'<link rel="canonical" href="{SITE}/">\n</head>', 1)
+    # Strict editorial gate: only projects with attributable operating evidence.
+    approved = eligible_cases(parse_cases())
+    markup = public_home(markup, approved)
     assert_safe_source(markup)
     (OUTPUT / "index.html").write_text(markup, encoding="utf-8")
     # Separate public-only evidence dashboard. Never embed raw marketplace data
@@ -98,11 +102,11 @@ def build_release() -> dict:
     proof = OUTPUT / "validation" / "index.html"
     proof.parent.mkdir(parents=True, exist_ok=True)
     proof.write_text(evidence, encoding="utf-8")
-    # Build 20 explicitly sourced *named* company dossiers; never infer
+    # Publish only strictly admitted named company dossiers; never infer
     # any company's revenue from anonymous industry-level observations.
     project_result = build_project_proofs()
-    if project_result["cases"] != 20 or project_result["public_pages"] != 21:
-        raise RuntimeError("Named dossier release contract failed")
+    if project_result["cases"] != len(approved) or project_result["public_pages"] != len(approved) + 1:
+        raise RuntimeError("Strict company-level evidence admission failed")
 
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
@@ -160,7 +164,7 @@ def build_release() -> dict:
         "output": "web/dist",
         "inline_covers": 8,
         "evidence_dashboard": "validation/index.html",
-        "named_project_dossiers": 20,
+        "named_project_dossiers": len(approved),
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
         "production_deployed": False,
