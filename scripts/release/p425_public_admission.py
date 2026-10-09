@@ -104,9 +104,6 @@ def public_home(source: str, cases: list[dict]) -> str:
         original = re.search(rf"const {key}=(\[.*?\]);", source_before, re.S)
         if original:
             unapproved_titles += [x["title"] for x in json.loads(original.group(1)) if x["id"] not in approved]
-    leaked = [title for title in unapproved_titles if title in source]
-    if leaked:
-        raise RuntimeError("Unapproved named company persisted in public homepage: " + ", ".join(leaked))
     for key in ("EXTRA_CASES", "P415_CASES"):
         rx = rf"(const {key}=)(\[.*?\])(;)"
         match = re.search(rx, source, re.S)
@@ -118,6 +115,9 @@ def public_home(source: str, cases: list[dict]) -> str:
             rx, lambda m, arr=kept: m.group(1) + json.dumps(arr, ensure_ascii=False, separators=(",", ":")) + m.group(3),
             source, count=1, flags=re.S
         )
+    leaked = [title for title in unapproved_titles if title in source]
+    if leaked:
+        raise RuntimeError("Unapproved named company persisted in public homepage: " + ", ".join(leaked))
     # Remove hardcoded original 2 project links applied after initial arrays.
     source = re.sub(r"Object\.assign\(ITEMS\[[01]\],\{officialHomeUrl:'https://[^']+',sourceUrl:'https://[^']+'\}\);", "", source)
     # Replace misleading hero/section copy with strict project gate.
