@@ -18,7 +18,7 @@ class TestP420VerifiedRanking(unittest.TestCase):
         self.assertEqual(len(P413["cases"]),10)
         self.assertEqual(len(P415["cases"]),8)
         self.assertIn("EXTRA_CASES.forEach(item=>item.verifiedOn='2026-10-09')",HTML)
-        match=re.search(r"const P415_CASES=(\\[.*?\\]);\\s*ITEMS\\.push\\(\\.\\.\\.P415_CASES\\)",HTML,re.S)
+        match=re.search(r"const P415_CASES=(\[.*?\]);\s*ITEMS\.push\(\.\.\.P415_CASES\)",HTML,re.S)
         self.assertIsNotNone(match)
         for item in json.loads(match.group(1)):
             self.assertEqual(item["verifiedOn"],P415["verified_on"])
