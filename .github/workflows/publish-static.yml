@@ -114,6 +114,29 @@ jobs:
           ! grep -R -E -i "Empire Flippers|empireflippers|Amazon KDP Business in the|Amazon FBA Business in the|Per Month SaaS Business|OFFICIAL_API|源更新时间：|listing_number" --include="*.html" index.html opportunities opportunity today rising build content
 
 
+      # Reuse the existing four-times-daily scheduled job, without creating
+      # extra billed jobs. Only its UTC 00:55 slot performs a bounded scan.
+      # HN search metadata is an unverified lead and NEVER changes publication.
+      - name: Daily private business-evidence leads (no publication)
+        if: github.event_name == 'schedule'
+        shell: bash
+        run: |
+          hour="$(date -u +%H)"
+          if [ "$hour" = "00" ] || [ "$hour" = "01" ]; then
+            python scripts/research/p426_daily_leads.py --network --max-companies 6 --output "$RUNNER_TEMP/p426_research_leads.json"
+          else
+            echo "P426_DAILY_SCAN_SKIP_NOT_MIDNIGHT_SLOT"
+          fi
+
+      - name: Retain private review-only evidence leads (48h)
+        if: github.event_name == 'schedule'
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-leads-${{ github.run_id }}
+          path: ${{ runner.temp }}/p426_research_leads.json
+          if-no-files-found: ignore
+          retention-days: 2
+
       - name: Commit generated snapshot
         run: |
           git config user.name "jianshi-bot"

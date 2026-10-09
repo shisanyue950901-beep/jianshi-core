@@ -11,6 +11,7 @@ import json
 import re
 from pathlib import Path
 from urllib.parse import urlsplit
+from p426_evidence_digest import derive_digest
 
 ROOT = Path(__file__).resolve().parents[2]
 LEDGER = ROOT / "config/p424_project_research_evidence.json"
@@ -164,12 +165,17 @@ def public_home(source: str, cases: list[dict]) -> str:
     # evidence dossier, not only to generic product/price pages.
     labels = {case["id"]: ("监管历史财报" if case["evidence_level"]==4 else "历史经营自述")
               for case in cases}
+    digests = {}
+    for case in cases:
+        d = derive_digest(case)
+        digests[case["id"]] = {"fact": d.evidence, "period": d.period, "limit": d.limitation}
     source_key = "const LIBRARY_CASES=[...EXTRA_CASES,...P415_CASES];"
     if source.count(source_key) != 1:
         raise RuntimeError("Lost named public rank builder")
     source = source.replace(
         source_key,
         "const PUBLIC_EVIDENCE_LABELS=" + json.dumps(labels, ensure_ascii=False, separators=(",", ":"))
+        + ";const PUBLIC_EVIDENCE_DIGESTS=" + json.dumps(digests, ensure_ascii=False, separators=(",", ":"))
         + ";" + source_key, 1
     )
     render_key = "row.append(card,src);"
@@ -178,8 +184,21 @@ def public_home(source: str, cases: list[dict]) -> str:
     source = source.replace(render_key,
         "const proof=document.createElement('a');proof.href='/projects/'+item.id+'/';"
         "proof.textContent=PUBLIC_EVIDENCE_LABELS[item.id]+' · 查看经营依据 ↗';"
-        "src.appendChild(proof);row.append(card,src);", 1)
+        "const digest=PUBLIC_EVIDENCE_DIGESTS[item.id];"
+        "const box=document.createElement('div');box.className='rank-proof';"
+        "box.textContent='经营依据（'+digest.period+'）：'+digest.fact+'。'+digest.limit;"
+        "card.append(box);src.appendChild(proof);row.append(card,src);", 1)
 
+    if source.count("</style>") != 1:
+        raise RuntimeError("Home inline style contract unexpectedly changed")
+    source = source.replace(
+        "</style>",
+        ".rank-proof{grid-column:2/4;border-left:3px solid var(--accent);padding:9px 13px;"
+        "margin-top:9px;color:var(--ink);font-size:13px;line-height:1.75;"
+        "background:var(--panel);font-weight:450}"
+        "@media(max-width:650px){.rank-proof{grid-column:2}}"
+        "</style>", 1,
+    )
     # Escape any unintended unapproved titles, names, references (not CSS
     # or generic educational model names).
     if any(name in source for name in ["Easlo｜", "Louise Lennox", "Tally｜", "Bellroy｜", "Gumroad｜"]):

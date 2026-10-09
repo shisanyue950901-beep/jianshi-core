@@ -20,6 +20,8 @@ h1,h2,h3,p{margin-top:0}h1{max-width:870px;font:500 clamp(41px,6vw,78px)/1.2 Geo
 .sectionhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:24px;margin:76px 0 26px}
 .sectionhead h2{font:500 clamp(29px,3.5vw,47px)/1.3 Georgia,"Songti SC",serif;margin:0}.sectionhead p{color:var(--dim);font-size:13px;margin:0}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:28px 0}.fact{background:var(--panel);border:1px solid var(--line);padding:24px}.fact strong{display:block;font-size:31px;font-weight:600;line-height:1.4}.fact span{font-size:13px;color:var(--dim)}
+.quick-read{border-left:3px solid var(--accent);background:var(--panel);padding:17px 22px;margin:18px 0 26px}
+.quick-read strong{display:block;font-size:17px}.quick-read p{font-size:14px;color:var(--ink);line-height:1.8;margin:8px 0 0}
 .legend{display:flex;gap:20px;flex-wrap:wrap;color:var(--dim);font-size:13px;margin:20px 0 24px}.legend b{font-size:15px;color:var(--ink)}
 .list{display:grid;gap:14px}.record{border:1px solid var(--line);background:var(--panel);padding:clamp(20px,3vw,30px)}.rec-top{display:flex;gap:14px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
 .record h3{font:500 clamp(23px,2.5vw,30px)/1.4 Georgia,"Songti SC",serif;margin:0}.status{font-weight:700;font-size:13px;color:var(--accent)}
@@ -39,6 +41,7 @@ footer{border-top:1px solid var(--line);padding:25px 0;margin-top:90px;color:var
 <div class="note"><b>如何理解“达到研究门槛”？</b> 只表示同一业务类别下，技术供给与商业挂牌证据同时存在，并通过当前有效性规则。它不表示榜上某家公司已实现盈利，也不代表披露财务经过独立审计。</div>
 <section aria-labelledby="overview"><div class="sectionhead"><h2 id="overview">证据全貌</h2><p id="freshness" role="status" aria-live="polite">正在读取公开研究汇总…</p></div>
 <div class="facts"><div class="fact"><strong id="dirCount">—</strong><span>观察方向</span></div><div class="fact"><strong id="passCount">—</strong><span>达到证据类别门槛</span></div><div class="fact"><strong id="missingCount">—</strong><span>尚未满足门槛</span></div></div>
+<div class="quick-read" aria-labelledby="quickReadTitle"><strong id="quickReadTitle">30 秒看懂这份研究</strong><p id="quickRead" role="status">正在根据经过允许的汇总证据提炼…</p></div>
 <p class="muted">数据是业务类别的汇总，并非具名企业的收入明细；一次观察、一次挂牌或多个技术仓库都不自动等于成功创业案例。</p>
 </section>
 <section aria-labelledby="categories"><div class="sectionhead"><h2 id="categories">方向证据对照</h2><p>先看商业证据，再看技术热度</p></div>
@@ -85,6 +88,10 @@ return result.length===6?result:null;
 function initial(){return base.map(([slug,title,tech,commercial,demand,ready])=>({slug,title,tech,commercial,demand,ready,at:snapshot}))}
 function el(tag,cls,value){const o=document.createElement(tag);if(cls)o.className=cls;if(value!==undefined)o.textContent=String(value);return o}
 function render(items,live){const ready=items.filter(x=>x.ready).length;
+const demandTotal=items.reduce((sum,x)=>sum+x.demand,0);
+$('quickRead').textContent='当前 '+ready+'/'+items.length+' 个方向同时具备技术与商业类别证据；'
++(demandTotal===0?'六类方向尚无可计入的独立需求证据。':'独立需求类证据合计 '+demandTotal+' 条，仍需逐项研究。')
++' 这些数字不证明其中任意一家具体公司的销售或盈利。';
 $('dirCount').textContent=String(items.length);$('passCount').textContent=ready+'/'+items.length;$('missingCount').textContent=String(items.length-ready);
 const at=items.map(x=>x.at).sort().at(-1);const date=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',dateStyle:'medium',timeStyle:'short'}).format(new Date(at));
 $('freshness').textContent=(live?'实时读取公开汇总 · ':'历史审核快照（非实时） · ')+date;
