@@ -29,10 +29,11 @@ EXAMPLE = b"""<?xml version="1.0" encoding="utf-8"?>
 class RightsGatedFeedTest(unittest.TestCase):
     def test_registry_is_explicit_and_restricted_providers_remain_blocked(self):
         p = probe.load_policy()
-        self.assertEqual(len(p), 9)
+        self.assertEqual(len(p), 10)
         self.assertEqual(p["fathom-rss"]["max_requests_per_run"], 1)
         self.assertEqual(p["fathom-rss"]["max_items_per_run"], 10)
         self.assertEqual(p["hn-algolia"]["daily_budget_shared"], 7)
+        self.assertEqual(p["github-official-repos"]["max_requests_per_run"],2)
         for source in ("acquire-listings", "flippa-listings", "microns-listings", "indiehackers-pages"):
             self.assertEqual(p[source]["automated_fetch"], "FORBIDDEN")
         self.assertEqual(p["buffer-open"]["automated_fetch"],"DISABLED_TERMS_NOT_VERIFIED_FOR_BULK")
