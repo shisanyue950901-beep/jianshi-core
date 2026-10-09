@@ -32,6 +32,7 @@ on:
 
 permissions:
   contents: write
+  actions: read  # Read only prior research artifacts to restore private fingerprints.
 
 jobs:
   build-static:
@@ -120,15 +121,61 @@ jobs:
       - name: Daily private business-evidence leads (no publication)
         if: github.event_name == 'schedule'
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           hour="$(date -u +%H)"
           if [ "$hour" = "00" ] || [ "$hour" = "01" ]; then
+            # Exactly the existing seven HN search attempts per day.
             python scripts/research/p426_daily_leads.py --network --max-companies 6 --output "$RUNNER_TEMP/p426_research_leads.json"
-            # R2 indexes the same private lead file offline: zero additional requests.
             python scripts/research/p430_company_evidence_review.py --leads "$RUNNER_TEMP/p426_research_leads.json" --output "$RUNNER_TEMP/p430_review_queue.json"
-            # P4.33: deterministic cleaning, provenance and exact-link dedup only.
-            # No additional HTTP calls, no public promotion, report retained privately.
-            python scripts/research/p433_private_evidence_etl.py --hn "$RUNNER_TEMP/p426_research_leads.json" --output "$RUNNER_TEMP/p433_clean_review.json"
+
+            # Publisher explicitly offers RSS; single fixed request, no retries.
+            # RSS failure is visible and must never be counted as a success.
+            rss_args=()
+            if python scripts/research/p432_publisher_rss_probe.py --online --output "$RUNNER_TEMP/p432_rss_leads.json"; then
+              rss_args=(--rss "$RUNNER_TEMP/p432_rss_leads.json")
+              echo "P434_RSS_HTTP_OK" > "$RUNNER_TEMP/p434_rss_health.txt"
+            else
+              echo "P434_RSS_ACCESS_FAILED_NO_RETRY" > "$RUNNER_TEMP/p434_rss_health.txt"
+            fi
+
+            # No new external requests from cleaning/deduplication.
+            python scripts/research/p433_private_evidence_etl.py --hn "$RUNNER_TEMP/p426_research_leads.json" "${rss_args[@]}" --output "$RUNNER_TEMP/p433_clean_review.json"
+
+            # Same existing 48-hour PRIVATE artifact: find most recent scheduled
+            # main-branch report. GitHub App token needs actions:read, never PAT.
+            previous_args=()
+            echo "P434_PRIOR_ARTIFACT_NOT_AVAILABLE" > "$RUNNER_TEMP/p434_restore_health.txt"
+            if gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" > "$RUNNER_TEMP/p434_artifacts_metadata.json"; then
+              python scripts/research/p434_rolling_private_index.py select-artifact \
+                --metadata "$RUNNER_TEMP/p434_artifacts_metadata.json" \
+                --current-run-id "$GITHUB_RUN_ID" \
+                --output "$RUNNER_TEMP/p434_selected_artifact.json"
+              previous_run_id="$(python -c 'import json,sys; print(json.load(open(sys.argv[1])).get("previous_run_id") or "")' "$RUNNER_TEMP/p434_selected_artifact.json")"
+              if [ -n "$previous_run_id" ]; then
+                mkdir -p "$RUNNER_TEMP/p434_previous"
+                if gh run download "$previous_run_id" -n "research-leads-$previous_run_id" -D "$RUNNER_TEMP/p434_previous"; then
+                  if [ -s "$RUNNER_TEMP/p434_previous/p434_hash_index.json" ]; then
+                    previous_args=(--previous "$RUNNER_TEMP/p434_previous/p434_hash_index.json")
+                    echo "P434_PRIOR_HASH_INDEX_RESTORED" > "$RUNNER_TEMP/p434_restore_health.txt"
+                  else
+                    echo "P434_PRIOR_ARTIFACT_HAS_NO_HASH_INDEX" > "$RUNNER_TEMP/p434_restore_health.txt"
+                  fi
+                else
+                  echo "P434_PRIOR_ARTIFACT_DOWNLOAD_FAILED" > "$RUNNER_TEMP/p434_restore_health.txt"
+                fi
+              fi
+            else
+              echo "P434_ARTIFACT_INDEX_API_FAILED" > "$RUNNER_TEMP/p434_restore_health.txt"
+            fi
+            cat "$RUNNER_TEMP/p434_restore_health.txt"
+            python scripts/research/p434_rolling_private_index.py build \
+              --clean "$RUNNER_TEMP/p433_clean_review.json" \
+              "${previous_args[@]}" \
+              --report-output "$RUNNER_TEMP/p434_daily_delta.json" \
+              --index-output "$RUNNER_TEMP/p434_hash_index.json"
           else
             echo "P426_DAILY_SCAN_SKIP_NOT_MIDNIGHT_SLOT"
           fi
@@ -142,6 +189,11 @@ jobs:
             ${{ runner.temp }}/p426_research_leads.json
             ${{ runner.temp }}/p430_review_queue.json
             ${{ runner.temp }}/p433_clean_review.json
+            ${{ runner.temp }}/p432_rss_leads.json
+            ${{ runner.temp }}/p434_daily_delta.json
+            ${{ runner.temp }}/p434_hash_index.json
+            ${{ runner.temp }}/p434_rss_health.txt
+            ${{ runner.temp }}/p434_restore_health.txt
           if-no-files-found: ignore
           retention-days: 2
 
