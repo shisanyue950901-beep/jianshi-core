@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 from urllib.parse import urlsplit
 from p426_evidence_digest import derive_digest
+from p427_recommendation_first import recommendation_first_home
 
 ROOT = Path(__file__).resolve().parents[2]
 LEDGER = ROOT / "config/p424_project_research_evidence.json"
@@ -199,6 +200,7 @@ def public_home(source: str, cases: list[dict]) -> str:
         "@media(max-width:650px){.rank-proof{grid-column:2}}"
         "</style>", 1,
     )
+    source = recommendation_first_home(source, cases)
     # Escape any unintended unapproved titles, names, references (not CSS
     # or generic educational model names).
     if any(name in source for name in ["Easlo｜", "Louise Lennox", "Tally｜", "Bellroy｜", "Gumroad｜"]):
