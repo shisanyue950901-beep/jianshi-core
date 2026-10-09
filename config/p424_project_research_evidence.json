@@ -1,0 +1,68 @@
+{
+  "version": "P4.24_RESEARCH_EVIDENCE_V1",
+  "captured_on": "2026-10-09",
+  "scope": "Only named company's own evidence; never infer company financials from anonymous marketplace category aggregates",
+  "ranking_contract": {
+    "regulatory_filing": 4,
+    "founder_historical": 3,
+    "platform_attribution": 2,
+    "first_party_offer": 1
+  },
+  "additional_evidence": [
+    {
+      "id": "nerdwallet",
+      "tier": "regulatory_filing",
+      "source_type": "US_SEC_10K_AUDITED_CONSOLIDATED",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1625278/000162527826000014/nrds-20251231.htm",
+      "published_on": "2026-02-25",
+      "period": "2025-12-31",
+      "claim": "NerdWallet, Inc. 2025 年经向 SEC 提交的 10-K 合并报表：全年营业收入 8.366 亿美元，合并净利润 4,870 万美元。为历史公司层数据，不代表单一业务线利润或 2026 年当前利润。",
+      "financial_status": "HISTORICAL_REGULATORY_FILING",
+      "next_research": "进一步核实最新季度申报及分部收入，注意集团范围与当前季度不同。"
+    },
+    {
+      "id": "carrd",
+      "tier": "founder_historical",
+      "source_type": "FOUNDER_PUBLIC_INTERVIEW",
+      "source_url": "https://saasclub.io/podcast/carrd-aj-306/",
+      "published_on": null,
+      "period": "2022 年前后访谈",
+      "claim": "创始人 AJ 在公开访谈中自述当时约 10 万美元 MRR、约 120 万美元 ARR；属未经审计的历史自述，不得作为当前收入。",
+      "financial_status": "HISTORICAL_FOUNDER_SELF_REPORT",
+      "next_research": "搜集更新的官方财务公开、独立客户/付费样本；没有审计时维持自述标签。"
+    },
+    {
+      "id": "plausible",
+      "tier": "founder_historical",
+      "source_type": "COMPANY_SELF_DISCLOSURE",
+      "source_url": "https://plausible.io/blog/open-source-saas",
+      "published_on": "2022-06-22",
+      "period": "2022-06-22",
+      "claim": "Plausible 在 2022-06-22 官方文章称当时达到 100 万美元 ARR，并有 7,000 多位付费订阅者；数字由公司自行披露，未经独立财务审计，也不表示 2026 年最新数据。",
+      "financial_status": "HISTORICAL_COMPANY_SELF_REPORT",
+      "next_research": "对照公开代码、较新官方透明度披露与可独立取得的付费需求证据。"
+    },
+    {
+      "id": "easlo",
+      "tier": "platform_attribution",
+      "source_type": "INDEPENDENT_PLATFORM_CREATOR_DIRECTORY",
+      "source_url": "https://www.notion.com/templates/creators/easlo",
+      "published_on": null,
+      "period": "2026-10-08 编辑研究记录",
+      "claim": "Notion 官方模板市场展示 Easlo 创作者及模板的关联；可核对上架，不等于核实销量、退款或净利润。",
+      "financial_status": "NOT_VERIFIED",
+      "next_research": "寻找许可公开的实际客户购买证明、留存与售后信息；不能从模板价格推算收入。"
+    },
+    {
+      "id": "louise",
+      "tier": "platform_attribution",
+      "source_type": "OFFICIAL_PUBLISHING_PLATFORM_ARTICLE",
+      "source_url": "https://www.aboutamazon.com/news/books-and-authors/how-these-authors-found-success-with-amazon-kindle-direct-publishing",
+      "published_on": null,
+      "period": "2022 年历史亚马逊作者专题",
+      "claim": "Amazon 官方作者专题提及 Louise Lennox 与 Kindle Direct Publishing 的历史经历；不能因此推断其所有作品都由 KDP 出版，也不能推算目前版税或销量。",
+      "financial_status": "NOT_VERIFIED",
+      "next_research": "寻找作者具名作品独立书目与零售平台记录；避免从评分/排行推断销量。"
+    }
+  ]
+}
