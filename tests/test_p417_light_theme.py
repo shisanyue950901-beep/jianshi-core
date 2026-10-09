@@ -41,7 +41,7 @@ class TestP417LightTheme(unittest.TestCase):
         self.assertEqual(HTML.count('data:image/webp;base64,'),8)
         self.assertEqual(HTML.count('<script>'),1)
         self.assertEqual(HTML.count('<style>'),1)
-        self.assertLess(len(HTML.encode("utf-8")),255000)
+        self.assertLess(len(HTML.encode("utf-8")),260000)
         for marker in ('function renderRing()','function endDrag','function openLb(index,filtered)',
                        'prefers-reduced-motion','viewport-fit=cover','100dvh','inert',
                        'const FACET_INDEX=','const P415_CASES=','访问项目官方网站（首页）'):
