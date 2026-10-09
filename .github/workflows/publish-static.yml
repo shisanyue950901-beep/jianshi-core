@@ -119,16 +119,22 @@ jobs:
       # extra billed jobs. Only its UTC 00:55 slot performs a bounded scan.
       # HN search metadata is an unverified lead and NEVER changes publication.
       - name: Daily private business-evidence leads (no publication)
-        if: github.event_name == 'schedule'
+        # P4.35: exactly ONE smoke on this merge commit, piggybacking the
+        # normal main-branch push snapshot run (no extra CI job or cron).
+        if: github.event_name == 'schedule' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'P435_PRIVATE_SMOKE_ONCE_20261009'))
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          P435_SMOKE_ONCE: ${{ github.event_name == 'push' && startsWith(github.event.head_commit.message, 'P435_PRIVATE_SMOKE_ONCE_20261009') && '1' || '0' }}
         run: |
           set -euo pipefail
           hour="$(date -u +%H)"
-          if [ "$hour" = "00" ] || [ "$hour" = "01" ]; then
-            # Exactly the existing seven HN search attempts per day.
-            python scripts/research/p426_daily_leads.py --network --max-companies 6 --output "$RUNNER_TEMP/p426_research_leads.json"
+          if [ "$hour" = "00" ] || [ "$hour" = "01" ] || [ "$P435_SMOKE_ONCE" = "1" ]; then
+            # Normal schedule: max seven HN calls. One-time push smoke: only
+            # one historical company + one topic = max two HN calls.
+            max_companies=6
+            if [ "$P435_SMOKE_ONCE" = "1" ]; then max_companies=1; fi
+            python scripts/research/p426_daily_leads.py --network --max-companies "$max_companies" --output "$RUNNER_TEMP/p426_research_leads.json"
             python scripts/research/p430_company_evidence_review.py --leads "$RUNNER_TEMP/p426_research_leads.json" --output "$RUNNER_TEMP/p430_review_queue.json"
 
             # Publisher explicitly offers RSS; single fixed request, no retries.
@@ -176,12 +182,22 @@ jobs:
               "${previous_args[@]}" \
               --report-output "$RUNNER_TEMP/p434_daily_delta.json" \
               --index-output "$RUNNER_TEMP/p434_hash_index.json"
+            python scripts/research/p435_private_scan_health.py \
+              --hn "$RUNNER_TEMP/p426_research_leads.json" \
+              --rss-health "$RUNNER_TEMP/p434_rss_health.txt" \
+              --restore-health "$RUNNER_TEMP/p434_restore_health.txt" \
+              --delta "$RUNNER_TEMP/p434_daily_delta.json" \
+              --output "$RUNNER_TEMP/p435_scan_health.json"
+            # Print ONLY aggregate counts in Actions logs and step summary.
+            python scripts/research/p435_private_scan_health.py print-summary \
+              --input "$RUNNER_TEMP/p435_scan_health.json" \
+              --output "$GITHUB_STEP_SUMMARY"
           else
             echo "P426_DAILY_SCAN_SKIP_NOT_MIDNIGHT_SLOT"
           fi
 
       - name: Retain private review-only evidence leads (48h)
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'P435_PRIVATE_SMOKE_ONCE_20261009'))
         uses: actions/upload-artifact@v4
         with:
           name: research-leads-${{ github.run_id }}
@@ -194,6 +210,7 @@ jobs:
             ${{ runner.temp }}/p434_hash_index.json
             ${{ runner.temp }}/p434_rss_health.txt
             ${{ runner.temp }}/p434_restore_health.txt
+            ${{ runner.temp }}/p435_scan_health.json
           if-no-files-found: ignore
           retention-days: 2
 
