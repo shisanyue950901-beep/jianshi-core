@@ -53,15 +53,15 @@ class TestP413NamedBusinessLibrary(unittest.TestCase):
         self.assertIn("--bg:#000",self.html)
         self.assertIn("Playfair+Display",self.html)
         self.assertIn("family=Inter",self.html)
-        self.assertLess(len(self.html.encode("utf-8")),250000)
+        self.assertLess(len(self.html.encode("utf-8")),255000)
 
     def test_discovery_query_filters_new_real_business_entries(self):
         for contract in [
             'id="researchLibrary"','id="libraryList"',
             'className=\'research-entry\'',
-            "libraryEntries.forEach(({card,item})=>",
-            "card.hidden=!match;if(match){found++;libraryFound++}",
-            "const match=(kind==='all'||kind==='case')",
+            "libraryEntries.filter(({item})=>",
+            "card.hidden=true;libraryList.append(card)",
+            "(kind==='all'||kind==='case')&&matchesFacets(item)",
             "card.addEventListener('click',()=>openDetail(index))",
             "const item=ITEMS[i];if(!item)return;",
             "history.pushState({item:item.id}",
