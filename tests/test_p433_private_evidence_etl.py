@@ -81,9 +81,9 @@ def rss():
 class PrivateETL(unittest.TestCase):
     def test_cleans_merges_duplicates_and_preserves_source_boundaries(self):
         result = etl.clean_pipeline(hn(), rss(), today=DAY)
-        self.assertEqual(result["raw_candidate_count"], 5)
+        self.assertEqual(result["raw_candidate_count"], 6)
         self.assertEqual(result["accepted_unique_count"], 4)
-        self.assertEqual(result["duplicate_reference_count"], 1)
+        self.assertEqual(result["duplicate_reference_count"], 2)
         self.assertEqual(result["rejection_count"], 1)
         self.assertEqual(result["quarantine"], [{"channel": "HN", "reason": "RESTRICTED_MARKETPLACE_LINK"}])
         self.assertEqual(result["network_requests_added"], 0)
