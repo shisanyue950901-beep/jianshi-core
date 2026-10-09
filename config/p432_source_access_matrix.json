@@ -9,7 +9,7 @@
       "source_url": "https://usefathom.com/blog/feed.xml",
       "policy_url": "https://usefathom.com/blog",
       "access": "OFFICIAL_PUBLISHER_OFFERED_RSS",
-      "automated_fetch": "ON_DEMAND_ONLY",
+      "automated_fetch": "DAILY_EXISTING_SCAN_SLOT_ONCE",
       "max_requests_per_run": 1,
       "max_items_per_run": 10,
       "max_response_bytes": 262144,
