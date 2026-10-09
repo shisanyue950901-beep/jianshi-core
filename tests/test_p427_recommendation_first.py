@@ -82,7 +82,8 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertEqual(page.count('<article class="rec-card'),3)
         self.assertTrue((ROOT/"web/dist/projects/carrd/index.html").exists())
         self.assertFalse((ROOT/"web/dist/projects/easlo/index.html").exists())
-        self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),7)
+        self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),8)
+        self.assertTrue((ROOT/"web/dist/sources/index.html").is_file())
 
 if __name__=="__main__":
     unittest.main()
