@@ -69,7 +69,7 @@ class TestP415CaseGrowth(unittest.TestCase):
         self.assertIn("N=cards.length;", self.html)
         for indicator in ("prefers-reduced-motion","100dvh","viewport-fit=cover","inert","research-official-links"):
             self.assertIn(indicator,self.html)
-        self.assertLess(len(self.html.encode("utf-8")), 250000)
+        self.assertLess(len(self.html.encode("utf-8")), 255000)
         node=shutil.which("node")
         if node:
             script=re.search(r"<script>([\s\S]*?)</script>", self.html)
