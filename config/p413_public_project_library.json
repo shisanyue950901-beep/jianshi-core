@@ -2,7 +2,7 @@
   "version": "P4.13-REAL-LIBRARY-V1",
   "status": "EDITORIALLY_RESEARCHED_NOT_FINANCIALLY_VERIFIED",
   "verified_on": "2026-10-09",
-  "description": "十个独立查阅第一方官网的具名业务条目，与受保护商业挂牌样本不关联。仅能确认产品/业务存在和公开收费机制，不代表销量净利验证。",
+  "description": "十个独立查阅第一方官网的具名业务条目，官方主页与公开核对依据分开提供；不关联受保护商业挂牌样本。产品/公开收费机制不等于收入净利验证。",
   "public_policy": {
     "no_marketplace_reidentification": true,
     "verified_public_offers_only": true,
@@ -35,7 +35,8 @@
       ],
       "learning": "观察免费产品如何让用户先完成网站，再用明确功能差异获得升级付费。",
       "sourceUrl": "https://carrd.com/docs/pro/plans",
-      "model": "saas"
+      "model": "saas",
+      "officialHomeUrl": "https://carrd.com/"
     },
     {
       "id": "tally",
@@ -61,7 +62,8 @@
       ],
       "learning": "观察高可用的免费核心功能与面向专业用户的功能分层。",
       "sourceUrl": "https://tally.so/pricing",
-      "model": "saas"
+      "model": "saas",
+      "officialHomeUrl": "https://tally.so/"
     },
     {
       "id": "thomas-frank",
@@ -87,7 +89,8 @@
       ],
       "learning": "研究数字产品为什么需要说明书、更新指南和售后支持，而不只是交付一份文件。",
       "sourceUrl": "https://thomasjfrank.com/brain/",
-      "model": "digital"
+      "model": "digital",
+      "officialHomeUrl": "https://thomasjfrank.com/"
     },
     {
       "id": "joanna-penn",
@@ -113,7 +116,8 @@
       ],
       "learning": "观察独立作者如何把作品目录、读者关系和作者教育组合经营；不把它当作所有作者的典型收入样本。",
       "sourceUrl": "https://www.thecreativepenn.com/about/",
-      "model": "kdp"
+      "model": "kdp",
+      "officialHomeUrl": "https://www.thecreativepenn.com/"
     },
     {
       "id": "nerdwallet",
@@ -139,7 +143,8 @@
       ],
       "learning": "研究金融内容网站如何解释推荐与商业合作关系，以及披露对用户信任的重要性。",
       "sourceUrl": "https://www.nerdwallet.com/our-partners",
-      "model": "content"
+      "model": "content",
+      "officialHomeUrl": "https://www.nerdwallet.com/"
     },
     {
       "id": "the-points-guy",
@@ -165,7 +170,8 @@
       ],
       "learning": "观察垂直内容如何围绕强决策需求组织主题，并在商业化内容上进行明确披露。",
       "sourceUrl": "https://thepointsguy.com/about",
-      "model": "content"
+      "model": "content",
+      "officialHomeUrl": "https://thepointsguy.com/"
     },
     {
       "id": "beardbrand",
@@ -191,7 +197,8 @@
       ],
       "learning": "观察聚焦细分人群的品牌如何用多个商品系列满足相关需求。",
       "sourceUrl": "https://www.beardbrand.com/collections/all-products-collection",
-      "model": "fba"
+      "model": "fba",
+      "officialHomeUrl": "https://www.beardbrand.com/"
     },
     {
       "id": "ugmonk",
@@ -217,7 +224,8 @@
       ],
       "learning": "观察单一核心使用场景如何延伸为主产品、配件和持续补充耗材。",
       "sourceUrl": "https://ugmonk.com/",
-      "model": "fba"
+      "model": "fba",
+      "officialHomeUrl": "https://ugmonk.com/"
     },
     {
       "id": "designjoy",
@@ -243,7 +251,8 @@
       ],
       "learning": "研究以服务范围、响应速度和任务队列定义产品化服务，而不是把“无限请求”等同于无限产能。",
       "sourceUrl": "https://www.designjoy.co/",
-      "model": "agency"
+      "model": "agency",
+      "officialHomeUrl": "https://www.designjoy.co/"
     },
     {
       "id": "manypixels",
@@ -269,7 +278,8 @@
       ],
       "learning": "观察服务产品如何按交付能力和响应层级定价；该案例有团队流程，不是单人服务模板。",
       "sourceUrl": "https://www.manypixels.co/pricing",
-      "model": "agency"
+      "model": "agency",
+      "officialHomeUrl": "https://www.manypixels.co/"
     }
   ]
 }
