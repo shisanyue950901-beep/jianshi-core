@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="见势公开商业证据研究：技术供给、商业挂牌、需求缺口及研究门槛，区分已观察证据与未独立核实的经营事实。">
+<meta name="referrer" content="no-referrer"><title>商业证据研究｜见势 JIANSHI</title>
+<link rel="canonical" href="https://jianshi-bua.pages.dev/validation/">
+<style>
+:root{--bg:#f7f6f1;--ink:#202823;--dim:#59615a;--line:rgba(32,40,35,.2);--panel:#fffefa;--accent:#286b56;color-scheme:light}
+html[data-theme=dark]{--bg:#080a09;--ink:#f4f2ef;--dim:#adaeaa;--line:rgba(244,242,239,.25);--panel:#141715;--accent:#86b4a3;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.75}
+a{color:inherit}button{font:inherit;cursor:pointer}a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1180px;margin:auto;padding:22px clamp(18px,4vw,50px);border-bottom:1px solid var(--line)}
+.logo{text-decoration:none;font:500 28px Georgia,"Songti SC",serif}.logo small{font:600 10px Inter,sans-serif;letter-spacing:.17em;display:block;color:var(--dim)}
+.nav{display:flex;gap:20px;align-items:center}.nav a{font-size:13px}.nav button{border:1px solid var(--line);color:var(--ink);background:none;border-radius:6px;padding:8px 12px}
+main{max-width:1180px;margin:auto;padding:clamp(45px,6vw,96px) clamp(18px,4vw,50px) 100px}
+.kicker{font-size:12px;letter-spacing:.18em;font-weight:700;color:var(--accent)}
+h1,h2,h3,p{margin-top:0}h1{max-width:870px;font:500 clamp(41px,6vw,78px)/1.2 Georgia,"Songti SC",serif;letter-spacing:-.025em;margin:12px 0 22px}
+.lead{max-width:820px;color:var(--dim);font-size:clamp(16px,1.7vw,19px);line-height:1.95;margin-bottom:33px}
+.note{padding:18px 22px;border-left:3px solid var(--accent);background:var(--panel);color:var(--dim);font-size:14px}
+.sectionhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:24px;margin:76px 0 26px}
+.sectionhead h2{font:500 clamp(29px,3.5vw,47px)/1.3 Georgia,"Songti SC",serif;margin:0}.sectionhead p{color:var(--dim);font-size:13px;margin:0}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:28px 0}.fact{background:var(--panel);border:1px solid var(--line);padding:24px}.fact strong{display:block;font-size:31px;font-weight:600;line-height:1.4}.fact span{font-size:13px;color:var(--dim)}
+.legend{display:flex;gap:20px;flex-wrap:wrap;color:var(--dim);font-size:13px;margin:20px 0 24px}.legend b{font-size:15px;color:var(--ink)}
+.list{display:grid;gap:14px}.record{border:1px solid var(--line);background:var(--panel);padding:clamp(20px,3vw,30px)}.rec-top{display:flex;gap:14px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.record h3{font:500 clamp(23px,2.5vw,30px)/1.4 Georgia,"Songti SC",serif;margin:0}.status{font-weight:700;font-size:13px;color:var(--accent)}
+.status.pending{color:var(--dim)}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:23px 0 18px}
+.metric{border-top:1px solid var(--line);padding-top:12px}.metric b{display:block;font-size:clamp(24px,3vw,34px);font-variant-numeric:tabular-nums}.metric span{font-size:13px;color:var(--dim)}
+.record .why{margin:0;color:var(--dim);font-size:14px}.muted{color:var(--dim);font-size:14px}
+.workflow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.step{border:1px solid var(--line);padding:24px;background:var(--panel)}
+.step small{color:var(--accent);font-weight:700}.step h3{font-size:18px;margin:12px 0 9px}.step p{font-size:14px;color:var(--dim);margin:0}
+footer{border-top:1px solid var(--line);padding:25px 0;margin-top:90px;color:var(--dim);font-size:12px}
+@media(max-width:700px){.facts,.workflow{grid-template-columns:1fr}.metrics{gap:8px}.metric b{font-size:24px}.nav{gap:8px}.top{padding:15px 18px}.record{padding:19px}.nav a{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head>
+<body><header class="top"><a class="logo" href="/">见势<small>JIANSHI · RESEARCH</small></a><nav class="nav" aria-label="网站导航"><a href="/#archive">项目库</a><button id="themeButton" type="button" aria-pressed="false">深色模式</button></nav></header>
+<main><span class="kicker">COMMERCIAL EVIDENCE / 商业证据</span>
+<h1>有证据的方向，<br>才值得继续研究。</h1>
+<p class="lead">不是列出更多海外公司，而是回答三个问题：有没有相关产品在开发？有没有同类生意公开披露经营活动？还有哪些重要事实没有得到验证？</p>
+<div class="note"><b>如何理解“达到研究门槛”？</b> 只表示同一业务类别下，技术供给与商业挂牌证据同时存在，并通过当前有效性规则。它不表示榜上某家公司已实现盈利，也不代表披露财务经过独立审计。</div>
+<section aria-labelledby="overview"><div class="sectionhead"><h2 id="overview">证据全貌</h2><p id="freshness" role="status" aria-live="polite">正在读取公开研究汇总…</p></div>
+<div class="facts"><div class="fact"><strong id="dirCount">—</strong><span>观察方向</span></div><div class="fact"><strong id="passCount">—</strong><span>达到证据类别门槛</span></div><div class="fact"><strong id="missingCount">—</strong><span>尚未满足门槛</span></div></div>
+<p class="muted">数据是业务类别的汇总，并非具名企业的收入明细；一次观察、一次挂牌或多个技术仓库都不自动等于成功创业案例。</p>
+</section>
+<section aria-labelledby="categories"><div class="sectionhead"><h2 id="categories">方向证据对照</h2><p>先看商业证据，再看技术热度</p></div>
+<div class="legend"><span><b>技术证据</b>：相关开源供给</span><span><b>商业证据</b>：相关挂牌披露</span><span><b>需求证据</b>：独立需求类别</span></div>
+<div class="list" id="evidenceList" aria-live="polite"><p>正在整理可公开的汇总数据…</p></div>
+</section>
+<section aria-labelledby="how"><div class="sectionhead"><h2 id="how">商业验证三步法</h2><p>从方向证据到具体项目，不能跳级</p></div>
+<div class="workflow"><div class="step"><small>01 / 产品存在</small><h3>能否找到真实产品？</h3><p>独立官网、功能说明、产品列表和收费方案可证明公开供应，但不能证明成交。</p></div><div class="step"><small>02 / 类别商业证据</small><h3>同类业务是否有人经营？</h3><p>可合规使用的市场挂牌披露说明有观察样本；报价不等于成交价，利润不等于审计结果。</p></div><div class="step"><small>03 / 可复制性验证</small><h3>真正难在哪里？</h3><p>需求强度、获客成本、真实客户、复购、净利润、运营资源尚需独立证据。不能从同类推导个体。</p></div></div>
+</section>
+<section aria-labelledby="limitations"><div class="sectionhead"><h2 id="limitations">研究边界</h2></div><p class="muted">技术证据和商业证据为两类不同观察：同类市场样本不能被归属到任一具名项目。公开研究数字不是用户数、实际销量或审计利润。缺失证据显示为“待补”，不隐含零利润。当前没有可计入这六个方向的独立需求证据。</p>
+<a href="/#archive">继续查看具名项目与官方产品依据 →</a></section>
+<footer>见势 JIANSHI · 公开研究摘要 · 仅供信息研究。<a href="/privacy/">隐私说明</a> · <a href="/">返回首页</a></footer>
+</main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),html=document.documentElement;
+let theme='light';try{if(localStorage.getItem('jianshi-theme')==='dark')theme='dark'}catch(_){}
+function setTheme(next,persist){theme=next;html.dataset.theme=next;const b=$('themeButton');b.textContent=next==='light'?'深色模式':'浅色模式';b.setAttribute('aria-pressed',String(next==='dark'));if(persist)try{localStorage.setItem('jianshi-theme',next)}catch(_){}}
+setTheme(theme,false);$('themeButton').addEventListener('click',()=>setTheme(theme==='light'?'dark':'light',true));
+const base=[
+['creator-media','创作者媒体资产',101,33,0,true],
+['ecommerce-brands','轻量电商品牌与 Amazon 资产',50,109,0,true],
+['solo-saas','一人公司 SaaS',51,6,0,true],
+['affiliate-content','联盟营销与内容资产',13,16,0,true],
+['llm-tools','LLM 应用与工具',50,0,0,false],
+['ai-agent-tools','AI Agent 工具与自动化',50,0,0,false]
+];
+const snapshot='2026-10-09T00:45:00Z';
+const allowed=new Map(base.map(x=>[x[0],x[1]]));
+const limits={max:100000,min:0};
+const validNumber=n=>Number.isSafeInteger(n)&&n>=limits.min&&n<=limits.max;
+function clean(input){
+if(!input||!Array.isArray(input.items)||input.items.length!==6)return null;
+const result=[];
+for(const x of input.items){if(!x||!allowed.has(x.slug)||result.some(y=>y.slug===x.slug)||typeof x.public_ready!=='boolean')return null;
+const ts=Date.parse(x.score_updated_at);
+if(!Number.isFinite(ts)||ts>Date.now()+86400000)return null;
+const tech=x.technical_evidence_count,commercial=x.commercial_evidence_count,demand=x.demand_evidence_count;
+if(![tech,commercial,demand].every(validNumber)||!['TECH_PLUS_COMMERCIAL','TECHNICAL_ONLY','COMMERCIAL_ONLY','INSUFFICIENT'].includes(x.validation_class))return null;
+if(x.public_ready&&(tech===0||commercial===0))return null;
+result.push({slug:x.slug,title:allowed.get(x.slug),tech,commercial,demand,ready:x.public_ready,at:new Date(ts).toISOString()})}
+return result.length===6?result:null;
+}
+function initial(){return base.map(([slug,title,tech,commercial,demand,ready])=>({slug,title,tech,commercial,demand,ready,at:snapshot}))}
+function el(tag,cls,value){const o=document.createElement(tag);if(cls)o.className=cls;if(value!==undefined)o.textContent=String(value);return o}
+function render(items,live){const ready=items.filter(x=>x.ready).length;
+$('dirCount').textContent=String(items.length);$('passCount').textContent=ready+'/'+items.length;$('missingCount').textContent=String(items.length-ready);
+const at=items.map(x=>x.at).sort().at(-1);const date=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',dateStyle:'medium',timeStyle:'short'}).format(new Date(at));
+$('freshness').textContent=(live?'实时读取公开汇总 · ':'历史审核快照（非实时） · ')+date;
+const list=$('evidenceList');list.replaceChildren();
+items.sort((a,b)=>Number(b.ready)-Number(a.ready)||b.commercial-a.commercial).forEach(x=>{
+const article=el('article','record'),top=el('div','rec-top'),title=el('h3','',x.title);
+const state=el('span','status'+(x.ready?'':' pending'),x.ready?'已达到证据门槛':'商业证据待补');
+top.append(title,state);const metrics=el('div','metrics');
+[['技术证据',x.tech],['商业证据',x.commercial],['需求证据',x.demand]].forEach(([label,count])=>{const m=el('div','metric');m.append(el('b','',count),el('span','',label));metrics.append(m)});
+const explanation=x.ready?'同类技术与商业挂牌证据均存在；但不能据此证明某家企业盈利。':'目前缺少同时支持的商业证据，不能列为商业验证通过。';
+article.append(top,metrics,el('p','why',explanation));list.append(article)
+});
+}
+render(initial(),false);
+const endpoint='https://dalfvgehosxfyxkptxwx.supabase.co/functions/v1/public-feed?view=catalog';
+const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),7000);
+fetch(endpoint,{method:'GET',mode:'cors',credentials:'omit',cache:'no-store',signal:controller.signal})
+.then(r=>{if(!r.ok)throw Error('HTTP');return r.json()})
+.then(raw=>{const items=clean(raw);if(!items)throw Error('invalid aggregate');render(items,true)})
+.catch(()=>{$('freshness').textContent+=' · 在线更新暂不可用'})
+.finally(()=>clearTimeout(timeout));
+})();
+</script></body></html>
