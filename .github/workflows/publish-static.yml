@@ -126,6 +126,9 @@ jobs:
             python scripts/research/p426_daily_leads.py --network --max-companies 6 --output "$RUNNER_TEMP/p426_research_leads.json"
             # R2 indexes the same private lead file offline: zero additional requests.
             python scripts/research/p430_company_evidence_review.py --leads "$RUNNER_TEMP/p426_research_leads.json" --output "$RUNNER_TEMP/p430_review_queue.json"
+            # P4.33: deterministic cleaning, provenance and exact-link dedup only.
+            # No additional HTTP calls, no public promotion, report retained privately.
+            python scripts/research/p433_private_evidence_etl.py --hn "$RUNNER_TEMP/p426_research_leads.json" --output "$RUNNER_TEMP/p433_clean_review.json"
           else
             echo "P426_DAILY_SCAN_SKIP_NOT_MIDNIGHT_SLOT"
           fi
@@ -138,6 +141,7 @@ jobs:
           path: |
             ${{ runner.temp }}/p426_research_leads.json
             ${{ runner.temp }}/p430_review_queue.json
+            ${{ runner.temp }}/p433_clean_review.json
           if-no-files-found: ignore
           retention-days: 2
 
