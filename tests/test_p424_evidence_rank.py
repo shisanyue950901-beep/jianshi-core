@@ -35,16 +35,16 @@ class TestP424EvidenceRanking(unittest.TestCase):
         p=subprocess.run([sys.executable,str(SCRIPT)],cwd=ROOT,text=True,capture_output=True,timeout=35)
         self.assertEqual(p.returncode,0,p.stderr)
         d=json.loads(p.stdout)
-        self.assertEqual(d["cases"],20)
+        self.assertEqual(d["cases"],3)
         directory=(ROOT/"web/dist/projects/index.html").read_text(encoding="utf-8")
         links=re.findall(r'<a href="/projects/([a-z0-9-]+)/" data-level="([1-4])"',directory)
-        self.assertEqual(len(links),20)
+        self.assertEqual(len(links),3)
         self.assertEqual(links[0],("nerdwallet","4"))
         self.assertEqual({x[0] for x in links[:3]},{"nerdwallet","carrd","plausible"})
         self.assertEqual(sum(1 for _,level in links if level=="4"),1)
         self.assertEqual(sum(1 for _,level in links if level=="3"),2)
-        self.assertEqual(sum(1 for _,level in links if level=="2"),2)
-        self.assertEqual(sum(1 for _,level in links if level=="1"),15)
+        self.assertEqual(sum(1 for _,level in links if level=="2"),0)
+        self.assertEqual(sum(1 for _,level in links if level=="1"),0)
         self.assertIn('data-sort="depth"',directory)
         self.assertIn('data-sort="gaps"',directory)
         self.assertIn("Number(a.dataset.level)-Number(b.dataset.level)",directory)
@@ -59,7 +59,7 @@ class TestP424EvidenceRanking(unittest.TestCase):
             "nerdwallet":("历史公司级财务：有监管披露","8.366 亿美元","sec.gov/Archives/edgar"),
             "carrd":("历史收入：创始人／企业公开自述","10 万美元 MRR","saasclub.io/podcast/carrd"),
             "plausible":("历史收入：创始人／企业公开自述","7,000 多位","plausible.io/blog/open-source-saas"),
-            "tally":("利润／经营成果：待独立核实","当前补证进度","tally.so"),
+
         }
         for slug,fragments in cases.items():
             x=(directory/slug/"index.html").read_text(encoding="utf-8")
@@ -68,6 +68,8 @@ class TestP424EvidenceRanking(unittest.TestCase):
             self.assertIn("不能算作某家企业的经营证明",x)
             self.assertNotIn("Empire Flippers",x)
             self.assertNotIn("listing_number",x)
+        self.assertFalse((directory/"tally/index.html").exists())
+        self.assertFalse((directory/"easlo/index.html").exists())
         self.assertNotIn("历史公司级财务：有监管披露",(directory/"carrd/index.html").read_text(encoding="utf-8"))
         self.assertNotIn("历史公司级财务：有监管披露",(directory/"plausible/index.html").read_text(encoding="utf-8"))
 

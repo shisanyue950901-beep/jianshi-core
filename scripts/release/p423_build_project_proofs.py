@@ -11,6 +11,7 @@ import json
 import re
 import shutil
 from collections import Counter
+from p425_public_admission import eligible_cases
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -245,7 +246,7 @@ def index_page(cases: list[dict]) -> str:
                      f'<span>{txt(item["desc"])}</span></a>')
     counts = " · ".join(f"{MODEL_LABELS[k]} {v}" for k,v in sorted(count.items()))
     body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
-<h1>20 个项目，<br>按真实证据分层排序。</h1>
+<h1>{len(cases)} 个正式项目，<br>只收录有经营证据的。</h1>
 <p class="lead">先确认项目实际公开了什么，再区分“产品存在”“收费方案”“实际成交”“独立核实的利润”。我们不会把同一行业的挂牌利润填到某个具名公司名下。</p>
 <div class="notice"><b>排名解释：</b>默认为资料证据的可核查层级（L4 监管申报历史财务、L3 企业历史自述、L2 平台第三方旁证、L1 官网产品及收费）。同等级按项目 ID 确定性排序，绝不按销售额、利润或创业成功率排名。少数项目已找到历史经营披露，但大多数企业的当前销量与获客成本尚无独立证据。</div>
 <p class="muted">分类：{txt(counts)}</p><div class="sort-controls" role="group" aria-label="项目证据排序"><button type="button" data-sort="depth" aria-pressed="true">证据层级优先</button><button type="button" data-sort="gaps" aria-pressed="false">待补证据优先</button></div><p class="muted" id="sortHelp" aria-live="polite">优先展示具有监管申报、历史经营自述或平台旁证的项目。排名不会代表投资价值。</p><label for="projectSearch">搜索项目名称或简介</label>
@@ -253,7 +254,7 @@ def index_page(cases: list[dict]) -> str:
 <p id="resultCount" aria-live="polite">{len(cases)} 个可查看的具名项目</p>
 <div class="directory" id="directory">{''.join(tiles)}</div>
 <section class="section"><h2>这些项目通过商业验证了吗？</h2>
-<p>20 个项目均有公开产品或收费依据。NerdWallet 有历史 SEC 申报的公司级财务记录；Carrd、Plausible 有历史创始人／企业经营自述。<b>其余多数项目仍无独立财务资料，这不等于没有经营活动。</b>行业方向的匿名挂牌数据不能自动证明任何具名企业盈利。</p>
+<p>正式收录项目均有可归属的商业经营披露：监管申报与创始人／企业历史自述按不同等级展示。<b>仅有官网、价格页、平台上架说明的项目均不进入正式收录榜。</b>行业匿名挂牌记录不能被归因到具名企业。</p>
 <a href="/validation/">查看行业商业证据与验证缺口 →</a></section>
 <script>
 (()=>{{const input=document.getElementById('projectSearch'),directory=document.getElementById('directory'),tiles=[...directory.querySelectorAll('a[data-level]')],count=document.getElementById('resultCount');
@@ -262,10 +263,11 @@ function filter(){{const q=input.value.trim().toLocaleLowerCase('zh-CN');let n=0
 buttons.forEach(btn=>btn.addEventListener('click',()=>{{const invert=btn.dataset.sort==='gaps';tiles.sort((a,b)=>(invert?Number(a.dataset.level)-Number(b.dataset.level):Number(b.dataset.level)-Number(a.dataset.level))||a.dataset.id.localeCompare(b.dataset.id));tiles.forEach((tile,i)=>{{tile.querySelector('small').textContent='#'+String(i+1).padStart(2,'0')+' · '+tile.querySelector('small').textContent.split(' · ').at(-1);directory.append(tile)}});buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));help.textContent=invert?'优先安排公开证据较少的项目开展后续核验；不是商业潜力排名。':'依据已归属的证据层级排序；同层稳定排列，不是盈利或成功率排名。';filter()}}));
 input.addEventListener('input',filter) }})();
 </script>"""
-    return shell("20 个具名项目证据档案", "项目的公开产品、收费依据、独立验证缺口及原始官方页面", body, "/projects/")
+    return shell(f"{len(cases)} 个有经营证据的项目", "只正式收录可归属的商业经营披露，区分监管财报与历史企业自述", body, "/projects/")
 
 def build() -> dict:
-    cases = parse_cases()
+    all_cases = parse_cases()
+    cases = eligible_cases(all_cases)
     if DEST.exists():
         shutil.rmtree(DEST)
     DEST.mkdir(parents=True, exist_ok=True)
@@ -275,14 +277,14 @@ def build() -> dict:
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(project_page(item), encoding="utf-8")
     paths = [p for p in DEST.rglob("index.html")]
-    if len(paths) != 21:
-        raise RuntimeError("Expected one listing and 20 individual dossiers")
+    if len(paths) != len(cases) + 1:
+        raise RuntimeError("Published profile count mismatches strict evidence admission")
     for path in paths:
         page=path.read_text(encoding="utf-8")
         for forbidden in ["Empire Flippers","listing_number","public_title","source_url","OPP_V0.2"]:
             if forbidden.lower() in page.lower():
                 raise RuntimeError("Protected source term in dossier: "+str(path))
-    return {"status":"PASS","cases":len(cases),"public_pages":len(paths)}
+    return {"status":"PASS","cases":len(cases),"public_pages":len(paths),"held_for_research":len(all_cases)-len(cases)}
 
 if __name__=="__main__":
     print(json.dumps(build(),ensure_ascii=False))

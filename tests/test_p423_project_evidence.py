@@ -19,15 +19,16 @@ class TestP423NamedEvidence(unittest.TestCase):
         p=subprocess.run([sys.executable,str(SCRIPT)],cwd=ROOT,text=True,capture_output=True,timeout=30)
         self.assertEqual(p.returncode,0,p.stderr)
         report=json.loads(p.stdout)
-        self.assertEqual(report["cases"],20)
-        self.assertEqual(report["public_pages"],21)
+        self.assertEqual(report["cases"],3)
+        self.assertEqual(report["held_for_research"],17)
+        self.assertEqual(report["public_pages"],4)
         html=(DIST/"projects/index.html").read_text(encoding="utf-8")
-        self.assertEqual(len(re.findall(r'href="/projects/[a-z0-9-]+/"',html)),20)
+        self.assertEqual(len(re.findall(r'href="/projects/[a-z0-9-]+/"',html)),3)
         self.assertIn("产品存在",html)
         self.assertIn("待补证据优先",html)
         self.assertIn("证据层级优先",html)
         profiles=list((DIST/"projects").glob("*/index.html"))
-        self.assertEqual(len(profiles),20)
+        self.assertEqual(len(profiles),3)
         for p in profiles:
             s=p.read_text(encoding="utf-8")
             for marker in ("官方依据","收费机制：有公开说明","真实交易／客户：待独立核实",
@@ -54,15 +55,12 @@ class TestP423NamedEvidence(unittest.TestCase):
             self.assertNotIn("OPP_V0.2",s)
 
     def test_first_two_cases_get_only_audited_official_context(self):
-        easlo=(DIST/"projects/easlo/index.html").read_text(encoding="utf-8")
-        louise=(DIST/"projects/louise/index.html").read_text(encoding="utf-8")
-        self.assertIn("https://www.notion.com/templates/creators/easlo",easlo)
-        self.assertIn("https://www.aboutamazon.com/news/books-and-authors/",louise)
-        self.assertIn("不能推断当前版税",louise)
-        for x in [easlo,louise]:
-            self.assertIn("2026-10-08",x)
-            self.assertIn("不使用行业匿名挂牌推断它的收入",x)
-            self.assertIn("尚无该项目可计入的需求实证",x)
+        self.assertFalse((DIST/"projects/easlo/index.html").exists())
+        self.assertFalse((DIST/"projects/louise/index.html").exists())
+        self.assertFalse((DIST/"projects/tally/index.html").exists())
+        internal=(ROOT/"config/p424_project_research_evidence.json").read_text(encoding="utf-8")
+        self.assertIn("notion.com/templates/creators/easlo",internal)
+        self.assertIn("aboutamazon.com/news/books-and-authors",internal)
 
     def test_new_cases_and_home_detail_links_are_unchanged(self):
         self.assertIn("'/projects/'+item.id+'/'",HTML)
@@ -76,7 +74,7 @@ class TestP423NamedEvidence(unittest.TestCase):
         self.assertIn("from p423_build_project_proofs import build as build_project_proofs",release)
         self.assertIn('project_result = build_project_proofs()',release)
         self.assertIn('DEST = ROOT / "web/dist/projects"',SCRIPT.read_text(encoding="utf-8"))
-        self.assertIn("project_result[\"cases\"] != 20",release)
+        self.assertIn('project_result["cases"] != len(approved)',release)
         self.assertIn('OUTPUT = ROOT / "web" / "dist"',release)
 
 if __name__=="__main__":
