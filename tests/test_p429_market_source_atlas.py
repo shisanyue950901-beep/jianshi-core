@@ -74,7 +74,8 @@ class MarketSourceAtlasTest(unittest.TestCase):
         self.assertIn("尚未获得批量抓取及转载许可",html)
         self.assertIn("原作者官方文章",html)
         self.assertEqual(html.count('class="source"'),4)
-        self.assertIn("Helploom",html)
+        self.assertIn("一人软件产品的经营与出售访谈",html)
+        self.assertNotIn("Helploom",html)
         self.assertNotIn('href="/projects/helploom/"',html)
         self.assertNotIn("已经验证利润",html)
         for forbidden in ("app.acquire.com/public/","flippa.com/buy/","listing_number",
