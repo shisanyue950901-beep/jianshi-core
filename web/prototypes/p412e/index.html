@@ -24,7 +24,7 @@
 .compare__choices button{font-size:14px;font-weight:500;color:var(--ink);background:var(--panel);border-radius:7px;padding:0 16px;transition:background .15s,border-color .15s}
 .compare__choices button[aria-pressed=true]{color:var(--ink);background:color-mix(in srgb,var(--accent) 16%,var(--bg));border:2px solid var(--accent);font-weight:650}
 .compare__choices button:hover{border-color:var(--accent)}.compare__choices button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.compare__quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:19px 0 25px}
+.compare__quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:15px;margin:15px 0 25px}.compare__summary-title{font-size:18px;font-weight:650;margin:30px 0 0}
 .compare__quickcard{border:1px solid var(--line);background:var(--panel);padding:clamp(18px,2.3vw,28px);display:flex;flex-direction:column;gap:12px;min-width:0}
 .compare__quickcard h3{font-size:clamp(20px,2vw,28px);font-weight:600;line-height:1.35;margin:0}.compare__quickcard strong{font-size:17px;color:var(--accent)}.compare__quickcard span{font-size:14px}.compare__quickcard p{color:var(--dim);font-size:14px;line-height:1.7;margin:0}
 .compare__details summary{cursor:pointer;min-height:48px;padding:12px 0;color:var(--accent);font-size:14px;font-weight:600}
@@ -126,7 +126,7 @@
 <p class="compare__intro">选择两至三种商业模式，比较提供什么、向谁收费和通常要做哪些工作。这里不比较未经核实的企业利润。</p>
 <div class="compare__choices" id="compareChoices" role="group" aria-label="选择要比较的商业模式"></div>
 <div class="compare__notice" id="compareNotice" role="status" aria-live="polite"></div>
-<div class="compare__quick" id="compareQuick" aria-label="商业模式速览"></div><details class="compare__details" id="compareDetails"><summary>展开完整五维对照 ↓</summary><div class="compare__overflow" id="compareOverflow" role="region" aria-label="商业模式对比表" tabindex="0">
+<h3 class="compare__summary-title" id="compareSummaryTitle" hidden>一眼看懂：主要收入与日常工作</h3><div class="compare__quick" id="compareQuick" aria-label="商业模式速览"></div><details class="compare__details" id="compareDetails"><summary>展开完整五维对照 ↓</summary><div class="compare__overflow" id="compareOverflow" role="region" aria-label="商业模式对比表" tabindex="0">
 <table><caption class="sr">商业模式对比</caption><thead><tr id="compareHead"></tr></thead><tbody id="compareBody"></tbody></table>
 </div></details>
 <p class="compare__small">商业模式的常见做法不等于具体公司的真实经营表现，实际成本与收入应逐项核实。</p>
@@ -614,7 +614,7 @@ compareBody.appendChild(row);
 const quick=$('compareQuick');quick.replaceChildren();
 selected.forEach((item,i)=>{const info=tips[item.id],card=document.createElement('article');card.className='compare__quickcard';
 card.append(cell('h3',String(i+1).padStart(2,'0')+' · '+item.title),cell('strong','主要收入：'+info[0]),cell('span','主要工作：'+info[1]),cell('p',item.desc));quick.append(card)});
-quick.hidden=selected.length<2;$('compareDetails').hidden=selected.length<2;
+quick.hidden=selected.length<2;$('compareSummaryTitle').hidden=selected.length<2;$('compareDetails').hidden=selected.length<2;
 text(notice,selected.length<2?'再选一种就能开始对比。':'已选择 '+selected.length+'/3 种 · 点击已选项可取消，先看摘要再展开详细表格。');
 compareChoices.querySelectorAll('button').forEach(btn=>{const active=picked.has(btn.dataset.id),item=modes.find(x=>x.id===btn.dataset.id);
 btn.setAttribute('aria-pressed',String(active));btn.textContent=(active?'✓ 已选 · ':'＋ ')+item.title;
