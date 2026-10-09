@@ -77,6 +77,16 @@ class TestP426Digests(unittest.TestCase):
         self.assertEqual(html.count("data:image/webp;base64,"),8)
         self.assertLess(len(html.encode("utf-8"))+124,260000)
 
+    def test_sector_explanation_is_derived_from_actual_allowed_counts(self):
+        sector=(ROOT/"web/prototypes/p422/evidence.html").read_text(encoding="utf-8")
+        self.assertIn('id="quickReadTitle"',sector)
+        self.assertIn('id="quickRead" role="status"',sector)
+        self.assertIn("const demandTotal=items.reduce((sum,x)=>sum+x.demand,0)",sector)
+        self.assertIn("六类方向尚无可计入的独立需求证据",sector)
+        self.assertIn("不证明其中任意一家具体公司的销售或盈利",sector)
+        self.assertIn("render(initial(),false)",sector)
+        self.assertIn("render(items,true)",sector)
+
     def test_daily_scan_is_bounded_does_not_touch_public_ledger(self):
         before=(ROOT/"config/p424_project_research_evidence.json").read_text(encoding="utf-8")
         report=scanner.run(date(2026,10,9),6,False)
