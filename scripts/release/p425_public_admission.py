@@ -138,6 +138,48 @@ def public_home(source: str, cases: list[dict]) -> str:
         if old not in source:
             raise RuntimeError("Homepage copy / data contract changed: " + old[:60])
         source = source.replace(old, new)
+    # The public directory must be evergreen even when a new month starts.
+    # Today/week/month filters remain optional editorial audit-date views.
+    original_tabs = 'data-rank-period="today"'
+    if source.count(original_tabs) != 1:
+        raise RuntimeError("No stable time-filter markup")
+    source = source.replace(
+        '<button type="button" data-rank-period="today"',
+        '<button type="button" data-rank-period="all" aria-pressed="true">全部证据</button>'
+        '<button type="button" data-rank-period="today"', 1
+    )
+    source = source.replace('data-rank-period="month" aria-pressed="true"',
+                            'data-rank-period="month" aria-pressed="false"', 1)
+    if "let kind='all',rankPeriod='month'" not in source:
+        raise RuntimeError("Time period defaults changed")
+    source = source.replace("let kind='all',rankPeriod='month'",
+                            "let kind='all',rankPeriod='all'", 1)
+    old_since = "const since=rankPeriod==='today'?today:rankPeriod==='week'?monday.toISOString().slice(0,10):today.slice(0,7)+'-01';"
+    if source.count(old_since) != 1:
+        raise RuntimeError("Unexpected time filter implementation")
+    source = source.replace(old_since,
+        "const since=rankPeriod==='all'?'0000-01-01':rankPeriod==='today'?today:rankPeriod==='week'?monday.toISOString().slice(0,10):today.slice(0,7)+'-01';", 1)
+
+    # On each public rank row, link to the *company's attributable* operating
+    # evidence dossier, not only to generic product/price pages.
+    labels = {case["id"]: ("监管历史财报" if case["evidence_level"]==4 else "历史经营自述")
+              for case in cases}
+    source_key = "const LIBRARY_CASES=[...EXTRA_CASES,...P415_CASES];"
+    if source.count(source_key) != 1:
+        raise RuntimeError("Lost named public rank builder")
+    source = source.replace(
+        source_key,
+        "const PUBLIC_EVIDENCE_LABELS=" + json.dumps(labels, ensure_ascii=False, separators=(",", ":"))
+        + ";" + source_key, 1
+    )
+    render_key = "row.append(card,src);"
+    if source.count(render_key) != 1:
+        raise RuntimeError("Lost row source-links renderer")
+    source = source.replace(render_key,
+        "const proof=document.createElement('a');proof.href='/projects/'+item.id+'/';"
+        "proof.textContent=PUBLIC_EVIDENCE_LABELS[item.id]+' · 查看经营依据 ↗';"
+        "src.appendChild(proof);row.append(card,src);", 1)
+
     # Escape any unintended unapproved titles, names, references (not CSS
     # or generic educational model names).
     if any(name in source for name in ["Easlo｜", "Louise Lennox", "Tally｜", "Bellroy｜", "Gumroad｜"]):
