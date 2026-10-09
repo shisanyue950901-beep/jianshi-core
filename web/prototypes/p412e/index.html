@@ -505,7 +505,7 @@ const lightbox=$('lb');if(lightbox)lightbox.inert=!lbOpen;
 const splashNode=$('splash');if(splashNode)splashNode.inert=splashDone;
 }
 syncLock();
-const clamp=(x,min,max)=>Math.max(min,Math.min(max,x));
+  const clamp=(x,min,max)=>Math.max(min,Math.min(max,x));
 function text(el,value){el.textContent=value||''}
 const defer=(fn,ms)=>window.setTimeout(fn,ms);
 const safeFocus=el=>{if(el&&typeof el.focus==='function')el.focus({preventScroll:true})};
