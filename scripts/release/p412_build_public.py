@@ -13,6 +13,7 @@ import re
 from pathlib import Path
 from p423_build_project_proofs import build as build_project_proofs, parse_cases
 from p425_public_admission import admitted_ids, eligible_cases, public_home
+from p429_build_source_atlas import build as build_source_atlas
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
@@ -109,6 +110,12 @@ def build_release() -> dict:
     if project_result["cases"] != len(approved) or project_result["public_pages"] != len(approved) + 1:
         raise RuntimeError("Strict company-level evidence admission failed")
 
+    # Curated market research: links/independent interpretation only; license-gated
+    # marketplace listing feeds remain disabled with no network scraping.
+    market_sources = build_source_atlas()
+    if market_sources["sources"] != 6 or market_sources["editorial_reports"] != 4 or market_sources["listing_import_enabled"]:
+        raise RuntimeError("Unapproved market source import detected")
+
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
         "opportunities": "/#archive",
@@ -142,6 +149,7 @@ def build_release() -> dict:
         f"<url><loc>{SITE}/</loc></url>"
         f"<url><loc>{SITE}/privacy/</loc></url>"
         f"<url><loc>{SITE}/validation/</loc></url>"
+        f"<url><loc>{SITE}/sources/</loc></url>"
         f"<url><loc>{SITE}/projects/</loc></url>"
         + "".join(f"<url><loc>{SITE}/projects/{p.name}/</loc></url>" for p in sorted((OUTPUT/"projects").iterdir()) if p.is_dir())
         +         '</urlset>\n'
@@ -166,6 +174,7 @@ def build_release() -> dict:
         "inline_covers": 8,
         "evidence_dashboard": "validation/index.html",
         "named_project_dossiers": len(approved),
+        "curated_market_sources": market_sources["sources"],
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
         "production_deployed": False,
