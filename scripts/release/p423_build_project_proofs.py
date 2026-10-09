@@ -9,6 +9,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import shutil
 from collections import Counter
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -38,12 +39,13 @@ MODEL_LABELS = {
 }
 CSS = """
 :root{color-scheme:light;--bg:#f7f6f1;--ink:#202823;--muted:#59615a;--line:#c8c9c3;--panel:#fffefa;--accent:#286b56}
+html[data-theme=dark]{color-scheme:dark;--bg:#080a09;--ink:#f4f2ef;--muted:#adb0ab;--line:#51534f;--panel:#151814;--accent:#86b4a3}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.8 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
 a{color:var(--accent);text-underline-offset:4px}a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 header,main,footer{max-width:1050px;margin:auto;padding-inline:clamp(18px,4vw,52px)}
 header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding-block:23px;border-bottom:1px solid var(--line)}
 .logo{font:500 27px Georgia,"Songti SC",serif;color:var(--ink);text-decoration:none}
-header nav{display:flex;gap:16px;font-size:13px}main{padding-block:65px 90px}
+header nav{display:flex;gap:16px;font-size:13px;align-items:center}header button{background:var(--panel);color:var(--ink);border:1px solid var(--line);font:inherit;padding:8px 12px;min-height:42px}main{padding-block:65px 90px}
 .kicker{font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-size:12px}
 h1,h2,h3{font-weight:500}h1{font:500 clamp(39px,5vw,68px)/1.18 Georgia,"Songti SC",serif;letter-spacing:-.03em;margin:16px 0 25px}
 h2{font-size:25px;line-height:1.4}h3{font-size:17px;margin:0 0 7px}
@@ -122,14 +124,16 @@ def parse_cases() -> list[dict]:
                 raise RuntimeError("Missing required first-party or unknown evidence")
     return cases
 
+THEME_JS = """<script>(()=>{'use strict';const html=document.documentElement,button=document.getElementById('themeToggle');let current='light';try{if(localStorage.getItem('jianshi-theme')==='dark')current='dark'}catch(_){}function apply(next,persist){current=next;html.dataset.theme=next;button.textContent=next==='light'?'深色模式':'浅色模式';button.setAttribute('aria-pressed',String(next==='dark'));if(persist)try{localStorage.setItem('jianshi-theme',next)}catch(_){}}apply(current,false);button.addEventListener('click',()=>apply(current==='light'?'dark':'light',true));})();</script>"""
+
 def shell(title: str, desc: str, body: str, canonical: str) -> str:
-    return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+    return f"""<!doctype html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="referrer" content="no-referrer"><meta name="description" content="{txt(desc)}">
 <title>{txt(title)}｜见势 JIANSHI</title><link rel="canonical" href="{txt(SITE+canonical)}">
 <style>{CSS}</style></head><body><header><a class="logo" href="/">见势 JIANSHI</a>
-<nav aria-label="页面导航"><a href="/validation/">方向证据</a><a href="/projects/">具名项目</a><a href="/">首页</a></nav></header>
-<main>{body}</main><footer>见势 · 商业研究信息，不构成财务审计、投资建议或收益承诺。<a href="/privacy/">隐私说明</a></footer></body></html>"""
+<nav aria-label="页面导航"><a href="/validation/">方向证据</a><a href="/projects/">具名项目</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
+<main>{body}</main><footer>见势 · 商业研究信息，不构成财务审计、投资建议或收益承诺。<a href="/privacy/">隐私说明</a></footer>{THEME_JS}</body></html>"""
 
 def paragraphs(items: list[str]) -> str:
     return "<ul>"+"".join(f"<li>{txt(x)}</li>" for x in items)+"</ul>"
@@ -185,7 +189,7 @@ def index_page(cases: list[dict]) -> str:
 <p id="resultCount" aria-live="polite">{len(cases)} 个可查看的具名项目</p>
 <div class="directory" id="directory">{''.join(tiles)}</div>
 <section class="section"><h2>这些项目通过商业验证了吗？</h2>
-<p>现阶段只核对了公开的产品／服务及收费方式，**没有完成项目级独立成交与财务审计**。上一页的六类行业方向证据是另一层研究数据，不能自动用于证明这里任意企业已经盈利。</p>
+<p>现阶段只核对了公开的产品／服务及收费方式，<b>没有完成项目级独立成交与财务审计</b>。上一页的六类行业方向证据是另一层研究数据，不能自动用于证明这里任意企业已经盈利。</p>
 <a href="/validation/">查看行业商业证据与验证缺口 →</a></section>
 <script>
 (()=>{{const input=document.getElementById('projectSearch'),tiles=[...document.querySelectorAll('#directory a')],count=document.getElementById('resultCount');
@@ -195,6 +199,8 @@ input.addEventListener('input',()=>{{const q=input.value.trim().toLocaleLowerCas
 
 def build() -> dict:
     cases = parse_cases()
+    if DEST.exists():
+        shutil.rmtree(DEST)
     DEST.mkdir(parents=True, exist_ok=True)
     (DEST/"index.html").write_text(index_page(cases), encoding="utf-8")
     for item in cases:
