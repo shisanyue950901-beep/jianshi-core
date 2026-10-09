@@ -106,6 +106,16 @@ def evaluate(health: dict, clean: dict, index: dict, day: date) -> dict:
             raise ValueError("Malformed private history date") from None
         if not date(2020,1,1) <= first <= last <= day:
             raise ValueError("Future or inverted rolling history date")
+    # A current cleaned URL must survive into the rolling index; older
+    # fingerprints may also be present, but today's links cannot disappear.
+    for row in rows:
+        fingerprint=row.get("fingerprint")
+        canonical_url=row.get("canonical_url")
+        if (not isinstance(fingerprint,str) or not SHA256.fullmatch(fingerprint)
+                or not isinstance(canonical_url,str)
+                or hashlib.sha256(canonical_url.encode("utf-8")).hexdigest() != fingerprint
+                or fingerprint not in observed):
+            raise ValueError("Cleaned URL is missing from rolling history or fingerprint drift")
     prior = health.get("prior_index_restored")
     if type(prior) is not bool:
         raise ValueError("Invalid previous-index restoration flag")
