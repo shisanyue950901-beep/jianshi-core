@@ -161,10 +161,28 @@ def load_hn(document: dict, identities: dict, day: date) -> tuple[list[dict], li
                 "reference_url": discussion, "published_on": published_day(hit.get("published_at"), day),
                 "identity_hint": hint,
             })
+    attempted = document.get("network_requests_attempted")
+    successful = document.get("network_requests_successful")
+    failed = document.get("network_requests_failed")
+    health = document.get("scan_health")
+    # Legacy reports had no receipts; never infer HTTP success from online mode.
+    has_receipts = all(type(x) is int for x in (attempted, successful, failed))
+    if has_receipts:
+        if (not 0 <= successful <= attempted <= 7
+                or failed != attempted - successful
+                or (document["mode"] == "OFFLINE_DRY_RUN" and attempted != 0)
+                or health != ("NO_NETWORK_REQUESTS" if attempted == 0
+                              else "ALL_REQUESTS_FAILED" if successful == 0
+                              else "PARTIAL_HTTP_SUCCESS" if successful != attempted
+                              else "HTTP_REQUESTS_SUCCEEDED")):
+            raise ValueError("Contradictory HN HTTP receipt counters")
     return records, rejected, {
         "mode": document["mode"],
         "reported_candidate_errors": errors,
-        "successful_requests_confirmed": False,  # P4.26 reports no per-request HTTP receipts.
+        "http_requests_attempted": attempted if has_receipts else None,
+        "http_requests_successful": successful if has_receipts else None,
+        "scan_health": health if has_receipts else "LEGACY_UNVERIFIED_RECEIPTS",
+        "successful_requests_confirmed": bool(has_receipts and successful > 0),
     }
 
 
