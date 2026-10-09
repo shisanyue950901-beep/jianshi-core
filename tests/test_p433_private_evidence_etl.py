@@ -221,7 +221,9 @@ class PrivateETL(unittest.TestCase):
         self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
         self.assertIn("p433_private_evidence_etl.py --hn",wf)
         self.assertIn("p433_clean_review.json",wf)
-        self.assertNotIn("p432_publisher_rss_probe.py --online",wf)
+        self.assertEqual(wf.count("p432_publisher_rss_probe.py --online"), 1)
+        self.assertIn("p434_rolling_private_index.py build",wf)
+        self.assertIn("p434_hash_index.json",wf)
         source=(ROOT/"scripts/research/p433_private_evidence_etl.py").read_text(encoding="utf-8")
         for prohibited in ("urlopen(","requests.get(", "supabase.co","TinyFish","playwright"):
             self.assertNotIn(prohibited,source)
