@@ -29,7 +29,7 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertIn("<strong>0</strong>",html)
         self.assertIn("给我推荐",html)
         self.assertIn("直接看本期推荐研究",html)
-        self.assertEqual(html.count('class="rec-card'),3)
+        self.assertEqual(html.count('<article class="rec-card'),3)
         self.assertIn("不建议直接照搬",html)
 
     def test_order_separates_research_from_direct_startup_advice(self):
@@ -44,7 +44,7 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertIn("历史经营",html)
         self.assertIn("研究计划",html)
         self.assertIn("获客",html)
-        self.assertIn("不能证明新创业者可以复制",html)
+        self.assertIn("不证明新创业者可以复制",html)
         self.assertIn("先锁定一个更小的客户群",html)
 
     def test_evidence_is_only_admitted_individual_company_cases(self):
@@ -79,7 +79,7 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertEqual(r.returncode,0,r.stderr)
         page=(ROOT/"web/dist/index.html").read_text(encoding="utf-8")
         self.assertIn('id="recommendations"',page)
-        self.assertEqual(page.count('class="rec-card'),3)
+        self.assertEqual(page.count('<article class="rec-card'),3)
         self.assertTrue((ROOT/"web/dist/projects/carrd/index.html").exists())
         self.assertFalse((ROOT/"web/dist/projects/easlo/index.html").exists())
         self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),7)
