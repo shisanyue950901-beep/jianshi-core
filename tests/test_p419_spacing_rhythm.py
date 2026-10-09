@@ -39,6 +39,18 @@ class TestP419SpacingRhythm(unittest.TestCase):
         self.assertIn('data-theme="light"',HTML)
         self.assertIn("localStorage.setItem('jianshi-theme',next)",HTML)
 
+    def test_final_cloudflare_html_under_250kb(self):
+        # Mirror P4.12 public-only link/wording injection; test actual ship size.
+        html=HTML
+        self.assertIn("此文件为独立网站预览，不收集访客信息。",html)
+        html=html.replace("此文件为独立网站预览，不收集访客信息。",
+                          "本站暂不提供在线留言功能，也不会通过本页面收集访客信息。")
+        old='© 2026 见势 JIANSHI</span><a href="#top">'
+        self.assertIn(old,html)
+        html=html.replace(old,'© 2026 见势 JIANSHI</span><a href="/privacy/">隐私说明</a><a href="#top">')
+        html=html.replace("</head>",'<link rel="canonical" href="https://jianshi-bua.pages.dev/">'+chr(10)+'</head>',1)
+        self.assertLess(len(html.encode("utf-8")),250000)
+
     def test_content_motion_and_budget_are_frozen(self):
         self.assertEqual(HTML.count("data:image/webp;base64,"),8)
         self.assertEqual(HTML.count("<style>"),1)
