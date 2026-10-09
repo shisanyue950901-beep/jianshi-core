@@ -25,6 +25,14 @@ class TestP418TypographyAndHierarchy(unittest.TestCase):
         self.assertRegex(HTML,r'\.find__search\{height:50px;font:400 16px')
         self.assertRegex(HTML,r'\.archive-lead\{font:500 clamp\(')
 
+    def test_research_jump_restores_named_projects(self):
+        for marker in ('id="kindAll"','id="kindCase"','id="kindModel"',
+                       "querySelector('.archive-jump').addEventListener('click'",
+                       "kind='case';search.value=''",
+                       "facetControls.forEach(sel=>sel.value='')",
+                       "filterTiles();"):
+            self.assertIn(marker,HTML)
+
     def test_important_behavior_unchanged(self):
         self.assertIn('<html lang="zh-CN" data-theme="light">',HTML)
         self.assertIn('themeToggle.addEventListener',HTML)
