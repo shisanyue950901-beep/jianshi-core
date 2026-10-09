@@ -15,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
 SOURCE = ROOT / "web" / "prototypes" / "p412e" / "index.html"
+EVIDENCE = ROOT / "web" / "prototypes" / "p422" / "evidence.html"
 SITE = "https://jianshi-bua.pages.dev"
 SLUGS = {
     "vertical-industry-saas": "saas",
@@ -83,6 +84,19 @@ def build_release() -> dict:
     markup = markup.replace("</head>", f'<link rel="canonical" href="{SITE}/">\n</head>', 1)
     assert_safe_source(markup)
     (OUTPUT / "index.html").write_text(markup, encoding="utf-8")
+    # Separate public-only evidence dashboard. Never embed raw marketplace data
+    # or copy source directories, and do not change any production data pipeline.
+    evidence = EVIDENCE.read_text(encoding="utf-8")
+    if (evidence.count("<style>") != 1 or evidence.count("<script>") != 1
+            or "id=\"evidenceList\"" not in evidence or "商业证据" not in evidence):
+        raise RuntimeError("Invalid evidence dashboard contract")
+    for banned in ("Empire Flippers", "empireflippers", "listing_number",
+                   "source_url", "public_title", "source_ref_ids", "OPP_V0.2"):
+        if banned.lower() in evidence.lower():
+            raise RuntimeError("Evidence dashboard contains protected source identifiers")
+    proof = OUTPUT / "validation" / "index.html"
+    proof.parent.mkdir(parents=True, exist_ok=True)
+    proof.write_text(evidence, encoding="utf-8")
 
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
@@ -116,6 +130,7 @@ def build_release() -> dict:
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
         f"<url><loc>{SITE}/</loc></url>"
         f"<url><loc>{SITE}/privacy/</loc></url>"
+        f"<url><loc>{SITE}/validation/</loc></url>"
         '</urlset>\n'
     )
     (OUTPUT / "sitemap.xml").write_text(sitemap, encoding="utf-8")
@@ -136,6 +151,7 @@ def build_release() -> dict:
         "release": "P4.12",
         "output": "web/dist",
         "inline_covers": 8,
+        "evidence_dashboard": "validation/index.html",
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
         "production_deployed": False,
