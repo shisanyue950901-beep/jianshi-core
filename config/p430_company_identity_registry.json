@@ -1,0 +1,188 @@
+{
+  "version": "P430_PRIVATE_IDENTITY_REVIEW_V1",
+  "reviewed_on": "2026-10-09",
+  "scope": "Private editorial brand-to-domain claims. These mappings alone do not verify the legal entity, payment, revenue, or right to scrape.",
+  "legal_entity_default": "UNVERIFIED",
+  "companies": [
+    {
+      "id": "easlo",
+      "brand": "Easlo",
+      "official_domain": "easlo.co",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "louise",
+      "brand": "Louise Lennox",
+      "official_domain": "authorlouiselennox.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "carrd",
+      "brand": "Carrd",
+      "official_domain": "carrd.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "tally",
+      "brand": "Tally",
+      "official_domain": "tally.so",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "thomas-frank",
+      "brand": "Thomas Frank",
+      "official_domain": "thomasjfrank.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "joanna-penn",
+      "brand": "Joanna Penn",
+      "official_domain": "thecreativepenn.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "nerdwallet",
+      "brand": "NerdWallet",
+      "official_domain": "nerdwallet.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": "0001625278"
+    },
+    {
+      "id": "the-points-guy",
+      "brand": "The Points Guy",
+      "official_domain": "thepointsguy.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "beardbrand",
+      "brand": "Beardbrand",
+      "official_domain": "beardbrand.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "ugmonk",
+      "brand": "Ugmonk",
+      "official_domain": "ugmonk.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "designjoy",
+      "brand": "Designjoy",
+      "official_domain": "designjoy.co",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "manypixels",
+      "brand": "ManyPixels",
+      "official_domain": "manypixels.co",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "plausible",
+      "brand": "Plausible",
+      "official_domain": "plausible.io",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "fathom",
+      "brand": "Fathom Analytics",
+      "official_domain": "usefathom.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "buttondown",
+      "brand": "Buttondown",
+      "official_domain": "buttondown.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "kit",
+      "brand": "Kit",
+      "official_domain": "kit.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "payhip",
+      "brand": "Payhip",
+      "official_domain": "payhip.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "gumroad",
+      "brand": "Gumroad",
+      "official_domain": "gumroad.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "bellroy",
+      "brand": "Bellroy",
+      "official_domain": "bellroy.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    },
+    {
+      "id": "superside",
+      "brand": "Superside",
+      "official_domain": "superside.com",
+      "legal_entity": null,
+      "legal_entity_status": "UNVERIFIED",
+      "legal_identity_evidence_url": null,
+      "sec_cik": null
+    }
+  ]
+}
