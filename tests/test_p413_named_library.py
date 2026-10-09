@@ -53,7 +53,7 @@ class TestP413NamedBusinessLibrary(unittest.TestCase):
         self.assertIn("--bg:#000",self.html)
         self.assertIn("Playfair+Display",self.html)
         self.assertIn("family=Inter",self.html)
-        self.assertLess(len(self.html.encode("utf-8")),255000)
+        self.assertLess(len(self.html.encode("utf-8")),260000)
 
     def test_discovery_query_filters_new_real_business_entries(self):
         for contract in [

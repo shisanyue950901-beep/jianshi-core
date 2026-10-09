@@ -20,6 +20,16 @@
 .rank-sources a{color:var(--accent);min-height:44px;display:inline-flex;align-items:center;text-underline-offset:4px}
 .rank-more{border:1px solid var(--line);width:100%;margin-top:22px;font-size:14px;font-weight:600}.research-entry:hover,.research-entry:focus-visible{background:var(--panel)!important}
 @media(max-width:650px){.research-entry{grid-template-columns:34px 1fr;gap:7px 12px}.research-entry__pricing{grid-column:2;grid-row:auto}.research-entry__area,.research-entry strong,.research-entry__desc,.research-entry__foot{grid-column:2}.rank-sources{margin-left:46px}.research-library__heading p{max-width:100%}}
+
+.compare__choices button{font-size:14px;font-weight:500;color:var(--ink);background:var(--panel);border-radius:7px;padding:0 16px;transition:background .15s,border-color .15s}
+.compare__choices button[aria-pressed=true]{color:var(--ink);background:color-mix(in srgb,var(--accent) 16%,var(--bg));border:2px solid var(--accent);font-weight:650}
+.compare__choices button:hover{border-color:var(--accent)}.compare__choices button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.compare__quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:15px;margin:15px 0 25px}.compare__summary-title{font-size:18px;font-weight:650;margin:30px 0 0}
+.compare__quickcard{border:1px solid var(--line);background:var(--panel);padding:clamp(18px,2.3vw,28px);display:flex;flex-direction:column;gap:12px;min-width:0}
+.compare__quickcard h3{font-size:clamp(20px,2vw,28px);font-weight:600;line-height:1.35;margin:0}.compare__quickcard strong{font-size:17px;color:var(--accent)}.compare__quickcard span{font-size:14px}.compare__quickcard p{color:var(--dim);font-size:14px;line-height:1.7;margin:0}
+.compare__details summary{cursor:pointer;min-height:48px;padding:12px 0;color:var(--accent);font-size:14px;font-weight:600}
+.compare th,.compare td{font-size:15px;line-height:1.7;padding:22px 20px}.compare tbody th{font-weight:650;background:var(--panel);position:sticky;left:0;z-index:1}.compare thead th{font-size:20px;font-weight:600}.compare td{color:var(--ink)}.compare__money th,.compare__money td{background:color-mix(in srgb,var(--accent) 9%,var(--bg))}.compare__money td{font-weight:550}
+@media(max-width:760px){.compare__quick{grid-template-columns:1fr}.compare__quickcard{gap:9px}.compare th,.compare td{font-size:14px;padding:16px 12px}.compare tbody th{min-width:95px}}
 </style>
 </head>
 <body class="locked">
@@ -116,9 +126,9 @@
 <p class="compare__intro">选择两至三种商业模式，比较提供什么、向谁收费和通常要做哪些工作。这里不比较未经核实的企业利润。</p>
 <div class="compare__choices" id="compareChoices" role="group" aria-label="选择要比较的商业模式"></div>
 <div class="compare__notice" id="compareNotice" role="status" aria-live="polite"></div>
-<div class="compare__overflow" id="compareOverflow" role="region" aria-label="商业模式对比表" tabindex="0">
+<h3 class="compare__summary-title" id="compareSummaryTitle" hidden>一眼看懂：主要收入与日常工作</h3><div class="compare__quick" id="compareQuick" aria-label="商业模式速览"></div><details class="compare__details" id="compareDetails"><summary>展开完整五维对照 ↓</summary><div class="compare__overflow" id="compareOverflow" role="region" aria-label="商业模式对比表" tabindex="0">
 <table><caption class="sr">商业模式对比</caption><thead><tr id="compareHead"></tr></thead><tbody id="compareBody"></tbody></table>
-</div>
+</div></details>
 <p class="compare__small">商业模式的常见做法不等于具体公司的真实经营表现，实际成本与收入应逐项核实。</p>
 </section>
 
@@ -588,21 +598,27 @@ btn.append(title,subtitle);btn.addEventListener('click',()=>openDetail(item.numb
 });
 const picked=new Set(['digital','kdp']);
 const compareChoices=$('compareChoices'),notice=$('compareNotice'),compareHead=$('compareHead'),compareBody=$('compareBody');
-const fields=[['提供什么','offer'],['客户是谁','buyer'],['收费方式','revenue'],['经营环节','process'],['涉及成本','cost']];
+const fields=[['收费方式','revenue'],['提供什么','offer'],['客户是谁','buyer'],['经营环节','process'],['涉及成本','cost']];
 const cell=(tag,value)=>{const el=document.createElement(tag);el.textContent=value;return el};
+const tips={saas:['持续订阅','软件研发与维护'],digital:['单次购买','制作、交付与更新'],content:['广告与推荐佣金','内容制作与获客'],kdp:['图书销售结算','写作、编辑与发行'],fba:['商品销售','供应链与库存'],agency:['项目或服务合同','客户沟通与交付']};
 function drawCompare(){
 const selected=modes.filter(x=>picked.has(x.id));
 compareHead.replaceChildren(cell('th','比较内容'),...selected.map(x=>cell('th',x.title)));
 [...compareHead.children].forEach(th=>th.scope='col');
 compareBody.replaceChildren();
 fields.forEach(([label,key])=>{
-const row=document.createElement('tr'),head=cell('th',label);head.scope='row';row.append(head);
+const row=document.createElement('tr'),head=cell('th',label);head.scope='row';if(key==='revenue')row.className='compare__money';row.append(head);
 selected.forEach(x=>row.append(cell('td',x[key])));
 compareBody.appendChild(row);
 });
-$('compareOverflow').hidden=selected.length<2;
-text(notice,selected.length<2?'再选择一种商业模式即可进行比较。':'已选择 '+selected.length+' 种商业模式；最多可选 3 种。');
-compareChoices.querySelectorAll('button').forEach(btn=>btn.setAttribute('aria-pressed',String(picked.has(btn.dataset.id))));
+const quick=$('compareQuick');quick.replaceChildren();
+selected.forEach((item,i)=>{const info=tips[item.id],card=document.createElement('article');card.className='compare__quickcard';
+card.append(cell('h3',String(i+1).padStart(2,'0')+' · '+item.title),cell('strong','主要收入：'+info[0]),cell('span','主要工作：'+info[1]),cell('p',item.desc));quick.append(card)});
+quick.hidden=selected.length<2;$('compareSummaryTitle').hidden=selected.length<2;$('compareDetails').hidden=selected.length<2;
+text(notice,selected.length<2?'再选一种就能开始对比。':'已选择 '+selected.length+'/3 种 · 点击已选项可取消，先看摘要再展开详细表格。');
+compareChoices.querySelectorAll('button').forEach(btn=>{const active=picked.has(btn.dataset.id),item=modes.find(x=>x.id===btn.dataset.id);
+btn.setAttribute('aria-pressed',String(active));btn.textContent=(active?'✓ 已选 · ':'＋ ')+item.title;
+btn.setAttribute('aria-label',(active?'取消对比 ':'加入对比 ')+item.title)});
 }
 modes.forEach(item=>{
 const btn=document.createElement('button');btn.type='button';btn.dataset.id=item.id;btn.textContent=item.title;
