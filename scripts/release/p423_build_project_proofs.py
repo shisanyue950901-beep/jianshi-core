@@ -12,6 +12,7 @@ import re
 import shutil
 from collections import Counter
 from p425_public_admission import eligible_cases
+from p426_evidence_digest import derive_digest
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -67,6 +68,18 @@ h2{font-size:25px;line-height:1.4}h3{font-size:17px;margin:0 0 7px}
 input[type=search]{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:14px;font:16px sans-serif;max-width:600px}
 footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
 @media(max-width:590px){.statusgrid{grid-template-columns:1fr}header nav{gap:8px}.lead{font-size:15px}.links{display:grid}}
+.digest{border:1px solid var(--line);background:var(--panel);padding:clamp(18px,3vw,28px);margin:29px 0}
+.digest h2{font:500 clamp(24px,3vw,30px)/1.35 Georgia,"Songti SC",serif;margin:0 0 18px}
+.digestgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 22px}
+.digestgrid p{margin:0;font-size:14px;line-height:1.75;color:var(--ink)}
+.digestgrid b{display:block;font-size:12px;letter-spacing:.05em;color:var(--accent);margin-bottom:6px}
+.digest-meta{margin:17px 0 0;color:var(--muted);font-size:12px}
+.digest-proof{border-left:3px solid var(--accent);padding-left:12px}
+.directory a .digestmini{display:block;margin:12px 0 0;border-top:1px solid var(--line);padding-top:12px}
+.directory a .digestmini p{margin:6px 0;color:var(--ink);font-size:13px;line-height:1.65}
+.directory a .digestmini b{color:var(--accent);font-weight:650}
+.directory a .digestmini small{font-size:12px;color:var(--muted);margin-top:5px}
+@media(max-width:600px){.digestgrid{grid-template-columns:1fr}.digest{padding:18px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 """
 
@@ -202,10 +215,25 @@ def project_page(case: dict) -> str:
         finance_tile='<div class="status pending"><b>利润／经营成果：待独立核实</b><small>没有能够独立确认当前净利润与成本的记录</small></div>'
         findings_intro="项目公开展示产品／服务及收费说明，但交易、净利与获客表现仍缺独立核验。"
         finance_boundary="仍未取得该企业自身可独立核实的财务经营数据。"
+    digest = derive_digest(case)
+    summary_box = (
+        '<section class="digest" aria-label="证据提炼摘要"><h2>30 秒看懂这门生意</h2>'
+        '<div class="digestgrid">'
+        f'<p><b>卖什么？</b>{txt(digest.offer)}</p>'
+        f'<p><b>怎么收费？</b>{txt(digest.revenue)}</p>'
+        f'<p class="digest-proof"><b>找到什么经营证据？</b>{txt(digest.evidence)}</p>'
+        f'<p><b>还不能证明什么？</b>{txt(digest.limitation)}</p>'
+        '</div>'
+        f'<p class="digest-meta">来源级别：{txt(digest.certainty)} · '
+        f'披露时期：{txt(digest.period)} · '
+        f'<a href="{txt(safe_url(digest.source_url))}" target="_blank" rel="noopener noreferrer">'
+        '查看原始经营依据 ↗</a></p></section>'
+    )
     body = f"""<span class="kicker">PROJECT EVIDENCE / 项目证据档案</span>
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
 <p><b>编辑归类：</b>{txt(MODEL_LABELS[case["model"]])}　<b>资料记录：</b>{txt(case["verifiedOn"])}（非实时经营审计）</p>
 <div class="notice"><b>证据阶段：</b>{txt(findings_intro)} 即使行业方向达标，也不能算作某家企业的经营证明；不使用行业匿名挂牌推断它的收入。</div>
+{summary_box}
 <div class="statusgrid" aria-label="项目商业验证状态">
 <div class="status"><b>产品／服务：有官方依据</b><small>可进入对应官网或产品页核对公开供应</small></div>
 <div class="status"><b>收费机制：有公开说明</b><small>标价或收费方案不代表已成交、已收到款项</small></div>
@@ -240,10 +268,19 @@ def index_page(cases: list[dict]) -> str:
         classification = MODEL_LABELS[item["model"]]
         level = item["evidence_level"]
         snippet = f"{classification} · L{level} {LABELS[level]} · 编辑资料记录 {item['verifiedOn']}"
+        summary = derive_digest(item)
+        digestmini = (
+            '<div class="digestmini" aria-label="自动提炼的证据要点">'
+            f'<p><b>卖什么：</b>{txt(summary.offer)}</p>'
+            f'<p><b>怎么收费：</b>{txt(summary.revenue)}</p>'
+            f'<p><b>实际经营依据：</b>{txt(summary.evidence)}</p>'
+            f'<small>资料时期：{txt(summary.period)} · {txt(summary.certainty)}'
+            f'。{txt(summary.limitation)}</small></div>'
+        )
         tiles.append(f'<a href="/projects/{txt(item["id"])}/" data-level="{level}" data-id="{txt(item["id"])}">'
                      f'<small>#{rank:02d} · {txt(LABELS[level])}</small>'
                      f'<strong>{txt(item["title"])}</strong><span>{txt(snippet)}</span>'
-                     f'<span>{txt(item["desc"])}</span></a>')
+                     f'{digestmini}<span class="digest-more">查看来源、风险与研究缺口 ↗</span></a>')
     counts = " · ".join(f"{MODEL_LABELS[k]} {v}" for k,v in sorted(count.items()))
     body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
 <h1>{len(cases)} 个正式项目，<br>只收录有经营证据的。</h1>
