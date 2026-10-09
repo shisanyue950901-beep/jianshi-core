@@ -1,0 +1,117 @@
+{
+  "contract": "P432_PRIVATE_EDITORIAL_OBSERVATIONS_V1",
+  "reviewed_on": "2026-10-09",
+  "retrieval_method": "PUBLIC_PUBLISHER_PAGES_REVIEWED_VIA_WEB_NOT_RSS_OR_API_AUTOMATED_FETCH",
+  "source_text_copied": false,
+  "raw_response_sha256": null,
+  "publication_allowed": false,
+  "automatic_admission_allowed": false,
+  "items": [
+    {
+      "case_id": "plausible",
+      "brand": "Plausible",
+      "home": "plausible.io",
+      "source_url": "https://plausible.io/blog/homepage-edits-conversion-lift",
+      "published_on": "2026-05-12",
+      "claim_type": "COMPANY_SELF_REPORTED_FUNNEL",
+      "period": "2026-01_to_2026-04",
+      "summary_cn": "官网称未登录用户的试用注册数从2026年1月2423上升至4月4464，同比增长口径不适用；该期间增长84%，并披露2月、3月、4月新付费订阅人数分别为652、953、1156。文章明确这不是严谨A/B实验。",
+      "numeric_observations": [
+        {
+          "metric": "trial_signups_january",
+          "value": 2423,
+          "unit": "count"
+        },
+        {
+          "metric": "trial_signups_april",
+          "value": 4464,
+          "unit": "count"
+        },
+        {
+          "metric": "new_paid_subscribers_february",
+          "value": 652,
+          "unit": "count"
+        },
+        {
+          "metric": "new_paid_subscribers_march",
+          "value": 953,
+          "unit": "count"
+        },
+        {
+          "metric": "new_paid_subscribers_april",
+          "value": 1156,
+          "unit": "count"
+        }
+      ],
+      "boundary": "新付费订阅人数不是全部付费客户数；试用注册不等于实际支付。不能将84%断言为页面改版的因果增量，亦不能推算收入。",
+      "status": "NEEDS_REVIEW",
+      "verified_revenue": false,
+      "legal_entity_verified": false,
+      "source_rights_for_bulk_capture_verified": false
+    },
+    {
+      "case_id": "buffer",
+      "brand": "Buffer",
+      "home": "buffer.com",
+      "source_url": "https://buffer.com/metrics",
+      "published_on": null,
+      "claim_type": "LIVE_COMPANY_SELF_REPORTED_DASHBOARD",
+      "period": "UNDATED_DYNAMIC_PAGE_VIEW",
+      "summary_cn": "官方透明度仪表盘的一次检索视图显示ARR约$26.79M、MRR约$2.23M、客户约81,976。页面未提供与本次摘录强绑定的报告期，需另行冻结对应月份及源数据。",
+      "numeric_observations": [
+        {
+          "metric": "displayed_arr",
+          "value": 26790000,
+          "unit": "USD_PER_YEAR_RUN_RATE"
+        },
+        {
+          "metric": "displayed_mrr",
+          "value": 2230000,
+          "unit": "USD_PER_MONTH"
+        },
+        {
+          "metric": "displayed_customers",
+          "value": 81976,
+          "unit": "accounts_or_customers_unverified"
+        }
+      ],
+      "boundary": "动态页面读数会变化，非审计收入/净利润；与其他时间的截图不可自动合并为同一时期。Buffer尚不属于既有20个身份列表，只能作为新项目线索。",
+      "status": "NEEDS_REVIEW",
+      "verified_revenue": false,
+      "legal_entity_verified": false,
+      "source_rights_for_bulk_capture_verified": false
+    },
+    {
+      "case_id": "fathom",
+      "brand": "Fathom Analytics",
+      "home": "usefathom.com",
+      "source_url": "https://usefathom.com/blog/fathom-acquires-gauges",
+      "published_on": "2026-04-20",
+      "claim_type": "COMPANY_SELF_REPORTED_ACQUISITION_EVENT",
+      "period": "2026-04-20",
+      "summary_cn": "企业官方文章宣布收购Gauges网站分析产品；页面不等于具体交易价款、被收购公司利润或消费者付费需求验证。",
+      "numeric_observations": [],
+      "boundary": "收购事件不等于披露实际成交金额、净利润或适合一人复制的创业项目。",
+      "status": "NEEDS_REVIEW",
+      "verified_revenue": false,
+      "legal_entity_verified": false,
+      "source_rights_for_bulk_capture_verified": false
+    },
+    {
+      "case_id": "fathom",
+      "brand": "Fathom Analytics",
+      "home": "usefathom.com",
+      "source_url": "https://usefathom.com/blog/announcing-fathom-v4",
+      "published_on": "2026-04-05",
+      "claim_type": "COMPANY_FIRST_PARTY_PRODUCT_UPDATE",
+      "period": "2026-02_to_2026-04",
+      "summary_cn": "企业官方宣布V4产品更新，属于产品演进和研发运营依据，不是独立财务证据。",
+      "numeric_observations": [],
+      "boundary": "产品更新、技术迁移和功能发布均不能证明公司获利。",
+      "status": "NEEDS_REVIEW",
+      "verified_revenue": false,
+      "legal_entity_verified": false,
+      "source_rights_for_bulk_capture_verified": false
+    }
+  ]
+}

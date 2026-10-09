@@ -1,0 +1,100 @@
+{
+  "contract": "P432_PRIVATE_SOURCE_ACCESS_V1",
+  "reviewed_on": "2026-10-09",
+  "publication_allowed": false,
+  "sources": [
+    {
+      "id": "fathom-rss",
+      "name": "Fathom 官方博客 RSS",
+      "source_url": "https://usefathom.com/blog/feed.xml",
+      "policy_url": "https://usefathom.com/blog",
+      "access": "OFFICIAL_PUBLISHER_OFFERED_RSS",
+      "automated_fetch": "ON_DEMAND_ONLY",
+      "max_requests_per_run": 1,
+      "max_items_per_run": 10,
+      "max_response_bytes": 262144,
+      "save_article_body": false,
+      "classification": "UNVERIFIED_DISCOVERY_METADATA"
+    },
+    {
+      "id": "hn-algolia",
+      "name": "HN Algolia 官方公开搜索",
+      "source_url": "https://hn.algolia.com/api/",
+      "policy_url": "https://hn.algolia.com/api",
+      "access": "PUBLIC_SEARCH_API_EXISTING_P426",
+      "automated_fetch": "EXISTING_P426_ONLY",
+      "daily_budget_shared": 7,
+      "classification": "UNVERIFIED_COMMUNITY_METADATA"
+    },
+    {
+      "id": "sec-edgar",
+      "name": "SEC EDGAR 官方申报/API",
+      "source_url": "https://data.sec.gov/",
+      "policy_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "access": "OFFICIAL_PUBLIC_API_DECLARED_USER_AGENT",
+      "automated_fetch": "P431_ON_DEMAND_ONLY",
+      "max_requests_per_run": 2,
+      "classification": "POTENTIAL_L4_NEEDS_IDENTITY_REVIEW"
+    },
+    {
+      "id": "buffer-open",
+      "name": "Buffer 公开透明度面板",
+      "source_url": "https://buffer.com/metrics",
+      "policy_url": "https://buffer.com/legal/terms-of-use",
+      "access": "HUMAN_VERIFIED_PUBLIC_DASHBOARD",
+      "automated_fetch": "DISABLED_TERMS_NOT_VERIFIED_FOR_BULK",
+      "classification": "HISTORICAL_OR_UNDATED_SELF_DISCLOSURE_ONLY"
+    },
+    {
+      "id": "plausible-blog",
+      "name": "Plausible 官方经营披露",
+      "source_url": "https://plausible.io/blog",
+      "policy_url": "https://plausible.io/terms",
+      "access": "EDITORIAL_SOURCE_LINKS_ONLY",
+      "automated_fetch": "DISABLED_PERMISSION_PENDING",
+      "classification": "FOUNDER_OR_COMPANY_SELF_DISCLOSURE_CANDIDATE"
+    },
+    {
+      "id": "acquire-listings",
+      "name": "Acquire.com 挂牌",
+      "source_url": "https://acquire.com/",
+      "policy_url": "https://acquire.com/buyerseller/",
+      "access": "WRITTEN_PERMISSION_REQUIRED",
+      "automated_fetch": "FORBIDDEN",
+      "classification": "NOT_ADMISSIBLE"
+    },
+    {
+      "id": "flippa-listings",
+      "name": "Flippa 挂牌",
+      "source_url": "https://flippa.com/",
+      "policy_url": "https://flippa.com/terms-of-service/",
+      "access": "WRITTEN_PERMISSION_REQUIRED",
+      "automated_fetch": "FORBIDDEN",
+      "classification": "NOT_ADMISSIBLE"
+    },
+    {
+      "id": "microns-listings",
+      "name": "Microns 挂牌",
+      "source_url": "https://www.microns.io/",
+      "policy_url": "https://www.microns.io/terms",
+      "access": "EXPRESS_PERMISSION_REQUIRED",
+      "automated_fetch": "FORBIDDEN",
+      "classification": "NOT_ADMISSIBLE"
+    },
+    {
+      "id": "indiehackers-pages",
+      "name": "Indie Hackers 内容",
+      "source_url": "https://www.indiehackers.com/",
+      "policy_url": "https://www.indiehackers.com/terms",
+      "access": "SCRAPING_PROHIBITED",
+      "automated_fetch": "FORBIDDEN",
+      "classification": "NOT_ADMISSIBLE"
+    }
+  ],
+  "requirements": [
+    "内部只读，自动化不得推导营业额或直接晋级L3/L4",
+    "仅明确公布的API/RSS可以按需访问；不以第三方搜索规避平台禁止抓取",
+    "不得下载文章全文、站内挂牌或个人信息",
+    "不能写public/dist、公开证据台账、Supabase生产或自启动高频工作流"
+  ]
+}
