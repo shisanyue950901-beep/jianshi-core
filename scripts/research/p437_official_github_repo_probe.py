@@ -225,6 +225,8 @@ def main() -> None:
     data=collect(args.fixtures,args.online,token)
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    if data["mode"] == "LIVE_OFFICIAL_GITHUB_API" and data["validated_repos"] < 2:
+        print("::warning title=JianShi Official GitHub Source Degraded::Pinned public repository metadata missing or rejected; do not infer finances.")
     print(json.dumps({"source":"GITHUB_PUBLIC_REST_API","mode":data["mode"],
         "attempted":data["requests_attempted"],"validated":data["validated_repos"],
         "rejected":data["rejected_repos"],"published":0},ensure_ascii=False))
