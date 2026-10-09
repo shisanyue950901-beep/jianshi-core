@@ -794,7 +794,7 @@ filterTiles();
 $('facetReset').addEventListener('click',()=>{facetControls.forEach(sel=>sel.value='');filterTiles()});
 $('archive').querySelector('.archive-jump').addEventListener('click',()=>{
 kind='case';search.value='';facetControls.forEach(sel=>sel.value='');
-document.querySelectorAll('.find__filters [data-kind]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.kind==='case')));
+document.querySelectorAll('#archive .find__filters button[data-kind]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.kind==='case')));
 filterTiles();
 });
 search.addEventListener('input',filterTiles);
