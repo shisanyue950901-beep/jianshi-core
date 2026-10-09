@@ -1,0 +1,235 @@
+{
+  "version": "P4.15-PUBLIC-CASES-V1",
+  "status": "EDITORIALLY_RESEARCHED_NOT_FINANCIALLY_VERIFIED",
+  "verified_on": "2026-10-09",
+  "description": "新增八家第一方资料可核对的海外项目，产品、公开收费逻辑与成本研究分层说明；不审计真实收入与利润，不回溯任何受保护商业挂牌。",
+  "public_policy": {
+    "no_marketplace_reidentification": true,
+    "no_unverified_profit": true,
+    "first_party_sources_only": true,
+    "editorial_classification_has_exceptions": true,
+    "concept_images_only": true
+  },
+  "cases": [
+    {
+      "id": "plausible",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "software",
+      "title": "Plausible｜隐私优先的网站统计",
+      "tag": "真实海外项目",
+      "meta": "网站数据分析 · 流量分层订阅 · 开源产品",
+      "desc": "为网站经营者提供易读的访问量、来源和转化数据，并以网站流量和功能档位提供订阅服务。",
+      "buyer": "网站所有者、独立开发者、内容团队、电商网站与重视数据隐私的组织。",
+      "revenue": "官网提供免费试用及按网站月浏览量、站点数量、权限和功能划分的付费方案。",
+      "offer": "简洁分析面板、轻量脚本、事件与转化统计、公开演示和团队共享能力。",
+      "process": "需要维持统计脚本与后台可靠性、持续处理数据隐私和法律合规问题、提供迁移和支持服务。",
+      "cost": "数据计算与托管、研发、安全合规、用户支持和业务获客。",
+      "facts": [
+        "Plausible 官方主页提供访问统计功能、实时数据、公开试用与产品演示。",
+        "官网列有 Starter、Growth、Business 等按浏览量和功能区分的收费档位。"
+      ],
+      "unknowns": [
+        "官网披露的订阅客户数和盈利表述属于其自身说明，未做外部财务审计。",
+        "具体获客成本、续费率和长期服务器成本无法从定价页判断。"
+      ],
+      "learning": "比较 Plausible 与 Fathom 怎样让统计需求成为付费 SaaS；关注流量计费、隐私承诺和数据成本。",
+      "officialHomeUrl": "https://plausible.io/",
+      "sourceUrl": "https://plausible.io/#pricing",
+      "model": "saas"
+    },
+    {
+      "id": "fathom",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "software",
+      "title": "Fathom Analytics｜轻量网站统计",
+      "tag": "真实海外项目",
+      "meta": "网站统计 · 按访问量订阅 · 隐私产品",
+      "desc": "提供面向网站经营者的简洁分析界面，围绕页面浏览量阶梯收取持续的软件使用费用。",
+      "buyer": "内容网站、营销团队、代理机构、开发者和需要监测访问来源的企业。",
+      "revenue": "官网显示 7 天免费试用和按网站月浏览量计费的月度或年度订阅计划。",
+      "offer": "轻量统计脚本、流量与渠道报告、转换事件、邮件报告及多站点统计。",
+      "process": "需长期保证事件收集和报表性能，维护脚本兼容，处理隐私与客服需求。",
+      "cost": "分析数据基础设施、系统研发、合规、安全、售后与获客。",
+      "facts": [
+        "Fathom 官方定价页以月浏览量分档，列明试用和订阅选择。",
+        "官网列出流量监控、事件数据、邮件报告和多站点管理等功能。"
+      ],
+      "unknowns": [
+        "官网宣传的客户与流量规模未独立审计。",
+        "付费客户数、实际毛利、客户流失率及基础设施成本尚未核实。"
+      ],
+      "learning": "与 Plausible 对照，理解同类分析产品如何以隐私定位、流量用量和用户体验实现差异化。",
+      "officialHomeUrl": "https://usefathom.com/",
+      "sourceUrl": "https://usefathom.com/pricing",
+      "model": "saas"
+    },
+    {
+      "id": "buttondown",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "software",
+      "title": "Buttondown｜邮件通讯发布工具",
+      "tag": "真实海外项目",
+      "meta": "邮件软件 · 读者规模计费 · 高级功能加购",
+      "desc": "帮助作者和团队撰写、发送和托管电子邮件通讯，提供小规模使用入口及可选高级功能。",
+      "buyer": "独立写作者、订阅通讯编辑、内容创作者和希望直接触达受众的小型团队。",
+      "revenue": "官网说明前 100 位订阅者免费，随活跃订阅者规模及自动化、团队等附加功能收费。",
+      "offer": "邮件通讯编辑器、邮件发送、在线档案、订阅者管理以及可选付费邮件功能。",
+      "process": "需要维护邮件投递信誉、反垃圾邮件机制、编辑体验、计费、订阅管理与客服。",
+      "cost": "邮件发送资源、反滥用系统、工程维护、域名相关技术和支持服务。",
+      "facts": [
+        "Buttondown 官方定价页显示小规模免费使用和按订阅者规模计费逻辑。",
+        "同页列出分析、自动化、付费订阅、团队等可选附加功能。"
+      ],
+      "unknowns": [
+        "其官网有关公司规模、自筹资金和经营状况的描述没有进行第三方财务审计。",
+        "真实付费用户数量、交付成本及净利润未经核实。"
+      ],
+      "learning": "观察内容作者使用的工具如何先降低发送门槛，再围绕自动化、订阅管理等需求收费。",
+      "officialHomeUrl": "https://buttondown.com/",
+      "sourceUrl": "https://buttondown.com/pricing",
+      "model": "saas"
+    },
+    {
+      "id": "kit",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "software",
+      "title": "Kit｜创作者邮件营销平台",
+      "tag": "真实海外项目",
+      "meta": "邮件营销 · 订阅分层 · 数字销售辅助",
+      "desc": "为创作者提供邮件列表、表单、落地页和自动化营销工具，也支持创作者销售自己的内容产品。",
+      "buyer": "内容创作者、付费通讯经营者、课程或数字产品卖家及小型营销团队。",
+      "revenue": "基础邮件营销功能有免费方案，高级自动化、协作和分析按平台套餐订阅收费；平台另展示与数字产品交易相关的费用说明。",
+      "offer": "邮件群发、落地页、报名表、自动化流程、受众分组和数字商品销售能力。",
+      "process": "需维护大规模邮件投递、联系人数据、自动化引擎、付费转化工具与客户服务。",
+      "cost": "邮件投递设施、工程研发、营销渠道、客户支持、安全和合规。",
+      "facts": [
+        "Kit 官网公开免费以及 Creator、Pro 等产品计划和功能对比。",
+        "官方页面列有落地页、邮件群发、自动化和数字产品销售等功能。"
+      ],
+      "unknowns": [
+        "其官网对用户规模和营销效果的宣传未独立审计。",
+        "企业真实订阅收入、客户留存和总利润缺少外部完整验证。"
+      ],
+      "learning": "与 Buttondown 比较，从简洁通讯编辑工具到复杂创作者营销平台的用户、功能和成本差异。",
+      "officialHomeUrl": "https://kit.com/",
+      "sourceUrl": "https://kit.com/pricing",
+      "model": "saas"
+    },
+    {
+      "id": "payhip",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "software",
+      "title": "Payhip｜数字产品销售平台",
+      "tag": "真实海外项目",
+      "meta": "创作者店铺 · 订阅套餐 · 交易手续费",
+      "desc": "提供在线店铺和收款工具，帮助创作者销售下载文件、课程、会员内容及部分实物商品。",
+      "buyer": "需要自行出售数字文件、教学课程或会员服务的创作者与小商家。",
+      "revenue": "官网公开免费方案与付费订阅方案，并根据套餐收取不同比例的平台交易手续费。",
+      "offer": "独立店铺创建、数字下载与课程交付、会员销售、支付对接和促销工具。",
+      "process": "需要维护创作者店铺、下载交付、支付/退款协同、平台防欺诈和客服。",
+      "cost": "软件研发与托管、支付生态集成、风险控制、技术支持和获客。",
+      "facts": [
+        "Payhip 官方定价页列出 Free Forever、Plus、Pro 三档和对应交易手续费。",
+        "官方说明支持数字下载、课程、会员及实体商品等销售形式。"
+      ],
+      "unknowns": [
+        "平台商家总数与交易额不能从费率页独立确定。",
+        "支付处理成本、真实交易规模和企业净利润尚无审计依据。"
+      ],
+      "learning": "区分创作者售卖数字产品与提供交易平台两种生意；Payhip 自身赚的是订阅和平台手续费，不是直接出售模板。",
+      "officialHomeUrl": "https://payhip.com/",
+      "sourceUrl": "https://payhip.com/pricing",
+      "model": "saas",
+      "classificationNote": "按软件工具平台归档；其收入同时依赖平台交易手续费，并非纯订阅 SaaS。"
+    },
+    {
+      "id": "gumroad",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "software",
+      "title": "Gumroad｜创作者商品销售工具",
+      "tag": "真实海外项目",
+      "meta": "数字商品平台 · 按交易收费 · 无月费模式",
+      "desc": "向创作者提供售卖数字商品、教程与会员服务的页面和交易系统，公开采用按交易收费的机制。",
+      "buyer": "出售电子书、数字素材、教程、课程或会员内容的独立创作者。",
+      "revenue": "官网说明不向卖家收取固定月费，而是在实际发生交易时扣除平台费用；不同成交渠道可能适用不同费率。",
+      "offer": "商品页、购买结账、数字文件交付、会员内容管理和创作者销售基础设施。",
+      "process": "需要运维支付和分账、创作者合规审核、交付稳定性、售后与交易风险管理。",
+      "cost": "支付处理、风控与合规、产品研发、服务器、客服和市场推广。",
+      "facts": [
+        "Gumroad 官方定价页明确展示按销售交易收取费用、而非每月固定使用费的模式。",
+        "官网说明数字产品、电子书、课程和会员内容属于其主要服务场景。"
+      ],
+      "unknowns": [
+        "卖家总销售额和平台净收入不能由单笔手续费推算。",
+        "实际退款率、支付损失、平台成本及利润未经独立审计。"
+      ],
+      "learning": "将 Gumroad 与 Payhip 并看，比较交易抽成、固定月费及套餐升级各自的优点和限制。",
+      "officialHomeUrl": "https://gumroad.com/",
+      "sourceUrl": "https://gumroad.com/pricing",
+      "model": "saas",
+      "classificationNote": "按软件工具平台归档；主营收费模式是交易服务费，不是传统固定订阅。"
+    },
+    {
+      "id": "bellroy",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "commerce",
+      "title": "Bellroy｜钱包与出行配件品牌",
+      "tag": "真实海外项目",
+      "meta": "实体品牌 · 钱包背包 · 商品零售",
+      "desc": "销售钱包、背包、收纳包和其他随身携带用品，以功能设计及品牌系列组织实体商品。",
+      "buyer": "关注日常收纳、通勤、旅行与轻量携带体验的消费者。",
+      "revenue": "主要通过官方商店陈列的实体商品销售实现收入；官方售价不代表实际销量或毛利。",
+      "offer": "钱包、卡包、背包、旅行和手机配件等实物产品系列。",
+      "process": "需要负责产品研发、工厂协作、采购、质检、库存、仓储履约和售后。",
+      "cost": "产品设计打样、制造、物流仓储、客户服务、广告及退换货。",
+      "facts": [
+        "Bellroy 官方网站提供钱包、背包和其他实体商品分类。",
+        "其产品分类页公开展示多种在售款式与购买入口。"
+      ],
+      "unknowns": [
+        "公开售价不能推断真实销售量、折扣结构和单品利润。",
+        "供应商模式、当期库存、广告投入和公司财务尚未核实。"
+      ],
+      "learning": "与 Beardbrand、Ugmonk 比较，理解细分实体品牌如何构造系列化商品以及库存资金压力。",
+      "officialHomeUrl": "https://bellroy.com/",
+      "sourceUrl": "https://bellroy.com/products/category/wallets",
+      "model": "fba",
+      "classificationNote": "实体品牌与电商零售的编辑归类；不代表已核实其全部渠道通过 Amazon FBA 履约。"
+    },
+    {
+      "id": "superside",
+      "kind": "case",
+      "archiveOnly": true,
+      "group": "services",
+      "title": "Superside｜团队化创意服务",
+      "tag": "真实海外项目",
+      "meta": "创意外包 · 专业团队 · 订阅／项目制",
+      "desc": "向需要长期视觉和创意生产的企业提供专业设计团队及不同组合形式的合作计划。",
+      "buyer": "有持续品牌设计、数字营销或多渠道视觉内容需求的企业团队。",
+      "revenue": "官网提供基于专属团队、弹性订阅及项目需求的合作方案；并非公开统一固定价格的低成本个人服务。",
+      "offer": "品牌创意、数字广告、设计生产、团队协作及配套的 AI 辅助创作流程。",
+      "process": "涉及客户需求澄清、设计师和项目经理资源调度、交付、评审、修改及质量保障。",
+      "cost": "设计与管理人员、创意软件、质量控制、技术工具、销售与客户成功。",
+      "facts": [
+        "Superside 官方定价页面公开 Dedicated 和 Flex 等服务合作形式。",
+        "官网将创意交付描述为专业团队服务，而非单个设计模板商品。"
+      ],
+      "unknowns": [
+        "官网关于效率或投资回报的营销主张未被独立审计。",
+        "合同实际价格、服务成本、团队规模与净利润未经第三方核实。"
+      ],
+      "learning": "把 Superside 与 Designjoy、ManyPixels 做对比，辨别单人/团队交付、按月容量和弹性资源带来的成本差异。",
+      "officialHomeUrl": "https://www.superside.com/",
+      "sourceUrl": "https://www.superside.com/pricing",
+      "model": "agency",
+      "classificationNote": "成熟团队化服务，不能作为个人独立创业可直接复制的经营结果。"
+    }
+  ]
+}
