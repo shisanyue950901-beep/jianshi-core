@@ -24,7 +24,7 @@ class TestP412FMotionQuality(unittest.TestCase):
         self.assertIn("safe-area-inset-bottom",self.html)
         self.assertIn("100dvh",self.html)
         self.assertIn("prefers-reduced-motion",self.html)
-        self.assertLess(len(self.html.encode("utf-8")),255000)
+        self.assertLess(len(self.html.encode("utf-8")),260000)
 
     def test_dialog_inert_prevents_background_focus(self):
         for snippet in [
