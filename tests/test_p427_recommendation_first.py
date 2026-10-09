@@ -1,0 +1,88 @@
+"""P4.27: front page recommends research paths before data, without false startup claims."""
+import re
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/"scripts/release"))
+from p423_build_project_proofs import parse_cases
+from p425_public_admission import eligible_cases,public_home
+from p427_recommendation_first import render_recommendations
+
+class RecommendationFirstTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.source=(ROOT/"web/prototypes/p412e/index.html").read_text(encoding="utf-8")
+        cls.cases=eligible_cases(parse_cases())
+        cls.page=public_home(cls.source,cls.cases)
+
+    def test_first_screen_is_an_honest_recommendation_not_an_image_wall(self):
+        html=self.page
+        self.assertEqual(len(self.cases),3)
+        self.assertLess(html.index('id="recommendations"'),html.index('class="hero"'))
+        self.assertLess(html.index('id="recommendations"'),html.index('id="archive"'))
+        self.assertIn("找项目，先看这里",html)
+        self.assertIn("我们帮你筛选",html)
+        self.assertIn("已证明适合直接投入创业的项目",html)
+        self.assertIn("<strong>0</strong>",html)
+        self.assertIn("给我推荐",html)
+        self.assertIn("直接看本期推荐研究",html)
+        self.assertEqual(html.count('class="rec-card'),3)
+        self.assertIn("不建议直接照搬",html)
+
+    def test_order_separates_research_from_direct_startup_advice(self):
+        html=self.page
+        a=html.index('data-case="carrd"')
+        b=html.index('data-case="plausible"')
+        c=html.index('data-case="nerdwallet"')
+        self.assertLess(a,b)
+        self.assertLess(b,c)
+        for slug in ("carrd","plausible","nerdwallet"):
+            self.assertIn('href="/projects/'+slug+'/"',html)
+        self.assertIn("历史经营",html)
+        self.assertIn("研究计划",html)
+        self.assertIn("获客",html)
+        self.assertIn("不能证明新创业者可以复制",html)
+        self.assertIn("先锁定一个更小的客户群",html)
+
+    def test_evidence_is_only_admitted_individual_company_cases(self):
+        html=self.page
+        self.assertIn("8.366 亿美元",html)
+        self.assertIn("10 万美元 MRR",html)
+        self.assertIn("7,000 多位",html)
+        self.assertIn("未经独立财务审计",html)
+        self.assertIn("2025-12-31",html)
+        self.assertIn("2022",html)
+        self.assertNotIn("Easlo｜",html)
+        self.assertNotIn("Louise Lennox",html)
+        self.assertNotIn("Tally｜",html)
+        self.assertEqual(html.count("data:image/webp;base64,"),8)
+        self.assertEqual(html.count("<style>"),1)
+        self.assertEqual(html.count("<script>"),1)
+        self.assertIn('data-theme="light"',html)
+        self.assertLess(len(html.encode("utf-8"))+124,260000)
+
+    def test_no_auto_recommendation_if_admission_sources_missing(self):
+        with self.assertRaises(RuntimeError):
+            render_recommendations([])
+        with self.assertRaises(RuntimeError):
+            public_home(self.source,[])
+        with self.assertRaises(RuntimeError):
+            from p427_recommendation_first import recommendation_first_home
+            recommendation_first_home('<main id="top"><style></style>',[{"id":"made-up","evidence_level":1}])
+
+    def test_build_public_release_preserves_all_original_data_safety(self):
+        r=subprocess.run([sys.executable,"scripts/release/p412_build_public.py"],
+                         cwd=ROOT,capture_output=True,text=True,timeout=45)
+        self.assertEqual(r.returncode,0,r.stderr)
+        page=(ROOT/"web/dist/index.html").read_text(encoding="utf-8")
+        self.assertIn('id="recommendations"',page)
+        self.assertEqual(page.count('class="rec-card'),3)
+        self.assertTrue((ROOT/"web/dist/projects/carrd/index.html").exists())
+        self.assertFalse((ROOT/"web/dist/projects/easlo/index.html").exists())
+        self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),7)
+
+if __name__=="__main__":
+    unittest.main()
