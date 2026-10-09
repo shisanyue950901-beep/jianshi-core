@@ -113,7 +113,7 @@ class PrivateHealthTests(unittest.TestCase):
         self.assertIn('max_companies=6',wf)
         self.assertIn('p435_private_scan_health.py print-summary',wf)
         self.assertIn('p435_scan_health.json',wf)
-        self.assertNotIn("workflow_dispatch:",wf)
+        self.assertIn("workflow_dispatch:",wf)  # Existing manual static build remains unchanged.
         self.assertNotIn("p431_sec_primary_probe.py --online",wf)
 
 
