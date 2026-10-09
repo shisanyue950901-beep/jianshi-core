@@ -123,7 +123,7 @@ def extract_indicators(text: str, brand: str) -> list[dict]:
         for match in rx.finditer(text):
             # An earlier paragraph mentioning the brand does not attribute a
             # later company's revenue to this brand. Match only one sentence.
-            boundaries = ".!?;。！？；\\n"
+            boundaries = ".!?;。！？；\n"
             left = max([text.rfind(ch, 0, match.start()) for ch in boundaries] + [-1]) + 1
             right_edges = [text.find(ch, match.end()) for ch in boundaries]
             right = min([i for i in right_edges if i >= 0] + [len(text)])
