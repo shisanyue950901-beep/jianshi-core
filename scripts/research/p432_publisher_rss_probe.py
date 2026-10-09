@@ -43,7 +43,7 @@ def load_policy() -> dict:
     if len(by_id) != 9:
         raise ValueError("Duplicate source provider")
     if (by_id["fathom-rss"].get("source_url") != URL
-            or by_id["fathom-rss"].get("automated_fetch") != "ON_DEMAND_ONLY"
+            or by_id["fathom-rss"].get("automated_fetch") != "DAILY_EXISTING_SCAN_SLOT_ONCE"
             or by_id["fathom-rss"].get("access") != "OFFICIAL_PUBLISHER_OFFERED_RSS"
             or by_id["fathom-rss"].get("max_requests_per_run") != 1
             or by_id["fathom-rss"].get("max_response_bytes") != MAX_BYTES
