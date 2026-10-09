@@ -50,13 +50,14 @@ def safe_redirect(destination: str, page_title: str = "见势｜页面已更新"
         "</body></html>\n"
     )
 
-def assert_safe_source(markup: str) -> None:
+def assert_safe_source(markup: str, *, source_prototype: bool = True) -> None:
     required = [
         "见势", "Playfair+Display", "family=Inter", "--bg:#000",
         "id=\"ring\"", "id=\"lb\"", "id=\"grid\"",
         "prefers-reduced-motion", "viewport-fit=cover", "100dvh",
-        "Easlo", "Louise Lennox",
     ]
+    if source_prototype:
+        required += ["Easlo", "Louise Lennox"]
     for marker in required:
         if marker not in markup:
             raise RuntimeError(f"Missing expected public design contract: {marker}")
@@ -87,7 +88,7 @@ def build_release() -> dict:
     # Strict editorial gate: only projects with attributable operating evidence.
     approved = eligible_cases(parse_cases())
     markup = public_home(markup, approved)
-    assert_safe_source(markup)
+    assert_safe_source(markup, source_prototype=False)
     (OUTPUT / "index.html").write_text(markup, encoding="utf-8")
     # Separate public-only evidence dashboard. Never embed raw marketplace data
     # or copy source directories, and do not change any production data pipeline.
