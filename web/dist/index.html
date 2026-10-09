@@ -36,7 +36,7 @@
 .proof-action{display:inline-flex;align-items:center;justify-content:space-between;gap:25px;min-height:48px;padding:10px 19px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:650;font-size:14px}
 .evidence-teaser .proof-footnote{font-size:12px;margin-top:15px}
 @media(max-width:640px){.hero__evidence{font-size:11px;margin-top:7px}.evidence-teaser h3{font-size:36px}.evidence-teaser>p{font-size:14px}}
-</style>
+.rank-proof{grid-column:2/4;border-left:3px solid var(--accent);padding:9px 13px;margin-top:9px;color:var(--ink);font-size:13px;line-height:1.75;background:var(--panel);font-weight:450}@media(max-width:650px){.rank-proof{grid-column:2}}</style>
 <link rel="canonical" href="https://jianshi-bua.pages.dev/">
 </head>
 <body class="locked">
@@ -288,7 +288,7 @@ text($('archiveCount'),num(ITEMS.length)+' ENTRIES');
 }
 buildMedia();
 const libraryList=$('libraryList'),libraryEntries=[];
-const PUBLIC_EVIDENCE_LABELS={"carrd":"历史经营自述","nerdwallet":"监管历史财报","plausible":"历史经营自述"};const LIBRARY_CASES=[...EXTRA_CASES,...P415_CASES];EXTRA_CASES.forEach(item=>item.verifiedOn='2026-10-09');
+const PUBLIC_EVIDENCE_LABELS={"carrd":"历史经营自述","nerdwallet":"监管历史财报","plausible":"历史经营自述"};const PUBLIC_EVIDENCE_DIGESTS={"carrd":{"fact":"创始人 AJ 在公开访谈中自述当时约 10 万美元 MRR、约 120 万美元 ARR","period":"2022 年前后访谈","limit":"这是创始人或公司自行披露的历史经营数据，未经独立财务审计；不是当前收入。"},"nerdwallet":{"fact":"NerdWallet, Inc. 2025 年经向 SEC 提交的 10-K 合并报表：全年营业收入 8.366 亿美元，合并净利润 4,870 万美元。为历史公司层数据，不代表单一业务线利润或 2026 年当前利润","period":"2025-12-31","limit":"这是申报期内的公司合并历史财务；不是本期收入、单一产品利润或可复制性证明。"},"plausible":{"fact":"Plausible 在 2022-06-22 官方文章称当时达到 100 万美元 ARR，并有 7,000 多位付费订阅者","period":"2022-06-22","limit":"这是创始人或公司自行披露的历史经营数据，未经独立财务审计；不是当前收入。"}};const LIBRARY_CASES=[...EXTRA_CASES,...P415_CASES];EXTRA_CASES.forEach(item=>item.verifiedOn='2026-10-09');
 LIBRARY_CASES.forEach(item=>{
 const index=ITEMS.indexOf(item),card=document.createElement('button'),row=document.createElement('article');row.className='rank-row';
 card.type='button';card.className='research-entry';row.dataset.itemId=item.id;
@@ -306,7 +306,7 @@ const caption=document.createElement('span');caption.textContent='信息依据�
 [['officialHomeUrl','官方网站'],['sourceUrl','核验依据']].forEach(([key,label])=>{
 try{const link=new URL(item[key]);if(link.protocol!=='https:'||link.username||link.password)return;
 const a=document.createElement('a');a.href=link.href;a.target='_blank';a.rel='noopener noreferrer';a.textContent=label+' ↗';src.append(a)}catch(_){}});
-const proof=document.createElement('a');proof.href='/projects/'+item.id+'/';proof.textContent=PUBLIC_EVIDENCE_LABELS[item.id]+' · 查看经营依据 ↗';src.appendChild(proof);row.append(card,src);
+const proof=document.createElement('a');proof.href='/projects/'+item.id+'/';proof.textContent=PUBLIC_EVIDENCE_LABELS[item.id]+' · 查看经营依据 ↗';const digest=PUBLIC_EVIDENCE_DIGESTS[item.id];const box=document.createElement('div');box.className='rank-proof';box.textContent='经营依据（'+digest.period+'）：'+digest.fact+'。'+digest.limit;card.append(box);src.appendChild(proof);row.append(card,src);
 card.addEventListener('click',()=>openDetail(index));
 libraryList.appendChild(row);
 libraryEntries.push({card:row,item});
