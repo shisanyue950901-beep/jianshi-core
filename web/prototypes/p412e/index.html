@@ -737,7 +737,7 @@ body{font-feature-settings:"kern" 1;}
     empty.hidden=found>0;
   }
   facetControls.forEach(sel=>sel.addEventListener('change',()=>{
-    if(facetControls.some(x=>x.value)){kind='case';document.querySelectorAll('.find__filters [data-kind]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.kind==='case')))}
+    if(facetControls.some(x=>x.value)){kind='case';document.querySelectorAll('#archive .find__filters button[data-kind]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.kind==='case')))}
     filterTiles();
   }));
   $('facetReset').addEventListener('click',()=>{facetControls.forEach(sel=>sel.value='');filterTiles()});
