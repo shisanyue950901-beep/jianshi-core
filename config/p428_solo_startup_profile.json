@@ -1,0 +1,55 @@
+{
+  "version": "P428_SOLO_LOW_CAPITAL_ZERO_START_V1",
+  "default_audience": {
+    "team_size": 1,
+    "starting_stage": "从零启动",
+    "capital_profile": "小资金，未指定人民币上限",
+    "preferred_model": "无需囤货、无需雇人，可先手工交付或低成本验证",
+    "disallow_assumptions": [
+      "历史收入等于本人可复制盈利",
+      "假定用户会编程或有现成客户",
+      "虚构工具费用或最低启动预算"
+    ]
+  },
+  "case_assessments": [
+    {
+      "id": "carrd",
+      "status": "TEST_IDEA_ONLY",
+      "order": 1,
+      "tag": "当前优先测试方向，尚未验证可创业",
+      "prototype": "细分行业单页建站服务（启发自 Carrd，不等同于 Carrd 的 SaaS 收入模式）",
+      "solo_logic": "可由一人先访谈、展示样板并提供有限范围的手工建站服务；不需要先组建团队或自主开发建站软件。",
+      "capital_logic": "不要求先囤货或租实体场地；工具订阅、域名、时间成本及获客费用尚未核实。",
+      "first_step": "先锁定一个更小的客户群，访谈真实需求、做一页演示样板并争取一笔明确付费的试单；无购买信号就停止投入。",
+      "blocker": "还没有该具体细分市场的有效付费试单、获客成本与交付成本证据。",
+      "skills": "需要基础网页排版、客户沟通与交付；可先使用现成工具，不要求自行写 SaaS。",
+      "ready_for_launch": false
+    },
+    {
+      "id": "plausible",
+      "status": "SKILL_GATED",
+      "order": 2,
+      "tag": "技术门槛高，默认不推荐新手直接做",
+      "prototype": "隐私友好型网站统计订阅服务",
+      "solo_logic": "可一人研究市场问题，但完整软件运营需要开发、部署、稳定性和隐私合规能力。",
+      "capital_logic": "软件可免库存，但服务器维护、开发时间、获客及合规成本没有独立证明为小资金可控。",
+      "first_step": "先访谈潜在站长，验证实际付费需求；只有具备开发和维护能力时才考虑原型。",
+      "blocker": "缺乏新进入者获客、运营投入、定价可行性和可复制经营结果的独立资料。",
+      "skills": "要求开发、运维与持续产品维护能力；不适合作为完全零技术的新手默认方案。",
+      "ready_for_launch": false
+    },
+    {
+      "id": "nerdwallet",
+      "status": "NOT_SOLO_STARTUP",
+      "order": 3,
+      "tag": "成熟商业标杆，不推荐一人低资金照搬",
+      "prototype": "财经内容与产品比较平台",
+      "solo_logic": "历史公司经营证据可作为行业研究，但该规模的平台不是一人从零即可复刻的经营形态。",
+      "capital_logic": "金融内容、合规、可信度建设及规模化获客成本未证明适合个人小资金启动。",
+      "first_step": "只研究其内容定位、信任机制和获客模式，不投入类似平台开发。",
+      "blocker": "没有适用于小资金个人创业者的成本、合规路径或用户付费可复制性证据。",
+      "skills": "涉及专业金融内容、合规与平台运营经验。",
+      "ready_for_launch": false
+    }
+  ]
+}

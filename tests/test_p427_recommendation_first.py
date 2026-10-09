@@ -30,7 +30,7 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertIn("给我推荐",html)
         self.assertIn("直接看本期推荐研究",html)
         self.assertEqual(html.count('<article class="rec-card'),3)
-        self.assertIn("不建议直接照搬",html)
+        self.assertIn("不建议一人低资金直接照搬",html)
 
     def test_order_separates_research_from_direct_startup_advice(self):
         html=self.page
