@@ -104,8 +104,9 @@ def public_home(source: str, cases: list[dict]) -> str:
         original = re.search(rf"const {key}=(\[.*?\]);", source_before, re.S)
         if original:
             unapproved_titles += [x["title"] for x in json.loads(original.group(1)) if x["id"] not in approved]
-    if any(title in source for title in unapproved_titles):
-        raise RuntimeError("Unapproved named company persisted in public homepage")
+    leaked = [title for title in unapproved_titles if title in source]
+    if leaked:
+        raise RuntimeError("Unapproved named company persisted in public homepage: " + ", ".join(leaked))
     for key in ("EXTRA_CASES", "P415_CASES"):
         rx = rf"(const {key}=)(\[.*?\])(;)"
         match = re.search(rx, source, re.S)
