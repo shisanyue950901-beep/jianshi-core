@@ -17,8 +17,8 @@
 .research-entry__area,.research-entry strong,.research-entry__desc,.research-entry__foot{grid-column:2}
 .research-entry__pricing{grid-column:3;grid-row:1/5}
 .rank-sources{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-left:62px;color:var(--dim);font-size:12px}
-.rank-sources a{color:var(--accent);min-height:34px;display:inline-flex;align-items:center;text-underline-offset:4px}
-.rank-more{border:1px solid var(--line);width:100%;margin-top:22px;font-size:14px;font-weight:600}
+.rank-sources a{color:var(--accent);min-height:44px;display:inline-flex;align-items:center;text-underline-offset:4px}
+.rank-more{border:1px solid var(--line);width:100%;margin-top:22px;font-size:14px;font-weight:600}.research-entry:hover,.research-entry:focus-visible{background:var(--panel)!important}
 @media(max-width:650px){.research-entry{grid-template-columns:34px 1fr;gap:7px 12px}.research-entry__pricing{grid-column:2;grid-row:auto}.research-entry__area,.research-entry strong,.research-entry__desc,.research-entry__foot{grid-column:2}.rank-sources{margin-left:46px}.research-library__heading p{max-width:100%}}
 </style>
 </head>
@@ -88,7 +88,7 @@
 <p class="find__result" id="searchStatus" role="status" aria-live="polite"></p>
 <details class="gallery-more" id="photoGallery"><summary>展开精选封面画廊（8 张）</summary><div class="grid" id="grid"></div></details>
 <div class="research-library" id="researchLibrary">
-<div class="research-library__heading"><div><span class="research-library__eyebrow">JIANSHI RESEARCH / 研究榜</span><h3>最近核验榜。</h3></div><p>依据资料核验日期排序，并非热度或盈利榜。同日项目按编辑收录顺序展示。首批 18 项于 10 月 9 日核验；另外两个封面案例尚无统一核验日期，暂不参加时间榜。</p></div>
+<div class="research-library__heading"><div><span class="research-library__eyebrow">JIANSHI RESEARCH / 研究榜</span><h3>最近核验榜。</h3></div><p>按资料核验日期排序，不是热度或盈利榜。信息依据为项目官方网页与产品定价页；首次发现渠道尚未逐项记录。首批 18 项于 10 月 9 日核验，另 2 项日期待补。</p></div>
 <div class="rank-tabs" role="group" aria-label="资料核验时间范围"><button type="button" data-rank-period="today" aria-pressed="false">今日</button><button type="button" data-rank-period="week" aria-pressed="false">本周</button><button type="button" data-rank-period="month" aria-pressed="true">本月</button></div><p class="rank-explain" id="rankStatus" role="status" aria-live="polite">这是编辑核验更新榜，不代表项目热度。</p><div class="research-library__list" id="libraryList"></div><button type="button" id="rankMore" class="rank-more" hidden>查看本期剩余项目 ↓</button>
 </div>
 <p class="find__empty" id="searchEmpty" hidden>没有找到匹配的内容。可以试试“图书”“模板”或更宽泛的业务名称。</p>
@@ -275,7 +275,7 @@ const foot=document.createElement('span');foot.className='research-entry__foot';
 card.append(area,name,blurb,price,foot);
 const rank=document.createElement('span');rank.className='rank-number';card.prepend(rank);
 const src=document.createElement('div');src.className='rank-sources';
-const caption=document.createElement('span');caption.textContent='资料来源：项目官方网页';src.append(caption);
+const caption=document.createElement('span');caption.textContent='信息依据：官方公开页面';src.append(caption);
 [['officialHomeUrl','官方网站'],['sourceUrl','核验依据']].forEach(([key,label])=>{
 try{const link=new URL(item[key]);if(link.protocol!=='https:'||link.username||link.password)return;
 const a=document.createElement('a');a.href=link.href;a.target='_blank';a.rel='noopener noreferrer';a.textContent=label+' ↗';src.append(a)}catch(_){}});
