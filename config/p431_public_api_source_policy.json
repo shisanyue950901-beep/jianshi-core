@@ -1,0 +1,48 @@
+{
+  "contract": "P431_PRIVATE_SOURCE_EXPANSION_V1",
+  "reviewed_on": "2026-10-09",
+  "publication_default": false,
+  "sources": [
+    {
+      "id": "sec-submissions",
+      "name": "SEC EDGAR — 申报历史",
+      "url_pattern": "https://data.sec.gov/submissions/CIK##########.json",
+      "permission": "OFFICIAL_PUBLIC_API_FAIR_ACCESS",
+      "automatic_collection": false,
+      "on_demand_fetch_allowed": true,
+      "max_requests_per_case": 1,
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "purpose": "核对法定申报主体CIK与10-K档案，严格只读，不代表核实净利润"
+    },
+    {
+      "id": "sec-companyfacts",
+      "name": "SEC EDGAR — XBRL 企业财务",
+      "url_pattern": "https://data.sec.gov/api/xbrl/companyfacts/CIK##########.json",
+      "permission": "OFFICIAL_PUBLIC_API_FAIR_ACCESS",
+      "automatic_collection": false,
+      "on_demand_fetch_allowed": true,
+      "max_requests_per_case": 1,
+      "source_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "purpose": "同一10-K的按期间营收/净利润原始结构化事实候选，需要人工交叉核验"
+    },
+    {
+      "id": "fathom-firstparty-blog",
+      "name": "Fathom Analytics 官方创业披露",
+      "url_pattern": "https://usefathom.com/blog/...",
+      "permission": "PUBLIC_EDITORIAL_HUMAN_SOURCE_LINKS_ONLY",
+      "automatic_collection": false,
+      "on_demand_fetch_allowed": false,
+      "max_requests_per_case": 0,
+      "source_url": "https://usefathom.com/blog",
+      "purpose": "只在私有研究档案保留原始链接及最少量中文概述；不爬全站或镜像文章"
+    }
+  ],
+  "restricted_marketplaces": [
+    "acquire.com",
+    "flippa.com",
+    "microns.io"
+  ],
+  "restricted_listing_collection": false,
+  "private_review_ledger": "config/p431_private_primary_source_leads.json",
+  "publish_to_website": false
+}
