@@ -130,14 +130,16 @@ class PrivateHealthTests(unittest.TestCase):
         identities=load_identities()
         self.assertEqual(targets[0]["name"],identities[targets[0]["slug"]]["brand"])
 
-    def test_exact_one_time_merge_message_and_original_daily_rate(self):
+    def test_one_time_smoke_is_retired_and_daily_rate_remains_bounded(self):
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
         self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
-        self.assertIn("startsWith(github.event.head_commit.message, 'P435_PRIVATE_SMOKE_ONCE_20261009')",wf)
-        self.assertIn('if [ "$P435_SMOKE_ONCE" = "1" ]; then max_companies=1; fi',wf)
-        self.assertIn('max_companies=6',wf)
+        self.assertIn("if: github.event_name == 'schedule'",wf)
+        self.assertIn('p426_daily_leads.py --network --max-companies 6',wf)
+        self.assertNotIn("startsWith(github.event.head_commit.message",wf)
+        self.assertNotIn("P435_SMOKE_ONCE",wf)
         self.assertIn('p435_private_scan_health.py print-summary',wf)
-        self.assertIn('p435_scan_health.json',wf)
+        self.assertIn('p436_unattended_guard.py',wf)
+        self.assertIn("p435_scan_health.json",wf)
         self.assertIn("workflow_dispatch:",wf)  # Existing manual static build remains unchanged.
         self.assertNotIn("p431_sec_primary_probe.py --online",wf)
 
