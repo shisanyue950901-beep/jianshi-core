@@ -1,5 +1,6 @@
 """P4.35: single-merge live smoke report, hard validation and zero-publication."""
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -98,6 +99,30 @@ class PrivateHealthTests(unittest.TestCase):
             self.assertNotIn("https://",body)
             self.assertNotIn("Fathom Analytics",body)
             self.assertNotIn("token",body.lower())
+
+    def test_end_to_end_cli_and_step_summary(self):
+        scan, delta, rss, prior = reports(1, True, restored=False)
+        with tempfile.TemporaryDirectory() as directory:
+            folder=Path(directory)
+            files={name:folder/name for name in ("hn.json","delta.json","rss.txt","prior.txt","health.json","summary.txt")}
+            files["hn.json"].write_text(json.dumps(scan),encoding="utf-8")
+            files["delta.json"].write_text(json.dumps(delta),encoding="utf-8")
+            files["rss.txt"].write_text(rss+"\\n",encoding="utf-8")
+            files["prior.txt"].write_text(prior+"\\n",encoding="utf-8")
+            script=str(ROOT/"scripts/research/p435_private_scan_health.py")
+            cmd=[sys.executable,script,
+                 "--hn",str(files["hn.json"]),"--rss-health",str(files["rss.txt"]),
+                 "--restore-health",str(files["prior.txt"]),"--delta",str(files["delta.json"]),
+                 "--output",str(files["health.json"])]
+            run=subprocess.run(cmd,capture_output=True,text=True,cwd=ROOT,timeout=10)
+            self.assertEqual(run.returncode,0,run.stderr)
+            result=json.loads(files["health.json"].read_text(encoding="utf-8"))
+            self.assertEqual(result["http_success_total"],2)
+            summary=subprocess.run([sys.executable,script,"print-summary",
+                "--input",str(files["health.json"]),"--output",str(files["summary.txt"])],
+                capture_output=True,text=True,cwd=ROOT,timeout=10)
+            self.assertEqual(summary.returncode,0,summary.stderr)
+            self.assertIn("真实 HTTP",files["summary.txt"].read_text(encoding="utf-8"))
 
     def test_real_smoke_candidate_matches_identity_registry(self):
         targets=hn.research_targets(date(2026,10,9),1)
