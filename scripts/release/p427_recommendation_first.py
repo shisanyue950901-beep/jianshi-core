@@ -216,7 +216,7 @@ def render_recommendations(cases: list[dict]) -> str:
         + stats + '</div>'
         '<section class="rec-quick" id="quick-start" aria-labelledby="quick-title">'
         '<h2 id="quick-title">你想从哪里开始？</h2>'
-        '<p>按研究目标选择，不是自动计算成功概率。先验证需求，再考虑投入。</p>'
+        '<p>按研究目标选择，不是自动计算成功概率。当前仅有可先小成本测试的方向（未证实盈利），先验证需求，再考虑投入。</p>'
         '<nav class="rec-quick__list" aria-label="研究路径选择">' + quick_links + '</nav>'
         '</section>'
         '<div class="rec-profile" aria-label="默认推荐条件"><span>一人创业</span><span>无库存优先</span>'
@@ -229,7 +229,7 @@ def render_recommendations(cases: list[dict]) -> str:
         '目前只建议先访谈客户、制作样板和尝试获取试单，不建议直接投入完整开发。'
         '见势会继续验证具体需求、成本与获客，满足落地条件后才给出可启动推荐。'
         '建议中的第一步属于研究计划，尚不是经过验证的落地结果。</p>'
-        '<a class="rec-card__link" href="/sources/">了解资料来源和证据口径 ↗</a>'
+        '<a class="rec-card__link" href="/sources/">商业市场数据从哪来？查看资料来源与证据口径 ↗</a>'
         '</section>'
     )
 
