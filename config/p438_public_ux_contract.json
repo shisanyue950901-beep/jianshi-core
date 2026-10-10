@@ -1,0 +1,136 @@
+{
+  "version": "P438_PUBLIC_DECISION_ENTRY_V1",
+  "principle": "PUBLIC_APPROVED_CASES_ONLY_NO_LAUNCH_GUARANTEE",
+  "public_home": {
+    "headline": "找到值得你验证的生意。",
+    "subhead": "不是保证赚钱的项目榜单，而是有来源、有局限、有下一步的真实案例。",
+    "primary_action": {
+      "label": "查看推荐项目",
+      "href": "#pick-list"
+    },
+    "secondary_action": {
+      "label": "根据我的条件筛选",
+      "href": "#quick-start"
+    },
+    "navigation": [
+      {
+        "label": "发现项目",
+        "href": "#recommendations"
+      },
+      {
+        "label": "商业模式",
+        "href": "#models"
+      },
+      {
+        "label": "方法说明",
+        "href": "#about"
+      }
+    ]
+  },
+  "quick_paths": [
+    {
+      "id": "solo",
+      "label": "一个人能先测试",
+      "description": "先从低投入需求验证开始；不代表项目已证明能赚钱",
+      "href": "#case-carrd",
+      "fit_status": "TEST_IDEA_ONLY"
+    },
+    {
+      "id": "evidence",
+      "label": "查看原始经营证据",
+      "description": "只看具有具名历史经营披露的案例",
+      "href": "/projects/",
+      "fit_status": "EVIDENCE_ONLY"
+    },
+    {
+      "id": "models",
+      "label": "先理解商业模式",
+      "description": "了解客户、收费机制与运作方式",
+      "href": "#models",
+      "fit_status": "EDUCATIONAL"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "approved_cases",
+      "label": "有历史经营证据的案例",
+      "source": "config/p424_project_research_evidence.json + strict admitted public cases",
+      "unit": "case"
+    },
+    {
+      "key": "verified_launch",
+      "label": "已验证可直接启动的项目",
+      "source": "config/p428_solo_startup_profile.json.ready_for_launch",
+      "unit": "case"
+    },
+    {
+      "key": "business_models",
+      "label": "已整理的商业模式",
+      "source": "config/p412a_user_product_model.json.business_models",
+      "unit": "category"
+    }
+  ],
+  "source_taxonomy": [
+    "REGULATORY_FILING",
+    "FOUNDER_HISTORICAL_SELF_REPORT",
+    "COMPANY_HISTORICAL_SELF_REPORT",
+    "TECHNICAL_ACTIVITY_NOT_REVENUE",
+    "DISCOVERY_LEAD_UNVERIFIED"
+  ],
+  "public_record_fields": [
+    "id",
+    "company_brand",
+    "claim",
+    "historical_period",
+    "source_url",
+    "source_type",
+    "evidence_level",
+    "reproducibility_status",
+    "missing_validation",
+    "next_research_step"
+  ],
+  "private_fields_forbidden": [
+    "source_ref_ids",
+    "listing_number",
+    "source_url_private",
+    "original_listing_title",
+    "token",
+    "auth_email",
+    "research_leads",
+    "internal_score",
+    "candidate_raw_json"
+  ],
+  "rules": {
+    "minimum_evidence_level": 3,
+    "launch_requires_independent_validation": true,
+    "unreviewed_leads_public": false,
+    "financial_claims_must_retain_source_and_period": true,
+    "do_not_show_unverified_refresh_frequency": true
+  },
+  "screen_contracts": [
+    {
+      "page": "home",
+      "main_action": "查看推荐项目",
+      "mobile_viewport": 390,
+      "desktop_viewport": 1440
+    },
+    {
+      "page": "discovery",
+      "main_action": "筛选已审案例",
+      "mobile_viewport": 390,
+      "desktop_viewport": 1440
+    },
+    {
+      "page": "detail",
+      "main_action": "查看原始证据和验证下一步",
+      "mobile_viewport": 390,
+      "desktop_viewport": 1440
+    },
+    {
+      "page": "guide",
+      "main_action": "按条件缩小研究方向（P4.41）",
+      "mobile_viewport": 390,
+      "desktop_viewport": 1440
+    }
+  ]
+}
