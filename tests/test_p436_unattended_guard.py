@@ -150,8 +150,12 @@ class UnattendedGuardTest(unittest.TestCase):
 
     def test_workflow_retains_failed_runs_without_more_jobs_or_requests(self):
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
-        self.assertIn("if: github.event_name == 'schedule'",wf)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertNotIn("cron: '55 */6 * * *'",wf)
+        self.assertIn("github.event.schedule == '55 0 * * *'",wf)
+        self.assertNotIn("date -u +%H",wf)
+        self.assertIn("if: github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",wf)
         self.assertIn("always() && github.event_name == 'schedule'",wf)
         self.assertIn("p436_unattended_guard.py",wf)
         self.assertIn("p436_unattended_verdict.json",wf)
