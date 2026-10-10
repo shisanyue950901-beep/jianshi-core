@@ -152,7 +152,10 @@ class DecisionReportTest(unittest.TestCase):
                     "analytics.js","fetch("):
             self.assertNotIn(bad,source)
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertEqual(wf.count("- cron:"),2)
+        self.assertIn("github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",wf)
 
 
 if __name__=="__main__":
