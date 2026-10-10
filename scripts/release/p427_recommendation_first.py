@@ -225,6 +225,7 @@ def render_recommendations(cases: list[dict]) -> str:
         '<p>优先给能一人做小范围需求测试的方向；技术型项目和大型平台默认降级。</p></div>'
         f'<div class="rec-cards">{"".join(cards)}</div>'
         '<p class="rec-no-promise"><strong>为什么没有“闭眼开干”的项目？</strong> '
+        f'当前已证明适合直接投入创业的项目有 {metrics["verified_launch"]} 个。'
         '企业过去赚过钱，只证明该企业的历史经营，不证明新创业者可以复制。'
         '目前只建议先访谈客户、制作样板和尝试获取试单，不建议直接投入完整开发。'
         '见势会继续验证具体需求、成本与获客，满足落地条件后才给出可启动推荐。'
