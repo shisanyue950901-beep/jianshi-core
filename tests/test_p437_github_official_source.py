@@ -87,7 +87,11 @@ class OfficialGitHub(unittest.TestCase):
         with self.assertRaises(ValueError):
             probe.private_path(ROOT/"web/dist/repo-metrics.json")
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertNotIn("cron: '55 */6 * * *'",wf)
+        self.assertIn("github.event.schedule == '55 0 * * *'",wf)
+        self.assertNotIn("date -u +%H",wf)
         self.assertEqual(wf.count("p437_official_github_repo_probe.py --online"),1)
         self.assertIn("p437_github_metrics.json",wf)
         self.assertIn("p436_unattended_guard.py",wf)
