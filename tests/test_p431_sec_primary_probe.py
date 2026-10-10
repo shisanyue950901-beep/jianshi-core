@@ -186,7 +186,10 @@ class SecPrimaryProbeTest(unittest.TestCase):
 
     def test_existing_frequency_and_no_new_scheduling_or_paid_proxies(self):
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertIn("cron: '55 */6 * * *'",wf)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertEqual(wf.count("- cron:"),2)
+        self.assertIn("github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",wf)
         script=(ROOT/"scripts/research/p431_sec_primary_probe.py").read_text(encoding="utf-8")
         self.assertNotIn("cron",script)
         self.assertNotIn("urlopen(",script)
