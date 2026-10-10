@@ -165,7 +165,7 @@ def render_recommendations(cases: list[dict]) -> str:
         tier = "L4 · 监管历史财务" if item["evidence_level"] == 4 else "L3 · 历史经营自述"
         badge = escape(info["label"])
         cards.append(
-            f'<article id="case-{slug}" class="rec-card{" rec-card--primary" if status == "TEST_IDEA_ONLY" else " rec-card--reference"}" data-case="{slug}" data-solo-fit="{status}">'
+            f'<article class="rec-card{" rec-card--primary" if status == "TEST_IDEA_ONLY" else " rec-card--reference"}" id="case-{slug}" data-case="{slug}" data-solo-fit="{status}">'
             '<div class="rec-card__top">'
             f'<span class="rec-card__order">{badge}</span><span class="rec-card__tier">{tier}</span></div>'
             f'<p class="rec-card__gate">{escape(policy["tag"])}</p>'
@@ -204,7 +204,7 @@ def render_recommendations(cases: list[dict]) -> str:
     )
     return (
         '<section class="recommend-first" id="recommendations" aria-labelledby="rec-title">'
-        '<span class="rec-kicker">JIANSHI / 有证据、有边界、有下一步</span>'
+        '<span class="rec-kicker">JIANSHI PICKS / 一个人 · 小资金 · 从零启动</span>'
         f'<h1 id="rec-title">{escape(home["headline"])}</h1>'
         f'<p class="rec-lead">{escape(home["subhead"])}'
         '默认从一个人、小资金、从零起步考虑适配性；历史公司经营不等于你的创业收益。</p>'
@@ -229,6 +229,7 @@ def render_recommendations(cases: list[dict]) -> str:
         '目前只建议先访谈客户、制作样板和尝试获取试单，不建议直接投入完整开发。'
         '见势会继续验证具体需求、成本与获客，满足落地条件后才给出可启动推荐。'
         '建议中的第一步属于研究计划，尚不是经过验证的落地结果。</p>'
+        '<a class="rec-card__link" href="/sources/">了解资料来源和证据口径 ↗</a>'
         '</section>'
     )
 
