@@ -120,8 +120,12 @@ class TestP426Digests(unittest.TestCase):
 
     def test_existing_schedule_not_extra_or_paid_and_no_direct_publication(self):
         yaml=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertIn("cron: '55 */6 * * *'",yaml)
-        self.assertIn("if: github.event_name == 'schedule'",yaml)
+        self.assertEqual(yaml.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(yaml.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertNotIn("cron: '55 */6 * * *'",yaml)
+        self.assertIn("github.event.schedule == '55 0 * * *'",yaml)
+        self.assertNotIn("date -u +%H",yaml)
+        self.assertIn("if: github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",yaml)
         self.assertIn('p426_daily_leads.py --network --max-companies 6',yaml)
         self.assertNotIn("P435_SMOKE_ONCE",yaml)
         self.assertIn("p436_unattended_guard.py",yaml)
