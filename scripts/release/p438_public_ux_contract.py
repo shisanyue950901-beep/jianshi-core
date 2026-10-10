@@ -57,7 +57,7 @@ def public_metrics(cases: list[dict]) -> dict:
     models=load(MODELS)
     if (solo.get("version")!="P428_SOLO_LOW_CAPITAL_ZERO_START_V1"
             or ledger.get("version")!="P4.24_RESEARCH_EVIDENCE_V1"
-            or models.get("version")!="P4.12A-USER-PRODUCT-V1"):
+            or models.get("version")!="P4.12A-V1"):
         raise RuntimeError("Public source schema drift")
     if not isinstance(cases,list) or not cases:
         raise RuntimeError("Missing eligible cases")
