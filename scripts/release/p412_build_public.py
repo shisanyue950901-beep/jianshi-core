@@ -77,6 +77,66 @@ def assert_safe_source(markup: str, *, source_prototype: bool = True) -> None:
     if len(markup.encode("utf-8")) > 400_000:
         raise RuntimeError("Single HTML unexpectedly large")
 
+
+# Publish a *separate* evidence-only appendix. Never replace the editorial,
+# source-governed home page or resurrect the deprecated /opportunities route.
+RESEARCH_SLUGS = (
+    "vertical-industry-saas",
+    "amazon-fba-niche-brand",
+    "digital-product-business",
+    "affiliate-content-site",
+    "amazon-kdp-publishing",
+    "agency-business",
+)
+
+def publish_public_research_appendix() -> int:
+    source_index=OUTPUT/"opportunities"/"index.html"
+    if not source_index.is_file():
+        raise RuntimeError("Base business research index missing")
+    candidates=[(source_index,OUTPUT/"research"/"index.html",True)]
+    for slug in RESEARCH_SLUGS:
+        src=OUTPUT/"opportunity"/slug/"index.html"
+        if not src.is_file():
+            raise RuntimeError("Missing approved anonymous study: "+slug)
+        candidates.append((src,OUTPUT/"research"/slug/"index.html",False))
+    forbidden=(
+        "empire flippers","empireflippers","listing_number","public_title",
+        "source_updated_at","source_url","source_ref_ids",
+        "china_screening","first_validation","editorial_judgement",
+    )
+    for src,target,is_index in candidates:
+        markup=src.read_text(encoding="utf-8")
+        if any(token in markup.lower() for token in forbidden):
+            raise RuntimeError("Protected source marker in research appendix")
+        if is_index:
+            if markup.count('id="category-comparison"')!=1:
+                raise RuntimeError("Evidence-backed six-category comparison missing")
+            if '<meta name="robots" content="index,follow">' not in markup:
+                raise RuntimeError("Unexpected research index robots rule")
+            markup=markup.replace(
+                '<meta name="robots" content="index,follow">',
+                '<meta name="robots" content="noindex,follow">',1)
+        elif ("noindex,nofollow" not in markup or 'class="niche-chart-v2"' not in markup):
+            raise RuntimeError("Anonymized detail is missing noindex or aggregate chart")
+        markup=markup.replace(
+            f'{SITE}/opportunities/',f'{SITE}/research/')
+        markup=markup.replace(
+            'href="/opportunities/', 'href="/research/')
+        markup=markup.replace(
+            'href="/opportunity/', 'href="/research/')
+        # Detailed canonical/OG references must point at this appendix,
+        # not the intentionally redirected legacy opportunity pages.
+        for slug in RESEARCH_SLUGS:
+            markup=markup.replace(
+                f'{SITE}/opportunity/{slug}/',
+                f'{SITE}/research/{slug}/')
+        if '/opportunity/' in markup and ('href="/opportunity/' in markup or f'{SITE}/opportunity/' in markup):
+            raise RuntimeError("Research appendix still links to legacy redirects")
+        target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_text(markup,encoding="utf-8")
+    return len(RESEARCH_SLUGS)
+
+
 def build_release() -> dict:
     if not OUTPUT.is_dir() or not (OUTPUT / "_redirects").is_file() or not (OUTPUT / "_headers").is_file():
         raise RuntimeError("web/build.py must create web/dist and security controls first")
@@ -89,6 +149,18 @@ def build_release() -> dict:
     # Strict editorial gate: only projects with attributable operating evidence.
     approved = eligible_cases(parse_cases())
     markup = public_home(markup, approved)
+    # Keep the established one-page user journey and motion design; offer an
+    # explicit, evidence-only research appendix instead of replacing the hero.
+    model_marker='<div class="model-list" id="modelList"></div>'
+    if markup.count(model_marker)!=1:
+        raise RuntimeError("Business-model section anchor changed")
+    research_action=(
+        '<p class="models__intro">'
+        '<a class="proof-action" href="/research/">'
+        '查看六类商业项目的匿名统计、领域分布和案例区间'
+        ' <span aria-hidden="true">↗</span></a></p>'
+    )
+    markup=markup.replace(model_marker,model_marker+research_action,1)
     assert_safe_source(markup, source_prototype=False)
     (OUTPUT / "index.html").write_text(markup, encoding="utf-8")
     # Separate public-only evidence dashboard. Never embed raw marketplace data
@@ -116,6 +188,9 @@ def build_release() -> dict:
     if market_sources["sources"] != 6 or market_sources["editorial_reports"] != 4 or market_sources["listing_import_enabled"]:
         raise RuntimeError("Unapproved market source import detected")
 
+    # The old paths remain redirects; expose aggregate research only at a
+    # distinct and explicitly linked /research/ URL.
+    anonymous_studies=publish_public_research_appendix()
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
         "opportunities": "/#archive",
@@ -175,6 +250,7 @@ def build_release() -> dict:
         "evidence_dashboard": "validation/index.html",
         "named_project_dossiers": len(approved),
         "curated_market_sources": market_sources["sources"],
+        "anonymous_studies": anonymous_studies,
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
         "production_deployed": False,
