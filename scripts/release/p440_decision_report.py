@@ -19,7 +19,7 @@ STATUS_LABELS = {
 }
 SOURCE_LABELS = {
     ("regulatory_filing", 4): "L4 · 历史监管申报",
-    ("founder_historical", 3): "L3 · 创始人／企业历史自述（未独立审计）",
+    ("founder_historical", 3): "L3 · 创始人／企业历史自述（未经独立审计）",
 }
 
 
