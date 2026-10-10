@@ -13,6 +13,7 @@ import shutil
 from collections import Counter
 from p425_public_admission import eligible_cases
 from p426_evidence_digest import derive_digest
+from p440_decision_report import decision_data, render_decision_panel, render_decision_listing
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -81,6 +82,35 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 .directory a .digestmini small{font-size:12px;color:var(--muted);margin-top:5px}
 @media(max-width:600px){.digestgrid{grid-template-columns:1fr}.digest{padding:18px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+/* P4.40 static decision file: readable, no JS or external dependencies. */
+.decision-report{border-top:3px solid var(--accent);background:var(--panel);border-inline:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(18px,3.6vw,34px);margin:30px 0 37px;scroll-margin-top:90px}
+.decision-eyebrow{font-size:11px;letter-spacing:.16em;color:var(--accent);font-weight:700}
+.decision-report h2{font:500 clamp(24px,3vw,34px)/1.35 Georgia,"Songti SC",serif;margin:9px 0 11px}
+.decision-intro{color:var(--muted);max-width:66ch;font-size:14px;line-height:1.75;margin:0 0 22px}
+.decision-verdict{border-left:4px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--bg));padding:16px 18px;margin:0 0 21px}
+.decision-verdict__label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
+.decision-verdict strong{display:block;font-size:clamp(16px,2vw,21px);line-height:1.45}
+.decision-verdict small{display:block;color:var(--muted);line-height:1.7;margin-top:6px;font-size:12px}
+.decision-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.decision-columns article{min-width:0;border:1px solid var(--line);padding:17px}
+.decision-columns h3,.decision-proof h3,.decision-action h3{margin:0 0 9px;color:var(--ink);font-size:17px}
+.decision-columns article h3:not(:first-child){margin-top:20px}
+.decision-columns p,.decision-proof p,.decision-action p{line-height:1.75;font-size:14px;margin:6px 0;color:var(--ink)}
+.decision-columns small{display:block;color:var(--muted);line-height:1.7;margin-top:9px;font-size:12px}
+.decision-proof,.decision-action{border-top:1px solid var(--line);margin-top:23px;padding-top:20px}
+.decision-proof a{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:650;margin-top:10px}
+.decision-action ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style-position:inside;padding:0;margin:12px 0 0}
+.decision-action li{border:1px solid var(--line);padding:14px 15px;min-width:0;color:var(--ink)}
+.decision-action li::marker{font-size:13px;color:var(--accent)}
+.decision-action li b{font-size:14px}
+.decision-action li p{font-size:13px;color:var(--muted)}
+.decision-disclaimer{font-size:12px;line-height:1.75;color:var(--muted);margin:21px 0 0}
+.directory a .decision-mini{display:block;border-top:1px solid var(--line);padding-top:11px;margin-top:11px;font-size:12px;line-height:1.8;color:var(--muted)}
+.directory a .decision-mini b{color:var(--accent)}
+.decision-report a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media(max-width:720px){.decision-action ol{grid-template-columns:1fr}.decision-columns{grid-template-columns:1fr}.decision-action li{padding:13px}}
+@media(max-width:590px){.decision-report{margin:18px 0 28px}.decision-intro{font-size:13px}}
+
 """
 
 def txt(value: object) -> str:
@@ -216,6 +246,7 @@ def project_page(case: dict) -> str:
         findings_intro="项目公开展示产品／服务及收费说明，但交易、净利与获客表现仍缺独立核验。"
         finance_boundary="仍未取得该企业自身可独立核实的财务经营数据。"
     digest = derive_digest(case)
+    decision_html = render_decision_panel(decision_data(case))
     summary_box = (
         '<section class="digest" aria-label="证据提炼摘要"><h2>30 秒看懂这门生意</h2>'
         '<div class="digestgrid">'
@@ -233,6 +264,7 @@ def project_page(case: dict) -> str:
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
 <p><b>编辑归类：</b>{txt(MODEL_LABELS[case["model"]])}　<b>资料记录：</b>{txt(case["verifiedOn"])}（非实时经营审计）</p>
 <div class="notice"><b>证据阶段：</b>{txt(findings_intro)} 即使行业方向达标，也不能算作某家企业的经营证明；不使用行业匿名挂牌推断它的收入。</div>
+{decision_html}
 {summary_box}
 <div class="statusgrid" aria-label="项目商业验证状态">
 <div class="status"><b>产品／服务：有官方依据</b><small>可进入对应官网或产品页核对公开供应</small></div>
@@ -257,7 +289,7 @@ def project_page(case: dict) -> str:
 <p><b>独立客户需求：</b>尚无该项目可计入的需求实证；不能将行业级技术或商业证据视为这家企业的客户证据。</p>
 <p><b>项目自身销售／利润：</b>{txt(finance_boundary)} 本站的排序仅代表资料层级，不是赚钱排名。</p></section>
 <section class="section"><h2>05｜下一步研究</h2><p>{txt(case.get("learning") or "进一步独立核查真实购买需求、履约成本与客户留存。")}</p>
-<p><a href="/validation/">了解同类行业方向的研究边界 →</a> · <a href="/projects/">返回 20 个具名项目档案 →</a></p></section>"""
+<p><a href="/validation/">了解同类行业方向的研究边界 →</a> · <a href="/projects/">返回 3 个已审项目档案 →</a></p></section>"""
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
 
 def index_page(cases: list[dict]) -> str:
@@ -269,6 +301,7 @@ def index_page(cases: list[dict]) -> str:
         level = item["evidence_level"]
         snippet = f"{classification} · L{level} {LABELS[level]} · 编辑资料记录 {item['verifiedOn']}"
         summary = derive_digest(item)
+        decision = render_decision_listing(decision_data(item))
         digestmini = (
             '<div class="digestmini" aria-label="自动提炼的证据要点">'
             f'<p><b>卖什么：</b>{txt(summary.offer)}</p>'
@@ -280,7 +313,7 @@ def index_page(cases: list[dict]) -> str:
         tiles.append(f'<a href="/projects/{txt(item["id"])}/" data-level="{level}" data-id="{txt(item["id"])}">'
                      f'<small>#{rank:02d} · {txt(LABELS[level])}</small>'
                      f'<strong>{txt(item["title"])}</strong><span>{txt(snippet)}</span>'
-                     f'{digestmini}<span class="digest-more">查看来源、风险与研究缺口 ↗</span></a>')
+                     f'{digestmini}{decision}<span class="digest-more">查看来源、风险与研究缺口 ↗</span></a>')
     counts = " · ".join(f"{MODEL_LABELS[k]} {v}" for k,v in sorted(count.items()))
     body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
 <h1>{len(cases)} 个正式项目，<br>只收录有经营证据的。</h1>
