@@ -66,11 +66,12 @@ class P443EvidenceContentTests(unittest.TestCase):
             ],
         }
         rendered=b._public_niche_bars(s)
-        self.assertIn("商业&lt;script&gt;",rendered)
+        self.assertNotIn("商业&lt;script&gt;",rendered)
         self.assertNotIn("<script>",rendered)
-        self.assertIn("width:100.0%",rendered)
         self.assertIn("width:50.0%",rendered)
         self.assertNotIn("width:225",rendered)
+        self.assertIn("部分领域统计数量超过该分类样本总数",rendered)
+        self.assertIn("&lt;敏感字段&gt;",b._sample_rows({"samples":[{"display_name":"<敏感字段>"}]}))
         self.assertIn("坏数字",str(s))
         self.assertNotIn("坏数字",rendered)
         self.assertIn("无法绘制领域分布",b._public_niche_bars({
