@@ -130,7 +130,10 @@ class RightsGatedFeedTest(unittest.TestCase):
                     "app.acquire.com/public","Cloudflare"):
             self.assertNotIn(bad,script)
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertIn("cron: '55 */6 * * *'",wf)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertEqual(wf.count("- cron:"),2)
+        self.assertIn("github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",wf)
         self.assertEqual(wf.count("p432_publisher_rss_probe.py --online"), 1)
         self.assertIn("p434_rss_health.txt",wf)
         self.assertEqual(probe.load_policy()["fathom-rss"]["automated_fetch"], "DAILY_EXISTING_SCAN_SLOT_ONCE")
