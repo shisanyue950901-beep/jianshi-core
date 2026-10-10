@@ -132,8 +132,12 @@ class PrivateHealthTests(unittest.TestCase):
 
     def test_one_time_smoke_is_retired_and_daily_rate_remains_bounded(self):
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
-        self.assertIn("if: github.event_name == 'schedule'",wf)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertNotIn("cron: '55 */6 * * *'",wf)
+        self.assertIn("github.event.schedule == '55 0 * * *'",wf)
+        self.assertNotIn("date -u +%H",wf)
+        self.assertIn("if: github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",wf)
         self.assertIn('p426_daily_leads.py --network --max-companies 6',wf)
         self.assertNotIn("startsWith(github.event.head_commit.message",wf)
         self.assertNotIn("P435_SMOKE_ONCE",wf)
