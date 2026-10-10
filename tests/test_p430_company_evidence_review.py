@@ -170,7 +170,10 @@ class PrivateR2TriageTest(unittest.TestCase):
         self.assertNotIn("mcp__TinyFish",script)
         self.assertNotIn("supabase",script.lower())
         workflow=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertEqual(workflow.count("cron: '55 */6 * * *'"),1)
+        self.assertEqual(workflow.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(workflow.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertEqual(workflow.count("- cron:"),2)
+        self.assertIn("github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",workflow)
 
 
 if __name__=="__main__":
