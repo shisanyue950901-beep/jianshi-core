@@ -70,6 +70,15 @@ class PublicResearchAppendixTests(unittest.TestCase):
         self.assertNotIn("mcp__TinyFish",main)
         self.assertIn('anonymous_studies=publish_public_research_appendix()',main)
 
+    def test_repeated_release_uses_pre_release_mirror(self):
+        env=dict(os.environ)
+        env.pop("JIANSHI_API_URL",None)
+        proc=subprocess.run([sys.executable,str(ROOT/"scripts/release/p412_build_public.py")],
+                            cwd=ROOT,env=env,text=True,capture_output=True,timeout=50)
+        self.assertEqual(proc.returncode,0,proc.stderr)
+        self.assertIn('id="category-comparison"', (DIST/"research/index.html").read_text(encoding="utf-8"))
+        self.assertIn("/#archive", (DIST/"opportunities/index.html").read_text(encoding="utf-8"))
+
     def test_source_privacy_scanner_accepts_final_release(self):
         result=subprocess.run([sys.executable,str(ROOT/"scripts/security/p411_audit_public_artifacts.py"),str(DIST)],
             cwd=ROOT,text=True,capture_output=True,timeout=30)
