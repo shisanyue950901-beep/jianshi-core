@@ -1343,8 +1343,75 @@ def newsletter_block():
 <p class="newsletter-status" data-newsletter-status role="status" aria-live="polite"></p>
 </form></div></section>"""
 
+
+# Cloudflare Pages runs a second build of the same GitHub revision. Unlike
+# GitHub's trusted scheduled/static workflow it may not have JIANSHI_API_URL.
+# Avoid replacing the audited, checked-in PUBLIC snapshot with offline fixtures.
+# This is purely a local artifact reuse step; never calls a new data source.
+PUBLISHED_RESEARCH_SLUGS=(
+    "vertical-industry-saas","amazon-fba-niche-brand","digital-product-business",
+    "affiliate-content-site","amazon-kdp-publishing","agency-business",
+)
+
+def _preserve_cloudflare_public_snapshot():
+    if API or os.getenv("CF_PAGES")!="1" or os.getenv("CF_PAGES_BRANCH","main")!="main":
+        return False
+    import re
+    root=REPO_ROOT
+    released=DIST
+    source=root/"dist"
+    files=[
+        released/"index.html",
+        released/"_headers",
+        released/"_redirects",
+        released/"research"/"index.html",
+        source/"opportunities"/"index.html",
+    ]
+    for slug in PUBLISHED_RESEARCH_SLUGS:
+        files.extend((
+            released/"research"/slug/"index.html",
+            source/"opportunity"/slug/"index.html",
+        ))
+    missing=[str(path.relative_to(root)) for path in files if not path.is_file()]
+    if missing:
+        raise RuntimeError("Missing audited committed Pages snapshot: "+", ".join(missing))
+    home=(released/"index.html").read_text(encoding="utf-8")
+    index=(released/"research"/"index.html").read_text(encoding="utf-8")
+    src_index=(source/"opportunities"/"index.html").read_text(encoding="utf-8")
+    if 'id="ring"' not in home or 'href="/research/"' not in home:
+        raise RuntimeError("Committed public homepage contract missing")
+    if ('id="category-comparison"' not in index
+            or 'id="category-comparison"' not in src_index
+            or 'noindex,follow' not in index):
+        raise RuntimeError("Committed public comparison contract missing")
+    if "Cache-Control: no-store" not in (released/"_headers").read_text(encoding="utf-8"):
+        raise RuntimeError("Committed public cache policy missing")
+    if "/config/*" not in (released/"_redirects").read_text(encoding="utf-8"):
+        raise RuntimeError("Committed public path protections missing")
+    count_re=re.compile(r"当前分类包含\s*([\d,]+)\s*个去重项目案例")
+    for slug in PUBLISHED_RESEARCH_SLUGS:
+        page=(released/"research"/slug/"index.html").read_text(encoding="utf-8")
+        mirror=(source/"opportunity"/slug/"index.html").read_text(encoding="utf-8")
+        n=count_re.search(page)
+        m=count_re.search(mirror)
+        if (not n or not m or n.group(1)!=m.group(1)
+                or "noindex,nofollow" not in page
+                or 'id="sample-metrics"' not in page):
+            raise RuntimeError("Published research snapshot mismatch: "+slug)
+    print(json.dumps({
+        "status":"PASS",
+        "api":"audited_committed_public_snapshot",
+        "pages":len(PUBLISHED_RESEARCH_SLUGS),
+        "outputs":["web/dist","dist","public","repo-root-runtime"],
+        "no_new_data_requests":True,
+    },ensure_ascii=False))
+    return True
+
+
 def main():
     global AUTH_ENABLED
+    if _preserve_cloudflare_public_snapshot():
+        return
     if DIST.exists(): shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
     shutil.copy2(STATIC/"styles.css",DIST/"styles.css")
