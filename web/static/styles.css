@@ -444,3 +444,5 @@ body{
  .case-coverage-stats-v2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
  .case-coverage-stats-v2>span{justify-content:space-between}
 }
+
+.niche-data-warning-v2{margin:12px 0 0;font-size:12px;line-height:1.75;color:#9a6228;background:#fff8e9;padding:10px 12px;border-radius:6px}
