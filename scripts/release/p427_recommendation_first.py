@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 from p426_evidence_digest import derive_digest
+from p438_public_ux_contract import entry_contract, public_metrics
 
 PROFILE_FILE = Path(__file__).resolve().parents[2] / "config/p428_solo_startup_profile.json"
 VALID_FIT = {"TEST_IDEA_ONLY", "SKILL_GATED", "NOT_SOLO_STARTUP"}
@@ -117,10 +118,39 @@ STYLE = """
 .recommend-first a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:760px){.recommend-first{padding-top:105px}.rec-cards{grid-template-columns:1fr}.rec-card--reference{grid-column:auto}.rec-card--primary{grid-column:auto}.rec-stats{gap:10px}.rec-card dl{grid-template-columns:75px 1fr}.rec-card dd{font-size:13px}.rec-card{padding:20px}}
 @media(max-width:450px){.rec-stats strong{font-size:25px}.rec-stats span{font-size:11px}.rec-actions a{width:100%;justify-content:center}}
+
+/* P4.39: goal first, three honest metrics, lightweight intent routes. */
+.recommend-first{scroll-margin-top:70px}
+.rec-kicker{margin-bottom:15px}
+.recommend-first h1{max-width:880px;line-height:1.14}
+.rec-lead{max-width:690px;margin-bottom:18px}
+.rec-actions{margin:20px 0 25px}
+.rec-actions a:nth-child(2){border-color:var(--ink)}
+.rec-quick{border:1px solid var(--line);padding:18px 20px;margin:24px 0 29px;scroll-margin-top:95px}
+.rec-quick h2{font:500 clamp(18px,2.2vw,24px)/1.4 var(--serif);margin:0 0 7px}
+.rec-quick>p{color:var(--dim);font-size:13px;line-height:1.7;margin:0 0 13px}
+.rec-quick__list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.rec-quick__list a{display:flex;flex-direction:column;gap:5px;min-height:90px;padding:13px;border:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.rec-quick__list a:hover,.rec-quick__list a:focus-visible{border-color:var(--accent);background:var(--panel)}
+.rec-quick__list b{font-size:14px;font-weight:650}
+.rec-quick__list span{font-size:12px;color:var(--dim);line-height:1.6}
+.rec-stats{margin:19px 0 34px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.rec-stat b{display:block;font:500 clamp(28px,3.2vw,44px)/1.2 var(--serif)}
+.rec-stat span{max-width:22ch}
+.rec-profile{margin:16px 0 20px}
+#pick-list,.rec-card{scroll-margin-top:95px}
+@media(max-width:760px){.recommend-first{padding-top:84px}.rec-quick__list{grid-template-columns:1fr}.rec-quick__list a{min-height:68px}.rec-quick{padding:16px}.rec-stats{gap:9px}}
+@media(max-width:450px){.rec-kicker{font-size:10px;letter-spacing:.09em;margin-bottom:11px}.recommend-first h1{font-size:clamp(32px,8.6vw,39px);margin-bottom:13px}.rec-lead{font-size:14px;line-height:1.65;margin-bottom:13px}.rec-actions{gap:8px;margin:16px 0 24px}.rec-actions a{min-height:44px}.rec-stats strong,.rec-stat b{font-size:clamp(24px,7vw,33px)}.rec-stats span{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.rec-quick__list a{transition:none}}
+
 """
 
 def render_recommendations(cases: list[dict]) -> str:
     """Provide research choices, never fraudulently mark 'proven to start'."""
+    metrics = public_metrics(cases)
+    ux = entry_contract()
+    home = ux["public_home"]
+    quick = ux["quick_paths"]
     by_id = {x["id"]: x for x in cases}
     profile = load_solo_profile()
     profiles = profile["cases"]
@@ -135,7 +165,7 @@ def render_recommendations(cases: list[dict]) -> str:
         tier = "L4 · 监管历史财务" if item["evidence_level"] == 4 else "L3 · 历史经营自述"
         badge = escape(info["label"])
         cards.append(
-            f'<article class="rec-card{" rec-card--primary" if status == "TEST_IDEA_ONLY" else " rec-card--reference"}" data-case="{slug}" data-solo-fit="{status}">'
+            f'<article id="case-{slug}" class="rec-card{" rec-card--primary" if status == "TEST_IDEA_ONLY" else " rec-card--reference"}" data-case="{slug}" data-solo-fit="{status}">'
             '<div class="rec-card__top">'
             f'<span class="rec-card__order">{badge}</span><span class="rec-card__tier">{tier}</span></div>'
             f'<p class="rec-card__gate">{escape(policy["tag"])}</p>'
@@ -162,23 +192,35 @@ def render_recommendations(cases: list[dict]) -> str:
         raise RuntimeError("No source-backed case available for research recommendations")
     # No case currently proves startup costs, customer acquisition and ability
     # for *new founders* to reproduce outcomes. Never invent one.
+    quick_links = "".join(
+        '<a href="'+escape(item["href"],quote=True)+'"><b>'+escape(item["label"])+'</b>'
+        '<span>'+escape(item["description"])+'</span></a>'
+        for item in quick
+    )
+    stats = "".join(
+        '<div class="rec-stat"><strong>'+str(metrics[item["key"]])+'</strong>'
+        '<span>'+escape(item["label"])+'</span></div>'
+        for item in ux["metrics"]
+    )
     return (
         '<section class="recommend-first" id="recommendations" aria-labelledby="rec-title">'
-        '<span class="rec-kicker">JIANSHI PICKS / 一个人 · 小资金 · 从零启动</span>'
-        '<h1 id="rec-title">找项目，先看这里。<br>我们帮你筛选。</h1>'
-        '<p class="rec-lead">见势只把有真实经营披露的企业作为研究案例。'
-        '我们默认排除囤货、雇人和高成本平台式复制，先找能一人验证付费需求的轻资产方向。'
-        '当前推荐的是低投入验证路径，不是已证实能赚钱的创业机会。</p>'
-        '<div class="rec-profile" aria-label="默认推荐条件"><span>1 人可启动验证</span><span>无库存优先</span>'
+        '<span class="rec-kicker">JIANSHI / 有证据、有边界、有下一步</span>'
+        f'<h1 id="rec-title">{escape(home["headline"])}</h1>'
+        f'<p class="rec-lead">{escape(home["subhead"])}'
+        '默认从一个人、小资金、从零起步考虑适配性；历史公司经营不等于你的创业收益。</p>'
+        '<div class="rec-actions">'
+        f'<a href="{escape(home["primary_action"]["href"],quote=True)}">{escape(home["primary_action"]["label"])} ↘</a>'
+        f'<a href="{escape(home["secondary_action"]["href"],quote=True)}">{escape(home["secondary_action"]["label"])} ↘</a>'
+        '</div>'
+        '<div class="rec-stats" aria-label="已审核项目与商业模式数量">'
+        + stats + '</div>'
+        '<section class="rec-quick" id="quick-start" aria-labelledby="quick-title">'
+        '<h2 id="quick-title">你想从哪里开始？</h2>'
+        '<p>按研究目标选择，不是自动计算成功概率。先验证需求，再考虑投入。</p>'
+        '<nav class="rec-quick__list" aria-label="研究路径选择">' + quick_links + '</nav>'
+        '</section>'
+        '<div class="rec-profile" aria-label="默认推荐条件"><span>一人创业</span><span>无库存优先</span>'
         '<span>不用先组团队</span><span>不假定会编程</span><span>资金预算仍待确认</span></div>'
-        '<div class="rec-actions"><a href="#pick-list">直接看本期推荐研究 ↘</a>'
-        '<a href="/projects/">查看全部有证据案例 ↗</a>'
-        '<a href="/sources/">商业市场数据从哪来？↗</a></div>'
-        '<div class="rec-stats">'
-        f'<div><strong>{len(cases)}</strong><span>具有可归属经营证据的案例</span></div>'
-        f'<div><strong>{sum(1 for id, p in profiles.items() if id in by_id and p["status"] == "TEST_IDEA_ONLY")}</strong>'
-        '<span>可先小成本测试的方向（未证实盈利）</span></div>'
-        '<div><strong>0</strong><span>已证明适合直接投入创业的项目</span></div></div>'
         '<div class="rec-head" id="pick-list"><h2>一个人从零，先试什么？</h2>'
         '<p>优先给能一人做小范围需求测试的方向；技术型项目和大型平台默认降级。</p></div>'
         f'<div class="rec-cards">{"".join(cards)}</div>'
