@@ -893,8 +893,23 @@ def shell(title, body, description="见势：基于公开商业市场数据的�
 <footer><div class="wrap footer-v2"><div><strong>见势 JIANSHI</strong><span>公开商业数据研究工具</span></div><p>数据用于研究与信息整理，不构成投资、经营或收益承诺。</p></div></footer>
 <script src="/search.js" defer></script>{auth_boot}{analytics_boot}</body></html>"""
 
+def _published_niches(research, limit=3):
+    """Only use the evidence-backed, publishable research distribution."""
+    names=[]
+    for row in research.get("niche_distribution") or []:
+        if not isinstance(row, dict):
+            continue
+        name=str(row.get("name") or "").strip()
+        if name and name not in names:
+            names.append(name)
+        if len(names)>=limit:
+            break
+    return names
+
 def prototype_card(item, compact=False):
     research=research_for(item)
+    niches=_published_niches(research)
+    niche_html=('<div class="research-card-v2-niches"><span>样本涉及领域</span><p>'+esc(' · '.join(niches))+'</p></div>') if niches else ''
     slug=esc(item.get("slug"))
     source=research.get("evidence_source") or {}
     metrics=research.get("metrics") or {}
@@ -908,6 +923,7 @@ def prototype_card(item, compact=False):
 <div><span>月净利润中位数</span><b>{_metric(metrics.get("median_monthly_net_profit"),"money")}</b></div>
 <div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b></div>
 </div>
+{niche_html}
 <div class="research-card-v2-foot"><span>第三方公开数据整理</span><span>查看证据档案 →</span></div>
 </a>"""
 
@@ -932,7 +948,20 @@ def build_home(data, daily=None, prototypes=None):
 <div><span>内容呈现</span><b>中文分类 · 脱敏统计</b></div>
 </section>
 
-<section class="wrap research-section">
+<section class="wrap reading-path-v2" aria-labelledby="reading-path-heading">
+<div class="reading-path-v2-intro">
+<span class="eyebrow">阅读路线</span>
+<h2 id="reading-path-heading">三步读懂一份项目研究档案。</h2>
+<p>项目研究库展示公开挂牌样本；趋势信号展示系统研究指标。两类信息需要分别阅读，不能相互替代。</p>
+</div>
+<div class="reading-path-v2-grid">
+<a href="/opportunities/"><span>01 · 找到分类</span><strong>先看业务类型与样本数量</strong><small>了解当前纳入了哪些公开挂牌项目。</small><em>查看研究分类 →</em></a>
+<a href="/opportunities/#reading-metrics"><span>02 · 理解数字</span><strong>读懂中位数和匿名摘要</strong><small>区别统计中位数、披露值和逐条区间。</small><em>阅读指标说明 →</em></a>
+<a href="/#method"><span>03 · 核对边界</span><strong>知道数据不能证明什么</strong><small>挂牌披露不等于审计结果，也不等于未来收益。</small><em>查看研究口径 →</em></a>
+</div>
+</section>
+
+<section class="wrap research-section" id="research-categories">
 <div class="section-title-v2"><div><span>研究范围</span><h2>首批研究分类</h2></div><p>所有卡片均来自公开商业挂牌数据，不使用编辑推荐分数排序。</p></div>
 <div class="research-grid-v2">{cards}</div>
 </section>
@@ -970,7 +999,16 @@ def build_opportunities_page(catalog, prototypes=None):
 <p>浏览经过中文整理的海外项目类别及统计摘要。原始渠道、项目标识与逐条精确数据仅限内部核查。</p>
 <div class="catalog-meta-v2"><span>{fmt_int(len(prototypes))} 个研究分类</span><span>{fmt_int(total_samples)} 个项目案例</span><span>中文整理 · 脱敏呈现</span></div>
 </section>
-<section class="research-section">
+<section class="catalog-guide-v2" id="reading-metrics" aria-labelledby="metric-heading">
+<div class="section-title-v2"><div><span>阅读帮助</span><h2 id="metric-heading">这些研究数字应该怎样理解？</h2></div><p>以下是公开统计字段的解释，并非对项目经营表现的保证。</p></div>
+<dl class="catalog-glossary-v2">
+<div><dt>项目案例数量</dt><dd>当前分类内去重后的公开挂牌样本数，不代表整个市场的项目总量。</dd></div>
+<div><dt>营收与利润中位数</dt><dd>对可用挂牌披露字段进行汇总，不能视为独立审计或个人可获得的收入。</dd></div>
+<div><dt>细分领域分布</dt><dd>根据来源中的业务分类整理，用于查看样本覆盖范围，不用于推断细分领域盈利水平。</dd></div>
+<div><dt>匿名项目摘要</dt><dd>只展示可公开的中文摘要和金额区间；展示数量可能少于分类样本总数。</dd></div>
+</dl>
+</section>
+<section class="research-section" id="catalog-categories">
 <div class="section-title-v2"><div><span>项目分类</span><h2>商业资产分类</h2></div><p>卡片中的财务数字均为当前样本的中位数，字段来自挂牌方公开披露。</p></div>
 <div class="research-grid-v2">{cards}</div>
 </section>
@@ -1010,6 +1048,9 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
     boundaries=research.get("evidence_boundary") or []
     niches=research.get("niche_distribution") or []
     slug=str(x.get("slug") or "").strip()
+    sample_count=int(num(research.get("active_sample_count")))
+    price_count=research.get("priced_sample_count")
+    price_summary=(f"其中 {fmt_int(price_count)} 个包含挂牌报价信息" if price_count is not None else "报价样本数量尚未提供")
     related=[p for p in (all_prototypes or []) if str(p.get("slug") or "")!=slug][:3]
     related_html=''.join(prototype_card(p,True) for p in related)
     niche_html=''.join(
@@ -1023,7 +1064,14 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
 <div class="eyebrow">项目研究档案</div>
 <h1>{esc(research.get("title") or x.get("title"))}</h1>
 <div class="source-line-v2"><span>中文整理</span><span>已对渠道信息与原始记录进行脱敏</span></div>
+<p class="research-summary-v2">当前分类包含 {fmt_int(sample_count)} 个去重项目案例；{esc(price_summary)}。本页展示分类统计与匿名摘要，不代表市场总体情况。</p>
 </section>
+<nav class="research-anchor-nav-v2" aria-label="本页阅读导航">
+<a href="#sample-scope">样本规则</a>
+<a href="#sample-metrics">统计与分布</a>
+<a href="#sample-examples">匿名案例</a>
+<a href="#sample-boundary">证据边界</a>
+</nav>
 
 <section class="research-kpis-v2">
 <div><span>项目案例数量</span><b>{fmt_int(research.get("active_sample_count"))}</b></div>
@@ -1034,12 +1082,12 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
 <div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b><small>挂牌披露</small></div>
 </section>
 
-<section class="detail-section-v2">
+<section class="detail-section-v2" id="sample-scope">
 <div class="section-title-v2"><div><span>统计口径</span><h2>样本纳入规则</h2></div></div>
 <div class="scope-box-v2"><p>{esc(research.get("sample_definition") or "—")}</p><dl><dt>统计对象</dt><dd>海外商业项目</dd><dt>统计方式</dt><dd>同一项目去重</dd><dt>公开方式</dt><dd>中文化与脱敏</dd></dl></div>
 </section>
 
-<section class="detail-section-v2">
+<section class="detail-section-v2" id="sample-metrics">
 <div class="section-title-v2"><div><span>数据摘要</span><h2>挂牌样本摘要</h2></div><p>中位数用于降低极端样本对观察结果的影响。</p></div>
 <div class="distribution-grid-v2">
 <div><span>挂牌报价中位数</span><b>{_metric(metrics.get("median_asking_price"),"money")}</b></div>
@@ -1051,15 +1099,16 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
 <div class="taxonomy-v2"><div class="taxonomy-label">业务领域分布</div><div>{niche_html}</div></div>
 </section>
 
-<section class="detail-section-v2">
+<section class="detail-section-v2" id="sample-examples">
 <div class="section-title-v2"><div><span>中文案例</span><h2>项目案例摘要</h2></div><p>展示 {fmt_int(len(research.get("samples") or []))} 个匿名案例 / 共整理 {fmt_int(research.get("active_sample_count"))} 个；逐条金额以区间呈现。</p></div>
 <div class="evidence-table-wrap-v2"><table class="evidence-table-v2">
 <thead><tr><th>中文项目案例</th><th>月营收区间</th><th>月净利润区间</th><th>报价区间</th></tr></thead>
 <tbody>{_sample_rows(research)}</tbody>
 </table></div>
+<p class="sample-reading-note-v2"><strong>阅读提示</strong> 匿名案例仅用于展示当前允许公开的样本结构。逐条金额为区间展示；与上方分类中位数口径不同，也不代表实际成交价或经审计财务。</p>
 </section>
 
-<section class="evidence-boundary-v2">
+<section class="evidence-boundary-v2" id="sample-boundary">
 <div><span>数据边界</span><h2>证据边界</h2></div>
 <ul>{boundary_html}</ul>
 </section>
