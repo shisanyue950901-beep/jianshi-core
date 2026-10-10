@@ -82,7 +82,7 @@ class ProductFirstUXTest(unittest.TestCase):
         self.assertIn('href="/projects/"',html)
         self.assertIn('href="#models"',html)
         self.assertIn('id="pick-list"',html)
-        self.assertEqual(html.count('<article id="case-'),3)
+        self.assertEqual(html.count('id="case-'),3)
 
     def test_legacy_3d_theme_accessibility_and_no_private_leads(self):
         html=self.home
