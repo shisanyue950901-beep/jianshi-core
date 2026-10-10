@@ -80,6 +80,9 @@ def assert_safe_source(markup: str, *, source_prototype: bool = True) -> None:
 
 # Publish a *separate* evidence-only appendix. Never replace the editorial,
 # source-governed home page or resurrect the deprecated /opportunities route.
+# web/build.py retains a pre-release mirror here; web/dist is intentionally
+# rewritten by the release step and must not be used for rerunnable inputs.
+RESEARCH_SOURCE = ROOT / "dist"
 RESEARCH_SLUGS = (
     "vertical-industry-saas",
     "amazon-fba-niche-brand",
@@ -90,12 +93,12 @@ RESEARCH_SLUGS = (
 )
 
 def publish_public_research_appendix() -> int:
-    source_index=OUTPUT/"opportunities"/"index.html"
+    source_index=RESEARCH_SOURCE/"opportunities"/"index.html"
     if not source_index.is_file():
         raise RuntimeError("Base business research index missing")
     candidates=[(source_index,OUTPUT/"research"/"index.html",True)]
     for slug in RESEARCH_SLUGS:
-        src=OUTPUT/"opportunity"/slug/"index.html"
+        src=RESEARCH_SOURCE/"opportunity"/slug/"index.html"
         if not src.is_file():
             raise RuntimeError("Missing approved anonymous study: "+slug)
         candidates.append((src,OUTPUT/"research"/slug/"index.html",False))
