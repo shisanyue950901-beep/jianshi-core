@@ -932,6 +932,7 @@ def _public_niche_bars(research, limit=8):
     """Use only the public aggregated niche distribution; no source records."""
     sample_total=int(num(research.get("active_sample_count")))
     rows=[]
+    invalid_counts=0
     for niche in (research.get("niche_distribution") or [])[:12]:
         if not isinstance(niche,dict):
             continue
@@ -942,8 +943,10 @@ def _public_niche_bars(research, limit=8):
             continue
         if sample_total<=0:
             continue
-        count=min(count,sample_total)
-        percent=min(100.0,100.0*count/sample_total)
+        if count>sample_total:
+            invalid_counts+=1
+            continue
+        percent=100.0*count/sample_total
         safe_name=esc(name)
         rows.append(
             f'<div class="niche-bar-v2">'
@@ -953,9 +956,13 @@ def _public_niche_bars(research, limit=8):
         )
         if len(rows)>=limit:
             break
+    anomaly_note=(
+        '<p class="niche-data-warning-v2">部分领域统计数量超过该分类样本总数，已暂停展示异常项目，等待数据核验。</p>'
+        if invalid_counts else ''
+    )
     if not rows:
-        return '<p class="taxonomy-empty">当前没有足够的公开分类计数，无法绘制领域分布。</p>'
-    return '<div class="niche-chart-v2">'+''.join(rows)+'</div>'
+        return '<p class="taxonomy-empty">当前没有足够的公开分类计数，无法绘制领域分布。</p>'+anomaly_note
+    return '<div class="niche-chart-v2">'+''.join(rows)+'</div>'+anomaly_note
 
 
 def _public_case_completeness(research):
