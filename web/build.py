@@ -906,6 +906,79 @@ def _published_niches(research, limit=3):
             break
     return names
 
+def _research_comparison_rows(prototypes, records):
+    """Render a descriptive comparison, never a profitability ranking."""
+    out=[]
+    for item, research in zip(prototypes, records):
+        metrics=research.get("metrics") or {}
+        slug=esc(item.get("slug") or "")
+        title=esc(research.get("title") or item.get("title") or "研究分类")
+        total=fmt_int(research.get("active_sample_count"))
+        priced=research.get("priced_sample_count")
+        priced_text=fmt_int(priced) if priced is not None else "—"
+        shown=fmt_int(min(len(research.get("samples") or []),6))
+        out.append(
+            f'<tr><th scope="row"><a href="/opportunity/{slug}/">{title} <span aria-hidden="true">↗</span></a></th>'
+            f'<td>{total}</td><td>{priced_text}</td>'
+            f'<td>{_metric(metrics.get("median_monthly_gross_revenue"),"money")}</td>'
+            f'<td>{_metric(metrics.get("median_monthly_net_profit"),"money")}</td>'
+            f'<td>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</td>'
+            f'<td>{shown}</td></tr>'
+        )
+    return "".join(out) or '<tr><td colspan="7">当前尚无可公开的分类对照数据。</td></tr>'
+
+
+def _public_niche_bars(research, limit=8):
+    """Use only the public aggregated niche distribution; no source records."""
+    sample_total=int(num(research.get("active_sample_count")))
+    rows=[]
+    for niche in (research.get("niche_distribution") or [])[:12]:
+        if not isinstance(niche,dict):
+            continue
+        name=str(niche.get("name") or "").strip()
+        try: count=int(niche.get("count") or 0)
+        except (ValueError,TypeError,OverflowError): continue
+        if not name or count<=0:
+            continue
+        if sample_total<=0:
+            continue
+        count=min(count,sample_total)
+        percent=min(100.0,100.0*count/sample_total)
+        safe_name=esc(name)
+        rows.append(
+            f'<div class="niche-bar-v2">'
+            f'<div class="niche-bar-v2-caption"><strong>{safe_name}</strong><span>{fmt_int(count)} 个样本</span></div>'
+            f'<div class="niche-bar-v2-track" role="img" aria-label="{safe_name}，覆盖 {fmt_int(count)} 个分类样本">'
+            f'<span style="width:{percent:.1f}%"></span></div></div>'
+        )
+        if len(rows)>=limit:
+            break
+    if not rows:
+        return '<p class="taxonomy-empty">当前没有足够的公开分类计数，无法绘制领域分布。</p>'
+    return '<div class="niche-chart-v2">'+''.join(rows)+'</div>'
+
+
+def _public_case_completeness(research):
+    """Describe missing fields in up to six already-anonymized preview rows."""
+    cases=(research.get("samples") or [])[:6]
+    if not cases:
+        return '<p class="case-coverage-v2">当前没有可公开的匿名案例预览；不将缺失数据计算为零。</p>'
+    specs=[
+        ("月营收", "monthly_revenue_band"),
+        ("月净利润", "monthly_profit_band"),
+        ("挂牌报价", "asking_price_band"),
+    ]
+    stats=[]
+    for label,key in specs:
+        missing=sum(1 for row in cases if not isinstance(row,dict) or str(row.get(key) or "").strip() in ("","未披露"))
+        stats.append(f'<span>{esc(label)}未披露 <strong>{fmt_int(missing)}</strong> 条</span>')
+    return (
+        f'<div class="case-coverage-v2"><p>下列缺失数量只统计本页展示的 '
+        f'<strong>{fmt_int(len(cases))}</strong> 条匿名摘要，不代表全分类缺失率。</p>'
+        f'<div class="case-coverage-stats-v2">{"".join(stats)}</div></div>'
+    )
+
+
 def prototype_card(item, compact=False):
     research=research_for(item)
     niches=_published_niches(research)
@@ -957,7 +1030,7 @@ def build_home(data, daily=None, prototypes=None):
 <div class="reading-path-v2-grid">
 <a href="/opportunities/"><span>01 · 找到分类</span><strong>先看业务类型与样本数量</strong><small>了解当前纳入了哪些公开挂牌项目。</small><em>查看研究分类 →</em></a>
 <a href="/opportunities/#reading-metrics"><span>02 · 理解数字</span><strong>读懂中位数和匿名摘要</strong><small>区别统计中位数、披露值和逐条区间。</small><em>阅读指标说明 →</em></a>
-<a href="/#method"><span>03 · 核对边界</span><strong>知道数据不能证明什么</strong><small>挂牌披露不等于审计结果，也不等于未来收益。</small><em>查看研究口径 →</em></a>
+<a href="/opportunities/#category-comparison"><span>03 · 横向对照</span><strong>把六类统计放在一起看</strong><small>只比较已公开字段，不按收益潜力排序。</small><em>查看分类对照 →</em></a>
 </div>
 </section>
 
@@ -992,6 +1065,7 @@ def build_opportunities_page(catalog, prototypes=None):
     cards=''.join(prototype_card(x) for x in prototypes)
     research=[research_for(x) for x in prototypes]
     total_samples=sum(int(num(x.get("active_sample_count"))) for x in research)
+    comparison_rows=_research_comparison_rows(prototypes,research)
     body=f"""<main class="wrap catalog-v2">
 <section class="catalog-hero-v2">
 <div class="eyebrow">海外商业项目档案</div>
@@ -1007,6 +1081,20 @@ def build_opportunities_page(catalog, prototypes=None):
 <div><dt>细分领域分布</dt><dd>根据来源中的业务分类整理，用于查看样本覆盖范围，不用于推断细分领域盈利水平。</dd></div>
 <div><dt>匿名项目摘要</dt><dd>只展示可公开的中文摘要和金额区间；展示数量可能少于分类样本总数。</dd></div>
 </dl>
+</section>
+<section class="catalog-compare-v2" id="category-comparison" aria-labelledby="compare-title">
+<div class="section-title-v2">
+<div><span>公开统计横向对照</span><h2 id="compare-title">六类商业项目，一张表看清差别</h2></div>
+<p>保持原有分类顺序，不按营收、利润或所谓机会价值排序。</p>
+</div>
+<div class="compare-scroll-v2" role="region" aria-label="商业项目分类公开数据对照表，可横向滚动" tabindex="0">
+<table class="compare-table-v2">
+<caption class="sr-only">商业项目分类统计，仅代表被观察到的挂牌披露样本</caption>
+<thead><tr><th scope="col">研究分类</th><th scope="col">项目案例</th><th scope="col">有报价样本</th><th scope="col">月营收中位数</th><th scope="col">月净利润中位数</th><th scope="col">周工时中位数</th><th scope="col">匿名预览</th></tr></thead>
+<tbody>{comparison_rows}</tbody>
+</table>
+</div>
+<p class="compare-disclaimer-v2">同一分类内的样本统计不代表整个市场；各分类样本量和披露完整性不同，中位数不可作为收益潜力排名。“—”表示未提供可公开值，不代表零。匿名预览只统计允许公开的案例数量。</p>
 </section>
 <section class="research-section" id="catalog-categories">
 <div class="section-title-v2"><div><span>项目分类</span><h2>商业资产分类</h2></div><p>卡片中的财务数字均为当前样本的中位数，字段来自挂牌方公开披露。</p></div>
@@ -1032,9 +1120,9 @@ def build_opportunities_page(catalog, prototypes=None):
 
 def _sample_rows(research):
     rows=[]
-    for sample in research.get("samples") or []:
+    for i,sample in enumerate((research.get("samples") or [])[:6],1):
         rows.append(f"""<tr>
-<td><strong>{esc(sample.get("display_name") or "未分类项目")}</strong></td>
+<td><small class="anonymous-row-index-v2">匿名案例 {i:02d}</small><strong>{esc(sample.get("display_name") or "未分类项目")}</strong></td>
 <td>{esc(sample.get("monthly_revenue_band") or "未披露")}</td>
 <td>{esc(sample.get("monthly_profit_band") or "未披露")}</td>
 <td>{esc(sample.get("asking_price_band") or "未披露")}</td>
@@ -1053,10 +1141,8 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
     price_summary=(f"其中 {fmt_int(price_count)} 个包含挂牌报价信息" if price_count is not None else "报价样本数量尚未提供")
     related=[p for p in (all_prototypes or []) if str(p.get("slug") or "")!=slug][:3]
     related_html=''.join(prototype_card(p,True) for p in related)
-    niche_html=''.join(
-        f'<span class="taxonomy-chip">{esc(n.get("name"))}<b>{fmt_int(n.get("count"))}</b></span>'
-        for n in niches
-    ) or '<span class="taxonomy-empty">暂无可展示分类分布。</span>'
+    niche_html=_public_niche_bars(research)
+    case_coverage=_public_case_completeness(research)
     boundary_html=''.join(f'<li>{esc(v)}</li>' for v in boundaries)
     body=f"""<main class="wrap research-detail-v2">
 <section class="research-hero-v2">
@@ -1096,12 +1182,14 @@ def build_concrete_prototype(x, global_disclaimer, all_prototypes=None):
 <div><span>利润率中位数</span><b>{_metric(metrics.get("median_profit_margin_pct"),"pct")}</b></div>
 <div><span>周工时中位数</span><b>{_metric(metrics.get("median_hours_worked_per_week"),"hours")}</b></div>
 </div>
-<div class="taxonomy-v2"><div class="taxonomy-label">业务领域分布</div><div>{niche_html}</div></div>
+<div class="taxonomy-v2"><div class="taxonomy-label"><strong>业务领域分布</strong><small>分类中的前 8 项公开标签</small></div><div>{niche_html}<p class="niche-disclaimer-v2">覆盖数量以当前分类的去重样本数为基准；同一项目可能涉及多个领域，因此各项数量不可相加，也不代表市场规模或盈利能力。</p></div></div>
+<p class="data-freshness-v2">数据时效：此页面是站点构建时读取的公开研究数据快照；当前公开研究接口未提供可展示的来源更新时间，因此不把构建时间视为资料更新日期。缺失指标以“—”表示，不按零处理。</p>
 </section>
 
 <section class="detail-section-v2" id="sample-examples">
 <div class="section-title-v2"><div><span>中文案例</span><h2>项目案例摘要</h2></div><p>展示 {fmt_int(len(research.get("samples") or []))} 个匿名案例 / 共整理 {fmt_int(research.get("active_sample_count"))} 个；逐条金额以区间呈现。</p></div>
-<div class="evidence-table-wrap-v2"><table class="evidence-table-v2">
+{case_coverage}
+<div class="evidence-table-wrap-v2" role="region" aria-label="匿名项目金额区间表，可横向滚动" tabindex="0"><table class="evidence-table-v2">
 <thead><tr><th>中文项目案例</th><th>月营收区间</th><th>月净利润区间</th><th>报价区间</th></tr></thead>
 <tbody>{_sample_rows(research)}</tbody>
 </table></div>
