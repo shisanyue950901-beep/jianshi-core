@@ -242,8 +242,22 @@ def recommendation_first_home(public_html: str, cases: list[dict]) -> str:
     public_html = public_html.replace('<main id="top">',
                                       '<main id="top">' + render_recommendations(cases), 1)
     # The old visual interaction remains, but no longer blocks decisions.
-    nav = '<a href="/projects/">验证档案</a>'
-    if public_html.count(nav) != 1:
-        raise RuntimeError("Navigation has changed")
-    public_html = public_html.replace(nav, '<a href="#recommendations">给我推荐</a>' + nav, 1)
+    # P4.39: primary navigation has only three user-facing choices. The
+    # dossiers, sources and comparison remain accessible via page CTAs.
+    start = '<nav aria-label="主要导航">'
+    if public_html.count(start) != 1:
+        raise RuntimeError("Primary navigation changed")
+    left = public_html.index(start) + len(start)
+    right = public_html.find("</nav>", left)
+    if right < 0:
+        raise RuntimeError("Unclosed primary navigation")
+    primary = entry_contract()["public_home"]["navigation"]
+    if len(primary) != 3 or [n.get("href") for n in primary] != [
+            "#recommendations", "#models", "#about"]:
+        raise RuntimeError("Unsafe main navigation contract")
+    links = "".join(
+        '<a href="' + escape(item["href"],quote=True) + '">'
+        + escape(item["label"]) + '</a>' for item in primary
+    )
+    public_html = public_html[:left] + "\n" + links + "\n" + public_html[right:]
     return public_html
