@@ -405,3 +405,42 @@ body{
  .catalog-guide-v2{padding-bottom:42px}
  .research-anchor-nav-v2 a{flex:1;text-align:center;min-width:calc(50% - 6px)}
 }
+
+
+/* P4.43 public evidence-only comparison, distribution and case disclosure */
+.catalog-compare-v2{padding:0 0 72px;scroll-margin-top:88px}
+.compare-scroll-v2{border:1px solid var(--line);border-radius:12px;background:var(--paper);overflow-x:auto;outline-offset:3px}
+.compare-scroll-v2:focus-visible,.evidence-table-wrap-v2:focus-visible{outline:2px solid var(--accent)}
+.compare-table-v2{border-collapse:collapse;min-width:950px;width:100%;text-align:left}
+.compare-table-v2 th,.compare-table-v2 td{border-bottom:1px solid var(--line);padding:15px 16px;white-space:nowrap;font-size:12px;font-variant-numeric:tabular-nums}
+.compare-table-v2 thead th{background:#f8f9fb;color:#6b788a;font-size:11px;font-weight:750}
+.compare-table-v2 tbody tr:last-child th,.compare-table-v2 tbody tr:last-child td{border-bottom:0}
+.compare-table-v2 tbody th{font-size:13px;white-space:normal;min-width:180px;max-width:245px;line-height:1.5}
+.compare-table-v2 tbody th a{color:var(--ink);font-weight:750}
+.compare-table-v2 tbody th a:hover{color:var(--accent)}
+.compare-table-v2 tbody th a span{color:var(--accent)}
+.compare-disclaimer-v2,.data-freshness-v2{font-size:12px;color:var(--muted);line-height:1.85;margin:15px 0 0}
+.niche-chart-v2{display:grid;gap:13px}
+.niche-bar-v2-caption{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:12px;margin-bottom:6px}
+.niche-bar-v2-caption strong{font-weight:650;color:var(--ink)}
+.niche-bar-v2-caption span{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums}
+.niche-bar-v2-track{height:8px;background:#edf1f5;overflow:hidden;border-radius:999px}
+.niche-bar-v2-track span{display:block;height:100%;background:#366e78;border-radius:999px}
+.taxonomy-v2 .taxonomy-label strong{display:block;font-size:13px;color:var(--ink)}
+.taxonomy-v2 .taxonomy-label small{display:block;font-size:11px;color:var(--muted);margin-top:7px;line-height:1.6}
+.niche-disclaimer-v2{font-size:11px;line-height:1.8;color:var(--muted);margin:15px 0 0}
+.data-freshness-v2{padding:12px 15px;background:#f8fafb;border-left:3px solid var(--line)}
+.case-coverage-v2{background:#f8fafb;border:1px solid var(--line);border-radius:10px;padding:15px 18px;margin:0 0 15px}
+.case-coverage-v2>p{font-size:12px;color:var(--muted);line-height:1.75;margin:0 0 12px}
+.case-coverage-v2>p:last-child{margin-bottom:0}
+.case-coverage-stats-v2{display:flex;flex-wrap:wrap;gap:8px}
+.case-coverage-stats-v2>span{display:inline-flex;align-items:baseline;gap:6px;padding:7px 10px;background:#fff;border:1px solid var(--line);border-radius:6px;font-size:11px;color:#566275}
+.case-coverage-stats-v2 strong{font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.anonymous-row-index-v2{display:block;font-size:10px;color:#7d8797;margin-bottom:4px}
+@media(max-width:760px){
+ .catalog-compare-v2{padding-bottom:55px}
+ .compare-table-v2{min-width:880px}
+ .compare-table-v2 th,.compare-table-v2 td{padding:13px 12px}
+ .case-coverage-stats-v2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .case-coverage-stats-v2>span{justify-content:space-between}
+}
