@@ -143,7 +143,11 @@ class RollingStateTest(unittest.TestCase):
 
     def test_same_daily_slot_and_existing_artifact_storage(self):
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertNotIn("cron: '55 */6 * * *'",wf)
+        self.assertIn("github.event.schedule == '55 0 * * *'",wf)
+        self.assertNotIn("date -u +%H",wf)
         self.assertEqual(wf.count("p432_publisher_rss_probe.py --online"),1)
         self.assertIn("p434_rolling_private_index.py select-artifact",wf)
         self.assertIn("p434_rolling_private_index.py build",wf)
