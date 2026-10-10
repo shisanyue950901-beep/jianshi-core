@@ -218,7 +218,10 @@ class PrivateETL(unittest.TestCase):
 
     def test_existing_dedicated_daily_slot_not_expanded(self):
         wf=(ROOT/".github/workflows/publish-static.yml").read_text(encoding="utf-8")
-        self.assertEqual(wf.count("cron: '55 */6 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
+        self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
+        self.assertEqual(wf.count("- cron:"),2)
+        self.assertIn("github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",wf)
         self.assertIn("p433_private_evidence_etl.py --hn",wf)
         self.assertIn("p433_clean_review.json",wf)
         self.assertEqual(wf.count("p432_publisher_rss_probe.py --online"), 1)
