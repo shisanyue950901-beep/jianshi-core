@@ -116,8 +116,10 @@ def publish_public_research_appendix() -> int:
             markup=markup.replace(
                 '<meta name="robots" content="index,follow">',
                 '<meta name="robots" content="noindex,follow">',1)
-        elif ("noindex,nofollow" not in markup or 'class="niche-chart-v2"' not in markup):
-            raise RuntimeError("Anonymized detail is missing noindex or aggregate chart")
+        elif ("noindex,nofollow" not in markup
+              or 'id="sample-metrics"' not in markup
+              or 'class="data-freshness-v2"' not in markup):
+            raise RuntimeError("Anonymized detail is missing noindex or research transparency sections")
         markup=markup.replace(
             f'{SITE}/opportunities/',f'{SITE}/research/')
         markup=markup.replace(
