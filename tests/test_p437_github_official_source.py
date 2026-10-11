@@ -83,6 +83,46 @@ class OfficialGitHub(unittest.TestCase):
             self.assertEqual(result["validated_repos"],0)
             self.assertEqual(result["failures"][0]["reason_code"],"GITHUB_HTTP_429")
 
+    def test_specific_fail_closed_identity_failure_categories(self):
+        target = probe.TARGETS[0]
+        cases = [
+            ("id", 1, "GITHUB_PINNED_REPO_ID_MISMATCH"),
+            ("homepage", "https://wrong.example", "GITHUB_HOMEPAGE_MISMATCH"),
+            ("private", True, "GITHUB_REPO_POLICY_MISMATCH"),
+            ("pushed_at", "invalid", "GITHUB_TIMESTAMP_INVALID"),
+            ("stars", None, None),
+        ]
+        for key, value, code in cases:
+            if code is None:
+                continue
+            with self.subTest(key=key):
+                obj = sample(*target)
+                obj[key] = value
+                with self.assertRaises(ValueError) as context:
+                    probe.extract_metadata(obj, *target)
+                self.assertEqual(probe._category(context.exception), code)
+
+    def test_safe_transport_diagnostics_do_not_expand_request_cap(self):
+        cases = [
+            ("GITHUB_RESPONSE_ENVELOPE_REJECTED", "GITHUB_RESPONSE_ENVELOPE_REJECTED"),
+            ("GITHUB_REDIRECT_REJECTED", "GITHUB_REDIRECT_REJECTED"),
+            ("GITHUB_JSON_ROOT_INVALID", "GITHUB_JSON_ROOT_INVALID"),
+            ("Invalid GitHub counter: stargazers_count", "GITHUB_COUNTER_INVALID"),
+        ]
+        for raw_error, code in cases:
+            self.assertEqual(probe._category(ValueError(raw_error)), code)
+        with patch.object(probe, "fetch_once",
+                          side_effect=ValueError("GITHUB_RESPONSE_ENVELOPE_REJECTED")) as mocked:
+            report = probe.collect(online=True)
+            self.assertEqual(mocked.call_count, 2)
+            self.assertEqual(report["validated_repos"], 0)
+            self.assertEqual(report["requests_attempted"], 2)
+            self.assertEqual(report["requests_max"], 2)
+            self.assertEqual([f["reason_code"] for f in report["failures"]],
+                             ["GITHUB_RESPONSE_ENVELOPE_REJECTED"] * 2)
+            self.assertFalse(report["publication_allowed"])
+            self.assertFalse(report["raw_response_archived"])
+
     def test_private_output_and_existing_schedule(self):
         with self.assertRaises(ValueError):
             probe.private_path(ROOT/"web/dist/repo-metrics.json")
