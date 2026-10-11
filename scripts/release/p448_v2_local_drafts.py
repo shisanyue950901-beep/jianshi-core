@@ -10,6 +10,7 @@ from __future__ import annotations
 from html import escape
 from pathlib import Path
 from p446_content_hubs import CSS, SITE
+from f21_design_tokens import render_css as render_design_css
 
 PAGES = ("marketplace/brief/", "talent/portfolio/")
 
@@ -154,7 +155,7 @@ def render_one(route: str) -> str:
         '<meta name="description" content="' + e(d["description"]) + '">'
         '<link rel="canonical" href="' + SITE + '/' + route + '">'
         '<meta name="referrer" content="no-referrer">'
-        '<style>' + CSS + CSS_EXTRA + '</style></head><body>'
+        '<style>' + CSS + CSS_EXTRA + render_design_css() + '</style></head><body>'
         '<header class="top"><div class="wrap row"><a class="logo" href="/">见势 <small>JIANSHI 2.0</small></a>'
         '<nav class="desktop"><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a>'
         '<a href="/solutions/">企业解决方案</a><a href="/academy/">AIGC 学院</a></nav>'
