@@ -197,7 +197,7 @@ def publish(output: Path) -> int:
     for route in PAGES:
         html = render_one(route)
         if (html.count("<main>") != 1 or html.count("<script>") != 1
-                or html.count('data-draft-field') != 7
+                or html.count('data-draft-field data-label=') != 7
                 or "fetch(" in html or "localStorage" in html
                 or "XMLHttpRequest" in html or "sendBeacon" in html
                 or "WebSocket" in html or "action=" in html):
