@@ -11,6 +11,7 @@ from html import escape
 from pathlib import Path
 from p446_content_hubs import CSS, SITE
 from f21_design_tokens import render_css as render_design_css
+from f21_components import site_header, site_footer
 
 PAGES = ("marketplace/brief/", "talent/portfolio/")
 
@@ -156,10 +157,8 @@ def render_one(route: str) -> str:
         '<link rel="canonical" href="' + SITE + '/' + route + '">'
         '<meta name="referrer" content="no-referrer">'
         '<style>' + CSS + CSS_EXTRA + render_design_css() + '</style></head><body>'
-        '<header class="top"><div class="wrap row"><a class="logo" href="/">见势 <small>JIANSHI 2.0</small></a>'
-        '<nav class="desktop"><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a>'
-        '<a href="/solutions/">企业解决方案</a><a href="/academy/">AIGC 学院</a></nav>'
-        '</div></header><main><div class="hero"><div class="wrap">'
+        + site_header("/" + route)
+        + '<main><div class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / <a href="' + d["back"] + '">'
         + e(d["back_label"]) + '</a> / 本地草稿工具</div>'
         '<span class="kicker">' + e(d["kicker"]) + '</span>'
@@ -186,11 +185,7 @@ def render_one(route: str) -> str:
         '<div class="tool-preview" id="draft-preview" aria-label="本地草稿预览"></div>'
         '<p class="tool-help">此工具不是招聘、交易或电子签约系统，不产生任何平台订单记录。</p></div>'
         '</section></div></main>'
-        '<footer class="footer"><div class="wrap row"><div><b>见势 JIANSHI</b>'
-        '<p>AI 商业机会与解决方案平台 · 产品功能分阶段上线。</p></div>'
-        '<nav><a href="' + d["back"] + '">' + e(d["back_label"]) + '</a>'
-        '<a href="/privacy/">隐私政策</a><a href="/projects/">商业研究</a></nav>'
-        '</div></footer><script>' + SCRIPT + '</script></body></html>\n'
+        + site_footer() + '<script>' + SCRIPT + '</script></body></html>\n'
     )
 
 
