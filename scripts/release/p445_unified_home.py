@@ -32,6 +32,13 @@ body{overflow-x:hidden}
 #j2 .j2-mobile-list{position:absolute;top:calc(100% + 12px);right:0;display:grid;gap:2px;width:min(280px,calc(100vw - 42px));padding:12px;background:#121d32;border:1px solid #33415b;box-shadow:0 16px 36px #0006;border-radius:13px}
 #j2 .j2-mobile-list a{padding:10px;color:#e3e8f5;font-size:14px}
 #j2 .j2-mobile-list a:hover{background:#263754;border-radius:7px}
+#j2 .j2-top-inner{min-width:0}
+#j2 .j2-mobile{flex-shrink:0}
+#j2 .j2-mobile summary:focus-visible,#j2 .j2-mobile-list a:focus-visible{outline:3px solid #a9a0ff;outline-offset:2px}
+#j2 .j2-mobile[open] summary{background:#253857;border-color:#9586e7}
+#j2 .j2-mobile-list{max-height:min(65dvh,460px);overflow-y:auto;overscroll-behavior:contain}
+@media(max-width:400px){#j2 .j2-top-inner{gap:12px}#j2 .j2-brand{font-size:20px;gap:6px}#j2 .j2-brand span{font-size:10px;letter-spacing:0}#j2 .j2-mobile summary{padding:9px 11px}}
+
 #j2 .j2-footer{padding:38px 0 44px;background:#081120;color:#cad4e6;border-top:1px solid #263753}
 #j2 .j2-footer-inner{display:flex;justify-content:space-between;gap:30px;align-items:start}
 #j2 .j2-footer b{font-size:18px;color:#fff}
@@ -102,10 +109,28 @@ def build_home(cases: list[dict]) -> str:
     }
     # Inline only fixed destination paths; never interpolate arbitrary input.
     import json
+    # Keep one bounded inline script; old hash migration and nav behaviour
+    # are purely client-side. No network calls, storage, tracking or private data.
+    mobile_script = (
+        "const menu=document.querySelector('#j2 .j2-mobile');"
+        "if(menu){"
+        "menu.querySelectorAll('.j2-mobile-list a').forEach(a=>"
+        "a.addEventListener('click',()=>{menu.open=false;}));"
+        "menu.addEventListener('keydown',e=>{"
+        "if(e.key==='Escape'&&menu.open){menu.open=false;"
+        "menu.querySelector('summary').focus();}});"
+        "document.addEventListener('pointerdown',e=>{"
+        "if(menu.open&&!menu.contains(e.target)){menu.open=false;}});"
+        "window.addEventListener('resize',()=>{"
+        "if(menu.open&&window.matchMedia('(min-width:1081px)').matches)"
+        "menu.open=false;});"
+        "}"
+    )
     legacy_script = ("<script>(function(){const m="
                      + json.dumps(fragments, ensure_ascii=False, separators=(",", ":"))
                      + ";const to=m[location.hash];if(to)location.replace(to);"
-                     "})();</script>")
+                     + mobile_script
+                     + "})();</script>")
     head = (
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
