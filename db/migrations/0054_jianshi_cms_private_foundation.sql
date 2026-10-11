@@ -19,7 +19,14 @@ create table if not exists jianshi_cms.content_items (
   published_at timestamptz,
   last_edit_at timestamptz not null default now(),
   created_at timestamptz not null default now(),
-  check (last_reviewer_id is null or last_reviewer_id <> owner_user_id)
+  check (last_reviewer_id is null or last_reviewer_id <> owner_user_id),
+  constraint content_publication_gate check (
+    workflow_state not in ('APPROVED','PUBLISHED')
+    or last_reviewer_id is not null
+  ),
+  constraint content_published_date_gate check (
+    workflow_state <> 'PUBLISHED' or published_at is not null
+  )
 );
 
 -- Append-only authored versions. Private JSON may contain unreleased text.
