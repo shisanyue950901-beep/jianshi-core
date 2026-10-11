@@ -12,13 +12,12 @@ import json
 import re
 from pathlib import Path
 from p423_build_project_proofs import build as build_project_proofs, parse_cases
-from p425_public_admission import admitted_ids, eligible_cases, public_home
+from p425_public_admission import eligible_cases
 from p429_build_source_atlas import build as build_source_atlas
-from p442_jianshi2_live_home import integrate as integrate_jianshi2
+from p445_unified_home import build_home as build_jianshi2_home
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
-SOURCE = ROOT / "web" / "prototypes" / "p412e" / "index.html"
 EVIDENCE = ROOT / "web" / "prototypes" / "p422" / "evidence.html"
 SITE = "https://jianshi-bua.pages.dev"
 SLUGS = {
@@ -52,33 +51,43 @@ def safe_redirect(destination: str, page_title: str = "见势｜页面已更新"
         "</body></html>\n"
     )
 
-def assert_safe_source(markup: str, *, source_prototype: bool = True) -> None:
-    required = [
-        "见势", "Playfair+Display", "family=Inter", "--bg:#000",
-        "id=\"ring\"", "id=\"lb\"", "id=\"grid\"",
-        "prefers-reduced-motion", "viewport-fit=cover", "100dvh",
-    ]
+def assert_safe_source(markup: str, *, source_prototype: bool = False) -> None:
+    """Separate archival prototype audit from the released JIANSHI2 homepage."""
     if source_prototype:
+        required = ["见势", "Playfair+Display", "family=Inter",
+                    "--bg:#000", 'id="ring"', 'id="lb"', 'id="grid"',
+                    "prefers-reduced-motion", "viewport-fit=cover", "100dvh"]
+        if markup.count("data:image/webp;base64,") != 8:
+            raise RuntimeError("Original gallery must contain exactly eight covers")
         required += ["Easlo", "Louise Lennox"]
+        limit = 400_000
+    else:
+        required = ["见势", "JIANSHI 2.0", 'id="j2"', 'id="j2-opportunities"',
+                    'id="j2-solutions"', 'id="j2-marketplace"',
+                    'id="j2-talent"', 'id="j2-academy"',
+                    "prefers-reduced-motion", 'href="/research/"',
+                    'href="/projects/"']
+        if markup.count("data:image/webp;base64,") != 1:
+            raise RuntimeError("Only the approved JIANSHI2 hero artwork may publish")
+        if any(token in markup for token in ('id="ring"', 'id="lb"',
+                                              'id="archive"', 'id="recommendations"',
+                                              'id="modelList"', 'id="splash"')):
+            raise RuntimeError("Legacy homepage interaction leaked into new portal")
+        limit = 200_000
     for marker in required:
         if marker not in markup:
-            raise RuntimeError(f"Missing expected public design contract: {marker}")
+            raise RuntimeError(f"Missing public home contract: {marker}")
     if markup.count("<script>") != 1 or markup.count("<style>") != 1:
-        raise RuntimeError("Unexpected external or multiple script/style sections")
-    expected_images = 8 if source_prototype else 9  # original eight + original JIANSHI2 hero
-    if markup.count("data:image/webp;base64,") != expected_images:
-        raise RuntimeError("Unexpected count of public, preapproved WebP concept images")
-    banned = [
+        raise RuntimeError("Unexpected multiple script/style sections")
+    banned = (
         "Empire Flippers", "empireflippers", "listing_number", "source_url",
-        "source_ref_ids", "OPP_V0.2", "EASLO_OWN_SITE_01",
-        "LENNOX_AMAZON_02", "OFFICIAL_API", "预计利润率",
-    ]
-    for token in banned:
-        if token.lower() in markup.lower():
-            raise RuntimeError("Source-protection check failed")
-    if len(markup.encode("utf-8")) > 400_000:
-        raise RuntimeError("Single HTML unexpectedly large")
-
+        "source_ref_ids", "OPP_V0.2", "EASLO_OWN_SITE_01", "LENNOX_AMAZON_02",
+        "OFFICIAL_API", "预计利润率",
+    )
+    if any(token.lower() in markup.lower() for token in banned):
+        raise RuntimeError("Source-protection check failed")
+    if len(markup.encode("utf-8")) > limit:
+        raise RuntimeError("Public homepage exceeds size budget")
 
 # Publish a *separate* evidence-only appendix. Never replace the editorial,
 # source-governed home page or resurrect the deprecated /opportunities route.
@@ -147,30 +156,11 @@ def publish_public_research_appendix() -> int:
 def build_release() -> dict:
     if not OUTPUT.is_dir() or not (OUTPUT / "_redirects").is_file() or not (OUTPUT / "_headers").is_file():
         raise RuntimeError("web/build.py must create web/dist and security controls first")
-    markup = SOURCE.read_text(encoding="utf-8")
-    assert_safe_source(markup)
-    # This is now a website, not an internal file-based prototype.
-    markup = markup.replace("此文件为独立网站预览，不收集访客信息。", "本站暂不提供在线留言功能，也不会通过本页面收集访客信息。")
-    markup = markup.replace('© 2026 见势 JIANSHI</span><a href="#top">', '© 2026 见势 JIANSHI</span><a href="/privacy/">隐私说明</a><a href="#top">')
-    markup = markup.replace("</head>", f'<link rel="canonical" href="{SITE}/">\n</head>', 1)
-    # Strict editorial gate: only projects with attributable operating evidence.
+    # One homepage, one content hierarchy. Legacy gallery is retained only in
+    # web/prototypes/p412e, never concatenated into the live landing page.
     approved = eligible_cases(parse_cases())
-    markup = public_home(markup, approved)
-    # Source-admitted JIANSHI2 portal precedes the verified historical research UI.
-    markup = integrate_jianshi2(markup, approved)
-    # Keep the established one-page user journey and motion design; offer an
-    # explicit, evidence-only research appendix instead of replacing the hero.
-    model_marker='<div class="model-list" id="modelList"></div>'
-    if markup.count(model_marker)!=1:
-        raise RuntimeError("Business-model section anchor changed")
-    research_action=(
-        '<p class="models__intro">'
-        '<a class="proof-action" href="/research/">'
-        '查看六类商业项目的匿名统计、领域分布和案例区间'
-        ' <span aria-hidden="true">↗</span></a></p>'
-    )
-    markup=markup.replace(model_marker,model_marker+research_action,1)
-    assert_safe_source(markup, source_prototype=False)
+    markup = build_jianshi2_home(approved)
+    assert_safe_source(markup)
     (OUTPUT / "index.html").write_text(markup, encoding="utf-8")
     # Separate public-only evidence dashboard. Never embed raw marketplace data
     # or copy source directories, and do not change any production data pipeline.
@@ -202,7 +192,7 @@ def build_release() -> dict:
     anonymous_studies=publish_public_research_appendix()
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
-        "opportunities": "/#archive",
+        "opportunities": "/#j2-opportunities",
         "today": "/",
         "rising": "/",
         "build": "/",
@@ -218,8 +208,8 @@ def build_release() -> dict:
     if item_dir.is_dir():
         for out in item_dir.glob("*/index.html"):
             slug = out.parent.name
-            anchor = SLUGS.get(slug, "")
-            out.write_text(safe_redirect("/#item-" + anchor if anchor else "/"), encoding="utf-8")
+            destination = "/research/" + slug + "/" if slug in RESEARCH_SLUGS else "/research/"
+            out.write_text(safe_redirect(destination), encoding="utf-8")
 
     # New public index has its own client-only search. Remove unused,
     # potentially stale search data from the release artifact.
@@ -255,7 +245,7 @@ def build_release() -> dict:
         "status": "PASS",
         "release": "P4.12",
         "output": "web/dist",
-        "inline_covers": 8,  # retained legacy visual gallery
+        "inline_covers": 0,  # old gallery is not part of the production homepage
         "jianshi2_embedded_visuals": 1,
         "evidence_dashboard": "validation/index.html",
         "named_project_dossiers": len(approved),
