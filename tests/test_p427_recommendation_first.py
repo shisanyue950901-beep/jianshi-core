@@ -85,7 +85,7 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertEqual(r.returncode,0,r.stderr)
         page=(ROOT/"web/dist/index.html").read_text(encoding="utf-8")
         self.assertIn('id="recommendations"',page)
-        self.assertEqual(page.count('<article class="rec-card'),3)
+        # P4.45 publishes one unified JIANSHI2 homepage; archival P4.27\n        # recommendation widgets are tested above, but not duplicated live.\n        self.assertEqual(page.count('<article class="j2-project'),3)\n        self.assertNotIn('id="recommendations"',page)\n        self.assertNotIn('id="ring"',page)
         self.assertTrue((ROOT/"web/dist/projects/carrd/index.html").exists())
         self.assertFalse((ROOT/"web/dist/projects/easlo/index.html").exists())
         self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),8)
