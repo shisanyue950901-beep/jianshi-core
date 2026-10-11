@@ -82,7 +82,11 @@ class TestP413NamedBusinessLibrary(unittest.TestCase):
             self.assertNotIn(banned,self.html)
         self.assertTrue(self.data["public_policy"]["no_marketplace_reidentification"])
         self.assertTrue(self.data["public_policy"]["no_unverified_profit"])
-        self.assertIn("SOURCE = ROOT / \"web\" / \"prototypes\" / \"p412e\" / \"index.html\"",RELEASE.read_text(encoding="utf-8"))
+        # Old visual prototype remains as a historical fixture only.
+        release=RELEASE.read_text(encoding="utf-8")
+        self.assertIn("build_jianshi2_home(approved)",release)
+        self.assertNotIn("SOURCE.read_text",release)
+        self.assertTrue(HTML.is_file())
 
     def test_javascript_parses(self):
         node=shutil.which("node")

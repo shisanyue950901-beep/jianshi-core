@@ -18,34 +18,34 @@ class TestP412ProductionCandidate(unittest.TestCase):
         build=subprocess.run([sys.executable,str(RELEASE)],cwd=ROOT,text=True,capture_output=True,timeout=40)
         if build.returncode!=0:raise AssertionError("P4.12 release build failed: "+build.stderr)
 
-    def test_release_home_is_public_product_not_engineering_demo(self):
+    def test_release_home_is_one_audited_jianshi2_portal(self):
         content=(DIST/"index.html").read_text(encoding="utf-8")
-        for expected in ["发现海外项目","Carrd","NerdWallet","Plausible","Playfair+Display",
-                         "family=Inter","data:image/webp;base64,","3D","/#item-"]:
-            if expected=="3D":
-                self.assertIn('id="ring"',content)
-            elif expected=="/#item-":
-                self.assertIn("#item-",content)
-            else:self.assertIn(expected,content)
-        self.assertNotIn("此文件为独立网站预览",content)
+        for expected in ("JIANSHI 2.0", "商业机会与解决方案",
+                         "Carrd", "NerdWallet", "Plausible",
+                         'id="j2"', 'id="j2-opportunities"',
+                         "data:image/webp;base64,"):
+            self.assertIn(expected,content)
+        for legacy in ('id="ring"', 'id="lb"', 'id="archive"',
+                       'id="recommendations"', 'id="splash"'):
+            self.assertNotIn(legacy,content)
+        self.assertEqual(content.count("data:image/webp;base64,"),1)
         self.assertIn('href="/privacy/"',content)
         self.assertIn('rel="canonical"',content)
-        self.assertIn("见势",content)
         self.assertEqual(content.count("<style>"),1)
         self.assertEqual(content.count("<script>"),1)
 
     def test_existing_bookmarks_are_compatible(self):
         paths={
-            "opportunities/index.html":"/#archive",
+            "opportunities/index.html":"/#j2-opportunities",
             "today/index.html":"/",
             "rising/index.html":"/",
             "build/index.html":"/",
             "content/index.html":"/",
             "account/index.html":"/",
-            "opportunity/amazon-kdp-publishing/index.html":"/#item-kdp",
-            "opportunity/digital-product-business/index.html":"/#item-digital",
-            "opportunity/vertical-industry-saas/index.html":"/#item-saas",
-            "opportunity/solo-saas/index.html":"/#item-saas",
+            "opportunity/amazon-kdp-publishing/index.html":"/research/amazon-kdp-publishing/",
+            "opportunity/digital-product-business/index.html":"/research/digital-product-business/",
+            "opportunity/vertical-industry-saas/index.html":"/research/vertical-industry-saas/",
+            "opportunity/solo-saas/index.html":"/research/",
         }
         for path,dest in paths.items():
             content=(DIST/path).read_text(encoding="utf-8")
