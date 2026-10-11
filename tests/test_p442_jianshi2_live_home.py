@@ -31,6 +31,14 @@ class Jianshi2ProductionPortal(unittest.TestCase):
         self.assertLess(len(self.result.encode("utf-8")), 400_000)
         self.assertLess(self.result.index('id="j2"'), self.result.index('id="recommendations"'))
 
+    def test_public_title_and_social_preview_truthfully_describe_v2(self):
+        self.assertIn("<title>见势 JIANSHI 2.0", self.result)
+        self.assertIn('property="og:title"', self.result)
+        self.assertIn('property="og:description"', self.result)
+        self.assertIn('name="twitter:card"', self.result)
+        self.assertIn("商机撮合与 AIGC 课程正在建设", self.result)
+        self.assertNotIn("<title>见势 JIANSHI｜发现海外项目", self.result)
+
     def test_five_live_navigation_targets_and_empty_states(self):
         for anchor in ("j2-opportunities","j2-solutions","j2-marketplace",
                        "j2-talent","j2-academy"):
