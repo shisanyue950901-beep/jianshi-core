@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from html import escape
 from pathlib import Path
+from f21_design_tokens import render_css as render_design_css
 
 SITE = "https://jianshi-bua.pages.dev"
 PAGES = (
@@ -185,7 +186,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<link rel="canonical" href="' + SITE + '/' + path + '">'
         '<meta property="og:title" content="' + e(title) + '｜见势 JIANSHI 2.0">'
         '<meta property="og:description" content="' + e(description) + '">'
-        '<style>' + CSS + '</style></head><body>'
+        '<style>' + CSS + render_design_css() + '</style></head><body>'
         '<header class="top"><div class="wrap row"><a class="logo" href="/">见势 <small>JIANSHI 2.0</small></a>'
         '<nav class="desktop" aria-label="主要导航">' + nav + '</nav>'
         '<details class="mobile"><summary aria-label="展开导航">☰ 菜单</summary><nav aria-label="移动导航">' + nav + '</nav></details>'
