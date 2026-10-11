@@ -10,6 +10,10 @@ from __future__ import annotations
 from html import escape
 from pathlib import Path
 from f21_design_tokens import render_css as render_design_css
+from f21_components import site_header, site_footer
+from f21_catalog_filter import (
+    CSS as CATALOG_CSS, JS as CATALOG_JS, filter_panel, empty_state, category_for_slug,
+)
 
 SITE = "https://jianshi-bua.pages.dev"
 PAGES = (
@@ -171,12 +175,9 @@ def shell(path: str, title: str, description: str, label: str, body: str,
           actions: tuple[tuple[str, str], ...] = ()) -> str:
     if path not in PAGES:
         raise ValueError("Unregistered public page")
-    links = (
-        ("/", "首页"), ("/projects/", "商业机会"), ("/solutions/", "企业解决方案"),
-        ("/marketplace/", "商机大厅"), ("/talent/", "人才与服务商"), ("/academy/", "AIGC 学院"),
-    )
-    nav = ''.join('<a href="' + href + '"' + (' aria-current="page"' if path.startswith(href.lstrip("/")) and href != "/" else "") + '>' + e(text) + '</a>' for href, text in links)
     buttons = ''.join('<a class="btn ' + ("primary" if i == 0 else "") + '" href="' + e(href) + '">' + e(text) + ' ↗</a>' for i, (text, href) in enumerate(actions))
+    current = "/" + path
+    catalogue = path == "solutions/"
     return (
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
@@ -186,11 +187,9 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<link rel="canonical" href="' + SITE + '/' + path + '">'
         '<meta property="og:title" content="' + e(title) + '｜见势 JIANSHI 2.0">'
         '<meta property="og:description" content="' + e(description) + '">'
-        '<style>' + CSS + render_design_css() + '</style></head><body>'
-        '<header class="top"><div class="wrap row"><a class="logo" href="/">见势 <small>JIANSHI 2.0</small></a>'
-        '<nav class="desktop" aria-label="主要导航">' + nav + '</nav>'
-        '<details class="mobile"><summary aria-label="展开导航">☰ 菜单</summary><nav aria-label="移动导航">' + nav + '</nav></details>'
-        '</div></header><main><div class="hero"><div class="wrap">'
+        '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + '</style></head><body>'
+        + site_header(current)
+        + '<main><div class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
         '<span class="kicker">JIANSHI / ' + e(label) + '</span>'
         '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
@@ -198,17 +197,17 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<div class="wrap content">'
         '<div class="status"><b>内容状态：</b>这是公开的应用指南与业务准备资料。'
         '当前平台尚未开放在线委托、人才竞标、支付或课程观看；此处的流程和成果是规划与示例，不是实际客户交付记录。</div>'
-        + body + '</div></main><footer class="footer"><div class="wrap row">'
-        '<div><b>见势 JIANSHI</b><p>发现机会 · 掌握 AI · 对接需求 · 创造价值。</p>'
-        '<p>不保证商业收益；公开案例证据与用户的个人创业可行性必须分别判断。</p></div>'
-        '<nav><a href="/projects/">审核项目</a><a href="/research/">匿名研究</a>'
-        '<a href="/sources/">数据来源</a><a href="/privacy/">隐私政策</a></nav>'
-        '</div></footer></body></html>\n'
+        + body + '</div></main>' + site_footer()
+        + ('<script>' + CATALOG_JS + '</script>' if catalogue else '')
+        + '</body></html>\n'
     )
 
 
 def solution_link(row: dict) -> str:
-    return ('<a class="card link" href="/solutions/' + row["slug"] + '/">'
+    category = category_for_slug(row["slug"])
+    keywords = e(row["name"] + " " + row["tag"] + " " + row["summary"] + " " + row["fit"])
+    return ('<a class="card link" data-f21-solution data-category="' + category
+            + '" data-keywords="' + keywords + '" href="/solutions/' + row["slug"] + '/">'
             '<strong>' + e(row["tag"]) + '</strong><h3>' + e(row["icon"] + " " + row["name"])
             + '</h3><p>' + e(row["summary"]) + '</p>'
             '<span class="go">查看应用场景、交付与验收清单 ↗</span></a>')
@@ -218,7 +217,9 @@ def solutions_index() -> str:
     body = section(
         "先找到问题，再决定用不用 AI",
         "以下是四个可进一步研究的业务服务方向。不是已上架服务商或有报价的产品。",
-        '<div class="cards">' + ''.join(solution_link(row) for row in SOLUTIONS) + '</div>',
+        filter_panel() + '<div class="cards f21-catalog-grid">'
+        + ''.join(solution_link(row) for row in SOLUTIONS) + '</div>'
+        + empty_state(),
         "01 / SOLUTION CATALOG",
     )
     body += section(
@@ -237,7 +238,7 @@ def solutions_index() -> str:
                     '<a class="btn primary" style="margin-top:20px" href="/marketplace/">查看需求准备模板 ↗</a></div>',
                     "03 / NEXT ACTION")
     return shell("solutions/", "企业 AI 解决方案", "按业务问题查找可实施的 AI 应用路径，了解典型交付物、试点步骤与风险边界。", "企业解决方案", body,
-                 (("探索解决方案", "#catalog"), ("准备企业需求", "/marketplace/"))).replace('<div class="cards">', '<div class="cards" id="catalog">', 1)
+                 (("探索解决方案", "#catalog"), ("准备企业需求", "/marketplace/"))).replace('<div class="cards f21-catalog-grid">', '<div class="cards f21-catalog-grid" id="catalog">', 1)
 
 
 def solution_detail(row: dict) -> str:
@@ -408,8 +409,10 @@ def render_pages() -> dict[str, str]:
     if set(pages) != set(PAGES):
         raise RuntimeError("Content page contract changed")
     for key, document in pages.items():
+        expected_scripts = 1 if key == "solutions/" else 0
         if (document.count("<main>") != 1 or document.count("</main>") != 1
-                or document.count("<style>") != 1 or "<script>" in document
+                or document.count("<style>") != 1
+                or document.count("<script>") != expected_scripts
                 or document.count('<link rel="canonical"') != 1
                 or len(document.encode("utf-8")) > 80_000):
             raise RuntimeError("Invalid static content page: " + key)
