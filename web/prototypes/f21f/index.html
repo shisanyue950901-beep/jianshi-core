@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'; connect-src 'none'; img-src 'none'; object-src 'none';">
+<title>见势 F2.1 G1-F｜内容审核工作台 · 内部合成数据演练</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div class="app">
+<aside class="sidebar">
+ <a class="brand" href="#" tabindex="-1" aria-label="见势内部原型">见势 <span>CMS</span></a>
+ <p class="side-caption">F2.1 / G1-F · 流程验收</p>
+ <nav class="menu" aria-label="管理工作台栏目">
+  <button class="nav-btn active" type="button" data-view="editor" aria-current="page"> <span aria-hidden="true">▦</span> 内容编辑与审核</button>
+  <button class="nav-btn" type="button" data-view="versions"><span aria-hidden="true">≡</span> 版本与差异</button>
+  <button class="nav-btn" type="button" data-view="rights"><span aria-hidden="true">◈</span> 素材与版权</button>
+  <button class="nav-btn" type="button" data-view="audit"><span aria-hidden="true">◷</span> 审核事件</button>
+ </nav>
+ <div class="side-footer">全部内容均为 SYNTHETIC 合成数据。<strong>没有登录、网络、数据库写入或实际发布。</strong></div>
+</aside>
+<div class="main">
+ <header class="topbar">
+  <div><span class="eyebrow">CONTENT OPERATIONS / STAGING DESIGN</span>
+   <h1>内容治理工作台</h1><p>从草稿到审核、版本追踪和撤回的完整交互演练</p>
+  </div>
+  <div class="topright"><span class="scope">仅本地演练</span>
+   <label for="actor">模拟操作身份</label>
+   <select id="actor" aria-label="模拟操作身份">
+    <option value="TEST_AUTHOR_A">作者 A（编辑）</option>
+    <option value="TEST_AUTHOR_B">作者 B（编辑）</option>
+    <option value="TEST_REVIEWER_B">审核员 B</option>
+    <option value="TEST_PUBLISHER_C">发布员 C</option>
+    <option value="TEST_VISITOR">访客（只读）</option>
+   </select>
+  </div>
+ </header>
+ <div class="workspace">
+  <div class="notice" role="note"><strong>内部模拟环境，绝非正式 CMS。</strong>
+   此页面不连接 Supabase、不使用真实账号、不会上传文件或发布网页。切换角色只是测试权限规则，
+   <strong>不代表完成真实登录或安全认证</strong>；所有内容刷新即清空。
+  </div>
+  <section class="metrics" aria-label="本地合成数据统计">
+   <div class="metric"><span>模拟内容总数</span><b id="metric-all">2</b><small>仅本页内存</small></div>
+   <div class="metric"><span>待审核</span><b id="metric-review">0</b><small>独立审核流程</small></div>
+   <div class="metric"><span>模拟已发布</span><b id="metric-published">0</b><small>不会进入真实网站</small></div>
+   <div class="metric"><span>模拟审核事件</span><b id="metric-events">0</b><small>不保存到服务器</small></div>
+  </section>
+  <div class="twocol">
+   <section class="panel queue" aria-labelledby="queue-title">
+    <div class="panel-heading"><div><span class="eyebrow">SYNTHETIC CONTENT</span><h2 id="queue-title">内容队列</h2></div><span class="count" id="queue-count">2 条</span></div>
+    <label class="field-label" for="search">按标题／分类搜索</label>
+    <input id="search" type="search" maxlength="70" placeholder="输入关键词筛选合成条目">
+    <label class="field-label" for="filter">审核状态</label>
+    <select id="filter"><option value="ALL">全部状态</option><option value="DRAFT">草稿</option>
+     <option value="IN_REVIEW">待审核</option><option value="APPROVED">已批准</option>
+     <option value="REJECTED">已驳回</option><option value="PUBLISHED">模拟已发布</option>
+     <option value="UNPUBLISHED">已撤回</option></select>
+    <div id="queue-list" role="listbox" aria-label="合成内容记录"></div>
+    <p class="empty" id="queue-empty" hidden>没有符合条件的合成记录，请清空筛选。</p>
+   </section>
+   <div class="detail">
+    <section class="panel" id="view-editor">
+     <div class="panel-heading"><div><span class="eyebrow">EDITORIAL WORKFLOW</span><h2>草稿编辑与状态流转</h2></div><span class="state" id="state">草稿</span></div>
+     <div class="record-meta"><span id="record-kind"></span> <span id="record-id"></span> <span id="record-revision"></span></div>
+     <label class="field-label" for="title">标题 <span>*</span></label><input id="title" maxlength="140">
+     <label class="field-label" for="summary">摘要 <span>*</span></label><textarea id="summary" rows="3" maxlength="1600"></textarea>
+     <label class="field-label" for="body">正文草稿（纯文本）</label><textarea id="body" rows="7" maxlength="3000"></textarea>
+     <div class="check-group">
+      <label><input id="facts" type="checkbox"> 合成事实核验已完成</label>
+      <label><input id="rights" type="checkbox"> 合成素材授权已确认</label>
+     </div>
+     <div class="buttonbar">
+      <button class="primary" type="button" id="save">保存本地修订</button>
+      <button type="button" id="preview">纯文本预览</button>
+      <button type="button" id="stale-test" title="使用过期版本号尝试保存，验证拒绝覆盖">测试过期版本拒绝</button>
+     </div>
+     <p class="hint">编辑和检查项只在模拟身份为该稿作者、状态为草稿时允许保存。所有版本变化仅保留在当前浏览器内存。</p>
+     <div class="preview" id="preview-output" aria-label="内容纯文本预览">点击“纯文本预览”显示当前输入。</div>
+     <div class="flow"><h3>状态操作（仅模拟）</h3>
+       <p>流程：草稿 → 待审核 → 批准 → 模拟发布 → 撤回；审核员也可驳回，作者可重新编辑提交。</p>
+       <div class="buttonbar">
+        <button type="button" data-action="IN_REVIEW">提交审核</button>
+        <button type="button" data-action="APPROVED">批准</button>
+        <button type="button" data-action="REJECTED">驳回</button>
+        <button type="button" data-action="DRAFT">驳回后重编</button>
+        <button type="button" data-action="PUBLISHED">模拟发布</button>
+        <button type="button" data-action="UNPUBLISHED">模拟撤回</button>
+       </div>
+       <p class="warning-small">“模拟发布”只创建内存中的白名单预览，不会发送到网站或 Supabase。</p>
+     </div>
+    </section>
+    <section class="panel" id="view-versions" hidden>
+     <div class="panel-heading"><div><span class="eyebrow">VERSION CONTROL</span><h2>修订历史与版本差异</h2></div></div>
+     <p class="hint">通过保存草稿或流转审核生成版本；选择两个版本对照，不会复制隐藏审核原因。</p>
+     <div class="version-controls">
+      <label>对比旧版<select id="version-from"></select></label>
+      <label>对比新版<select id="version-to"></select></label>
+     </div>
+     <div class="comparison">
+      <div><b>旧版本</b><pre id="before"></pre></div>
+      <div><b>新版本</b><pre id="after"></pre></div>
+     </div>
+     <div id="version-history" class="history"></div>
+    </section>
+    <section class="panel" id="view-rights" hidden>
+     <div class="panel-heading"><div><span class="eyebrow">MEDIA GOVERNANCE</span><h2>素材版权及安全检查</h2></div></div>
+     <p class="hint">仅登记合成媒体记录，不提供真实上传、下载、存储密钥或公开媒体地址。</p>
+     <div id="media-list" class="media-list"></div>
+     <label class="field-label" for="license">合成版权类型</label><select id="license">
+      <option value="UNKNOWN">未核验（禁止发布）</option>
+      <option value="OWNED">模拟自有素材</option>
+      <option value="LICENSED">模拟已取得许可</option>
+     </select>
+     <label class="field-label" for="scan">合成安全检查</label><select id="scan">
+      <option value="PENDING">待检查（禁止发布）</option>
+      <option value="PASSED">模拟已通过</option>
+      <option value="FAILED">模拟失败（禁止发布）</option>
+     </select>
+     <div class="buttonbar"><button type="button" id="save-media">保存模拟授权信息</button></div>
+     <p class="warning-small">实际发布时不能自行把“模拟通过”当作版权证据或恶意文件扫描结果。</p>
+    </section>
+    <section class="panel" id="view-audit" hidden>
+     <div class="panel-heading"><div><span class="eyebrow">AUDIT TRAIL</span><h2>本地审核事件</h2></div><span class="count" id="audit-count"></span></div>
+     <p class="hint">仅展示合成操作事件及序号。正式后台需使用可信身份、持久审计和数据库事务。</p>
+     <div class="table-scroll"><table><thead><tr><th>序号</th><th>模拟角色</th><th>事件</th><th>版本</th><th>状态</th></tr></thead>
+      <tbody id="audit-rows"></tbody></table></div>
+     <p class="empty" id="audit-empty">当前尚未发生审核事件。</p>
+    </section>
+   </div>
+  </div>
+  <p id="feedback" class="feedback" role="status" aria-live="polite">已载入合成测试样本。未进行任何网络请求。</p>
+ </div>
+</div></div>
+<script src="model.js"></script><script src="app.js"></script>
+</body></html>
