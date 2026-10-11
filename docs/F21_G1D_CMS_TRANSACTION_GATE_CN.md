@@ -30,7 +30,7 @@
 - [x] cms_editor、account_auth、v2_matchmaking 均 false，实际调用返回 PostgreSQL 42501 CMS_WRITE_DISABLED
 - [x] staging 6表 FORCE RLS，anon/authenticated 无 SELECT/INSERT/EXECUTE、schema USAGE 也禁止
 - [x] production 无 CMS schema 和 cms_editor 标记；account_auth=false
-- [ ] Cloudflare 线上仍只展示已审核静态内容，私有审核原型不能访问
+- [x] PR #125 合并后 Cloudflare Pages、Workers、main CI、静态快照全部 SUCCESS，原站各入口正常且内部 CMS 原型公网路径 404
 - [ ] 真实 Auth/编辑/审批端到端 E2E：**NOT_TESTED（单独放行前置）**
 
 ## 尚需处理的工程债务
@@ -52,3 +52,12 @@
 - 生产 Supabase 只读核对：没有 CMS schema 或 cms_editor 标记，账号继续关闭。
 
 以上验证涵盖真实数据库的 **默认拒绝**，没有启用 Auth Gate 或测试完整实际编辑事务的正向路径。因此不宣称已经有可登录的 CMS 管理后台。
+
+## G1-D 完整发布验收记录
+
+- PR：[#125](https://github.com/shisanyue950901-beep/jianshi-core/pull/125)，合并 SHA `c89c641167bd6ae4c2825c5c378d4d8b117ef4dc`。
+- 发布层独立确认：main 单元测试 SUCCESS、构建静态快照 SUCCESS、制品安全检查 SUCCESS、Workers Builds SUCCESS、Cloudflare Pages SUCCESS。
+- 正式域名真实访问通过：`/`、`/solutions/`、`/marketplace/brief/`、`/talent/portfolio/`、`/projects/`；`/prototypes/f21c/` 为预期 404。
+- 真实数据库 staging：6表全部强制 RLS，4个私有函数仅服务角色可执行，`cms_editor/account_auth/v2_matchmaking` 均关闭，`editor_grants=0`、`content_items=0`；未调用任何成功写入路径。
+- production：无 CMS schema，`account_auth=false`；未运行迁移或上线真实写入接口。
+- **已验收范围：私有数据库事务结构、最小权限、关门时拒绝写入与公开站隔离。未验收范围：真实 JWT、角色委托、成功编辑/审核事务、并发 E2E、存储扫描与服务端 HTTP API。**
