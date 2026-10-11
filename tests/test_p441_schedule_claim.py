@@ -110,7 +110,7 @@ class ScheduledClaimTests(unittest.TestCase):
         self.assertEqual(wf.count("p432_publisher_rss_probe.py --online"), 1)
         self.assertEqual(wf.count("p437_official_github_repo_probe.py --online"), 1)
         self.assertNotIn("date -u +%H", wf)
-        self.assertIn("P436", wf)
+        self.assertIn("p436_unattended_guard.py", wf)
         self.assertIn("p435_scan_health.json", wf)
         self.assertIn("p436_unattended_verdict.json", wf)
         self.assertIn("p437_github_metrics.json", wf)
