@@ -63,7 +63,9 @@ def validate_draft(record: dict) -> None:
     }
     if not required.issubset(record):
         raise ContentContractError("Missing required CMS fields")
-    if record["content_type"] not in TYPES or record["status"] not in STATES:
+    if (not isinstance(record["content_type"], str)
+            or not isinstance(record["status"], str)
+            or record["content_type"] not in TYPES or record["status"] not in STATES):
         raise ContentContractError("Unsupported content type or state")
     lengths = {"content_id": 100, "title": 140, "summary": 1600,
                "category": 80, "author_id": 100}
@@ -77,7 +79,7 @@ def validate_draft(record: dict) -> None:
     if (not isinstance(record["tags"], list) or len(record["tags"]) > 12
             or any(not isinstance(v, str) or not v or len(v) > 35 for v in record["tags"])):
         raise ContentContractError("Invalid tags")
-    if record["language"] not in ("zh-CN", "en"):
+    if not isinstance(record["language"], str) or record["language"] not in ("zh-CN", "en"):
         raise ContentContractError("Unsupported locale")
     if (record["license_status"] not in LICENSES
             or type(record["rights_confirmed"]) is not bool
@@ -92,12 +94,27 @@ def validate_draft(record: dict) -> None:
         if not isinstance(source, dict) or source.get("kind") not in ("PUBLIC_URL", "AUTHOR_ORIGINAL"):
             raise ContentContractError("Source identity invalid")
         if source["kind"] == "PUBLIC_URL":
+            # Never publish arbitrary nested metadata: query/userinfo may hide
+            # customer tokens, and undocumented fields may contain private notes.
+            if set(source) != {"kind", "url"}:
+                raise ContentContractError("Public URL source has unsupported fields")
             url = source.get("url")
-            if (not isinstance(url, str) or len(url) > 1000
-                    or urlsplit(url).scheme != "https" or not urlsplit(url).hostname):
-                raise ContentContractError("External source URL must be HTTPS")
-        elif source.get("description", "") == "" or len(str(source["description"])) > 300:
-            raise ContentContractError("Original source requires attribution")
+            if not isinstance(url, str) or len(url) > 1000:
+                raise ContentContractError("External source URL invalid")
+            try:
+                parsed = urlsplit(url)
+                if (parsed.scheme != "https" or not parsed.hostname
+                        or parsed.username or parsed.password or parsed.query
+                        or parsed.fragment):
+                    raise ContentContractError("Only canonical HTTPS evidence URLs are public")
+            except ValueError as exc:
+                raise ContentContractError("Malformed public source URL") from exc
+        else:
+            if set(source) != {"kind", "description"}:
+                raise ContentContractError("Original work source has unsupported fields")
+            desc = source.get("description")
+            if not isinstance(desc, str) or not desc.strip() or len(desc) > 300:
+                raise ContentContractError("Original source requires attribution")
     if record.get("reviewer_id") == record["author_id"]:
         raise ContentContractError("Self-review forbidden")
     if record["status"] in ("APPROVED", "PUBLISHED") and not record.get("reviewer_id"):
@@ -155,6 +172,13 @@ def public_projection(record: dict) -> dict:
             or not record["source_refs"] or record.get("reviewer_id") == record["author_id"]):
         raise ContentContractError("Public projection denied")
     out = {key: copy.deepcopy(record[key]) for key in PUBLIC_KEYS if key in record}
+    # Nested evidence references have already been checked against a two-shape
+    # allowlist; rebuild them explicitly for defense in depth.
+    out["source_refs"] = [
+        {"kind": src["kind"], "url": src["url"]} if src["kind"] == "PUBLIC_URL"
+        else {"kind": src["kind"], "description": src["description"]}
+        for src in record["source_refs"]
+    ]
     if SENSITIVE_FIELDS.intersection(out):
         raise ContentContractError("Private content leaked into public projection")
     return out
