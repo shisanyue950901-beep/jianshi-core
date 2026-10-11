@@ -238,7 +238,7 @@ def solutions_index() -> str:
                     '<a class="btn primary" style="margin-top:20px" href="/marketplace/">查看需求准备模板 ↗</a></div>',
                     "03 / NEXT ACTION")
     return shell("solutions/", "企业 AI 解决方案", "按业务问题查找可实施的 AI 应用路径，了解典型交付物、试点步骤与风险边界。", "企业解决方案", body,
-                 (("探索解决方案", "#catalog"), ("准备企业需求", "/marketplace/"))).replace('<div class="cards">', '<div class="cards" id="catalog">', 1)
+                 (("探索解决方案", "#catalog"), ("准备企业需求", "/marketplace/"))).replace('<div class="cards f21-catalog-grid">', '<div class="cards f21-catalog-grid" id="catalog">', 1)
 
 
 def solution_detail(row: dict) -> str:
