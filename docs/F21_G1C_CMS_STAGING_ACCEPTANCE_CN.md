@@ -1,6 +1,6 @@
 # JIANSHI 2.0｜F2.1 G1-C 私有 CMS 底座与内部编辑原型
 
-**阶段日期：2026-10-11。状态：STAGING_DB PASS / PR_CI PASS / DEPLOY 待核 / UI 真人交互 NOT_TESTED。**
+**阶段日期：2026-10-11。状态：**G1-C 本批次 PASS**（staging 五表权限 + 仓库与公共站隔离）；**CMS 真实账号 API、后台真实交互 E2E NOT_TESTED**。**
 
 ## 本轮真实实施边界
 
@@ -33,8 +33,8 @@
 - [x] staging anon/authenticated 对 schema 与表均无权限；序列由 SQL REVOKE 严格约束，cms_editor=false。数据库审计零 policy
 - [x] production CMS schema 仍不存在、cms_editor 标记不存在、account_auth=false
 - [x] PR 回归测试验证 web/dist 中不存在 web/prototypes/f21c/
-- [ ] main 静态构建与 Cloudflare SUCCESS，原站首页/项目/方案保持正常（合并后核验）
-- [ ] 原型编辑及切换的独立浏览器交互核验（如受支持），报告明确是否完成
+- [x] main 静态构建、Workers 和 Cloudflare Pages 均 SUCCESS，原站首页、项目和方案保持正常
+- [ ] 仅供内部的离线原型独立真实浏览器点击测试：NOT_TESTED（并非正式网站功能）
 
 ## 下一批 G1-D 必须完成
 
@@ -53,3 +53,13 @@
 功能标记：staging `cms_editor=false`、`account_auth=false`、`v2_matchmaking=false`；production `jianshi_cms` 不存在、`cms_editor` 标记不存在、`account_auth=false`。两环境均未插入客户数据或试验商单。
 
 **注意：**上述是结构和权限元数据检查，不等于使用真实 JWT 的两账户 API 渗透测试；生产真实管理员 CMS 功能尚未部署。
+
+## 正式结项证据（2026-10-11）
+
+- GitHub PR #123：https://github.com/shisanyue950901-beep/jianshi-core/pull/123 ；合并提交 `14c499cee616fcc1efe6e3dda821d83a7f107760`。
+- 完整 PR CI PASS，main CI PASS，静态快照制品 PASS，Workers Builds SUCCESS，Cloudflare Pages SUCCESS。Cloudflare 版本访问路径：https://6272843c.jianshi-bua.pages.dev/ 。
+- 对公网实际读验收：`/`、`/solutions/`、`/marketplace/brief/`、`/talent/portfolio/`、`/projects/` 均正常返回对应页面。
+- 私有原型不发布：`https://jianshi-bua.pages.dev/prototypes/f21c/` 返回 HTTP 404（符合预期），生产首页不存在内部 CMS 样例。
+- staging 五表 5/5 RLS+FORCE RLS，普通角色 SELECT/INSERT 均被撤销，0 条公开 RLS policy；开关 `cms_editor/account_auth/v2_matchmaking` 全部 false。
+- production 无 CMS schema、无 `cms_editor` 标记，原 `account_auth` 关闭。未进行 CMS 用户内容录入、API 连接、课程上传或隐私数据测试。
+- 本轮没有更改任何定时采集触发时间、预算、保护源和实际 schedule 验收规则。
