@@ -88,8 +88,7 @@ function validatedClaims(jwt: string, userId: string): string | null {
          !(Array.isArray(claims.aud) && claims.aud.includes("authenticated"))) ||
         claims.is_anonymous === true || !isUuid(claims.session_id) ||
         !Number.isFinite(claims.exp) || claims.exp * 1000 <= Date.now() ||
-        typeof claims.iss !== "string" || !claims.iss.startsWith(
-          "https://" + STAGING_REF + ".supabase.co/auth/v1")) return null;
+        claims.iss !== "https://" + STAGING_REF + ".supabase.co/auth/v1") return null;
     return claims.session_id;
   } catch (_err) {
     return null;
