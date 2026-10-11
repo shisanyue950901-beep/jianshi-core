@@ -1,6 +1,6 @@
 # JIANSHI F2.1｜G1-B 共用组件、内容筛选及 CMS 审稿内核
 
-日期：2026-10-11。状态：PR 开发验收进行中；仅经 CI、Cloudflare、线上验收全部成功后可更新为 PASS。
+日期：2026-10-11。状态：**G1-B 本批次 PASS**（内容目录及离线 CMS 审稿内核）；不代表生产 CMS API、企业撮合、课程上传已经上线。
 
 ## 本轮真正在做的事情
 
@@ -33,3 +33,14 @@
 ## 发布四重验收
 
 PR CI → main 自动构建 → Cloudflare Pages/Workers 部署成功 → 正式域名路径、按钮交互、旧研究链接可用。这四项分别记录，不可混为一个 PASS。
+
+## G1-B 实际验收证据（2026-10-11）
+
+- 功能合并：[PR #121](https://github.com/shisanyue950901-beep/jianshi-core/pull/121)，源提交 dc0c9d197baa1fc48a106177b8a326d3df615abf。
+- GitHub PR 与主分支全量 CI：PASS；主分支自动静态快照和公开制品检查：PASS。
+- Cloudflare Pages 与 Workers：对该提交部署 SUCCESS。
+- 真实页面：https://jianshi-bua.pages.dev/solutions/；四个方案卡均为已有公开应用方向。
+- 实际浏览器：初始4/4、输入“自动化”1/4、筛选“视觉与视频”2/4、重置4/4，全部通过。会话记录：https://agent.tinyfish.ai/runs/1d87fef7-350c-4f20-b889-dacf733e676b 。
+- 原 /projects/、/marketplace/brief/、/talent/portfolio/ 与方案详情页面均经过只读线上访问核验。
+- 真实 Safari/Android 实机、管理员可信身份认证、并发数据库审批与 CMS 媒体上传：**NOT_TESTED**；下一阶段单独完成。
+- 本轮未修改 .github/workflows、数据库 ACL、账号开关或企业/个人真实私有资料。
