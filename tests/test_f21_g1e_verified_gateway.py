@@ -39,7 +39,7 @@ class G1EVerifiedGateway(unittest.TestCase):
         self.assertIn("revoke all on function public.cms_internal_session_v01(uuid,uuid)", SQL)
         self.assertIn("revoke all on function public.cms_internal_write_v01(uuid,text,jsonb)", SQL)
         self.assertIn("from PUBLIC,anon,authenticated;", SQL)
-        self.assertNotIn("grant execute on function public.cms_internal", SQL.split("to authenticated;")[0].lower())
+        self.assertNotRegex(SQL.lower(), r"grant execute on function public\\.cms_internal[^;]*to (?:public|anon|authenticated)")
         self.assertIn("to service_role;", SQL)
         self.assertNotIn("create policy", SQL.lower())
 
