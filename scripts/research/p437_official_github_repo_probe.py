@@ -30,7 +30,7 @@ TIMESTAMP = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ\Z")
 
 class NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
-        raise ValueError("GitHub API redirected; abort before reaching another host")
+        raise ValueError("GITHUB_REDIRECT_REJECTED")
 
 
 def check_policy() -> None:
@@ -75,24 +75,29 @@ def _count(data: dict, key: str) -> int:
 
 def extract_metadata(data: dict, expected_name: str, expected_id: int, homepage: str) -> dict:
     owner = data.get("owner")
-    if (type(data.get("id")) is not int or data["id"] != expected_id
-            or data.get("full_name") != expected_name
+    # Preserve strict identity rules; classify failures without persisting
+    # external values, repository content, request headers or credentials.
+    if type(data.get("id")) is not int or data["id"] != expected_id:
+        raise ValueError("GITHUB_PINNED_REPO_ID_MISMATCH")
+    if (data.get("full_name") != expected_name
             or data.get("name") != expected_name.split("/")[1]
             or not isinstance(owner,dict)
             or owner.get("login") != "plausible"
             or owner.get("type") != "Organization"
-            or data.get("html_url") != "https://github.com/" + expected_name
-            or data.get("homepage") != homepage
-            or data.get("private") is not False
+            or data.get("html_url") != "https://github.com/" + expected_name):
+        raise ValueError("GITHUB_OWNER_OR_NAME_MISMATCH")
+    if data.get("homepage") != homepage:
+        raise ValueError("GITHUB_HOMEPAGE_MISMATCH")
+    if (data.get("private") is not False
             or data.get("fork") is not False
             or data.get("archived") is not False
             or data.get("disabled") is not False):
-        raise ValueError("Repository identity/policy mismatch")
+        raise ValueError("GITHUB_REPO_POLICY_MISMATCH")
     created = _valid_date(data.get("created_at"))
     updated = _valid_date(data.get("updated_at"))
     pushed = _valid_date(data.get("pushed_at"))
     if not all((created,updated,pushed)):
-        raise ValueError("Malformed repo timestamps")
+        raise ValueError("GITHUB_TIMESTAMP_INVALID")
     return {
         "company_id":"plausible",
         "verified_public_repo_identity":True,
@@ -132,17 +137,17 @@ def fetch_once(repo_name: str, token: str | None) -> tuple[dict, str]:
         with build_opener(NoRedirect()).open(req, timeout=TIMEOUT) as response:
             if (response.status != 200 or response.geturl() != url
                     or "json" not in response.headers.get("Content-Type","").lower()):
-                raise ValueError("Unexpected official API response")
+                raise ValueError("GITHUB_RESPONSE_ENVELOPE_REJECTED")
             raw = response.read(MAX_RESPONSE + 1)
     except HTTPError as error:
         raise RuntimeError("GITHUB_HTTP_" + str(error.code)) from None
     except (URLError, TimeoutError):
         raise RuntimeError("GITHUB_NETWORK_UNAVAILABLE") from None
     if len(raw) > MAX_RESPONSE:
-        raise ValueError("Oversized official repository response")
+        raise ValueError("GITHUB_RESPONSE_OVERSIZED")
     data = json.loads(raw)
     if not isinstance(data,dict):
-        raise ValueError("Unexpected official repository payload")
+        raise ValueError("GITHUB_JSON_ROOT_INVALID")
     return data,hashlib.sha256(raw).hexdigest()
 
 
@@ -152,6 +157,24 @@ def _category(error: Exception) -> str:
         return msg if re.fullmatch(r"GITHUB_HTTP_\d{3}",msg) else "GITHUB_HTTP_ERROR"
     if msg == "GITHUB_NETWORK_UNAVAILABLE":
         return msg
+    if msg.startswith("Invalid GitHub counter: "):
+        return "GITHUB_COUNTER_INVALID"
+    allowed = {
+        "GITHUB_PINNED_REPO_ID_MISMATCH",
+        "GITHUB_OWNER_OR_NAME_MISMATCH",
+        "GITHUB_HOMEPAGE_MISMATCH",
+        "GITHUB_REPO_POLICY_MISMATCH",
+        "GITHUB_TIMESTAMP_INVALID",
+        "GITHUB_RESPONSE_ENVELOPE_REJECTED",
+        "GITHUB_RESPONSE_OVERSIZED",
+        "GITHUB_JSON_ROOT_INVALID",
+        "GITHUB_REDIRECT_REJECTED",
+        "Invalid GitHub token shape",
+    }
+    if msg in allowed:
+        return "GITHUB_TOKEN_SHAPE_INVALID" if msg == "Invalid GitHub token shape" else msg
+    if isinstance(error, json.JSONDecodeError):
+        return "GITHUB_JSON_PARSE_FAILED"
     return "SOURCE_SCHEMA_OR_IDENTITY_REJECTED"
 
 
@@ -226,7 +249,11 @@ def main() -> None:
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     if data["mode"] == "LIVE_OFFICIAL_GITHUB_API" and data["validated_repos"] < 2:
-        print("::warning title=JianShi Official GitHub Source Degraded::Pinned public repository metadata missing or rejected; do not infer finances.")
+        reasons = ",".join(row["reason_code"] for row in data["failures"])
+        # Stable public reason codes only; never echo raw GitHub responses.
+        print("::warning title=JianShi Official GitHub Source Degraded::" + reasons)
+    elif data["mode"] == "LIVE_OFFICIAL_GITHUB_API":
+        print("P437_GITHUB_PINNED_IDENTITIES_VERIFIED_2_OF_2")
     print(json.dumps({"source":"GITHUB_PUBLIC_REST_API","mode":data["mode"],
         "attempted":data["requests_attempted"],"validated":data["validated_repos"],
         "rejected":data["rejected_repos"],"published":0},ensure_ascii=False))
