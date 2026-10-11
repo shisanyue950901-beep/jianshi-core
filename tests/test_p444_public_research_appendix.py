@@ -27,15 +27,19 @@ class PublicResearchAppendixTests(unittest.TestCase):
         cls.home=(DIST/"index.html").read_text(encoding="utf-8")
         cls.index=(DIST/"research/index.html").read_text(encoding="utf-8")
 
-    def test_primary_public_home_preserves_original_interaction(self):
-        self.assertIn("JIANSHI",self.home)
-        self.assertIn('id="ring"',self.home)
-        self.assertIn('id="lb"',self.home)
-        # P4.42: preserve eight gallery covers and add one audited AI hero image.\n        self.assertEqual(self.home.count("data:image/webp;base64,"),9)\n        self.assertIn('id="j2"',self.home)\n        self.assertIn('id="ring"',self.home)
+    def test_primary_public_home_is_one_portal_not_two_stacked_sites(self):
+        self.assertIn("JIANSHI 2.0",self.home)
+        self.assertIn('id="j2"',self.home)
+        self.assertIn('id="j2-opportunities"',self.home)
+        self.assertEqual(self.home.count("data:image/webp;base64,"),1)
+        for old in ('id="ring"', 'id="lb"', 'id="archive"',
+                    'id="recommendations"', 'id="modelList"', 'id="splash"'):
+            self.assertNotIn(old,self.home)
         self.assertEqual(self.home.count("<script>"),1)
         self.assertEqual(self.home.count("<style>"),1)
         self.assertIn('href="/research/"',self.home)
-        self.assertIn("查看六类商业项目的匿名统计",self.home)
+        self.assertIn('href="/projects/"',self.home)
+        self.assertIn('"#item-saas":"/research/vertical-industry-saas/"',self.home)
 
     def test_appendix_index_is_public_aggregate_only(self):
         self.assertIn('id="category-comparison"',self.index)
@@ -62,7 +66,7 @@ class PublicResearchAppendixTests(unittest.TestCase):
 
     def test_preserve_old_bookmarks_and_zero_research_collector_expansion(self):
         old=(DIST/"opportunities/index.html").read_text(encoding="utf-8")
-        self.assertIn("/#archive",old)
+        self.assertIn("/#j2-opportunities",old)
         self.assertIn("页面已更新",old)
         main=(ROOT/"scripts/release/p412_build_public.py").read_text(encoding="utf-8")
         self.assertNotIn("urlopen(",main)
@@ -77,7 +81,7 @@ class PublicResearchAppendixTests(unittest.TestCase):
                             cwd=ROOT,env=env,text=True,capture_output=True,timeout=50)
         self.assertEqual(proc.returncode,0,proc.stderr)
         self.assertIn('id="category-comparison"', (DIST/"research/index.html").read_text(encoding="utf-8"))
-        self.assertIn("/#archive", (DIST/"opportunities/index.html").read_text(encoding="utf-8"))
+        self.assertIn("/#j2-opportunities", (DIST/"opportunities/index.html").read_text(encoding="utf-8"))
 
     def test_source_privacy_scanner_accepts_final_release(self):
         result=subprocess.run([sys.executable,str(ROOT/"scripts/security/p411_audit_public_artifacts.py"),str(DIST)],
