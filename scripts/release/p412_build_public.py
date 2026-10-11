@@ -15,6 +15,7 @@ from p423_build_project_proofs import build as build_project_proofs, parse_cases
 from p425_public_admission import eligible_cases
 from p429_build_source_atlas import build as build_source_atlas
 from p445_unified_home import build_home as build_jianshi2_home
+from p446_content_hubs import publish as publish_content_hubs, PAGES as CONTENT_PAGES
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
@@ -190,6 +191,9 @@ def build_release() -> dict:
     # The old paths remain redirects; expose aggregate research only at a
     # distinct and explicitly linked /research/ URL.
     anonymous_studies=publish_public_research_appendix()
+    content_guides=publish_content_hubs(OUTPUT)
+    if content_guides != len(CONTENT_PAGES) or content_guides != 8:
+        raise RuntimeError('Editorial hub release contract incomplete')
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
         "opportunities": "/#j2-opportunities",
@@ -226,6 +230,7 @@ def build_release() -> dict:
         f"<url><loc>{SITE}/sources/</loc></url>"
         f"<url><loc>{SITE}/projects/</loc></url>"
         + "".join(f"<url><loc>{SITE}/projects/{p.name}/</loc></url>" for p in sorted((OUTPUT/"projects").iterdir()) if p.is_dir())
+        + ''.join(f'<url><loc>{SITE}/{route}</loc></url>' for route in CONTENT_PAGES)
         +         '</urlset>\n'
     )
     (OUTPUT / "sitemap.xml").write_text(sitemap, encoding="utf-8")
@@ -251,6 +256,7 @@ def build_release() -> dict:
         "named_project_dossiers": len(approved),
         "curated_market_sources": market_sources["sources"],
         "anonymous_studies": anonymous_studies,
+        "public_content_guides": content_guides,
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
         "production_deployed": False,
