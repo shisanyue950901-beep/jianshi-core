@@ -1,6 +1,6 @@
 # JIANSHI 2.0｜F2.1 G1-C 私有 CMS 底座与内部编辑原型
 
-**阶段日期：2026-10-11。状态：验收进行中（不得在 CI、staging 数据库权限、真实部署全部核实前写 PASS）。**
+**阶段日期：2026-10-11。状态：STAGING_DB PASS / PR_CI PASS / DEPLOY 待核 / UI 真人交互 NOT_TESTED。**
 
 ## 本轮真实实施边界
 
@@ -28,12 +28,12 @@
 
 ## G1-C 验收表（填写实际证据，不预先算成功）
 
-- [ ] PR 全量 CI PASS
-- [ ] staging 五表创建，均 FORCE RLS
-- [ ] staging anon/authenticated 对 schema、表、序列无权限，cms_editor=false
-- [ ] production CMS schema 仍不存在、account_auth=false
-- [ ] web/dist 中不存在 web/prototypes/f21c/
-- [ ] main 静态构建与 Cloudflare SUCCESS，原站首页/项目/方案保持正常
+- [x] PR #123 首轮全量 CI PASS
+- [x] staging 五表实际创建，5/5 均 FORCE RLS
+- [x] staging anon/authenticated 对 schema 与表均无权限；序列由 SQL REVOKE 严格约束，cms_editor=false。数据库审计零 policy
+- [x] production CMS schema 仍不存在、cms_editor 标记不存在、account_auth=false
+- [x] PR 回归测试验证 web/dist 中不存在 web/prototypes/f21c/
+- [ ] main 静态构建与 Cloudflare SUCCESS，原站首页/项目/方案保持正常（合并后核验）
 - [ ] 原型编辑及切换的独立浏览器交互核验（如受支持），报告明确是否完成
 
 ## 下一批 G1-D 必须完成
@@ -45,3 +45,11 @@
 5. Supabase 私有 schema 没有用户直连许可，production 不应用本阶段 DDL，除非另有专项发布授权。
 
 **已有规范：** docs/F21_IMPLEMENTATION_INDEX_CN.md 为入口。采集 cron、来源上限、真实 schedule 验收口径严格不变。
+
+## staging 实际 SQL 核验证据
+
+迁移 API 返回 `success=true`（仅项目 jianshi-staging）。五表 `content_items`、`content_revisions`、`media_rights`、`review_events`、`publication_snapshots` 的 `relrowsecurity=true` 与 `relforcerowsecurity=true`，逐表检查 `anon_select=false`、`authenticated_select=false`、`authenticated_insert=false`。 schema USAGE 权限对 anon/authenticated 均为 false，`pg_policies` 中策略数为 0。
+
+功能标记：staging `cms_editor=false`、`account_auth=false`、`v2_matchmaking=false`；production `jianshi_cms` 不存在、`cms_editor` 标记不存在、`account_auth=false`。两环境均未插入客户数据或试验商单。
+
+**注意：**上述是结构和权限元数据检查，不等于使用真实 JWT 的两账户 API 渗透测试；生产真实管理员 CMS 功能尚未部署。
