@@ -79,7 +79,7 @@ class VisualPreviewContract(unittest.TestCase):
 
     def test_unreleased_services_have_empty_states_and_no_unsafe_fake_data(self):
         for phrase in ("真实商单正在筹备中", "课程体系先预留",
-                       "无虚构", "没有开放真实入驻", "方向示意"):
+                       "不展示虚构", "没有开放真实入驻", "方向示意"):
             self.assertIn(phrase, self.html)
         for unsafe in ("10,000+", "2,500+", "已有客户", "成交金额",
                        "月收入保证", "真实客户案例已验证"):
