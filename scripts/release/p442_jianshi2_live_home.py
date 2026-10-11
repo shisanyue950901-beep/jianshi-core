@@ -248,4 +248,30 @@ def integrate(portal_ready_html: str, admitted_cases: list[dict]) -> str:
         '<a href="/sources/">数据来源</a>'
     )
     integrated = integrated[:a] + navigation + integrated[b:]
+    # The production homepage's document metadata must describe JIANSHI 2.0,
+    # not the earlier research-only portal. Keep the reviewed source unchanged.
+    old_title = "<title>见势 JIANSHI｜发现海外项目，看懂一门生意</title>"
+    old_description = ('<meta name="description" content="探索海外真实项目和商业模式，'
+                       '了解它们提供什么、向谁收费、如何运作，以及哪些经营事实还需要进一步核实。">')
+    title = "见势 JIANSHI 2.0｜AI 商业机会、企业解决方案与创作者"
+    description = ("发现经审核的 AI 商业机会研究，了解企业 AI 解决方案与创作者服务。"
+                   "商机撮合与 AIGC 课程正在建设，项目历史经营不代表可复制收益。")
+    if integrated.count(old_title) != 1 or integrated.count(old_description) != 1:
+        raise RuntimeError("Homepage metadata source contract changed")
+    integrated = integrated.replace(old_title, "<title>" + escape(title) + "</title>", 1)
+    integrated = integrated.replace(
+        old_description,
+        '<meta name="description" content="' + escape(description, quote=True) + '">',
+        1,
+    )
+    if integrated.count("</head>") != 1:
+        raise RuntimeError("Invalid main document head")
+    social = (
+        '<meta property="og:type" content="website">'
+        '<meta property="og:title" content="' + escape(title, quote=True) + '">'
+        '<meta property="og:description" content="' + escape(description, quote=True) + '">'
+        '<meta property="og:url" content="https://jianshi-bua.pages.dev/">'
+        '<meta name="twitter:card" content="summary">'
+    )
+    integrated = integrated.replace("</head>", social + "</head>", 1)
     return integrated
