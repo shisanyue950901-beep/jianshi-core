@@ -14,6 +14,7 @@ from pathlib import Path
 from p423_build_project_proofs import build as build_project_proofs, parse_cases
 from p425_public_admission import admitted_ids, eligible_cases, public_home
 from p429_build_source_atlas import build as build_source_atlas
+from p442_jianshi2_live_home import integrate as integrate_jianshi2
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
@@ -64,8 +65,9 @@ def assert_safe_source(markup: str, *, source_prototype: bool = True) -> None:
             raise RuntimeError(f"Missing expected public design contract: {marker}")
     if markup.count("<script>") != 1 or markup.count("<style>") != 1:
         raise RuntimeError("Unexpected external or multiple script/style sections")
-    if markup.count("data:image/webp;base64,") != 8:
-        raise RuntimeError("Expected 8 inline concept-cover images")
+    expected_images = 8 if source_prototype else 9  # original eight + original JIANSHI2 hero
+    if markup.count("data:image/webp;base64,") != expected_images:
+        raise RuntimeError("Unexpected count of public, preapproved WebP concept images")
     banned = [
         "Empire Flippers", "empireflippers", "listing_number", "source_url",
         "source_ref_ids", "OPP_V0.2", "EASLO_OWN_SITE_01",
@@ -154,6 +156,8 @@ def build_release() -> dict:
     # Strict editorial gate: only projects with attributable operating evidence.
     approved = eligible_cases(parse_cases())
     markup = public_home(markup, approved)
+    # Source-admitted JIANSHI2 portal precedes the verified historical research UI.
+    markup = integrate_jianshi2(markup, approved)
     # Keep the established one-page user journey and motion design; offer an
     # explicit, evidence-only research appendix instead of replacing the hero.
     model_marker='<div class="model-list" id="modelList"></div>'
@@ -251,7 +255,8 @@ def build_release() -> dict:
         "status": "PASS",
         "release": "P4.12",
         "output": "web/dist",
-        "inline_covers": 8,
+        "inline_covers": 8,  # retained legacy visual gallery
+        "jianshi2_embedded_visuals": 1,
         "evidence_dashboard": "validation/index.html",
         "named_project_dossiers": len(approved),
         "curated_market_sources": market_sources["sources"],

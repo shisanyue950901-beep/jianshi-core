@@ -31,7 +31,7 @@ class PublicResearchAppendixTests(unittest.TestCase):
         self.assertIn("JIANSHI",self.home)
         self.assertIn('id="ring"',self.home)
         self.assertIn('id="lb"',self.home)
-        self.assertEqual(self.home.count("data:image/webp;base64,"),8)
+        # P4.42: preserve eight gallery covers and add one audited AI hero image.\n        self.assertEqual(self.home.count("data:image/webp;base64,"),9)\n        self.assertIn('id="j2"',self.home)\n        self.assertIn('id="ring"',self.home)
         self.assertEqual(self.home.count("<script>"),1)
         self.assertEqual(self.home.count("<style>"),1)
         self.assertIn('href="/research/"',self.home)
