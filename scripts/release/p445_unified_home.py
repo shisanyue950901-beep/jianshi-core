@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from html import escape
 from p442_jianshi2_live_home import STYLE, render_portal
+from f21_design_tokens import render_css as render_design_css
 
 SITE = "https://jianshi-bua.pages.dev"
 TITLE = "见势 JIANSHI 2.0｜AI 商业机会、企业解决方案与创作者"
@@ -118,7 +119,7 @@ def build_home(cases: list[dict]) -> str:
         '<meta property="og:description" content="' + escape(DESCRIPTION, quote=True) + '">'
         '<meta property="og:url" content="' + SITE + '/">'
         '<meta name="twitter:card" content="summary">'
-        '<style>' + STYLE + EXTRA_STYLE + '</style></head>'
+        '<style>' + STYLE + EXTRA_STYLE + render_design_css() + '</style></head>'
     )
     rendered = head + '<body><main id="top">' + portal + '</main>' + legacy_script + '</body></html>\n'
     if (rendered.count("<main ") != 1 or rendered.count("</main>") != 1
