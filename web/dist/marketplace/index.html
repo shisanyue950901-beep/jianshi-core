@@ -57,6 +57,18 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f0f4fa;border:1px sol
 @media(max-width:1050px){.top .desktop{display:none}.mobile{display:block}.cards.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.wrap{width:calc(100% - 34px)}.hero .wrap{padding:42px 0 62px}.cards,.cards.four,.steps{grid-template-columns:1fr}.section{margin-top:46px}.content{padding-top:32px}.card{padding:20px}.status{padding:12px}.top .row{min-height:62px}th,td{padding:12px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card.link{transition:none;transform:none!important}}
+/* F2.1 common brand semantics; safe to append once */:root{--js21-bg-dark:#081120;--js21-bg-light:#F6F8FC;--js21-surface:#FFFFFF;--js21-text-main:#132038;--js21-text-muted:#64748B;--js21-border:#E0E7F2;--js21-accent-blue:#538DFF;--js21-accent-purple:#9975FF;--js21-radius-card:16px;--js21-radius-control:12px;--js21-content-max:1180px;}
+html{scroll-padding-top:80px}
+body{color:var(--js21-text-main)}
+.hero{background:var(--js21-bg-dark)}
+.top{background:var(--js21-bg-dark)}
+.card{border-color:var(--js21-border);border-radius:var(--js21-radius-card)}
+.card p,.lead{color:var(--js21-text-muted)}
+.tool-panel{border-color:var(--js21-border);border-radius:var(--js21-radius-card)}
+#j2 .j2-mast{background:var(--js21-bg-dark)}
+#j2 .j2-content{background:var(--js21-bg-light)}
+#j2 .j2-project,#j2 .j2-solution{border-color:var(--js21-border)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style></head><body><header class="top"><div class="wrap row"><a class="logo" href="/">见势 <small>JIANSHI 2.0</small></a><nav class="desktop" aria-label="主要导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/">企业解决方案</a><a href="/marketplace/" aria-current="page">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav><details class="mobile"><summary aria-label="展开导航">☰ 菜单</summary><nav aria-label="移动导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/">企业解决方案</a><a href="/marketplace/" aria-current="page">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></details></div></header><main><div class="hero"><div class="wrap"><div class="crumb"><a href="/">见势首页</a> / 商机大厅</div><span class="kicker">JIANSHI / 商机大厅</span><h1>商机大厅与合作流程</h1><p>为企业需求和 AI 创作者建立透明的合作路径；先提供需求模板、审核规则及未来撮合流程，不展示虚构订单。</p><div class="hero-links"><a class="btn primary" href="#request-brief">查看需求准备模板 ↗</a><a class="btn " href="/solutions/">查看企业方案 ↗</a></div></div></div><div class="wrap content"><div class="status"><b>内容状态：</b>这是公开的应用指南与业务准备资料。当前平台尚未开放在线委托、人才竞标、支付或课程观看；此处的流程和成果是规划与示例，不是实际客户交付记录。</div><section class="section"><span class="label">01 / FUTURE WORKFLOW</span><h2>企业与创作者，将如何建立合作？</h2><p class="lead">首版计划采用人工审核及人工辅助匹配，避免把审核、支付和交付责任留成空白。</p><div class="steps"><div class="step"><b>01 · 企业描述问题</b><h3>明确交付</h3><p>围绕成果、使用范围、时间、约束及验收标准编写需求。</p></div><div class="step"><b>02 · 平台审核需求</b><h3>确认真实性</h3><p>核验企业身份、需求合规、素材授权和可公开字段。</p></div><div class="step"><b>03 · 创作者申请</b><h3>人工匹配</h3><p>基于作品和能力选择沟通对象；不展示未经授权的联系方式。</p></div></div></section><section class="section"><span class="label">02 / REQUEST BRIEF</span><h2>企业需求准备模板</h2><p class="lead">可以在本地复制下面的字段，暂时无需向网站提交任何企业或个人资料。</p><div class="card" id="request-brief"><h3>需求说明应包含的字段</h3><pre>项目名称：
 行业及业务场景：
 目前的问题：
