@@ -37,6 +37,12 @@ permissions:
 
 jobs:
   build-static:
+    # Serialize scheduled runs; push builds remain independent. Never cancel
+    # an in-flight private attempt. Queue all delayed scheduled slots.
+    concurrency:
+      group: ${{ github.event_name == 'schedule' && 'jianshi-private-daily-schedule' || github.run_id }}
+      cancel-in-progress: false
+      queue: max
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -116,19 +122,53 @@ jobs:
           ! grep -R -E -i "Empire Flippers|empireflippers|Amazon KDP Business in the|Amazon FBA Business in the|Per Month SaaS Business|OFFICIAL_API|源更新时间：|listing_number" --include="*.html" index.html opportunities opportunity today rising build content
 
 
-      # Retain four daily scheduled slots, splitting the midnight slot into
-      # an exact event.schedule identity. Runner delays must not skip the scan.
-      # HN search metadata is an unverified lead and NEVER changes publication.
-      - name: Daily private business-evidence leads (no publication)
-        # P4.36: unattended daily private research is schedule-only.
-        # The one-time P4.35 merge smoke is retired and cannot re-trigger.
-        if: github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'
+      # No new cron slots. A later existing scheduled slot may make one bounded
+      # UTC-day attempt if the midnight event is dropped or delayed.
+      # A PRIVATE claim is uploaded BEFORE HN/RSS/P4.37 network requests.
+      - name: Check daily private scan claim (metadata only)
+        id: daily_scan_preflight
+        if: github.event_name == 'schedule'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "P426_DAILY_SCAN_SCHEDULED_UTC_0055"
+          if ! gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" > "$RUNNER_TEMP/p434_artifacts_metadata.json"; then
+            echo "::warning title=JianShi Scan Claim Unavailable::Private artifact inventory unavailable; research not started."
+            echo "should_scan=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! python scripts/research/p441_schedule_claim.py \
+              --metadata "$RUNNER_TEMP/p434_artifacts_metadata.json" \
+              --run-id "$GITHUB_RUN_ID" \
+              --claim-output "$RUNNER_TEMP/p441_scan_claim.json" \
+              --github-output "$GITHUB_OUTPUT"; then
+            echo "::warning title=JianShi Scan Claim Invalid::Cannot safely prove daily request budget; research not started."
+            echo "should_scan=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Reserve private daily scan claim (48h)
+        id: daily_scan_claim_upload
+        if: steps.daily_scan_preflight.outputs.should_scan == 'true'
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: research-scan-claim-${{ steps.daily_scan_preflight.outputs.scan_day }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/p441_scan_claim.json
+          if-no-files-found: error
+          retention-days: 2
+
+      # HN search metadata is an unverified lead and NEVER changes publication.
+      - name: Daily private business-evidence leads (no publication)
+        # P4.36: unattended daily private research is schedule-only.
+        # The one-time P4.35 merge smoke is retired and cannot re-trigger.
+        if: github.event_name == 'schedule' && steps.daily_scan_preflight.outputs.should_scan == 'true' && steps.daily_scan_claim_upload.outcome == 'success'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          echo "P441_DAILY_SCAN_CLAIM_UPLOADED_NETWORK_BUDGET_RESERVED"
           # One bounded daily scan at most; no retries or extra jobs.
           python scripts/research/p426_daily_leads.py --network --max-companies 6 --output "$RUNNER_TEMP/p426_research_leads.json"
           python scripts/research/p430_company_evidence_review.py --leads "$RUNNER_TEMP/p426_research_leads.json" --output "$RUNNER_TEMP/p430_review_queue.json"
@@ -160,7 +200,7 @@ jobs:
           # main-branch report. GitHub App token needs actions:read, never PAT.
           previous_args=()
           echo "P434_PRIOR_ARTIFACT_NOT_AVAILABLE" > "$RUNNER_TEMP/p434_restore_health.txt"
-          if gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" > "$RUNNER_TEMP/p434_artifacts_metadata.json"; then
+          if [ -s "$RUNNER_TEMP/p434_artifacts_metadata.json" ]; then
             python scripts/research/p434_rolling_private_index.py select-artifact \
               --metadata "$RUNNER_TEMP/p434_artifacts_metadata.json" \
               --current-run-id "$GITHUB_RUN_ID" \
@@ -209,7 +249,7 @@ jobs:
 
       - name: Retain private review-only evidence leads (48h)
         # Preserve forensics even if the scheduled collector reports FAIL.
-        if: ${{ always() && github.event_name == 'schedule' && github.event.schedule == '55 0 * * *' }}
+        if: ${{ always() && github.event_name == 'schedule' && steps.daily_scan_claim_upload.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: research-leads-${{ github.run_id }}
