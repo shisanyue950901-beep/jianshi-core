@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts/release"))
+sys.path.insert(0, str(ROOT / "scripts/security"))
 import p446_content_hubs as hubs
 from p423_build_project_proofs import parse_cases
 from p425_public_admission import eligible_cases
