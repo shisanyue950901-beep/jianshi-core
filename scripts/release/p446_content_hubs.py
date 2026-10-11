@@ -272,7 +272,8 @@ def solution_detail(row: dict) -> str:
     return shell("solutions/" + row["slug"] + "/", row["name"], row["subtitle"] + "。" + row["summary"],
                  "解决方案 / " + row["name"], body,
                  (("查看交付与验收", "#delivery"), ("返回方案目录", "/solutions/"))).replace(
-                     '<div class="cards">', '<div class="cards" id="delivery">', 2
+                     '<span class="label">02 / DELIVERY PROCESS</span>',
+                     '<span class="label" id="delivery">02 / DELIVERY PROCESS</span>', 1
                  )
 
 
