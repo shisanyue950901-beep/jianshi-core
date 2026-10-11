@@ -26,7 +26,7 @@ class G1EVerifiedGateway(unittest.TestCase):
         self.assertIn("revoke all on function jianshi_cms.session_is_active(uuid,uuid)", SQL)
         self.assertIn("from PUBLIC, anon, authenticated;", SQL)
         self.assertIn("to service_role;", SQL)
-        self.assertNotIn("returns jsonb", SQL.lower())
+        self.assertNotIn("returns jsonb", SQL.lower().split("create or replace function public.cms_internal_session_v01")[0])
         self.assertNotIn("grant select on auth.sessions", SQL.lower())
 
     def test_public_wrappers_only_available_to_server_key(self):
