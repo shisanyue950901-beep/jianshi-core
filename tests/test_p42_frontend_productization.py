@@ -41,7 +41,7 @@ class TestP42FrontendProductization(unittest.TestCase):
         workflow = (ROOT / ".github" / "workflows" / "publish-static.yml").read_text(encoding="utf-8")
         self.assertIn("opportunities/**", workflow)
         self.assertIn("test -f opportunities/index.html", workflow)
-        self.assertIn('grep -q "发现海外项目" web/dist/index.html', workflow)
+        self.assertIn('grep -q "商业机会与解决方案" web/dist/index.html', workflow)
         self.assertIn("Prepare user-facing P4.12 artifact", workflow)
         self.assertIn('grep -q "项目研究库" opportunities/index.html', workflow)
         self.assertIn('grep -q "趋势指标档案" opportunity/solo-saas/index.html', workflow)
