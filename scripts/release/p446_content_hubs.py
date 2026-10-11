@@ -291,7 +291,7 @@ def marketplace_page() -> str:
         "企业需求准备模板", "可以在本地复制下面的字段，暂时无需向网站提交任何企业或个人资料。",
         '<div class="card"><h3>需求说明应包含的字段</h3>'
         '<pre>项目名称：\n行业及业务场景：\n目前的问题：\n预期交付物与数量：\n目标用户与使用渠道：\n现有资料及使用授权：\n期望完成时间：\n质量验收与修改标准：\n预算约束（可选）：\n保密、数据及审批要求：</pre>'
-        '<p>仅为本地编辑参考。本站当前无上传、邮件发送、竞价或订单创建功能。</p></div>',
+        '<p>仅为本地编辑参考。本站当前无上传、邮件发送、竞价或订单创建功能。</p>''<a class="btn primary" style="margin-top:18px" href="/marketplace/brief/">打开本地需求整理器 ↗</a></div>',
         "02 / REQUEST BRIEF",
     )
     body += section(
@@ -330,7 +330,7 @@ def talent_page() -> str:
         '<tr><td>代表作品</td><td>目标、方法、前后对比、你的真实贡献</td><td>演示作品明确标注</td></tr>'
         '<tr><td>交付方式</td><td>格式、沟通、修订、验收和授权边界</td><td>双方确认范围</td></tr>'
         '<tr><td>使用权</td><td>第三方素材、客户保密和商业使用许可</td><td>没有授权就不公开</td></tr>'
-        '</tbody></table>', "02 / PORTFOLIO",
+        '</tbody></table>''<p style="margin-top:18px"><a class="btn primary" href="/talent/portfolio/">打开作品集本地整理器 ↗</a></p>', "02 / PORTFOLIO",
     )
     body += section(
         "未来的入驻与接单路径", "不是已经存在的账户或认证服务。",
