@@ -230,11 +230,22 @@ begin
 
   -- Public projection allowlist constructed inside the transaction.
   if p_to_state='PUBLISHED' then
-    if jsonb_typeof(v_rev.content_private->'source_refs') <> 'array'
-      or jsonb_array_length(v_rev.content_private->'source_refs')=0
-      or jsonb_typeof(v_rev.content_private->'tags') <> 'array'
-      or length(coalesce(v_rev.content_private->>'title',''))<2
-      or length(coalesce(v_rev.content_private->>'summary',''))<8 then
+    if coalesce(jsonb_typeof(v_rev.content_private->'source_refs'),'null') <> 'array'
+      or coalesce(jsonb_typeof(v_rev.content_private->'tags'),'null') <> 'array'
+      or length(coalesce(v_rev.content_private->>'title','')) not between 2 and 140
+      or length(coalesce(v_rev.content_private->>'summary','')) not between 8 and 1600
+      or length(coalesce(v_rev.content_private->>'category','')) not between 1 and 80
+      or coalesce(v_rev.content_private->>'language','') not in ('zh-CN','en')
+      or coalesce(v_rev.content_private->>'source_verified_at','') !~ '^20[0-9]{2}-[01][0-9]-[0-3][0-9]$'
+      then
+      raise exception 'CMS_INVALID_PUBLIC_PROJECTION' using errcode='22023';
+    end if;
+    if jsonb_array_length(v_rev.content_private->'source_refs')=0
+      or jsonb_array_length(v_rev.content_private->'source_refs')>30
+      or jsonb_array_length(v_rev.content_private->'tags')>12
+      or exists(select 1 from jsonb_array_elements(v_rev.content_private->'tags') as tag(value)
+         where jsonb_typeof(tag.value)<>'string'
+           or length(tag.value #>> '{}') not between 1 and 35) then
       raise exception 'CMS_INVALID_PUBLIC_PROJECTION' using errcode='22023';
     end if;
     for v_src in select value from jsonb_array_elements(v_rev.content_private->'source_refs') loop
