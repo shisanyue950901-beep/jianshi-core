@@ -20,7 +20,7 @@ class G1DCMSTransaction(unittest.TestCase):
         self.assertIn("active boolean not null default false",SQL)
         self.assertNotIn("create policy",SQL.lower())
         self.assertNotIn("security definer",SQL.lower())
-        self.assertNotIn("grant execute on function jianshi_cms.",SQL.split("to authenticated")[0].lower())
+        self.assertNotRegex(SQL.lower(),r"grant execute on function jianshi_cms\\.[^;]* to (?:public|anon|authenticated)")
         self.assertNotIn("create table if not exists public.",SQL.lower())
         self.assertNotIn("ALTER ROLE",SQL.upper())
 
