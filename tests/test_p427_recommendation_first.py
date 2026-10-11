@@ -90,7 +90,7 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertNotIn('id="ring"',page)
         self.assertTrue((ROOT/"web/dist/projects/carrd/index.html").exists())
         self.assertFalse((ROOT/"web/dist/projects/easlo/index.html").exists())
-        self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),8)
+        self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),16)
         self.assertTrue((ROOT/"web/dist/sources/index.html").is_file())
 
 if __name__=="__main__":
