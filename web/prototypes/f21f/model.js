@@ -78,6 +78,7 @@
     _expected(r,expected) { ensure(Number.isInteger(expected) && expected===r.revision,"STALE_REVISION"); }
     _save(r,actor,event) {
       r.revision++;
+      this.records.set(r.id,clone(r));
       this.history.get(r.id).push(this._version(r));
       this.events.push(Object.freeze({
         seq:++this.sequence, id:r.id, actor, action:event, revision:r.revision, state:r.state
@@ -89,8 +90,9 @@
     revisions(id) { this._get(id); return clone(this.history.get(id)); }
     audit(id) { this._get(id); return this.events.filter((e)=>e.id===id).map(clone); }
     edit(id,actor,expected,patch) {
-      const r=this._get(id);
-      this._expected(r,expected);
+      const old=this._get(id);
+      this._expected(old,expected);
+      const r=clone(old); // commit only after every field has passed validation
       ensure(roles[actor]==="EDITOR" && r.author===actor,"OWNER_REQUIRED");
       ensure(r.state==="DRAFT","DRAFT_LOCKED");
       ensure(patch && typeof patch==="object" && !Array.isArray(patch),"INVALID_PATCH");
