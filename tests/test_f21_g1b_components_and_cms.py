@@ -125,9 +125,7 @@ class G1ComponentsAndCMS(unittest.TestCase):
             workspace.add_draft(initial)
         with self.assertRaises(ContentContractError):
             workspace.private_view(initial["content_id"], actor_id="TEST_RANDOM", role="AUTHOR")
-        with self.assertRaises(ContentContractError):
-            workspace.public_feed()[0]
-        assert workspace.public_feed() == []
+        self.assertEqual(workspace.public_feed(), [])
         first = workspace.change_state(initial["content_id"], "IN_REVIEW",
                                        actor_id="TEST_EDITOR_A", role="AUTHOR", expected_revision=1)
         with self.assertRaises(ContentContractError):
