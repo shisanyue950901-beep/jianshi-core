@@ -38,12 +38,12 @@
 
 ## 五、运行验收栏（需填实际事实）
 
-- [x] PR #127 首轮 CI 已通过；最终代码需再次运行并在合并后重验
+- [x] PR #127 最终全量 CI PASS；main 同样 PASS
 - [x] staging 三个新函数实际核验：仅 service_role 可执行；合成无效会话返回 false
-- [x] staging Edge Function cms-staging-gateway v1 ACTIVE，平台 verify_jwt=true；修复后需更新部署版本
+- [x] staging Edge Function cms-staging-gateway v2 ACTIVE，平台 verify_jwt=true，严格比较 staging JWT issuer
 - [x] 未携带 Authorization 的实际 GET 请求返回 HTTP 401；数据库开关仍全部 false
 - [x] production CMS schema/标记均不存在，account_auth=false；staging 三开关均 false
-- [ ] GitHub 主分支构建及 Cloudflare Pages 成功
+- [x] main PR CI、静态快照构建、Workers 和 Cloudflare Pages 均 SUCCESS
 - [ ] 全部 E2E 正向业务：**NOT_TESTED（未满足 Auth 安全前提，不允许冒充通过）**
 
 ## 六、持续隔离
@@ -60,3 +60,12 @@
 - Supabase advisor 对这次 CMS 私有函数未发现新的 WARN/ERROR；既有私有 CMS 表在 INFO 级提示无 policy，此为有意默认拒绝。其他非 CMS 历史警告未在本轮改动。
 
 **尚无的证据：** 已登录用户成功提交、同一会话撤销后拒绝、实际 CMS 写入及并发 CAS E2E、安全完整压测。下一阶段必须完成，不能把 HTTP 401 或 SQL 权限核对当作完整 E2E。
+
+## G1-E 最终结项记录（2026-10-11）
+
+- 功能 PR：[PR #127](https://github.com/shisanyue950901-beep/jianshi-core/pull/127)；源合并提交 `7cc58a91a6ad47157b506b4eebd9ae19e5d8df3f`。
+- staging CMS 私有会话与受限 RPC 通过实际 SQL 权限核验：三个新函数匿名及普通账号均不能调用，服务角色可调用；全零合成会话返回 false。staging 未创建真实编辑账号、内容或角色授权。
+- staging `cms-staging-gateway` Edge v2 ACTIVE，`verify_jwt=true`，无 JWT 实际请求返回 401；额外运维开关未放行，数据库 `cms_editor/account_auth/v2_matchmaking=false`。
+- 生产 Supabase：无 CMS schema，`cms_editor` 不存在，`account_auth=false`，生产 Edge Functions 中也**无** `cms-staging-gateway`。
+- 主分支 `test/build-static/Workers Builds/Cloudflare Pages` 全部 SUCCESS；只读线上复核 `/`、`/solutions/`、`/marketplace/brief/`、`/talent/portfolio/`、`/projects/` 均正常；内部原型 `/prototypes/f21c/` 返回预期 404。
+- **验收范围：staging 后端 JWT 部署配置、最小执行权限、关闭门禁、公开站零泄漏。未完成：带真实用户 JWT 的正向编辑/审核/撤回 E2E、真实并发、管理员前端、视频上传和安全限流。**
