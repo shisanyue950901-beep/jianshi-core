@@ -173,7 +173,9 @@ class PrivateR2TriageTest(unittest.TestCase):
         self.assertEqual(workflow.count("cron: '55 0 * * *'"),1)
         self.assertEqual(workflow.count("cron: '55 6,12,18 * * *'"),1)
         self.assertEqual(workflow.count("- cron:"),2)
-        self.assertIn("github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",workflow)
+        self.assertIn("github.event_name == 'schedule' && (github.event.schedule == '55 0 * * *'",workflow)
+        self.assertIn("steps.daily_scan_claim_upload.outcome == 'success'",workflow)
+        self.assertIn("research-scan-claim-",workflow)
 
 
 if __name__=="__main__":
