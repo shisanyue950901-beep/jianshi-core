@@ -39,7 +39,12 @@ class CloudflareSnapshotParityTests(unittest.TestCase):
         return dest
 
     def populate(self):
-        self.write("web/dist/index.html",'<main id="ring"><a href="/research/">研究分类</a></main>')
+        self.write("web/dist/index.html",
+                   '<main id="j2"><div id="j2-opportunities"></div>'
+                   '<div id="j2-solutions"></div><div id="j2-marketplace"></div>'
+                   '<div id="j2-talent"></div><div id="j2-academy"></div>'
+                   '<a href="/research/">研究分类</a><a href="/projects/">项目档案</a>'
+                   '<img src="data:image/webp;base64,UklGR"></main>')
         self.write("web/dist/_headers","/*\n  Cache-Control: no-store, max-age=0\n")
         self.write("web/dist/_redirects","/config/* / 302\n")
         self.write("web/dist/research/index.html",'<meta name="robots" content="noindex,follow"><div id="category-comparison"></div>')
@@ -86,7 +91,7 @@ class CloudflareSnapshotParityTests(unittest.TestCase):
     def test_fail_closed_if_public_home_or_index_contract_was_lost(self):
         self.populate()
         self.write("web/dist/index.html",'<main id="ring"></main>')
-        with self.assertRaisesRegex(RuntimeError,"Committed public homepage contract missing"):
+        with self.assertRaisesRegex(RuntimeError,"Committed single JIANSHI2 homepage contract missing"):
             self.module._preserve_cloudflare_public_snapshot()
         self.populate()
         self.write("web/dist/research/index.html",'<div id="category-comparison"></div>')

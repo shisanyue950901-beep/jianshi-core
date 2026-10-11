@@ -1378,8 +1378,20 @@ def _preserve_cloudflare_public_snapshot():
     home=(released/"index.html").read_text(encoding="utf-8")
     index=(released/"research"/"index.html").read_text(encoding="utf-8")
     src_index=(source/"opportunities"/"index.html").read_text(encoding="utf-8")
-    if 'id="ring"' not in home or 'href="/research/"' not in home:
-        raise RuntimeError("Committed public homepage contract missing")
+    # P4.47: Cloudflare Pages uses the committed, audited static snapshot.
+    # The former 3D ring was intentionally removed from the single JIANSHI2
+    # homepage in P4.45. Requiring it here blocked every later Pages deploy.
+    # Fail closed on the NEW public contract instead of resurrecting old UI.
+    required_home = ('id="j2"', 'id="j2-opportunities"',
+                     'id="j2-solutions"', 'id="j2-marketplace"',
+                     'id="j2-talent"', 'id="j2-academy"',
+                     'href="/research/"', 'href="/projects/"')
+    banned_legacy = ('id="ring"', 'id="lb"', 'id="archive"',
+                     'id="recommendations"', 'id="splash"')
+    if (any(marker not in home for marker in required_home)
+            or any(marker in home for marker in banned_legacy)
+            or home.count("data:image/webp;base64,") != 1):
+        raise RuntimeError("Committed single JIANSHI2 homepage contract missing")
     if ('id="category-comparison"' not in index
             or 'id="category-comparison"' not in src_index
             or 'noindex,follow' not in index):
