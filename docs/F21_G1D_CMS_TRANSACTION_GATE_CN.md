@@ -25,11 +25,11 @@
 
 ## 安全验收清单
 
-- [ ] GitHub PR 全量 CI PASS
-- [ ] staging 数据库迁移执行成功；私有函数及第六张 CMS 授权表验证
-- [ ] `cms_editor` 和 `account_auth` false，所有写操作在无真实账号状态下返回 `CMS_WRITE_DISABLED`
-- [ ] staging 普通/匿名数据库角色无新表、新函数执行权限
-- [ ] production 未应用 CMS schema、没有放开认证
+- [x] PR #125 首轮 CI PASS；主分支需合并后再次验收
+- [x] staging 迁移成功，第六张私有表和4个事务函数已核验
+- [x] cms_editor、account_auth、v2_matchmaking 均 false，实际调用返回 PostgreSQL 42501 CMS_WRITE_DISABLED
+- [x] staging 6表 FORCE RLS，anon/authenticated 无 SELECT/INSERT/EXECUTE、schema USAGE 也禁止
+- [x] production 无 CMS schema 和 cms_editor 标记；account_auth=false
 - [ ] Cloudflare 线上仍只展示已审核静态内容，私有审核原型不能访问
 - [ ] 真实 Auth/编辑/审批端到端 E2E：**NOT_TESTED（单独放行前置）**
 
@@ -41,3 +41,14 @@
 - 不修改 HN Algolia≤7次/日、RSS≤1次/日、GitHub REST≤2次/日或原定 UTC 采集时槽。
 
 **发布原则：** G1-D 阶段数据库 DDL 只允许 staging，业务功能保持关闭。未经安全验收或明确的生产发布授权，不把这个迁移应用 production。
+
+## staging 真实权限与禁止写入证据（2026-10-11）
+
+- 迁移工具：仅对 jianshi-staging 应用 `0055_jianshi_cms_transaction_gate.sql`，返回 `success=true`。
+- 六张 CMS 表：逐表 `RLS=true`、`FORCE_RLS=true`，`anon_read=false`、`authenticated_read/insert=false`。
+- 四个事务函数：`has_function_privilege(anon/authenticated,EXECUTE)=false`，`service_role=true`；公开 RLS policy 数为零。
+- 三个功能标记 `cms_editor/account_auth/v2_matchmaking=false`，授权角色记录 `editor_grants=0`、内容记录 `content_items=0`。
+- 直接探测数据库内部事务门禁：调用 `select jianshi_cms.ensure_write_gate(null::uuid,array['EDITOR']::text[])` 被 PostgreSQL 以 `42501 CMS_WRITE_DISABLED` 拒绝（预期结果）。
+- 生产 Supabase 只读核对：没有 CMS schema 或 cms_editor 标记，账号继续关闭。
+
+以上验证涵盖真实数据库的 **默认拒绝**，没有启用 Auth Gate 或测试完整实际编辑事务的正向路径。因此不宣称已经有可登录的 CMS 管理后台。
