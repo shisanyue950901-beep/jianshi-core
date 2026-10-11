@@ -90,7 +90,7 @@ class G1ComponentsAndCMS(unittest.TestCase):
         self.assertEqual(d.ids.get("f21-reset"), 1)
         self.assertEqual(d.ids.get("f21-results"), 1)
         self.assertEqual(d.ids.get("f21-empty"), 1)
-        self.assertEqual(s.count("data-f21-solution"), 4)
+        self.assertEqual(s.count('data-f21-solution data-category="'), 4)
         self.assertEqual(s.count('<script>'), 1)
         self.assertEqual(len(CATEGORIES), 4)
         self.assertEqual(set(BY_SLUG), {row["slug"] for row in SOLUTIONS})
