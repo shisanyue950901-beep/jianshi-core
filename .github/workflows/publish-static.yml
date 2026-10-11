@@ -93,7 +93,7 @@ jobs:
           grep -q "/supabase/\\*" _redirects
           python scripts/security/p411_audit_public_artifacts.py web/dist
           grep -q "见势" index.html
-          grep -q "发现海外项目" web/dist/index.html
+          grep -q "商业机会与解决方案" web/dist/index.html
           grep -q "Carrd" web/dist/index.html
           grep -q "NerdWallet" web/dist/index.html
           grep -q "Plausible" web/dist/index.html
