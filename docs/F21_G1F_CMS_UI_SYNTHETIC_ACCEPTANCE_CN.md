@@ -55,3 +55,12 @@
 **当前不需要任何即时操作。** 准备真实登录 E2E 前才需要确认/配置自有域名的邮件发信服务及安全凭据（由用户在供应商控制台配置，绝不在聊天中发送密钥）；需要真实对外内容时提供已授权案例/作品/课程素材。没有这些材料时，本轮纯合成界面与流程开发可以继续进行。
 
 **保护项：** 不更改 UTC 四个采集时槽、HN Algolia≤7、RSS≤1、GitHub REST≤2 次/日；不访问私有客户内容、不碰 production RLS 或用户注册。
+
+## 六、本轮实际验收与发布记录（2026-10-11）
+
+- 功能开发：[PR #129](https://github.com/shisanyue950901-beep/jianshi-core/pull/129) 已合并，源合并提交 `92bdcddca4e78323ee7ee6d38040aafc40667369`。
+- GitHub 全量 Python CI **PASS**，并通过 Python 子测试实际调用 Node 测试 7 组 JS 状态机；并非只检查静态 HTML 字符串。首次无障碍标签断言发现缺陷后已修复，第二轮全部通过。
+- 合并后的 main CI、静态快照、公开制品审查、Workers Builds、Cloudflare Pages **全部 SUCCESS**。
+- 正式域名只读核验：首页 `/`、`/solutions/`、`/marketplace/brief/`、`/talent/portfolio/`、`/projects/` 均返回正常内容；`/prototypes/f21f/` 是 **预期 HTTP 404**，模拟管理台未误发布。
+- staging CMS 仍未创建业务记录且账号/管理/撮合开关均为关闭；本轮**未运行 Supabase SQL 迁移、未部署 Edge 函数、不读取实际用户内容、不修改研究采集配置**。
+- **本轮 PASS = 内部离线管理界面源码、JS 审核状态机单测和公开发布隔离。** 真实浏览器点击该离线原型、真正已登录的管理员 UI、真实 JWT/API、正向编辑审核、生产 CMS 为 **NOT_TESTED / BLOCKED**；不能把它们算入验收完成。
