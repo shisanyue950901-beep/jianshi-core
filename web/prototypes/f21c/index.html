@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<title>F2.1 内部 CMS 工作台 · 离线交互样板</title>
+<style>
+:root{--night:#10192c;--surface:#fff;--background:#f5f7fc;--ink:#182942;--muted:#64718c;--line:#e1e7f2;--violet:#7158d1}
+*{box-sizing:border-box}body{margin:0;font:14px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--background)}
+button,textarea{font:inherit}button:focus-visible,textarea:focus-visible{outline:3px solid #aba3ef;outline-offset:2px}
+a{color:inherit}.site{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.side{background:#0d1528;color:#e7edff;padding:28px 18px}.side .brand{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-bottom:10px}
+.side p{font-size:12px;color:#a9b5ce;margin:0 0 32px}.nav-btn{border:0;text-align:left;width:100%;color:#b9c6e2;background:transparent;padding:12px 16px;border-radius:10px;cursor:pointer;margin:2px 0;font-weight:700}
+.nav-btn[aria-current=page]{background:linear-gradient(115deg,#332d66,#263b70);color:white}
+.side-bottom{border-top:1px solid #36425b;margin-top:45px;padding-top:22px;font-size:11px;color:#b1bdd1}
+main{min-width:0}.top{display:flex;justify-content:space-between;align-items:center;padding:25px 40px;border-bottom:1px solid var(--line);background:#fff;gap:16px}
+.top h1{font-size:23px;letter-spacing:-.04em;margin:0}.top small{color:#6b7891}.pill{background:#fff0ce;color:#71501b;border:1px solid #ecd4a2;border-radius:50px;padding:6px 12px;font-size:11px;white-space:nowrap}
+.wrap{width:min(1280px,calc(100% - 72px));margin:32px auto 70px}
+.warning{border:1px solid #dcd5fd;border-left:4px solid #8264e9;background:#efecff;border-radius:13px;padding:15px 20px;margin-bottom:28px;color:#473b78}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:25px}
+.metric{border:1px solid var(--line);border-radius:15px;background:#fff;padding:20px}.metric strong{font-size:29px;display:block;line-height:1.5}.metric span{font-size:12px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:minmax(250px,.8fr) minmax(330px,1.2fr);gap:18px}
+.panel{border:1px solid var(--line);border-radius:16px;background:#fff;padding:24px;min-width:0;box-shadow:0 8px 22px #1c33600a}
+.panel h2{font-size:18px;margin:0 0 8px}.panel p{margin:4px 0 16px;color:var(--muted);font-size:12px}
+.item{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;cursor:pointer;width:100%;text-align:left;background:#fff}
+.item[aria-selected=true]{border-color:#8570d9;background:#f4f1ff}
+.item b{display:block;margin:0 0 8px}.item span{font-size:11px;color:var(--muted)}
+.chip{display:inline-block;border-radius:6px;padding:2px 8px;background:#eef1f9;color:#566582;font-size:11px;margin-left:8px}
+.chip.review{background:#fff1ce;color:#725522}.chip.approved{background:#e7f7ef;color:#1f7552}
+.tab-title{font-size:11px;color:var(--violet);letter-spacing:.13em;font-weight:800}
+label{font-weight:750;font-size:12px;display:block;margin:20px 0 7px}
+textarea{display:block;width:100%;min-height:135px;resize:vertical;border:1px solid #cbd5e7;border-radius:12px;padding:13px;background:#fbfcff;color:#1c2d46}
+.preview{background:#f5f7fc;border:1px solid var(--line);border-radius:12px;padding:18px;white-space:pre-wrap;word-break:break-word;min-height:155px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.actions button{min-height:42px;cursor:pointer;border:1px solid #bcc7de;background:white;border-radius:10px;padding:8px 16px;color:#2b4167;font-weight:750}
+.actions button.primary{background:linear-gradient(110deg,#795ae2,#508cf8);color:white;border-color:transparent}
+#status{color:#7057ad;font-size:12px;min-height:22px}
+.step-list{margin:12px 0 0;padding-left:20px;color:#62708c}.step-list li{margin:8px 0}
+.panel[hidden]{display:none}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid var(--line);padding:14px 9px;font-size:12px}th{color:#566681}td{color:#40506c}
+.note{background:#fff5df;border-radius:11px;padding:14px;color:#77552a;margin-top:15px;font-size:12px}
+@media(max-width:980px){.site{grid-template-columns:1fr}.side{padding:17px}.side p,.side-bottom{display:none}.side-nav{display:flex;gap:7px;flex-wrap:wrap}.nav-btn{width:auto}.top{padding:18px 25px}.wrap{width:calc(100% - 42px)}}
+@media(max-width:650px){.cols,.metric-grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.panel{padding:18px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="site">
+<aside class="side">
+<div class="brand">见势 / CMS</div>
+<p>JIANSHI 2.0 — F2.1 · G1-C</p>
+<div class="side-nav" aria-label="内部原型导航">
+<button class="nav-btn" data-panel="queue" aria-current="page">内容草稿与审核</button>
+<button class="nav-btn" data-panel="media">素材与版权</button>
+<button class="nav-btn" data-panel="audit">版本与审核记录</button>
+</div>
+<div class="side-bottom">INTERNAL PROTOTYPE<br>不接入正式网站 · 不使用真实账户 · 不存储内容</div>
+</aside>
+<main>
+<div class="top"><div><small>F2.1 / 内容治理 / 内部模拟</small><h1>内容管理工作台</h1></div><span class="pill">仅离线原型 · 非真实管理员登录</span></div>
+<div class="wrap">
+<div class="warning"><b>安全边界：</b>此页面只用于本地 UI/流程验证。所有项目均为合成示例；修改、审核、预览仅在当前页面内模拟，不提交、保存、上传或向真实网站发布。</div>
+<div class="metric-grid">
+<div class="metric"><strong>3</strong><span>合成草稿（非真实内容）</span></div>
+<div class="metric"><strong>0</strong><span>真实发布记录</span></div>
+<div class="metric"><strong>0</strong><span>真实上传素材</span></div>
+</div>
+<section id="view-queue" class="view">
+<div class="cols">
+<div class="panel"><div class="tab-title">CONTENT QUEUE</div><h2>编辑与审核队列</h2><p>点击左侧合成样例，以验证右侧工作台变化。</p><div id="records"></div></div>
+<div class="panel">
+<div class="tab-title" id="item-kind">SYNTHETIC / SOLUTION_GUIDE</div><h2 id="item-title">合成：企业自动化方案</h2><p id="item-meta">草稿 · v1 · 仅供内部 UI 验证</p>
+<label for="editor">草稿内容（只在内存中）</label><textarea id="editor" maxlength="1500"></textarea>
+<div class="actions"><button class="primary" id="preview">生成预览</button><button id="reset">恢复示例内容</button></div>
+<p id="status" role="status" aria-live="polite">本地输入不会写入任何数据库。</p>
+<h2>预览效果</h2><div id="output" class="preview" aria-live="polite">点击“生成预览”显示草稿。</div>
+<div class="note">真实发布必须经过来源核验、版权检查、独立审核及服务端权限认证。本原型无“批准发布”操作。</div>
+</div>
+</div></section>
+<section id="view-media" class="view" hidden>
+<div class="panel"><div class="tab-title">RIGHTS REGISTRY / DESIGN</div><h2>素材授权检查清单</h2><p>当前仅展示后台字段和规则，不提供真实上传接口。</p>
+<table><thead><tr><th>审核字段</th><th>数据类型</th><th>上线条件</th></tr></thead><tbody>
+<tr><td>素材类型</td><td>图片 / 视频 / 音频 / 文档</td><td>明确资源分类</td></tr>
+<tr><td>版权所有者</td><td>私有文本</td><td>来源与联系人授权可追溯</td></tr>
+<tr><td>许可依据</td><td>自有 / 已授权 / 未核实</td><td>未核实不能进入公开内容</td></tr>
+<tr><td>安全检测</td><td>待检 / 通过 / 拒绝</td><td>仅通过项允许进入发布审查</td></tr>
+<tr><td>资源路径</td><td>私有存储键</td><td>不直接输出永久公网链接</td></tr>
+</tbody></table>
+<div class="note">待账号安全门禁通过后，在 staging 完成私有存储与授权播放实验。生产素材上传未开放。</div>
+</div></section>
+<section id="view-audit" class="view" hidden>
+<div class="panel"><div class="tab-title">AUDIT / VERSION</div><h2>版本与独立审核</h2><p>如下是未来后台状态机的文档示例，非真实审批事件。</p>
+<ol class="step-list"><li>作者建立草稿 v1</li><li>提交审核，锁定待审核版本</li><li>由独立审核员验证来源、版权和隐私</li><li>通过审核后由发布者执行最终发布</li><li>撤回时保存事件记录并删除公共快照</li></ol>
+<div class="note">后台持久审计只能在 staging 的私有 schema 中测试；UI 不展示、伪造或自行签发审核身份。</div>
+</div></section>
+</div>
+</main>
+</div>
+<script>
+(function(){
+'use strict';
+const samples=[
+{kind:'SOLUTION_GUIDE',title:'合成：AI 企业自动化方案',state:'草稿',body:'目标场景：企业内部自动化演示。\n输入：测试数据及模拟流程。\n验收：人工检查、回滚说明。\n注意：这不是客户案例。'},
+{kind:'COURSE',title:'合成：AI 视频课程大纲',state:'待审核',body:'第1节：分镜与基础脚本。\n第2节：合成练习与授权检查。\n第3节：作品复核。\n注意：没有真实课程视频。'},
+{kind:'RESOURCE',title:'合成：AI 工具目录条目',state:'草稿',body:'工具分类：工作流实验。\n来源状态：模拟。\n许可状态：待核验。\n注意：不是上线资源。'}
+];
+const recordBox=document.getElementById('records'),editor=document.getElementById('editor'),output=document.getElementById('output'),status=document.getElementById('status');
+let index=0;
+function renderList(){
+ recordBox.replaceChildren();
+ samples.forEach(function(item,i){
+  const btn=document.createElement('button');
+  btn.className='item';btn.type='button';btn.setAttribute('aria-selected',String(i===index));
+  const label=document.createElement('b');label.textContent=item.title;
+  const info=document.createElement('span');info.textContent=item.kind+' · '+item.state+' · SYNTHETIC';
+  btn.append(label,info);
+  btn.addEventListener('click',function(){index=i;select();});
+  recordBox.append(btn);
+ });
+}
+function select(){
+ const item=samples[index];
+ document.getElementById('item-title').textContent=item.title;
+ document.getElementById('item-kind').textContent='SYNTHETIC / '+item.kind;
+ document.getElementById('item-meta').textContent=item.state+' · v1 · 仅供内部 UI 验证';
+ editor.value=item.body;output.textContent='点击“生成预览”显示草稿。';
+ status.textContent='已打开合成样例，尚无任何保存操作。';
+ renderList();
+}
+document.getElementById('preview').addEventListener('click',function(){
+ output.textContent=editor.value.trim()||'（空草稿，请填写内容）';
+ status.textContent='已在本地生成预览；未提交、上传或发布。';
+});
+document.getElementById('reset').addEventListener('click',select);
+document.querySelectorAll('[data-panel]').forEach(function(btn){
+ btn.addEventListener('click',function(){
+  const selected=btn.getAttribute('data-panel');
+  document.querySelectorAll('[data-panel]').forEach(function(b){if(b===btn)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  document.querySelectorAll('.view').forEach(function(view){view.hidden=view.id!=='view-'+selected;});
+ });
+});
+select();
+}());
+</script>
+</body>
+</html>
