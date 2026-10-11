@@ -155,7 +155,9 @@ class DecisionReportTest(unittest.TestCase):
         self.assertEqual(wf.count("cron: '55 0 * * *'"),1)
         self.assertEqual(wf.count("cron: '55 6,12,18 * * *'"),1)
         self.assertEqual(wf.count("- cron:"),2)
-        self.assertIn("github.event_name == 'schedule' && github.event.schedule == '55 0 * * *'",wf)
+        self.assertIn("github.event_name == 'schedule' && (github.event.schedule == '55 0 * * *'",wf)
+        self.assertIn("steps.daily_scan_claim_upload.outcome == 'success'",wf)
+        self.assertIn("research-scan-claim-",wf)
 
 
 if __name__=="__main__":
