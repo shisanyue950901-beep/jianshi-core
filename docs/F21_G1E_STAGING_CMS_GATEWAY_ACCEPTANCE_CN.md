@@ -38,14 +38,25 @@
 
 ## 五、运行验收栏（需填实际事实）
 
-- [ ] PR CI 完成
-- [ ] staging 私有会话函数和服务角色 RPC 权限确认
-- [ ] Edge Function 在 **staging only** 且 verify_jwt=true 部署
-- [ ] 未经 JWT 或未开放时确实拒绝 HTTP 调用
-- [ ] 生产数据库无 CMS，CMS/账号/撮合开关未打开
+- [x] PR #127 首轮 CI 已通过；最终代码需再次运行并在合并后重验
+- [x] staging 三个新函数实际核验：仅 service_role 可执行；合成无效会话返回 false
+- [x] staging Edge Function cms-staging-gateway v1 ACTIVE，平台 verify_jwt=true；修复后需更新部署版本
+- [x] 未携带 Authorization 的实际 GET 请求返回 HTTP 401；数据库开关仍全部 false
+- [x] production CMS schema/标记均不存在，account_auth=false；staging 三开关均 false
 - [ ] GitHub 主分支构建及 Cloudflare Pages 成功
 - [ ] 全部 E2E 正向业务：**NOT_TESTED（未满足 Auth 安全前提，不允许冒充通过）**
 
 ## 六、持续隔离
 
 不更改原 UTC 四个采集槽、HN Algolia 7／RSS 1／GitHub REST 2 限额，不更改数据库生产认证开关，也不触碰原研究匿名数据正文。内部测试稿、管理页面、RPC 参数或敏感素材不得导出到 `web/dist`。任何阶段不得通过关闭 RLS、公开 service_role 密钥或临时启用真实账号绕过门禁。
+
+## staging 已执行的权限与发布核验（2026-10-11）
+
+- PR #127：https://github.com/shisanyue950901-beep/jianshi-core/pull/127 。
+- 已执行 0056 SQL staging 迁移，返回 success=true。私有 jianshi_cms.session_is_active 为安全限定布尔 SECURITY DEFINER；public 的两个精确 RPC 是 SECURITY INVOKER，三个函数 anon/authenticated EXECUTE=false，service_role EXECUTE=true。没有产生新内容或分配测试管理员。
+- 无真实会话的全零合成用户/session UUID 返回 false。staging account_auth/cms_editor/v2_matchmaking 均 false，CMS content_items=0、editor_grants=0。
+- Edge Function 首版 `cms-staging-gateway` staging 部署 ACTIVE 且 verify_jwt=true；不携带 JWT 的真实 HTTP GET 返回 401，未发现意外放开公共访问。
+- production 再次只读验收：CMS schema 不存在、cms_editor flag 不存在、account_auth=false。
+- Supabase advisor 对这次 CMS 私有函数未发现新的 WARN/ERROR；既有私有 CMS 表在 INFO 级提示无 policy，此为有意默认拒绝。其他非 CMS 历史警告未在本轮改动。
+
+**尚无的证据：** 已登录用户成功提交、同一会话撤销后拒绝、实际 CMS 写入及并发 CAS E2E、安全完整压测。下一阶段必须完成，不能把 HTTP 401 或 SQL 权限核对当作完整 E2E。
