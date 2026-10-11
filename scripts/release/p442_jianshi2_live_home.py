@@ -60,6 +60,7 @@ STYLE = """
 #j2 .j2-project a{color:#525bc9;font-size:13px;font-weight:780}
 #j2 .j2-solutions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
 #j2 .j2-solution{overflow:hidden;background:white;border:1px solid var(--j2-edge);border-radius:16px;min-width:0}
+#j2 .j2-solution-body a{display:inline-block;margin-top:14px;color:#5853c4;font-size:12px;font-weight:800}
 #j2 .j2-art{height:144px;display:flex;align-items:center;justify-content:center;font-size:58px;position:relative;color:white;overflow:hidden}
 #j2 .j2-art::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 65% 30%,#ffffff49,transparent 58%)}
 #j2 .j2-solution:nth-child(1) .j2-art{background:linear-gradient(135deg,#d999e5,#6452a8)}
@@ -99,6 +100,8 @@ CASES = {
     "nerdwallet": ("内容与产品比较平台", "研究成熟信息平台的内容、信任和流量模式；不将历史财报当成个人可复制收益。"),
 }
 
+SOLUTION_SLUGS = ("ecommerce-visual", "brand-video", "automation", "localization")
+
 SOLUTIONS = (
     ("✦", "AI 电商视觉", "商品图片、品牌海报、视觉素材与批量内容制作。"),
     ("▣", "AI 视频与品牌短片", "短视频、品牌宣传与视频创意工作流。"),
@@ -136,8 +139,9 @@ def render_portal(cases: list[dict]) -> str:
         '<article class="j2-solution"><div class="j2-art" aria-hidden="true">'
         + escape(icon) + '</div><div class="j2-solution-body"><h3>'
         + escape(title) + "</h3><p>" + escape(desc)
-        + '</p><small>应用方向示意 · 暂无已核实平台交付案例</small></div></article>'
-        for icon, title, desc in SOLUTIONS
+        + '</p><small>应用方向示意 · 暂无已核实平台交付案例</small>'
+        + '<a href="/solutions/' + slug + '/">查看场景与交付清单 ↗</a></div></article>'
+        for (icon, title, desc), slug in zip(SOLUTIONS, SOLUTION_SLUGS)
     )
     shortcut_data = (
         ("◈", "商业机会库", "经审核的公开研究", "j2-opportunities"),
@@ -188,20 +192,20 @@ def render_portal(cases: list[dict]) -> str:
         '不与具名公司收入或项目推荐混合。 <a href="/research/">查看匿名分类研究 →</a></p></section>'
         '<section class="j2-section" id="j2-solutions"><div class="j2-sectionhead">'
         '<div><span class="j2-overline">BUSINESS SOLUTIONS</span><h2>企业的问题，用合适的 AI 方法解决。</h2>'
-        '<p class="j2-muted">首期展示典型应用场景，尚未开放真实服务采购或报价。</p></div></div>'
+        '<p class="j2-muted">首期展示典型应用场景，尚未开放真实服务采购或报价。</p></div>''<a class="j2-plainlink" href="/solutions/">查看完整解决方案指南 ↗</a></div>'
         '<div class="j2-solutions">' + solution_rows + '</div></section>'
         '<div class="j2-two">'
         '<section class="j2-panel" id="j2-marketplace"><span class="j2-status">商机大厅 · 建设中</span>'
         '<h2>让需求找到合适的交付者。</h2>'
         '<p class="j2-muted">企业需求发布、实名认证、审核及创作者项目申请将在 V2 开放。'
         '当前不展示虚构企业、订单、竞标人数或服务报价。</p>'
-        '<a href="#j2-talent">查看创作者端规划 →</a></section>'
+        '<a href="/marketplace/">查看企业需求模板与审核流程 ↗</a></section>'
         '<section class="j2-panel j2-panel--dark" id="j2-talent">'
         '<span class="j2-status">人才与服务商 · 建设中</span>'
         '<h2>让技能和作品成为可信的履历。</h2>'
         '<p class="j2-muted">计划提供作品集、技能标签、授权联系方式及人工审核。'
         '目前未开放真实入驻、自动匹配或项目投递。</p>'
-        '<a href="#j2-academy">了解技能学习规划 →</a></section>'
+        '<a href="/talent/">查看人才入驻与作品集准备指南 ↗</a></section>'
         '</div><section class="j2-academy" id="j2-academy">'
         '<span class="j2-overline" style="color:#bdb2ff">JIANSHI AIGC ACADEMY</span>'
         '<h2>学到的 AI 技能，最终形成可展示的作品。</h2>'
@@ -209,7 +213,7 @@ def render_portal(cases: list[dict]) -> str:
         '课程由团队后续自主制作并上传，当前不展示虚构的课程数、讲师或学员。</p>'
         '<div class="j2-tags"><span>AI 商业视觉</span><span>AI 视频与短片</span>'
         '<span>企业智能体</span><span>自动化工作流</span>'
-        '<span>商业项目验证</span></div></section>'
+        '<span>商业项目验证</span></div>''<a class="j2-button" style="margin-top:22px" href="/academy/">查看课程路线与实战成果规划 ↗</a></section>'
         '</div></section>'
     )
 
