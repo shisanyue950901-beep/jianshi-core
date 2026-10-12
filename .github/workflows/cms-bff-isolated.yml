@@ -20,6 +20,8 @@ on:
       - 'tests/test_f21_g2h6_pkce.py'
       - 'scripts/qa/g2h7_gotrue_tokenhash_wire.mjs'
       - 'tests/g2h7_gotrue_tokenhash_wire.test.mjs'
+      - 'scripts/qa/g2h7b_tokenhash_confirmation.mjs'
+      - 'tests/g2h7b_tokenhash_confirmation.test.mjs'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -41,6 +43,8 @@ on:
       - 'tests/test_f21_g2h6_pkce.py'
       - 'scripts/qa/g2h7_gotrue_tokenhash_wire.mjs'
       - 'tests/g2h7_gotrue_tokenhash_wire.test.mjs'
+      - 'scripts/qa/g2h7b_tokenhash_confirmation.mjs'
+      - 'tests/g2h7b_tokenhash_confirmation.test.mjs'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -81,3 +85,7 @@ jobs:
         env:
           JIANSHI_G2H7_SYNTHETIC_ONLY: '1'
         run: node --test tests/g2h7_gotrue_tokenhash_wire.test.mjs
+      - name: Two-step email token_hash encrypted intent and replay security
+        env:
+          JIANSHI_G2H7B_SYNTHETIC_ONLY: '1'
+        run: node --test tests/g2h7b_tokenhash_confirmation.test.mjs
