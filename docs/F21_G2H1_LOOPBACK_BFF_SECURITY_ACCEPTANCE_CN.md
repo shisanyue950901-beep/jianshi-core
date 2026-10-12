@@ -31,3 +31,11 @@
 ## 后续 G2-H.2
 
 在独立 Staging 安全审批后，设计真实同源会话交换和已验证用户服务端 BFF；必须绑定现有 GoTrue 验证及实时 `auth.sessions` 吊销检查、可信服务端限流，再做多账号/多角色真实 E2E。达到安全门禁前保持失败关闭。
+
+## 实际权限矩阵与本轮 CI 补充
+
+- 修正后 BFF 对合成草稿的 GET 读取另设授权门禁：作者只能读取本人草稿；其他编辑账号不可读；审核员仅在 IN_REVIEW 状态可读；发布者仅在 APPROVED/PUBLISHED/UNPUBLISHED 阶段可读。通过真实 HTTP 测试防止只保护写入、忽略资源级读取。
+- 同源安全测试使用 Node 原生 `http.get` 伪造 Host，确认错误 Host 403；测试 Node fetch 不保证覆盖 Host，所以不把此前错误断言冒充安全失效。
+- 初次专项 CI 发现的是测试夹具断言问题，已经修正；本轮以最新提交的 CI 为准，旧失败运行完整保留供审计。
+- PR #141 修正版的独立 Node HTTP suite run `38247588341` SUCCESS；主回归 run `38247588231` SUCCESS（全量 Tests + Runtime contract）。
+- 即使本机模拟 HTTP 通过，也**绝不能**宣称真实 Supabase GoTrue 双账号 JWT、可靠跨节点 Session 存储或公网 BFF 安全性已通过。
