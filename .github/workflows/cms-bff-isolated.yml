@@ -12,6 +12,9 @@ on:
       - 'scripts/qa/g2h3_https_bff.mjs'
       - 'tests/g2h3_https_bff.test.mjs'
       - 'tests/test_f21_g2h3_https_bff.py'
+      - 'scripts/qa/g2h4_session_vault.mjs'
+      - 'tests/g2h4_session_vault.test.mjs'
+      - 'tests/test_f21_g2h4_durable_sessions.py'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -25,6 +28,9 @@ on:
       - 'scripts/qa/g2h3_https_bff.mjs'
       - 'tests/g2h3_https_bff.test.mjs'
       - 'tests/test_f21_g2h3_https_bff.py'
+      - 'scripts/qa/g2h4_session_vault.mjs'
+      - 'tests/g2h4_session_vault.test.mjs'
+      - 'tests/test_f21_g2h4_durable_sessions.py'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -55,3 +61,5 @@ jobs:
         env:
           JIANSHI_G2H3_SYNTHETIC_ONLY: '1'
         run: node --test tests/g2h3_https_bff.test.mjs
+      - name: AES-GCM and HMAC durable session vault security tests
+        run: node --test tests/g2h4_session_vault.test.mjs

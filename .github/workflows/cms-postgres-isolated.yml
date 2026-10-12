@@ -10,6 +10,7 @@ on:
       - 'db/migrations/0057_jianshi_cms_historical_draft_restore.sql'
       - 'db/migrations/0058_jianshi_cms_restore_private_rpc.sql'
       - 'db/migrations/0059_jianshi_cms_trusted_role_read.sql'
+      - 'db/migrations/0060_jianshi_cms_durable_bff_sessions.sql'
       - 'scripts/qa/g2f_postgres_real_e2e.py'
       - '.github/workflows/cms-postgres-isolated.yml'
   push:
@@ -22,6 +23,7 @@ on:
       - 'db/migrations/0057_jianshi_cms_historical_draft_restore.sql'
       - 'db/migrations/0058_jianshi_cms_restore_private_rpc.sql'
       - 'db/migrations/0059_jianshi_cms_trusted_role_read.sql'
+      - 'db/migrations/0060_jianshi_cms_durable_bff_sessions.sql'
       - 'scripts/qa/g2f_postgres_real_e2e.py'
       - '.github/workflows/cms-postgres-isolated.yml'
 permissions:
