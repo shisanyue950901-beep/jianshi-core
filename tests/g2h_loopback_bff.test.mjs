@@ -56,6 +56,12 @@ test('CSRF, strict Origin, and RBAC deny mutations with zero side-effects',async
   const a=s.h.issueFixture('SYNTHETIC_AUTHOR_A');
   const b=s.h.issueFixture('SYNTHETIC_AUTHOR_B');
   const reviewer=s.h.issueFixture('SYNTHETIC_REVIEWER');
+  const publisher=s.h.issueFixture('SYNTHETIC_PUBLISHER');
+  // Do not confuse write RBAC with cross-account READ isolation.
+  assert.equal((await get(s,'/qa/api/state',a)).http,200);
+  assert.equal((await get(s,'/qa/api/state',b)).body.status,'CMS_RESOURCE_FORBIDDEN');
+  assert.equal((await get(s,'/qa/api/state',reviewer)).http,403);
+  assert.equal((await get(s,'/qa/api/state',publisher)).http,403);
   const before=JSON.stringify(s.h.snapshot());
   assert.equal((await action(s,a,'EDIT',2,{title:'非法尝试',rights_attested:true,facts_attested:true},
     {'x-csrf-token':'wrong'})).body.status,'CMS_CSRF_DENIED');
@@ -84,6 +90,8 @@ test('real same-origin HTTP path completes mock restoration, re-review, publish 
   assert.equal(r.body.revisions.at(-1).rights,false);
   assert.deepEqual(r.body.revisions.slice(0,2),versions);
   r=await action(s,author,'SUBMIT',3);assert.equal(r.http,200);
+  assert.equal((await get(s,'/qa/api/state',review)).http,200);
+  assert.equal((await get(s,'/qa/api/state',publish)).http,403);
   r=await action(s,review,'APPROVE',4);
   assert.equal(r.http,422);assert.equal(r.body.status,'CMS_RECHECK_REQUIRED');
   r=await action(s,review,'REJECT',4);assert.equal(r.http,200);
@@ -96,6 +104,7 @@ test('real same-origin HTTP path completes mock restoration, re-review, publish 
   assert.equal(r.http,200);assert.equal(r.body.version,3);
   r=await action(s,author,'SUBMIT',3);assert.equal(r.http,200);
   r=await action(s,review,'APPROVE',4);assert.equal(r.http,200);
+  assert.equal((await get(s,'/qa/api/state',publish)).http,200);
   r=await action(s,publish,'PUBLISH',5);assert.equal(r.http,200);
   assert.deepEqual(r.body.snapshots.map(x=>x.lifecycle),['STAGED']);
   r=await action(s,publish,'RETRACT',6);assert.equal(r.http,200);
