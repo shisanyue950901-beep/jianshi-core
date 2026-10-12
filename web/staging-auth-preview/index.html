@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>见势 Staging｜邮箱会话核验</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#08111f;color:#ecf3fd}
+body{min-height:100vh;margin:0;display:grid;place-items:center;padding:20px;box-sizing:border-box}
+main{width:min(540px,100%);box-sizing:border-box;background:#152339;border:1px solid #34455d;border-radius:16px;padding:26px}
+h1{font-size:23px;margin:10px 0 12px}p{color:#b2c7dc;line-height:1.6}
+#state{border:1px solid #496384;background:#223451;padding:16px;border-radius:10px;line-height:1.6}
+#state[data-kind=success]{border-color:#3c956b}#state[data-kind=error]{border-color:#b96b60}
+button{margin-top:12px;padding:10px 16px;border:0;border-radius:9px;background:#4782d1;color:white;cursor:pointer}small{color:#9bb4cf}
+</style></head><body><main>
+<small>见势 Staging 测试专区 · 与正式账号系统隔离</small>
+<h1>邮箱登录与会话核验</h1>
+<p>仅用于受控测试邮箱确认、身份验证、刷新和退出。不会提交业务内容或修改正式网站账号。</p>
+<div id="state" role="status" aria-live="polite">正在检查…</div>
+<button id="logout" hidden type="button">退出测试会话</button>
+<p><small>如果看到源码而不是此界面，请停止点击验证链接并反馈。</small></p>
+</main><script src="./callback.js" defer></script>
+</body></html>
