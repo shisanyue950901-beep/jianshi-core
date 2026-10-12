@@ -28,7 +28,8 @@ function hasOnlyValidCookie(header){
  return value;
 }
 function safeQuery(input){
- need(typeof input==='string'&&input.length<=2048,'CMS_PKCE_CALLBACK_INVALID');
+ need(typeof input==='string'&&input.startsWith('/auth/callback?')&&input.length<=2048,
+  'CMS_PKCE_CALLBACK_INVALID');
  const u=new URL(input,'https://callback.invalid');
  need(u.pathname==='/auth/callback'&&!u.hash&&!u.username&&!u.password,'CMS_PKCE_CALLBACK_INVALID');
  need(u.searchParams.size===2&&u.searchParams.has('code')&&u.searchParams.has('state')&&
