@@ -7,7 +7,7 @@ import {createSyntheticWorkerEmailConfirm,WORKER_CONTRACT_ORIGIN as ORIGIN}
  from '../ops/cms-preview/worker-email-crypto.mjs';
 import {onRequest} from '../ops/cms-preview/functions/auth/confirm.js';
 
-const URL=process.env.JIANSHI_G2H7F_URL||'';
+const BRIDGE_URL=process.env.JIANSHI_G2H7F_URL||'';
 const KEY='SYNTHETIC_H7F_LOCAL_ONLY_NON_SECRET';
 const USER='00000000-0000-4000-8000-00000000a001';
 const SESSION='00000000-0000-4000-8000-00000000a002';
@@ -17,13 +17,13 @@ const REFRESH='SYNTHETIC_REFRESH_ONLY_NO_REAL_SESSION';
 const EMAIL='SYNTHETIC_G2H7F_EDITOR@example.invalid';
 assert.equal(process.env.JIANSHI_G2F_EPHEMERAL_ONLY,'1');
 assert.equal(process.env.JIANSHI_G2H7F_DISPOSABLE_ONLY,'1');
-assert.match(URL,/^http:\/\/127\.0\.0\.1:\d+\/v1\/email-state$/);
+assert.match(BRIDGE_URL,/^http:\/\/127\.0\.0\.1:\d+\/v1\/email-state$/);
 for(const name of [
  'SUPABASE_URL','SUPABASE_DB_URL','DATABASE_URL','SUPABASE_SERVICE_ROLE_KEY',
  'SUPABASE_ACCESS_TOKEN','CLOUDFLARE_API_TOKEN'
 ])assert.equal(process.env[name],undefined);
 function client(){
- return createDisposableEmailStateHttpClient({url:URL,
+ return createDisposableEmailStateHttpClient({url:BRIDGE_URL,
   profile:'SYNTHETIC_H7F_DISPOSABLE_PG',key:KEY});
 }
 function context(controller,request){
@@ -91,7 +91,7 @@ test('only fake-key localhost disposable transport is constructible',()=>{
   {key:'SYNTHETIC_THIRD_PARTY_KEY_SHOULD_FAIL'}
  ]){
   assert.throws(()=>createDisposableEmailStateHttpClient({
-   url:URL,profile:'SYNTHETIC_H7F_DISPOSABLE_PG',key:KEY,...bad
+   url:BRIDGE_URL,profile:'SYNTHETIC_H7F_DISPOSABLE_PG',key:KEY,...bad
   }));
  }
 });
@@ -109,20 +109,20 @@ test('real SQL issue and consume through live localhost HTTP, including wrong co
   expiresAt:new Date(Date.now()+120000).toISOString()}));
 });
 test('real HTTP denies wrong bearer, unexpected endpoint and untrusted payload',async()=>{
- const wrong=await fetch(URL,{method:'POST',
+ const wrong=await fetch(BRIDGE_URL,{method:'POST',
   headers:{authorization:'Bearer SYNTHETIC_BUT_NOT_VALID',
    'x-jianshi-test-boundary':'SYNTHETIC_H7F_ONLY',
    'content-type':'application/json'},
   body:JSON.stringify({action:'consume',stateDigest:'a'.repeat(64),
    cookieDigest:'b'.repeat(64)})});
  assert.equal(wrong.status,403);
- const unknown=await fetch(URL.replace('/v1/email-state','/v1/admin'),{
+ const unknown=await fetch(BRIDGE_URL.replace('/v1/email-state','/v1/admin'),{
   method:'POST',headers:{authorization:'Bearer '+KEY,
   'x-jianshi-test-boundary':'SYNTHETIC_H7F_ONLY',
   'content-type':'application/json'},body:'{}'});
  assert.equal(unknown.status,403);
  assert.equal((await wrong.text()).includes(KEY),false);
- const noRead=await fetch(URL);
+ const noRead=await fetch(BRIDGE_URL);
  assert.equal(noRead.status,404);
 });
 test('Worker -> HTTP -> real PostgreSQL -> synthetic provider: one POST, replay 403',async()=>{
