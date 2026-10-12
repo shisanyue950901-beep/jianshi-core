@@ -41,6 +41,19 @@ class StagingPreviewContract(unittest.TestCase):
         self.assertIn("/auth/v1/logout", js)
         self.assertNotIn("console.log(", js)
 
+    def test_two_users_are_matched_without_publishing_addresses(self):
+        js = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("ALLOWED_ACCOUNT_HASHES=Object.freeze", js)
+        self.assertIn("crypto.subtle.digest('SHA-256'", js)
+        self.assertIn("const account=ALLOWED_ACCOUNT_HASHES[emailHash]", js)
+        self.assertIn("typeof user.id!=='string'", js)
+        self.assertIn("user.email_confirmed_at", js)
+        self.assertIn("identity:(await sha256hex(user.id)).slice(0,12)", js)
+        self.assertIn("Staging 账号 '+user.account", js)
+        self.assertNotIn("@gmail.com", js)
+        self.assertNotIn("@qq.com", js)
+        self.assertNotIn("TEST_EMAIL=", js)
+
     def test_unsafe_edge_html_replaced_by_http_redirect(self):
         edge = EDGE.read_text(encoding="utf-8")
         self.assertIn("status:302", edge)
