@@ -12,6 +12,9 @@ on:
       - 'db/migrations/0059_jianshi_cms_trusted_role_read.sql'
       - 'db/migrations/0060_jianshi_cms_durable_bff_sessions.sql'
       - 'scripts/qa/g2f_postgres_real_e2e.py'
+      - 'scripts/qa/g2h5_durable_https_bff.mjs'
+      - 'tests/g2h5_durable_https_pg.test.mjs'
+      - 'tests/test_f21_g2h5_chain_contract.py'
       - '.github/workflows/cms-postgres-isolated.yml'
   push:
     branches: [main]
@@ -25,6 +28,9 @@ on:
       - 'db/migrations/0059_jianshi_cms_trusted_role_read.sql'
       - 'db/migrations/0060_jianshi_cms_durable_bff_sessions.sql'
       - 'scripts/qa/g2f_postgres_real_e2e.py'
+      - 'scripts/qa/g2h5_durable_https_bff.mjs'
+      - 'tests/g2h5_durable_https_pg.test.mjs'
+      - 'tests/test_f21_g2h5_chain_contract.py'
       - '.github/workflows/cms-postgres-isolated.yml'
 permissions:
   contents: read
@@ -67,6 +73,16 @@ jobs:
           G2F_POSTGRES_DATABASE: jianshi_g2f
           JIANSHI_G2F_EPHEMERAL_ONLY: "1"
         run: python scripts/qa/g2f_postgres_real_e2e.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Real HTTPS to encrypted PostgreSQL BFF integration
+        env:
+          G2F_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          G2F_POSTGRES_DATABASE: jianshi_g2f
+          JIANSHI_G2F_EPHEMERAL_ONLY: "1"
+          JIANSHI_G2H5_SYNTHETIC_ONLY: "1"
+        run: node --test tests/g2h5_durable_https_pg.test.mjs
       - name: Verify no production or collection workflow was invoked
         run: |
           test ! -e web/dist/prototypes/f21g2e/index.html
