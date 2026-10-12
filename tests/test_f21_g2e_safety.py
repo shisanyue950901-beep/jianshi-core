@@ -3,6 +3,8 @@ prototype must not enter the static release artifact. Local only, no CMS writes.
 """
 from pathlib import Path
 import unittest
+import shutil
+import subprocess
 ROOT=Path(__file__).resolve().parents[1]
 MIG=(ROOT/"db/migrations/0057_jianshi_cms_historical_draft_restore.sql").read_text()
 HTML=(ROOT/"web/prototypes/f21g2e/index.html").read_text(encoding="utf-8")
@@ -40,6 +42,13 @@ class TestG2ESafety(unittest.TestCase):
         self.assertNotIn("update public.product_feature_flags",MIG.lower())
         self.assertNotIn("drop table",MIG.lower())
         self.assertNotIn("alter table ",MIG.lower())
+
+    @unittest.skipUnless(shutil.which("node"),"Node runtime not available")
+    def test_real_node_operator_behavior(self):
+        run=subprocess.run(["node","--test","tests/f21_g2e_operator.test.cjs"],
+                           cwd=ROOT,text=True,capture_output=True,timeout=20)
+        self.assertEqual(run.returncode,0,(run.stdout+"\n"+run.stderr)[-2800:])
+        self.assertIn("# fail 0",run.stdout)
 
     def test_schedule_frequency_kept(self):
         self.assertEqual(WF.count("cron: '55 0 * * *'"),1)
