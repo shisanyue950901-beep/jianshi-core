@@ -110,7 +110,7 @@ class CmsOfflineContract(unittest.TestCase):
         expect_block(self, m, "CMS_OWNER_DENIED",
                      lambda: m.transition(EDITOR_B, KEY, 2, "IN_REVIEW", rid(3)))
         m.transition(EDITOR, KEY, 2, "IN_REVIEW", rid(3))
-        expect_block(self, m, "CMS_PERMISSION_DENIED",
+        expect_block(self, m, "CMS_INDEPENDENT_REVIEW_REQUIRED",
                      lambda: m.transition(EDITOR, KEY, 3, "APPROVED", rid(4)))
         # The real owner cannot also be an independent reviewer even with ADMIN.
         m.roles[EDITOR] = "ADMIN"
