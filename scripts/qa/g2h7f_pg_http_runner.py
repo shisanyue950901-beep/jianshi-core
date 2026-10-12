@@ -147,6 +147,10 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Content-Length", str(len(payload)))
+        # Close every connection: rejected requests may have unread request
+        # bodies; reusing the socket would allow HTTP request desynchronization.
+        self.send_header("Connection", "close")
+        self.close_connection = True
         self.end_headers()
         self.wfile.write(payload)
 
