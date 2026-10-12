@@ -50,7 +50,7 @@ def sql_quote(s: str) -> str:
 def run_sql(sql: str, *, allow_error: bool = False, timeout: int = 40):
     args = [
         "docker", "exec", "-i", "-u", "postgres", CONTAINER,
-        "psql", "-X", "-A", "-t", "-v", "ON_ERROR_STOP=1", "-d", DB,
+        "psql", "-X", "-q", "-A", "-t", "-v", "ON_ERROR_STOP=1", "-d", DB,
     ]
     r = subprocess.run(args, input=sql, text=True, capture_output=True,
                        timeout=timeout, check=False)
@@ -300,7 +300,7 @@ def lifecycle():
         "AND public_allowlist_json ? 'source_refs' "
         "AND NOT public_allowlist_json ? 'private_notes' "
         "AND NOT public_allowlist_json ? 'unapproved_financial_claim' "
-        "AND jsonb_object_length(public_allowlist_json)=11)::text "
+        "AND (SELECT count(*) FROM jsonb_object_keys(public_allowlist_json))=11)::text "
         f"FROM jianshi_cms.publication_snapshots WHERE item_id='{ident}'::uuid;")
     require(projection_ok == "true", "publication allowlist leaking private data")
     check_denial(
