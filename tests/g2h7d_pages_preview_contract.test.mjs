@@ -94,7 +94,7 @@ test('edge Request/Response GET strips token hash and serves scriptless manual f
  assert.doesNotMatch(html,/<script\b/i);
  assert.doesNotMatch(html,/token_hash/);
  assert.equal(f.metrics.exchange,0);
- safe({...landing,bodyText:''});
+ safe({headers:landing.headers,status:landing.status,bodyText:''});
 });
 test('explicit same-origin POST gets only 303, second attempt fail closed',async()=>{
  const f=make();
@@ -108,7 +108,7 @@ test('explicit same-origin POST gets only 303, second attempt fail closed',async
  const replay=await invoke(f,request('/auth/confirm',{method:'POST',headers:hdr,body:''}));
  assert.equal(replay.status,403);assert.equal(f.metrics.exchange,1);
  assert.equal((await invoke(f,request('/cms/'))).status,404);
- safe({...first,bodyText:''});
+ safe({headers:first.headers,status:first.status,bodyText:''});
 });
 test('CSRF, forwarded spoofing and unsupported methods fail without touching adapter',async()=>{
  const f=make();
