@@ -17,6 +17,8 @@ const STORE='jianshi-staging-auth-smoke-v1';
 const base='/_qa/staging-auth/';
 const state=document.querySelector('#state');
 const logoutBtn=document.querySelector('#logout');
+const auditBtn=document.querySelector('#audit');
+const auditResult=document.querySelector('#audit-result');
 function display(value,kind='info'){state.textContent=value;state.dataset.kind=kind;}
 function forget(){try{sessionStorage.removeItem(STORE);}catch(_err){}}
 function remember(v){try{sessionStorage.setItem(STORE,JSON.stringify(v));}catch(_err){}}
@@ -63,12 +65,52 @@ async function check(){
   display('正在验证 Staging 账号…');
   try{
     const user=await whoami(v);
-    if(user){logoutBtn.hidden=false;display('Staging 账号 '+user.account+' 登录验证通过：已确认邮箱，JWT 身份验证通过。身份指纹 '+user.identity+'。刷新页面可再次检查会话。','success');}
+    if(user){logoutBtn.hidden=false;auditBtn.hidden=false;display('Staging 账号 '+user.account+' 登录验证通过：已确认邮箱，JWT 身份验证通过。身份指纹 '+user.identity+'。刷新页面可再次检查会话。','success');}
     else{forget();display('会话无效或邮箱尚未确认。','error');}
   }catch(_err){display('网络访问失败，尚不能判断登录是否通过。','error');}
 }
+// Minimal live rejection probes. Only logged-in user identity is used; no other
+// users' IDs, private content, or writes. Never interpret a network error as PASS.
+const REJECT_CODES=new Set([401,403,404,406]);
+auditBtn.addEventListener('click',async()=>{
+  auditBtn.disabled=true;
+  auditResult.textContent='正在执行只读安全验收…';
+  const v=stored();
+  if(!validShape(v)){auditResult.textContent='BLOCKED：没有有效的 Staging 会话。';return;}
+  try{
+    const current=await whoami(v);
+    if(!current){auditResult.textContent='BLOCKED：身份校验未通过。';return;}
+    const auth=stored();
+    if(!validShape(auth)){auditResult.textContent='BLOCKED：无法取得新的有效会话。';return;}
+    // Source A: restricted organization schema / only response status is used.
+    const org=await fetch(AUTH_ROOT+'/rest/v1/organizations?select=id&limit=0',{
+      method:'GET',
+      headers:{...headers(auth.access_token),'Accept-Profile':'jianshi_v2'},
+      cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'
+    });
+    // Source B: internal CMS session RPC. A zero UUID is a synthetic negative
+    // request and the function must not be executable by authenticated users.
+    const rpc=await fetch(AUTH_ROOT+'/rest/v1/rpc/cms_internal_session_v01',{
+      method:'POST',
+      headers:{...headers(auth.access_token),'content-type':'application/json'},
+      body:JSON.stringify({
+        p_user_id:'00000000-0000-0000-0000-000000000000',
+        p_session_id:'00000000-0000-0000-0000-000000000000'
+      }),
+      cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'
+    });
+    const orgDenied=REJECT_CODES.has(org.status);
+    const rpcDenied=REJECT_CODES.has(rpc.status);
+    // Status codes only. No response body, URL fragment, token or PII displayed.
+    auditResult.textContent='Staging 账号 '+current.account+
+      '｜私有组织接口 '+(orgDenied?'拒绝 PASS':'FAIL/未知')+
+      '（HTTP '+org.status+'）｜CMS 内部 RPC '+
+      (rpcDenied?'拒绝 PASS':'FAIL/未知')+'（HTTP '+rpc.status+'）。'+
+      (orgDenied&&rpcDenied?'默认拒绝安全检查 PASS；A/B 互访 E2E 仍未完成。':'发现未确认拒绝状态；保持所有功能关闭。');
+  }catch(_err){auditResult.textContent='NOT_TESTED：网络或 CORS 失败，不能判定权限通过。';}
+});
 logoutBtn.addEventListener('click',async()=>{
-  const v=stored();forget();logoutBtn.hidden=true;
+  const v=stored();forget();logoutBtn.hidden=true;auditBtn.hidden=true;auditResult.textContent='';
   if(validShape(v)){
     try{const res=await fetch(AUTH_ROOT+'/auth/v1/logout',{
       method:'POST',headers:headers(v.access_token),
