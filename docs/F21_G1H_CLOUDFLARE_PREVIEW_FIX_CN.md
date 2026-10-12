@@ -26,3 +26,20 @@
 2. 页面应显示「Staging 登录验证通过：已确认邮箱，JWT 身份验证通过。」刷新确认后，再按「退出测试会话」。
 3. 若原 fragment 不存在或失效，直接更新 Staging Auth 的 Site URL 和 Redirect URLs 到 Cloudflare preview URL，重新发一次 Magic Link（不发送完整链接）。
 4. 失败时检查 HTTP 内容类型、控制台 CSP/CORS、Staging publishable key、Auth E2E 聚合计数。绝不启用生产登录/CMS。
+
+## 2026-10-12 实际登录与退出追加验收（覆盖上方「待验收」的历史状态）
+
+**真实浏览器证据**：操作者收到新 Magic Link，在 Cloudflare Staging 预览页完成验证流程，随后页面显示「已退出并撤销当前测试会话。」；该状态只有会话检查通过并执行退出请求得到成功 HTTP 响应后才可由当前前端显示。请勿将纯静态/CI 运行当作登录事实。
+
+**只读数据库聚合复核**：`auth.users` 共 1 名测试账号、1 名已验证、1 名存在登录记录；`auth.sessions` 在退出后剩余 0；`product_feature_flags` 的 `account_auth`、`cms_editor`、`v2_matchmaking` 仍全部为 `false`。
+
+**只读 Auth 日志聚合**：`2026-10-12T08:51:00Z`—`08:58:00Z` 窗口 `auth_logs=5`、含 login/signed 关键词事件 2、含 logout 关键词事件 1、含 error/expired 事件均 0。这是与浏览器动作相互印证的日志聚合，不含邮箱正文、令牌或账号信息。
+
+**当前最新判断**：
+- QQ SMTP/收件/邮箱确认：PASS。
+- Magic Link → 已验证用户的 JWT `/auth/v1/user` 检查 → 服务端 logout：**PASS（Staging 一账号的实际端到端流程）**。
+- 页面刷新仍保持登录：NOT_TESTED；浏览器刷新时再次验证当前 JWT：NOT_TESTED。
+- 退出后沿用旧 token 发起接口请求必须失败、不同测试用户 A/B 权限隔离、收藏/观察/提醒/私有 CMS 正向业务 E2E：NOT_TESTED。
+- **八项生产 Auth Gate 不得因为这一项成功而统一设置 PASS**，生产与 Staging 功能开关继续关闭。
+
+现行 Staging Edge Function 是 v4 纯 GET 302 跳转；早期 v2 HTML 与 v3 记载仅作事故历史。独立 Cloudflare branch 预览成功不代表主站账号上线。
