@@ -18,6 +18,7 @@ PUBLIC_NAV = (
 FOOTER_NAV = (
     ("/projects/", "审核项目"),
     ("/research/", "匿名研究"),
+    ("/discover/", "内容发现"),
     ("/sources/", "数据来源"),
     ("/privacy/", "隐私政策"),
 )
