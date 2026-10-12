@@ -6,6 +6,9 @@ on:
       - 'scripts/qa/g2h_loopback_bff/**'
       - 'tests/g2h_loopback_bff.test.mjs'
       - 'tests/test_f21_g2h_loopback_bff.py'
+      - 'scripts/qa/g2h2_trusted_auth_adapter.mjs'
+      - 'tests/g2h2_trusted_auth_adapter.test.mjs'
+      - 'tests/test_f21_g2h2_auth_adapter.py'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -13,6 +16,9 @@ on:
       - 'scripts/qa/g2h_loopback_bff/**'
       - 'tests/g2h_loopback_bff.test.mjs'
       - 'tests/test_f21_g2h_loopback_bff.py'
+      - 'scripts/qa/g2h2_trusted_auth_adapter.mjs'
+      - 'tests/g2h2_trusted_auth_adapter.test.mjs'
+      - 'tests/test_f21_g2h2_auth_adapter.py'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -37,3 +43,5 @@ jobs:
         env:
           JIANSHI_G2H_SYNTHETIC_ONLY: '1'
         run: node --test tests/g2h_loopback_bff.test.mjs
+      - name: Staging GoTrue identity and session/role contract tests
+        run: node --test tests/g2h2_trusted_auth_adapter.test.mjs
