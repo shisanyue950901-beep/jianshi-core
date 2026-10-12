@@ -24,6 +24,10 @@ on:
       - 'tests/g2h7b_tokenhash_confirmation.test.mjs'
       - 'scripts/qa/g2h7c_loopback_https_preview.mjs'
       - 'tests/g2h7c_https_preview.test.mjs'
+      - 'ops/cms-preview/functions/auth/confirm.js'
+      - 'tests/g2h7d_pages_preview_contract.test.mjs'
+      - 'scripts/security/g2h7d_preview_deployment_guard.mjs'
+      - 'docs/F21_G2H7D_PAGES_PREVIEW_SECURITY_AUDIT_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -49,6 +53,10 @@ on:
       - 'tests/g2h7b_tokenhash_confirmation.test.mjs'
       - 'scripts/qa/g2h7c_loopback_https_preview.mjs'
       - 'tests/g2h7c_https_preview.test.mjs'
+      - 'ops/cms-preview/functions/auth/confirm.js'
+      - 'tests/g2h7d_pages_preview_contract.test.mjs'
+      - 'scripts/security/g2h7d_preview_deployment_guard.mjs'
+      - 'docs/F21_G2H7D_PAGES_PREVIEW_SECURITY_AUDIT_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -101,3 +109,7 @@ jobs:
           JIANSHI_G2H7B_SYNTHETIC_ONLY: '1'
           JIANSHI_G2H7C_SYNTHETIC_ONLY: '1'
         run: node --test tests/g2h7c_https_preview.test.mjs
+      - name: G2-H.7D Cloudflare Pages Web API preview-only behavioral tests
+        run: node --test tests/g2h7d_pages_preview_contract.test.mjs
+      - name: G2-H.7D independent static release-boundary security audit
+        run: node scripts/security/g2h7d_preview_deployment_guard.mjs
