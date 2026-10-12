@@ -129,7 +129,13 @@ export function createQaServer({now=()=>Date.now(),maxRequests=8}={}){
    if(req.method==='GET'&&u.pathname==='/qa/api/session'){
     return reply(res,200,{synthetic:true,role:session.role,csrf:session.csrf});
    }
-   if(req.method==='GET'&&u.pathname==='/qa/api/state')return reply(res,200,publicState(current));
+   if(req.method==='GET'&&u.pathname==='/qa/api/state'){
+    const canRead=session.role==='EDITOR'&&session.actor===current.author ||
+      session.role==='REVIEWER'&&current.status==='IN_REVIEW' ||
+      session.role==='PUBLISHER'&&['APPROVED','PUBLISHED','UNPUBLISHED'].includes(current.status);
+    gate(canRead,'CMS_RESOURCE_FORBIDDEN',403);
+    return reply(res,200,publicState(current));
+   }
    gate(req.method==='POST'&&u.pathname==='/qa/api/action','CMS_METHOD_OR_ROUTE_DENIED',405);
    gate(req.headers.origin==='http://127.0.0.1:'+port,'CMS_ORIGIN_DENIED',403);
    gate(!req.headers['sec-fetch-site']||req.headers['sec-fetch-site']==='same-origin',
