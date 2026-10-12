@@ -18,6 +18,8 @@ on:
       - 'scripts/qa/g2h6_pkce_login_contract.mjs'
       - 'tests/g2h6_pkce_login.test.mjs'
       - 'tests/test_f21_g2h6_pkce.py'
+      - 'scripts/qa/g2h7_gotrue_tokenhash_wire.mjs'
+      - 'tests/g2h7_gotrue_tokenhash_wire.test.mjs'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -37,6 +39,8 @@ on:
       - 'scripts/qa/g2h6_pkce_login_contract.mjs'
       - 'tests/g2h6_pkce_login.test.mjs'
       - 'tests/test_f21_g2h6_pkce.py'
+      - 'scripts/qa/g2h7_gotrue_tokenhash_wire.mjs'
+      - 'tests/g2h7_gotrue_tokenhash_wire.test.mjs'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -73,3 +77,7 @@ jobs:
         env:
           JIANSHI_G2H6_SYNTHETIC_ONLY: '1'
         run: node --test tests/g2h6_pkce_login.test.mjs
+      - name: Synthetic GoTrue token_hash HTTP and fail-closed contract
+        env:
+          JIANSHI_G2H7_SYNTHETIC_ONLY: '1'
+        run: node --test tests/g2h7_gotrue_tokenhash_wire.test.mjs
