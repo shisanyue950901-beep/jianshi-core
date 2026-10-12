@@ -229,7 +229,7 @@ def gate_test_and_synthetic_setup():
              security_review_pass=true;
            UPDATE public.product_feature_flags
              SET enabled=true WHERE feature_key IN ('cms_editor','account_auth');""")
-    require(scalar("SELECT public.auth_launch_ready_v01();") == "true",
+    require(scalar("SELECT public.auth_launch_ready_v01()::text;") == "true",
             "ephemeral positive gate fixture not ready")
     # Before every positive call the SQL function also verifies current_user.
     check_denial(
