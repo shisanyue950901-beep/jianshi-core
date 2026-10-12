@@ -26,3 +26,11 @@
 - 完整注册回调/JWT/刷新后持久性/登出后台会话吊销、A/B 跨用户权限仍 NOT_TESTED；只验证了无凭证访问会拒绝。
 - staging `account_auth`、`cms_editor`、`v2_matchmaking` 保持 false；production 功能开关及 CMS 零改动。
 - P4.41 原有四个 schedule 时槽、HN7/RSS1/GitHub2 限额完全不变。
+
+## 最新修正与终态（2026-10-12；以下覆盖本文早期 v2 阶段描述）
+
+首次实现 v2 将 HTML 放在 Supabase Edge Function 内，由于平台实际以 `text/plain` / sandbox 下发而无法运行。现已改为 **Staging Edge v4 纯 GET 302 跳转到 Cloudflare Pages 预览分支** `staging-auth-callback`；静态 HTML 与 JS 置于该分支，使用非特权 publishable key，由浏览器调用 Staging Auth。任何主站构建不得发布预览登录页面。
+
+2026-10-12 浏览器实际截图显示「已退出并撤销当前测试会话。」；代码路径要求先有 `/auth/v1/user` 已验证身份，且退出 HTTP 请求成功，才能显示这条反馈。同窗口 Auth 日志聚合：登录相关 2、退出相关 1、错误 0；数据库退出后 `auth.sessions=0`、已确认用户 1。故单账号 Magic Link/身份核验/退出 **PASS**；独立刷新、过期会话、A/B 跨账号、收藏/观察/提醒、CMS 写入及全部八项 Auth Gate **未完成**。
+
+原文提及的 v2 Edge POST /session 路由已删除，勿据历史说明调用；版本 v4 只提供 GET 302，POST 为 405。保持生产项目无改动；Staging 的 `account_auth/cms_editor/v2_matchmaking` 全部 false。完整更新见 [Cloudflare 预览修复与验收](F21_G1H_CLOUDFLARE_PREVIEW_FIX_CN.md)。
