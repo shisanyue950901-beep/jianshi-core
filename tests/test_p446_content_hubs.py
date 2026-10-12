@@ -49,7 +49,7 @@ class P446ContentHubs(unittest.TestCase):
                 self.assertEqual(html.count("<style>"), 1)
                 self.assertEqual(html.count('rel="canonical"'), 1)
                 self.assertIn("https://jianshi-bua.pages.dev/" + route, html)
-                self.assertEqual(html.count("<script>"), 1 if route == "solutions/" else 0)
+                self.assertEqual(html.count("<script>"), 1 if route in ("solutions/", "marketplace/", "talent/", "academy/") else 0)
                 self.assertNotIn("<form", html)
                 self.assertIn('href="/privacy/"', html)
                 self.assertIn("prefers-reduced-motion:reduce", html)
