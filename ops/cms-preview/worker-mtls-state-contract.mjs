@@ -7,7 +7,7 @@ const PROFILE='SYNTHETIC_G2H7G_MTLS_ONLY';
 const DIGEST=/^[a-f0-9]{64}$/;
 function deny(code){const e=new Error(code);e.code=code;throw e;}
 function need(ok,code){if(!ok)deny(code);}
-function strictJson(response,action){
+async function strictJson(response,action){
  need(response?.status===200&&response?.ok===true,'CMS_H7G_TRANSPORT_DENIED');
  need(/^application\/json(?:;|$)/i.test(response.headers?.get('content-type')||''),
    'CMS_H7G_JSON_ONLY');
