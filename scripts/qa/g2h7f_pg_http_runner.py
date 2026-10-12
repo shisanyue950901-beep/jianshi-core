@@ -204,6 +204,23 @@ def main():
             print("G2H7F_NODE_PG_INTEGRATION_FAILED",
                   result.stderr[-1800:], file=sys.stderr)
             raise RuntimeError("WORKER_HTTP_PG_TEST_FAILURE")
+        # G2-H.7G: same disposable PostgreSQL, separate TLS1.3 mTLS hop.
+        # All certificates/keys are generated inside Node's ephemeral tmpdir.
+        env["JIANSHI_G2H7G_MTLS_ONLY"] = "1"
+        mtls = subprocess.run(
+            ["node", "--test", "tests/g2h7g_mtls_pg.test.mjs"],
+            cwd=ROOT, env=env, check=False, capture_output=True, text=True,
+            timeout=175,
+        )
+        print(mtls.stdout[-12000:])
+        if mtls.returncode:
+            print("G2H7G_MTLS_PG_TEST_FAILED", mtls.stderr[-1000:],
+                  file=sys.stderr)
+            raise RuntimeError("MTLS_PG_SECURITY_TEST_FAILURE")
+        print("G2H7G_REAL_MTLS_POSTGRES_PASS "
+              '{"tls":"TLSv1.3","identities":"ephemeral synthetic certs",'
+              '"database":"postgres:16/disposable",'
+              '"cloud_deployments":0}')
         print("G2H7F_REAL_POSTGRES_HTTP_INTEGRATION_PASS "
               '{"database":"postgres:16/disposable",'
               '"transport":"127.0.0.1-only-HTTP",'
