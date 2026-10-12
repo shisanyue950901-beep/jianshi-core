@@ -3,7 +3,11 @@
 // user POST consumes a durable 5-minute PostgreSQL state before GoTrue verify.
 // Distinct from H.6 auth-code PKCE. No real sender/server/database in module.
 import {createHmac,randomBytes,hkdfSync,createCipheriv,createDecipheriv} from 'node:crypto';
-const ORIGIN='https://localhost';
+const TEST_ORIGIN=/^https:\/\/localhost(?::([1-9][0-9]{0,4}))?$/;
+function isTestOrigin(origin){
+ const m=typeof origin==='string'&&TEST_ORIGIN.exec(origin);
+ return Boolean(m&&(!m[1]||Number(m[1])<=65535));
+}
 const STATE=/^[A-Za-z0-9_-]{43}$/;
 const HASH=/^[a-f0-9]{64}$/i;
 const COOKIE_STATE='__Host-jianshi_mail_state';
@@ -29,10 +33,10 @@ function extract(header,name,pattern){
  need(pattern.test(value),'CMS_EMAIL_COOKIE_INVALID');
  return value;
 }
-function requireQuery(url){
+function requireQuery(url,origin){
  need(typeof url==='string'&&url.length<=2048&&url.startsWith('/auth/confirm?'),
   'CMS_EMAIL_LINK_INVALID');
- let u;try{u=new URL(url,ORIGIN);}catch{fail('CMS_EMAIL_LINK_INVALID');}
+ let u;try{u=new URL(url,origin);}catch{fail('CMS_EMAIL_LINK_INVALID');}
  need(u.pathname==='/auth/confirm'&&!u.hash&&u.searchParams.size===3&&
   [...u.searchParams.keys()].sort().join(',')==='state,token_hash,type'&&
   u.searchParams.getAll('state').length===1&&
@@ -47,7 +51,7 @@ export function createEmailTokenHashConfirm({
  origin,secret,pendingStore,provider,verifyIdentity,issueDurableSession,now=Date.now
 }={}){
  need(process.env.JIANSHI_G2H7B_SYNTHETIC_ONLY==='1','CMS_EMAIL_LIVE_DISABLED');
- need(origin===ORIGIN,'CMS_EMAIL_LOCALHOST_ONLY');
+ need(isTestOrigin(origin),'CMS_EMAIL_LOCALHOST_ONLY');
  need(Buffer.isBuffer(secret)&&secret.length===32,'CMS_EMAIL_SECRET_REQUIRED');
  need(pendingStore&&typeof pendingStore.issue==='function'&&
   typeof pendingStore.consume==='function'&&provider?.synthetic===true&&
@@ -92,7 +96,7 @@ export function createEmailTokenHashConfirm({
     expiresAt:new Date(now()+TTL).toISOString()
    });
    need(recorded===true,'CMS_EMAIL_ISSUE_DENIED');
-   const redirectTo=ORIGIN+'/auth/confirm?state='+state;
+   const redirectTo=origin+'/auth/confirm?state='+state;
    try{
     const accepted=await provider.requestEmail({email,redirectTo});
     need(accepted?.accepted===true,'CMS_EMAIL_PROVIDER_UNAVAILABLE');
@@ -105,8 +109,8 @@ export function createEmailTokenHashConfirm({
   },
   // Only stages an encrypted intent; never calls verifyOtp or consumes SQL.
   async receiveLink({url,cookieHeader,requestOrigin}={}){
-   need(requestOrigin===ORIGIN,'CMS_EMAIL_ORIGIN_DENIED');
-   const {state,tokenHash}=requireQuery(url);
+   need(requestOrigin===origin,'CMS_EMAIL_ORIGIN_DENIED');
+   const {state,tokenHash}=requireQuery(url,origin);
    const browserCookie=extract(cookieHeader,COOKIE_STATE,STATE);
    const payload=seal({state,tokenHash,expiresAt:now()+TTL},
     digest('cookie',browserCookie));
@@ -117,7 +121,7 @@ export function createEmailTokenHashConfirm({
   // POST should only be dispatched after an explicit, same-origin user action.
   async confirm({url,method,requestOrigin,fetchSite,cookieHeader}={}){
    need(method==='POST'&&url==='/auth/confirm','CMS_EMAIL_POST_REQUIRED');
-   need(requestOrigin===ORIGIN&&fetchSite==='same-origin','CMS_EMAIL_CSRF_DENIED');
+   need(requestOrigin===origin&&fetchSite==='same-origin','CMS_EMAIL_CSRF_DENIED');
    const browserCookie=extract(cookieHeader,COOKIE_STATE,STATE);
    const intent=extract(cookieHeader,COOKIE_INTENT,/^v1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
    const {state,tokenHash}=unseal(intent,digest('cookie',browserCookie));
