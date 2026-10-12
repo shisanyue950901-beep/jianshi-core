@@ -24,3 +24,13 @@
 不使用真实邮箱、JWT、刷新令牌、密钥、客户资料或私有研究 Artifact 做测试；不改变任何 Production 标记/表/服务，也不启用 Staging 账号、CMS 和撮合；不增加 P4.41 UTC 00:55、06:55、12:55、18:55 四个 schedule，不更改每日 claim 或 HN7/RSS1/GitHub2 访问预算。静态 `push` CI 不视为研究采集。
 
 **结论门槛：** 本阶段只在 Node HTTPS、安全单测、一次性 PostgreSQL 原子状态以及主分支静态回归全部成功后结项。真实邮箱/BFF 仍留在下一阶段。
+
+## 2026-10-12 实际验收结果（合并前）
+
+- [CI 主回归 #38262520603](https://github.com/shisanyue950901-beep/jianshi-core/actions/runs/38262520603)：**SUCCESS**。
+- [Node TLS 回调专项 #38262520472](https://github.com/shisanyue950901-beep/jianshi-core/actions/runs/38262520472)：**SUCCESS**，合成服务验证一次性 PKCE 回调、防重放、错误浏览器 Cookie、并发请求、过期和无令牌回显。
+- [PostgreSQL 16 专项 #38262520710](https://github.com/shisanyue950901-beep/jianshi-core/actions/runs/38262520710)：**SUCCESS**，加载原始 SQL 迁移 9 项；真实六路不同数据库连接争抢一次性状态，**一成功、五拒绝**；过期、重放、错误 Cookie 均拒绝。原 CMS、HTTPS 会话集成仍 PASS，累计 26 项安全拒绝。
+- Staging `apuibjhxinumxbfnqlkp` 仅执行私有加法迁移 0061，成功。表 `bff_pkce_challenges` 强制 RLS/FORCE RLS，匿名及 authenticated SELECT 均为 false，service_role SELECT=true，**当前行数 0**。三个私有 RPC 均 SECURITY INVOKER，且只有 service_role 可执行。
+- 对 Staging 以 `SET LOCAL ROLE service_role` 调用真实私有挑战发放 RPC，已确认 `42501 CMS_WRITE_DISABLED`；直接用 postgres 执行会先被 `CMS_TRUSTED_SERVER_ONLY` 拦截，两者不可混淆。
+- Staging CMS 内容、角色授权、持久会话和待验证 PKCE 状态均 0；`account_auth/cms_editor/v2_matchmaking=false`。Production 无 `jianshi_cms` schema，`account_auth=false`。
+- **限制**：未发送真实验证邮件，也未完成真实 GoTrue PKCE code 交换/双账号登录；上线前需要确定邮箱模板/GoTrue PKCE 存储合同、可信 HTTPS 入口、回调查询串脱敏、密钥托管、持久会话及浏览器正向授权测试。旧 Staging 邮箱回调入口未被替换。
