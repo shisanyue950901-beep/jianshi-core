@@ -22,6 +22,8 @@ on:
       - 'tests/g2h7_gotrue_tokenhash_wire.test.mjs'
       - 'scripts/qa/g2h7b_tokenhash_confirmation.mjs'
       - 'tests/g2h7b_tokenhash_confirmation.test.mjs'
+      - 'scripts/qa/g2h7c_loopback_https_preview.mjs'
+      - 'tests/g2h7c_https_preview.test.mjs'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -45,6 +47,8 @@ on:
       - 'tests/g2h7_gotrue_tokenhash_wire.test.mjs'
       - 'scripts/qa/g2h7b_tokenhash_confirmation.mjs'
       - 'tests/g2h7b_tokenhash_confirmation.test.mjs'
+      - 'scripts/qa/g2h7c_loopback_https_preview.mjs'
+      - 'tests/g2h7c_https_preview.test.mjs'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -65,6 +69,9 @@ jobs:
           test ! -e web/dist/cms-admin/index.html
           ! grep -q 'g2h_loopback_bff' scripts/release/p412_build_public.py
           ! grep -q 'g2h_loopback_bff' .github/workflows/publish-static.yml
+          ! grep -q 'g2h7c_loopback_https_preview' scripts/release/p412_build_public.py
+          ! grep -q 'g2h7c_https_preview' .github/workflows/publish-static.yml
+          test ! -e web/dist/auth/confirm/index.html
       - name: Real local HTTP session and CMS security integration tests
         env:
           JIANSHI_G2H_SYNTHETIC_ONLY: '1'
@@ -89,3 +96,8 @@ jobs:
         env:
           JIANSHI_G2H7B_SYNTHETIC_ONLY: '1'
         run: node --test tests/g2h7b_tokenhash_confirmation.test.mjs
+      - name: G2-H.7C actual localhost HTTPS confirmation form security E2E
+        env:
+          JIANSHI_G2H7B_SYNTHETIC_ONLY: '1'
+          JIANSHI_G2H7C_SYNTHETIC_ONLY: '1'
+        run: node --test tests/g2h7c_https_preview.test.mjs
