@@ -63,3 +63,12 @@
 - 对第二个测试账号 B 只发出一次 Staging Auth 邮件请求：网络收据 #208，HTTP 200、无传输错误；数据库聚合 users_total=2、confirmed_count=1、active_sessions=0，说明 B 已创建但**尚未确认邮件或登录**。邮件送达和 B 的真实浏览器 JWT、退出、不同用户资源权限未核实。
 - 保持 staging account_auth/cms_editor/v2_matchmaking=false；不得扩大到生产、不得启用 CMS、不得修改 P4.41 日程与采集限额。
 - 下一步需要用户从 Gmail 收件箱打开新的邮箱确认邮件；仅上传浏览器页面正文截图，不上传带 token 的完整链接。B 登录成功后，才能研究实际跨账号授权拒绝；不能凭两用户数量宣称 A/B 隔离 PASS。
+
+## 2026-10-12 UTC 09:06｜账号 B 首次真实登录和身份验收
+
+- 用户通过 `shisanyue950901@gmail.com` 的 Staging Magic Link 进入隔离 Cloudflare Pages 预览页，浏览器显示「Staging 账号 B 登录验证通过：已确认邮箱，JWT 身份验证通过」和截断身份指纹；退出按钮可见。此为用户真实浏览器截图，未公开 Magic Link/令牌。
+- 随后只读聚合：Staging `auth.users` 2、已确认 2、有登录记录 2；`auth.sessions` 1。Auth 日志窗口 `2026-10-12T09:03:00Z`—`09:12:00Z` 总事件 4、登录相关 2、verify 相关 1、error 相关 0。无个人资料正文或会话令牌被提取。
+- Staging `account_auth`、`cms_editor`、`v2_matchmaking` 三项均为 `false`。正式环境/主站未调整；P4.41 采集配额/时间不变。
+- **验证状态**：邮箱确认 B PASS、B Magic Link 与浏览器端 `/auth/v1/user` 身份识别 PASS；当前 B 登录中刷新保持会话 **NOT_TESTED**，B 退出 **NOT_TESTED**；真实 A/B 跨账号数据隔离、RLS/IDOR/API 权限 **NOT_TESTED**。客户端 A/B 标记只是测试可视化，不构成后端授权边界。
+- 后续动作：要求 B 保持登录按一次 F5，检查仍显示 B 且身份指纹一致；之后在不交换凭据和不开放 CMS 的前提下进行服务端越权拒绝测试。
+
