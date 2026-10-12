@@ -18,7 +18,7 @@
 |---|---|
 | AES-GCM 封装与客户端随机令牌加密规则 | 待 CI 专项验收 |
 | 独立 PostgreSQL 行级并发和角色 ACL | 待 CI 专项验收 |
-| Staging 私有会话表安装（功能开关保持关闭） | 待授权后的非生产迁移与负向验收 |
+| Staging 私有会话表安装（功能开关保持关闭） | **已执行：加法 DDL/最小权限/关闭拒绝 PASS，无真实会话** |
 | 实际 HTTPS BFF 连接该 SQL Store + Vault | **未实现**，当前只是分离的可测试组件 |
 | 真实 GoTrue 邮箱登录、JWT 正向交换 | **未测试**，不得开启生产 |
 | 多节点共享 Session 存储/分布式密钥配置、轮换演练 | **尚未部署** |
@@ -28,3 +28,12 @@
 关键安全说明：测试只生成合成身份、测试密钥和测试加密文字；`service_role` 是受限的内部调用权限，不代表浏览器可写；数据库受控迁移不代表真实端到端认证。没有托管 BFF 的安全部署审批前不开放任何浏览器登录接口。
 
 **安全冻结**：Production 不进行数据库更改；Staging `account_auth/cms_editor/v2_matchmaking` 始终关闭；任何 `event=push` 的静态构建不当作 P4.41 每日研究采集；维持原 UTC 00:55、06:55、12:55、18:55 四个 schedule、daily claim、HN 最多 7/RSS 最多 1/GitHub 最多 2 次预算。无收费浏览器，不读取私有来源 Artifact、财务记录或凭证。
+
+## 2026-10-12 实际交付证据
+
+- PR #144 Python 主回归 / Node 加密测试 SUCCESS；隔离 PostgreSQL run `38253804720` SUCCESS。真实日志 `G2H4_SQL_DURABLE_SESSION_PASS`：12 个独立数据库请求，8 allowed / 4 rate-limited；GoTrue 会话到期拒绝；关闭写入开关仍可紧急撤销。总原始迁移 8，累计验证的负向项目 22。
+- Staging `apuibjhxinumxbfnqlkp` 仅以 additive DDL 安装 0060（`success=true`）。目录核查新 `bff_sessions` 强制 RLS 和 FORCE RLS 均为 true；匿名及 authenticated 表读取权限 false；service_role SELECT true。
+- `bff_issue_session`、`bff_consume_session`、`bff_revoke_session` 三函数全为 `SECURITY INVOKER`，anon EXECUTE=false、authenticated EXECUTE=false、service_role EXECUTE=true。
+- 真实 Staging 关闭门禁负向调用 `bff_issue_session` 返回 `SQLSTATE 42501 CMS_WRITE_DISABLED`；所有 CMS 内容/审计/发布快照/角色/会话计数均为 0；`account_auth/cms_editor/v2_matchmaking=false`。
+- Production 只读检查 `jianshi_cms` schema 不存在，`account_auth=false`，本轮无部署。
+- 不能将合成 SQL 会话结果写为真实用户会话已上线；JWT GoTrue 在线正向验证、可信 HTTPS BFF 与数据库+加密钥匙的单个端到端链路仍未集成。
