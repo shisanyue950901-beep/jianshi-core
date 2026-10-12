@@ -188,7 +188,8 @@ export function syntheticMtlsBinding({proxy,certificate,trust}={}){
      headers:{
       host:'localhost:'+origin.port,
       'content-type':'application/json',
-      'x-jianshi-test-boundary':REQUIRED
+      'x-jianshi-test-boundary':REQUIRED,
+      'content-length':Buffer.byteLength(init.body)
      }
     },response=>{
      const parts=[];let size=0;
