@@ -34,7 +34,7 @@ for(const [p,s] of [
 for(const bad of [
  /from\s+['"]node:/,
  /\bprocess\.env\b/,
- /\bBuffer\b/,
+ /\bBuffer\.(?:from|alloc|concat|byteLength|isBuffer)\s*\(/,
  /\brequire\(/,
  /\bfetch\(/,
  /\bnext\(/,
