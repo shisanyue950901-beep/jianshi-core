@@ -26,7 +26,8 @@ function fake(overrides={}){
   else if(u.pathname==='/auth/v1/user')
    v=overrides.user??{id:U,email_confirmed_at:'2026-10-12T00:00:00Z'};
   else if(u.pathname==='/rest/v1/rpc/cms_internal_session_v01')v=overrides.session??true;
-  else if(u.pathname==='/rest/v1/rpc/cms_internal_actor_role_v01')v=overrides.role??'EDITOR';
+  else if(u.pathname==='/rest/v1/rpc/cms_internal_actor_role_v01')
+   v=Object.hasOwn(overrides,'role')?overrides.role:'EDITOR';
   else throw Error('unexpected network route');
   if(overrides.transport==='reject')throw Error('synthetic transport unavailable');
   return {ok:overrides.httpError!==true,json:async()=>v};
