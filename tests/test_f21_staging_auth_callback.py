@@ -1,9 +1,10 @@
-"""Staging-only Auth callback safety contracts; no live Auth tests are implied."""
+"""Staging-only Auth redirect safety contracts; no live session E2E implied."""
 from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "supabase/functions/jianshi-staging-auth-callback/index.ts"
+PREVIEW = "https://staging-auth-callback.jianshi-bua.pages.dev/_qa/staging-auth/"
 
 class StagingAuthCallbackContracts(unittest.TestCase):
     @classmethod
@@ -13,27 +14,27 @@ class StagingAuthCallbackContracts(unittest.TestCase):
     def test_only_staging_project(self):
         self.assertIn("apuibjhxinumxbfnqlkp", self.code)
         self.assertNotIn("dalfvgehosxfyxkptxwx", self.code)
-        self.assertIn("STAGING_ONLY", self.code)
-        self.assertIn("SUPABASE_URL", self.code)
+        self.assertIn("if (u.hostname !== STAGING_REF", self.code)
 
-    def test_private_token_not_rendered_or_logged(self):
-        self.assertIn("history.replaceState(null,'',location.pathname)", self.code)
-        self.assertIn("cache-control':'no-store", self.code)
-        self.assertIn("referrer-policy':'no-referrer", self.code)
+    def test_private_tokens_not_handled_at_server(self):
+        self.assertIn("cache-control", self.code)
+        self.assertIn("no-store", self.code)
+        self.assertIn("referrer-policy", self.code)
         self.assertNotIn("console.log(", self.code)
-        self.assertNotIn("JSON.stringify({access_token:", self.code)
+        self.assertNotIn("SUPABASE_SERVICE_ROLE_KEY", self.code)
+        self.assertNotIn("sb_secret_", self.code)
+        self.assertNotIn("access_token", self.code)
 
-    def test_session_requires_verified_identity(self):
-        self.assertIn("'/auth/v1/user'", self.code)
-        self.assertIn("user?.email===TEST_EMAIL", self.code)
-        self.assertIn("email_confirmed_at", self.code)
-        self.assertIn("if(!await authenticate(token))", self.code)
-        self.assertIn("NO_TOKEN", self.code)
-        self.assertIn("ORIGIN_REJECTED", self.code)
+    def test_only_get_redirects_to_preview(self):
+        self.assertIn(PREVIEW, self.code)
+        self.assertIn("status:302", self.code)
+        self.assertIn("req.method !== 'GET'", self.code)
+        self.assertIn("status:405", self.code)
+        self.assertNotIn("text/html", self.code.split("Deno.serve",1)[1])
 
-    def test_secure_response_headers(self):
-        for s in ("content-security-policy", "frame-ancestors 'none'", "default-src 'none'", "x-frame-options", "noindex,nofollow"):
-            self.assertIn(s, self.code)
+    def test_safe_response_headers(self):
+        for item in ("x-content-type-options","x-frame-options","no-referrer","no-store"):
+            self.assertIn(item, self.code)
 
 if __name__ == "__main__":
     unittest.main()

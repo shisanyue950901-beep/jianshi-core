@@ -10,6 +10,7 @@ import argparse
 import html
 import json
 import re
+import os
 from pathlib import Path
 from p423_build_project_proofs import build as build_project_proofs, parse_cases
 from p425_public_admission import eligible_cases
@@ -198,6 +199,26 @@ def build_release() -> dict:
     local_draft_tools=publish_v2_drafts(OUTPUT)
     if local_draft_tools != len(DRAFT_PAGES) or local_draft_tools != 2:
         raise RuntimeError('Private-local V2 draft tool contract incomplete')
+    # PRIVATE PREVIEW BRANCH ONLY: Cloudflare Pages serves this HTML (unlike
+    # Supabase Edge Functions, which sandbox HTML as text/plain).
+    # A merge to main must NOT release the test callback: branch guard is mandatory.
+    if os.getenv("CF_PAGES_BRANCH") == "staging-auth-callback":
+        preview_source = ROOT / "web" / "staging-auth-preview"
+        preview_output = OUTPUT / "_qa" / "staging-auth"
+        preview_output.mkdir(parents=True, exist_ok=True)
+        for filename in ("index.html", "callback.js"):
+            raw = (preview_source / filename).read_text(encoding="utf-8")
+            if "SUPABASE_SERVICE_ROLE_KEY" in raw or "sb_secret_" in raw:
+                raise RuntimeError("Staging preview contains privileged secret marker")
+            (preview_output / filename).write_text(raw, encoding="utf-8")
+        with (OUTPUT / "_headers").open("a", encoding="utf-8") as headers:
+            headers.write(
+                "\n/_qa/staging-auth/*\n"
+                "  X-Frame-Options: DENY\n"
+                "  Referrer-Policy: no-referrer\n"
+                "  X-Robots-Tag: noindex, nofollow\n"
+                "  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; connect-src https://apuibjhxinumxbfnqlkp.supabase.co; base-uri 'none'; form-action 'none'; frame-ancestors 'none'\n"
+            )
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
         "opportunities": "/#j2-opportunities",

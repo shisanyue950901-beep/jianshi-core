@@ -1,0 +1,92 @@
+# 见势 F2.1｜G1-H 修复：Staging Edge HTML 被禁用，改用 Cloudflare Pages 预览
+
+日期：2026-10-12。仅测试环境。保留正式账号 / CMS / 撮合默认关闭、P4.41 schedule 和研究预算不变。
+
+## 真实观察
+
+- Staging SMTP 先前 Auth HTTP 200，用户 QQ 收到邮件；数据库 auth.users 统计 confirmed_users=1、users_with_sign_in=1。
+- 旧 Staging Edge 回调响应被网关强制设为 text/plain，CSP=default-src 'none'; sandbox。页面即使 HTTP 200 也只能显示源码，JS 不执行，不能算真正登录通过。
+- 新 Cloudflare Pages **预览分支** staging-auth-callback (非 main)，部署地址：
+  https://staging-auth-callback.jianshi-bua.pages.dev/_qa/staging-auth/
+- 私有只读探针 #202：HTML HTTP 200 且 Content-Type text/html; charset=utf-8；#203：JS HTTP 200、Content-Type application/javascript。CSP/X-Frame-Options/no-referrer/noindex 已实际通过。
+- Staging Edge v3 GET 返回 HTTP 302 Location 指向上述预览站（pg_net #204 请求自动重定向为 HTTP 200，Location 与预览页内容可见）；浏览器依据标准继承原 URL fragment，避免在服务端记录令牌。需浏览器实测确认。
+- CI 和静态构建不是 E2E。浏览器中 URL fragment 清除、JWT /auth/v1/user、sessionStorage 刷新及退出动作仍需实际验收，不能报 PASS。
+
+## 源码和安全边界
+
+- web/staging-auth-preview/index.html 与 callback.js 仅公开 Supabase Publishable Key（可供客户端使用）；禁止 service_role/private key。
+- 修改的 scripts/release/p412_build_public.py 仅当 CF_PAGES_BRANCH=staging-auth-callback 才复制到 web/dist/_qa/staging-auth，并附加严格安全响应头。即使未来误合 main，也不会向生产 branch 发布。
+- Staging Edge 源码独立更新；Production Edge / 数据表 / 功能开关保持未改动。
+- 此分支作为长期 staging 预览分支，不得直接合并 main；可用 draft PR 审计并执行 CI。
+- 登录成功仅代表 Auth，不能证明 CMS 内部角色、企业隔离、收藏、完整八项 Auth Gate。
+
+## 验收/操作
+
+1. 回到显示原 HTML 源码的 Staging 回调标签页，按 F5；HTTP 302 应跳到 Cloudflare preview，原 fragment 的短期 session 应由前端获取并立刻清除。
+2. 页面应显示「Staging 登录验证通过：已确认邮箱，JWT 身份验证通过。」刷新确认后，再按「退出测试会话」。
+3. 若原 fragment 不存在或失效，直接更新 Staging Auth 的 Site URL 和 Redirect URLs 到 Cloudflare preview URL，重新发一次 Magic Link（不发送完整链接）。
+4. 失败时检查 HTTP 内容类型、控制台 CSP/CORS、Staging publishable key、Auth E2E 聚合计数。绝不启用生产登录/CMS。
+
+## 2026-10-12 实际登录与退出追加验收（覆盖上方「待验收」的历史状态）
+
+**真实浏览器证据**：操作者收到新 Magic Link，在 Cloudflare Staging 预览页完成验证流程，随后页面显示「已退出并撤销当前测试会话。」；该状态只有会话检查通过并执行退出请求得到成功 HTTP 响应后才可由当前前端显示。请勿将纯静态/CI 运行当作登录事实。
+
+**只读数据库聚合复核**：`auth.users` 共 1 名测试账号、1 名已验证、1 名存在登录记录；`auth.sessions` 在退出后剩余 0；`product_feature_flags` 的 `account_auth`、`cms_editor`、`v2_matchmaking` 仍全部为 `false`。
+
+**只读 Auth 日志聚合**：`2026-10-12T08:51:00Z`—`08:58:00Z` 窗口 `auth_logs=5`、含 login/signed 关键词事件 2、含 logout 关键词事件 1、含 error/expired 事件均 0。这是与浏览器动作相互印证的日志聚合，不含邮箱正文、令牌或账号信息。
+
+**当前最新判断**：
+- QQ SMTP/收件/邮箱确认：PASS。
+- Magic Link → 已验证用户的 JWT `/auth/v1/user` 检查 → 服务端 logout：**PASS（Staging 一账号的实际端到端流程）**。
+- 页面刷新仍保持登录：NOT_TESTED；浏览器刷新时再次验证当前 JWT：NOT_TESTED。
+- 退出后沿用旧 token 发起接口请求必须失败、不同测试用户 A/B 权限隔离、收藏/观察/提醒/私有 CMS 正向业务 E2E：NOT_TESTED。
+- **八项生产 Auth Gate 不得因为这一项成功而统一设置 PASS**，生产与 Staging 功能开关继续关闭。
+
+现行 Staging Edge Function 是 v4 纯 GET 302 跳转；早期 v2 HTML 与 v3 记载仅作事故历史。独立 Cloudflare branch 预览成功不代表主站账号上线。
+
+## 2026-10-12 浏览器退出后刷新（F5）补充验收
+
+用户在已成功退出的同一浏览器页面按 F5，截图显示普通状态文案「Staging 回调页面已就绪。请使用新的登录邮件进行测试。」；没有出现已登录界面或自动恢复身份。**依据用户实际浏览器操作，退出后前端临时会话清除/刷新不恢复：PASS**。
+
+同步只读核对 staging：\`auth.sessions=0\`、\`auth.users.email_confirmed_at IS NOT NULL\` 用户数 = 1；\`account_auth=false\`、\`cms_editor=false\`、\`v2_matchmaking=false\`。这与退出和前端刷新结果吻合，但 **不代表对旧 Access Token 的直接重放拒绝已经实测**，也不代表登录期间刷新能继续保持身份（此前未专门操作 F5）。
+
+建议后续验收按严格先后顺序：
+1. 隔离 Staging：独立测试账号 A/B，不能复用主站生产用户；禁止测试人之间交换登录凭据。
+2. 先不开放任何功能，只测 A/B JWT 归属、退出后旧令牌拒绝、跨用户只读/写入拒绝（IDOR）。
+3. 通过后再测试收藏/观察和 CMS 多角色流程，数据只用合成素材，CMS 开关保持关闭直到独立放行。
+4. 不以单账号登录成功代替八项 Auth Gate：生产账号、CMS、撮合保持关闭；P4.41 四个固定 UTC schedule 槽与采集限额原样不动。
+
+## 2026-10-12 UTC 09:04｜第二个测试账号 B 冷启动
+
+- Cloudflare staging-auth-callback 预览页已扩展为 A/B 受限身份识别；账号邮箱明文不发布，脚本通过邮箱 SHA-256 摘要分类，只在页面显示「A/B」及脱敏的用户身份指纹。注意此客户端分类不是后端权限边界，不能据此认定 IDOR 安全。
+- CI run 38227445668 的 Tests / Runtime contract PASS；独立 Pages 预览脚本响应 HTTP 200、application/javascript，确实包含新版 A/B 判断、无两个邮箱明文。
+- 对第二个测试账号 B 只发出一次 Staging Auth 邮件请求：网络收据 #208，HTTP 200、无传输错误；数据库聚合 users_total=2、confirmed_count=1、active_sessions=0，说明 B 已创建但**尚未确认邮件或登录**。邮件送达和 B 的真实浏览器 JWT、退出、不同用户资源权限未核实。
+- 保持 staging account_auth/cms_editor/v2_matchmaking=false；不得扩大到生产、不得启用 CMS、不得修改 P4.41 日程与采集限额。
+- 下一步需要用户从 Gmail 收件箱打开新的邮箱确认邮件；仅上传浏览器页面正文截图，不上传带 token 的完整链接。B 登录成功后，才能研究实际跨账号授权拒绝；不能凭两用户数量宣称 A/B 隔离 PASS。
+
+## 2026-10-12 UTC 09:06｜账号 B 首次真实登录和身份验收
+
+- 用户通过 `shisanyue950901@gmail.com` 的 Staging Magic Link 进入隔离 Cloudflare Pages 预览页，浏览器显示「Staging 账号 B 登录验证通过：已确认邮箱，JWT 身份验证通过」和截断身份指纹；退出按钮可见。此为用户真实浏览器截图，未公开 Magic Link/令牌。
+- 随后只读聚合：Staging `auth.users` 2、已确认 2、有登录记录 2；`auth.sessions` 1。Auth 日志窗口 `2026-10-12T09:03:00Z`—`09:12:00Z` 总事件 4、登录相关 2、verify 相关 1、error 相关 0。无个人资料正文或会话令牌被提取。
+- Staging `account_auth`、`cms_editor`、`v2_matchmaking` 三项均为 `false`。正式环境/主站未调整；P4.41 采集配额/时间不变。
+- **验证状态**：邮箱确认 B PASS、B Magic Link 与浏览器端 `/auth/v1/user` 身份识别 PASS；当前 B 登录中刷新保持会话 **NOT_TESTED**，B 退出 **NOT_TESTED**；真实 A/B 跨账号数据隔离、RLS/IDOR/API 权限 **NOT_TESTED**。客户端 A/B 标记只是测试可视化，不构成后端授权边界。
+- 后续动作：要求 B 保持登录按一次 F5，检查仍显示 B 且身份指纹一致；之后在不交换凭据和不开放 CMS 的前提下进行服务端越权拒绝测试。
+
+## 2026-10-12 前端回归事故：旧验证错误误清会话、HTML 字面转义
+
+**观察**：用户在新版「一键安全自测」准备期间看到 `验证链接返回错误；请申请新的登录邮件。`，以及页面正文两行原样 `\\n`。这不能当成 RLS/业务 API 或账号身份失败。
+
+**根因**：
+- `index.html` 上一轮通过字符串修改插入了 `\\n` 字面量，浏览器按普通文本显示。
+- 客户端此前收到旧 `#error=...` 且无新令牌时，无条件 `sessionStorage.removeItem`，可能清除同一标签页的有效登录会话而没有先走 JWT `/auth/v1/user`。
+- 浏览器不同标签页 `sessionStorage` 隔离；一个新标签打开已消费的一次性链接不能证明原标签页仍然未登录。
+
+**修复**：
+1. 所有 `\\n` 字面量替换为真实换行，回归测试加入此项断言。
+2. 旧链接错误信息只作提示，不强制清除已有凭据；优先对存储的 JWT 做 Staging Auth 验证，只有实际验证失败才删除。
+3. 未登录页面提供自助登录表单，只有用户明确提交已登记 A/B 测试邮箱才向 `/auth/v1/otp` 发信，`create_user=false`，90 秒本地冷却；UI 不展示邮箱、JWT 或邮件链接，也不声称 HTTP 200 即邮件送达。生产 Auth/CMS 仍关闭。
+4. 审计按钮只在真实 JWT 已验证后可见，禁止匿名检查冒充双账号 PASS。
+
+**真实部署核对**：Staging Cloudflare 页面探针 #213：HTTP 200, `text/html`，有自助登录表单和自测按钮，字面换行错误不存在。JS 探针 #214：HTTP 200, `application/javascript`，包含修复的旧链接会话逻辑、显式点击发信处理与 `create_user=false`。GitHub CI run 38233128888 的测试及运行合同成功。
+
+**仍需真实浏览器验证**：旧链接错误与有效会话共存时的状态恢复、按钮实际交互和带 JWT 负向权限请求结果。只有 CI 和静态 HTTP 200 不能证明这些完成。正式业务门禁保持关闭，P4.41 采集调度及预算不变。
