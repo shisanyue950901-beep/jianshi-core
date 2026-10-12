@@ -37,7 +37,8 @@ class PrivateSchemaFailClosed(unittest.TestCase):
         for rpc in ["cms_internal_session_v01(uuid,uuid)","cms_internal_write_v01(uuid,text,jsonb)"]:
             self.assertIn("revoke all on function public."+rpc,guard)
             self.assertIn("grant execute on function public."+rpc,guard)
-        self.assertIn("anon_execute", "-- role-specific checks in the catalog audit are authoritative. anon_execute")
+        self.assertIn("has_function_privilege('anon',p.oid,'execute')", AUDIT)
+        self.assertIn("has_function_privilege('authenticated',p.oid,'execute')", AUDIT)
         self.assertIn("internal_rpc_closed", AUDIT)
 
 if __name__=="__main__":
