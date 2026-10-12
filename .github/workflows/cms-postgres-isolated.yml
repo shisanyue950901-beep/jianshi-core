@@ -1,0 +1,67 @@
+name: JianShi G2-F Isolated PostgreSQL E2E
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'db/migrations/0037_auth_launch_gate.sql'
+      - 'db/migrations/0054_jianshi_cms_private_foundation.sql'
+      - 'db/migrations/0055_jianshi_cms_transaction_gate.sql'
+      - 'db/migrations/0056_jianshi_cms_session_guard.sql'
+      - 'db/migrations/0057_jianshi_cms_historical_draft_restore.sql'
+      - 'scripts/qa/g2f_postgres_real_e2e.py'
+      - '.github/workflows/cms-postgres-isolated.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'db/migrations/0037_auth_launch_gate.sql'
+      - 'db/migrations/0054_jianshi_cms_private_foundation.sql'
+      - 'db/migrations/0055_jianshi_cms_transaction_gate.sql'
+      - 'db/migrations/0056_jianshi_cms_session_guard.sql'
+      - 'db/migrations/0057_jianshi_cms_historical_draft_restore.sql'
+      - 'scripts/qa/g2f_postgres_real_e2e.py'
+      - '.github/workflows/cms-postgres-isolated.yml'
+permissions:
+  contents: read
+
+jobs:
+  isolated-cms-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: jianshi_g2f
+          POSTGRES_PASSWORD: G2F_ONLY_DISPOSABLE_FAKE_PASSWORD
+        options: >-
+          --health-cmd "pg_isready -U postgres -d jianshi_g2f"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Assert container and no external database credentials
+        env:
+          G2F_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          G2F_POSTGRES_DATABASE: jianshi_g2f
+          JIANSHI_G2F_EPHEMERAL_ONLY: "1"
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${JIANSHI_G2F_EPHEMERAL_ONLY}" = "1"
+          test -n "${G2F_POSTGRES_CONTAINER}"
+          docker inspect "${G2F_POSTGRES_CONTAINER}" --format '{{.State.Running}}' | grep -qx true
+      - name: Real PostgreSQL CMS transaction and concurrency E2E
+        env:
+          G2F_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          G2F_POSTGRES_DATABASE: jianshi_g2f
+          JIANSHI_G2F_EPHEMERAL_ONLY: "1"
+        run: python scripts/qa/g2f_postgres_real_e2e.py
+      - name: Verify no production or collection workflow was invoked
+        run: |
+          test ! -e web/dist/prototypes/f21g2e/index.html
+          test ! -e web/dist/cms-admin/index.html
