@@ -69,6 +69,31 @@ body{color:var(--js21-text-main)}
 #j2 .j2-content{background:var(--js21-bg-light)}
 #j2 .j2-project,#j2 .j2-solution{border-color:var(--js21-border)}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.g2b-panel{border:1px solid #dce4f2;border-radius:18px;background:#fff;padding:24px;box-shadow:0 12px 35px #14264609}
+.g2b-panel h3{font-size:22px;margin:0 0 12px}
+.g2b-subtitle{font-size:13px;color:#60728f;margin:0 0 20px;line-height:1.8}
+.g2b-checklist fieldset{padding:0;border:0;margin:0;min-width:0}
+.g2b-checklist legend{font-weight:800;font-size:14px;color:#263751;margin-bottom:14px}
+.g2b-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.g2b-choices label{display:flex;align-items:flex-start;gap:10px;border:1px solid #e2e8f2;background:#f8faff;border-radius:10px;padding:12px;cursor:pointer;color:#33465f;font-size:13px;line-height:1.6;min-width:0}
+.g2b-choices label:has(input:checked){border-color:#9188e5;background:#f1efff}
+.g2b-choices input{flex-shrink:0;width:17px;height:17px;accent-color:#6858bf;margin:2px 0 0}
+.g2b-choices input:focus-visible{outline:3px solid #8275f0;outline-offset:3px}
+.g2b-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:17px}
+.g2b-progress{color:#4a418c;font-weight:800;font-size:13px}
+.g2b-reset{border:1px solid #ccd5e7;background:white;color:#344769;border-radius:9px;padding:8px 13px;cursor:pointer;font-size:13px}
+.g2b-reset:focus-visible,.g2b-select:focus-visible{outline:3px solid #8d81e8;outline-offset:3px}
+.g2b-note{margin:13px 0 0;color:#6b7b92;font-size:12px;line-height:1.75}
+.g2b-select{width:100%;max-width:560px;min-height:46px;border:1px solid #aebcce;border-radius:10px;font:inherit;color:#1e304c;padding:8px 13px;background:#fff}
+.g2b-learning{margin-top:20px}
+.g2b-learning[hidden]{display:none}
+.g2b-plan-intro{font-size:13px;color:#62728a;margin:0 0 15px}
+.g2b-trial{border:1px solid #d7dfed;background:#f9fbff;border-radius:15px;padding:23px}
+.g2b-trial h3{margin:0 0 12px}
+.g2b-trial ol{padding-left:21px;margin:0}
+.g2b-trial li{margin:8px 0;color:#536780;font-size:13px;line-height:1.8}
+@media(max-width:700px){.g2b-choices{grid-template-columns:1fr}.g2b-panel,.g2b-trial{padding:18px}}
 </style></head><body><header class="top"><div class="wrap row"><a class="logo" href="/" aria-label="见势首页">见势 <small>JIANSHI 2.0</small></a><div class="desktop"><nav aria-label="主要导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/">企业解决方案</a><a href="/marketplace/" aria-current="page">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></div><details class="mobile"><summary aria-label="展开导航">☰ 菜单</summary><nav aria-label="移动导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/">企业解决方案</a><a href="/marketplace/" aria-current="page">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></details></div></header><main><div class="hero"><div class="wrap"><div class="crumb"><a href="/">见势首页</a> / 商机大厅</div><span class="kicker">JIANSHI / 商机大厅</span><h1>商机大厅与合作流程</h1><p>为企业需求和 AI 创作者建立透明的合作路径；先提供需求模板、审核规则及未来撮合流程，不展示虚构订单。</p><div class="hero-links"><a class="btn primary" href="#request-brief">查看需求准备模板 ↗</a><a class="btn " href="/solutions/">查看企业方案 ↗</a></div></div></div><div class="wrap content"><div class="status"><b>内容状态：</b>这是公开的应用指南与业务准备资料。当前平台尚未开放在线委托、人才竞标、支付或课程观看；此处的流程和成果是规划与示例，不是实际客户交付记录。</div><section class="section"><span class="label">01 / FUTURE WORKFLOW</span><h2>企业与创作者，将如何建立合作？</h2><p class="lead">首版计划采用人工审核及人工辅助匹配，避免把审核、支付和交付责任留成空白。</p><div class="steps"><div class="step"><b>01 · 企业描述问题</b><h3>明确交付</h3><p>围绕成果、使用范围、时间、约束及验收标准编写需求。</p></div><div class="step"><b>02 · 平台审核需求</b><h3>确认真实性</h3><p>核验企业身份、需求合规、素材授权和可公开字段。</p></div><div class="step"><b>03 · 创作者申请</b><h3>人工匹配</h3><p>基于作品和能力选择沟通对象；不展示未经授权的联系方式。</p></div></div></section><section class="section"><span class="label">02 / REQUEST BRIEF</span><h2>企业需求准备模板</h2><p class="lead">可以在本地复制下面的字段，暂时无需向网站提交任何企业或个人资料。</p><div class="card" id="request-brief"><h3>需求说明应包含的字段</h3><pre>项目名称：
 行业及业务场景：
 目前的问题：
@@ -78,4 +103,32 @@ body{color:var(--js21-text-main)}
 期望完成时间：
 质量验收与修改标准：
 预算约束（可选）：
-保密、数据及审批要求：</pre><p>仅为本地编辑参考。本站当前无上传、邮件发送、竞价或订单创建功能。</p><a class="btn primary" style="margin-top:18px" href="/marketplace/brief/">打开本地需求整理器 ↗</a></div></section><section class="section"><span class="label">03 / TRUST &amp; SAFETY</span><h2>哪些需求不能直接进入撮合？</h2><p class="lead">审核阶段首先保护企业和个人，而不是追求订单数量。</p><div class="cards"><article class="card"><strong>ADMISSION RULES</strong><h3>发布前必须核实</h3><ul class="list"><li>企业身份与联系人授权</li><li>需求描述不侵犯他人著作权或肖像权</li><li>可公开信息与仅对匹配者展示的信息分级</li></ul></article><article class="card"><strong>NOT SUPPORTED</strong><h3>暂不支持</h3><ul class="list"><li>匿名要求他人提供账户、密码或内部数据</li><li>虚构客户案例、实际收入或成交证明</li><li>无法说明成果边界和验收责任的高风险任务</li></ul></article></div></section><section class="section"><span class="label">04 / ROLLOUT</span><h2>当前开放状态</h2><p class="lead">先用业务指南帮助你准确提出问题，而不是展示不存在的订单。</p><div class="notice"><h3>商机列表尚未开放</h3><p>当前没有经后台审核并公开发布的真实企业商单。正式上线前将完成企业认证、角色权限、需求审核、创作者申请、状态记录及隐私授权。</p><a class="btn primary" style="margin-top:20px" href="/solutions/">返回解决方案目录 ↗</a></div></section></div></main><footer class="footer"><div class="wrap row"><div><b>见势 JIANSHI</b><p>发现机会 · 掌握 AI · 对接需求 · 创造价值。</p><p>商业研究不保证个人收益；企业撮合和课程能力以实际开放状态为准。</p></div><nav aria-label="辅助信息"><a href="/projects/">审核项目</a><a href="/research/">匿名研究</a><a href="/discover/">内容发现</a><a href="/sources/">数据来源</a><a href="/privacy/">隐私政策</a></nav></div></footer></body></html>
+保密、数据及审批要求：</pre><p>仅为本地编辑参考。本站当前无上传、邮件发送、竞价或订单创建功能。</p><a class="btn primary" style="margin-top:18px" href="/marketplace/brief/">打开本地需求整理器 ↗</a></div></section><section class="section"><span class="label">03 / READINESS</span><h2>你准备好发布一个真实需求了吗？</h2><p class="lead">以下是浏览器本地的准备清单，勾选结果不会上传、保存或创建商单。</p><div class="g2b-panel"><h3>需求准备完整度自检</h3><p class="g2b-subtitle">先检查是否具备明确成果、授权和审核边界；勾选结果不会提交，即使全部完成也不代表能直接发布商单。</p><div class="g2b-checklist" data-g2b-checklist><fieldset><legend>逐项核对（仅限当前页面）</legend><div class="g2b-choices"><label for="g2b-marketplace-1"><input type="checkbox" id="g2b-marketplace-1"> <span>能用一句话说明要解决的业务问题</span></label><label for="g2b-marketplace-2"><input type="checkbox" id="g2b-marketplace-2"> <span>明确目标受众、使用渠道与交付成果</span></label><label for="g2b-marketplace-3"><input type="checkbox" id="g2b-marketplace-3"> <span>列出真实拥有使用授权的资料</span></label><label for="g2b-marketplace-4"><input type="checkbox" id="g2b-marketplace-4"> <span>说明预期完成时间和需要配合的人</span></label><label for="g2b-marketplace-5"><input type="checkbox" id="g2b-marketplace-5"> <span>写清验收标准、修改范围与预算约束</span></label><label for="g2b-marketplace-6"><input type="checkbox" id="g2b-marketplace-6"> <span>区分可公开内容与必须保密的信息</span></label></div></fieldset><div class="g2b-actions"><output data-g2b-progress role="status" aria-live="polite">0 / 6 项已准备</output><button class="g2b-reset" data-g2b-reset type="button">清空本次勾选</button></div></div><p class="g2b-note">隐私说明：所有勾选仅存在当前页面内存；不存储、不登录、不发送给平台，刷新后重新开始。</p></div></section><section class="section"><span class="label">03 / TRUST &amp; SAFETY</span><h2>哪些需求不能直接进入撮合？</h2><p class="lead">审核阶段首先保护企业和个人，而不是追求订单数量。</p><div class="cards"><article class="card"><strong>ADMISSION RULES</strong><h3>发布前必须核实</h3><ul class="list"><li>企业身份与联系人授权</li><li>需求描述不侵犯他人著作权或肖像权</li><li>可公开信息与仅对匹配者展示的信息分级</li></ul></article><article class="card"><strong>NOT SUPPORTED</strong><h3>暂不支持</h3><ul class="list"><li>匿名要求他人提供账户、密码或内部数据</li><li>虚构客户案例、实际收入或成交证明</li><li>无法说明成果边界和验收责任的高风险任务</li></ul></article></div></section><section class="section"><span class="label">04 / ROLLOUT</span><h2>当前开放状态</h2><p class="lead">先用业务指南帮助你准确提出问题，而不是展示不存在的订单。</p><div class="notice"><h3>商机列表尚未开放</h3><p>当前没有经后台审核并公开发布的真实企业商单。正式上线前将完成企业认证、角色权限、需求审核、创作者申请、状态记录及隐私授权。</p><a class="btn primary" style="margin-top:20px" href="/solutions/">返回解决方案目录 ↗</a></div></section></div></main><footer class="footer"><div class="wrap row"><div><b>见势 JIANSHI</b><p>发现机会 · 掌握 AI · 对接需求 · 创造价值。</p><p>商业研究不保证个人收益；企业撮合和课程能力以实际开放状态为准。</p></div><nav aria-label="辅助信息"><a href="/projects/">审核项目</a><a href="/research/">匿名研究</a><a href="/discover/">内容发现</a><a href="/sources/">数据来源</a><a href="/privacy/">隐私政策</a></nav></div></footer><script>(function(){
+ 'use strict';
+ const forms=Array.from(document.querySelectorAll('[data-g2b-checklist]'));
+ forms.forEach(form=>{
+   const checks=Array.from(form.querySelectorAll('input[type="checkbox"]'));
+   const report=form.querySelector('[data-g2b-progress]');
+   const reset=form.querySelector('[data-g2b-reset]');
+   const update=()=>{
+     const count=checks.filter(c=>c.checked).length;
+     report.textContent=count+' / '+checks.length+' 项已准备'+(count===checks.length?' · 已完成自查，不代表平台审核通过':' · 仅供自己核对');
+   };
+   checks.forEach(c=>c.addEventListener('change',update));
+   reset.addEventListener('click',()=>{
+     checks.forEach(c=>{c.checked=false;});
+     update();
+     checks[0].focus();
+   });
+   update();
+ });
+ const selector=document.getElementById('g2b-academy-choice');
+ if(selector){
+   const plans=Array.from(document.querySelectorAll('[data-g2b-plan]'));
+   const update=()=>{
+     plans.forEach(plan=>{plan.hidden=plan.dataset.g2bPlan!==selector.value;});
+   };
+   selector.addEventListener('change',update);
+   update();
+ }
+})();</script></body></html>
