@@ -21,3 +21,13 @@
 ## 项目隔离冻结
 
 不改 Production 账号/CMS/企业撮合标记、不复制任何私有正文、session/JWT 或财务数据进入网页，不调用付费浏览器。P4.41 四个 UTC 原调度 `00:55/06:55/12:55/18:55`、每日 claim 和 HN7/RSS1/GitHub2 频次原样保留；任何 push CI 都不能计算为真实 schedule 采集。
+
+## 2026-10-12 首轮真实验收记录
+
+- PR #140 全量 CI run `38245347376` 成功；独立一次性 PostgreSQL E2E run `38245347625` 成功。真实日志标记 `G2F_REAL_POSTGRES_E2E_PASS`：原始迁移 6 个、权限/非法请求拒绝 14 项、双客户端并发 ONE_WINNER_ONE_STALE、私有投影字段 DENIED。
+- Staging `apuibjhxinumxbfnqlkp` 已以 additive migration 成功安装 0058，且独立权限 catalog 确认：`cms_internal_restore_v01` SECURITY INVOKER、anon=false、authenticated=false、service_role=true。
+- Staging Edge `cms-staging-gateway` 更新到 v3，状态 ACTIVE，`verify_jwt=true`；没有部署到生产。
+- 真实匿名网络探针 #235：HTTP 401 / application/json，分类 `AUTH_HEADER_REQUIRED`；是平台 JWT 强制检查，并非合法账号业务通过。
+- Staging 实际 SQL 负向测试：调用新恢复 RPC 以 SQLSTATE 42501 / `CMS_WRITE_DISABLED` 被拒绝，没有绕过账号和 CMS 开关。
+- Staging 只读计数：items/revisions/review_events/editor_grants/snapshots 全为 0；`account_auth/cms_editor/v2_matchmaking=false`。未分配 CMS 权限、未新增任何私有业务内容。
+- 结论：G2-G 服务端 RESTORE 路由、隔离 PostgreSQL 真正 SQL RPC、Staging 部署/最小权限/关闭拒绝 PASS。**真实浏览器同源 BFF → JWT → 角色授权 → CMS 正向 E2E：未实现/未测试，不得写成 PASS**。
