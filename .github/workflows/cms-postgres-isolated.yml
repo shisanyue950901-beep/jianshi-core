@@ -23,6 +23,12 @@ on:
       - 'tests/g2h7f_bridge_contract.test.mjs'
       - 'scripts/security/g2h7f_http_pg_boundary_audit.mjs'
       - 'docs/F21_G2H7F_WORKER_HTTP_REAL_PG_AUDIT_CN.md'
+      - 'ops/cms-preview/worker-mtls-state-contract.mjs'
+      - 'scripts/qa/g2h7g_disposable_mtls_harness.mjs'
+      - 'tests/g2h7g_mtls_contract.test.mjs'
+      - 'tests/g2h7g_mtls_pg.test.mjs'
+      - 'scripts/security/g2h7g_mtls_boundary_audit.mjs'
+      - 'docs/F21_G2H7G_TRUSTED_MTLS_RELEASE_GATE_CN.md'
       - '.github/workflows/cms-postgres-isolated.yml'
   push:
     branches: [main]
@@ -47,6 +53,12 @@ on:
       - 'tests/g2h7f_bridge_contract.test.mjs'
       - 'scripts/security/g2h7f_http_pg_boundary_audit.mjs'
       - 'docs/F21_G2H7F_WORKER_HTTP_REAL_PG_AUDIT_CN.md'
+      - 'ops/cms-preview/worker-mtls-state-contract.mjs'
+      - 'scripts/qa/g2h7g_disposable_mtls_harness.mjs'
+      - 'tests/g2h7g_mtls_contract.test.mjs'
+      - 'tests/g2h7g_mtls_pg.test.mjs'
+      - 'scripts/security/g2h7g_mtls_boundary_audit.mjs'
+      - 'docs/F21_G2H7G_TRUSTED_MTLS_RELEASE_GATE_CN.md'
       - '.github/workflows/cms-postgres-isolated.yml'
 permissions:
   contents: read
@@ -110,3 +122,8 @@ jobs:
           JIANSHI_G2F_EPHEMERAL_ONLY: '1'
           JIANSHI_G2H7F_DISPOSABLE_ONLY: '1'
         run: python scripts/qa/g2h7f_pg_http_runner.py
+      - name: G2-H.7G real PostgreSQL over mTLS integration included in disposable runner
+        run: |
+          set -euo pipefail
+          grep -q 'tests/g2h7g_mtls_pg.test.mjs' scripts/qa/g2h7f_pg_http_runner.py
+          grep -q 'G2H7G_REAL_MTLS_POSTGRES_PASS' scripts/qa/g2h7f_pg_http_runner.py
