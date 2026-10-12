@@ -25,6 +25,7 @@ MIGRATIONS = (
     "0056_jianshi_cms_session_guard.sql",
     "0057_jianshi_cms_historical_draft_restore.sql",
     "0058_jianshi_cms_restore_private_rpc.sql",
+    "0059_jianshi_cms_trusted_role_read.sql",
 )
 EDITOR = "00000000-0000-4000-8000-00000000a001"
 REVIEWER = "00000000-0000-4000-8000-00000000a002"
@@ -243,6 +244,16 @@ def gate_test_and_synthetic_setup():
              SET enabled=true WHERE feature_key IN ('cms_editor','account_auth');""")
     require(scalar("SELECT public.auth_launch_ready_v01()::text;") == "true",
             "ephemeral positive gate fixture not ready")
+    # G2-H.2: role is resolved on every request through the real service-only
+    # SQL gate, not through client input or cached browser claims.
+    role = scalar(svc("SELECT public.cms_internal_actor_role_v01('"
+                      + EDITOR + "'::uuid);"))
+    require(role == "EDITOR", "role service resolver cannot verify editor")
+    check_denial("SELECT public.cms_internal_actor_role_v01('"
+                 + EDITOR + "'::uuid);", "permission denied", role="authenticated")
+    check_denial(svc("SELECT public.cms_internal_actor_role_v01('"
+                     + "00000000-0000-4000-8000-00000000a099" +
+                     "'::uuid);"), "CMS_PERMISSION_DENIED", role="postgres")
     # Before every positive call the SQL function also verifies current_user.
     check_denial(
         "SELECT jianshi_cms.ensure_write_gate("
