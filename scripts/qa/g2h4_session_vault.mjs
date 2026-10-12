@@ -39,7 +39,7 @@ export function createSessionVault({hmacKey,csrfKey,keys,activeKeyId}={}){
   cookieDigest:value=>digest(hmac,'cookie',value),
   csrfDigest:value=>digest(csrf,'csrf',value),
   issueEnvelope({jwt,userId,sessionId}={}){
-   valid(typeof jwt==='string'&&jwt.length>=32&&jwt.length<=9000,
+   valid(typeof jwt==='string'&&jwt.length>=32&&jwt.length<=6000,
      'CMS_VAULT_JWT_INVALID');
    const iv=randomBytes(12),key=ring.get(activeKeyId);
    const c=createCipheriv('aes-256-gcm',key,iv);
@@ -70,7 +70,7 @@ export function createSessionVault({hmacKey,csrfKey,keys,activeKeyId}={}){
     d.setAAD(aad(userId,sessionId));
     d.setAuthTag(tag);
     const jwt=Buffer.concat([d.update(ciphertext),d.final()]).toString('utf8');
-    valid(jwt.length>=32&&jwt.length<=9000,'CMS_VAULT_JWT_INVALID');
+    valid(jwt.length>=32&&jwt.length<=6000,'CMS_VAULT_JWT_INVALID');
     return jwt;
    }catch{fail('CMS_VAULT_AUTHENTICATION_FAILED');}
   }
