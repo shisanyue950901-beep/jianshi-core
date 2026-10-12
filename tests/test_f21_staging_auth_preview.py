@@ -44,7 +44,7 @@ class StagingPreviewContract(unittest.TestCase):
     def test_unsafe_edge_html_replaced_by_http_redirect(self):
         edge = EDGE.read_text(encoding="utf-8")
         self.assertIn("status:302", edge)
-        self.assertIn("location:'" + PREVIEW + "'", edge)
+        self.assertIn("const DESTINATION = '" + PREVIEW + "'", edge)
         self.assertIn("cache-control':'no-store", edge)
         self.assertIn("req.method !== 'GET'", edge)
         self.assertIn("status:405", edge)
