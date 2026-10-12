@@ -2,7 +2,7 @@
 // Not the live Supabase GoTrue adapter, not a browser-facing deployed server.
 // A future HTTPS BFF must supply a transactional one-time pendingStore,
 // vetted PKCE provider adapter and verified durable session issuer.
-import {createHash,createHmac,randomBytes,timingSafeEqual} from 'node:crypto';
+import {createHash,createHmac,randomBytes,createCipheriv,createDecipheriv,hkdfSync} from 'node:crypto';
 
 const STATE_COOKIE='__Host-jianshi_pkce';
 const SESSION_COOKIE='__Host-jianshi_cms';
@@ -55,6 +55,25 @@ export function createPkceLoginContract({
   typeof verifyIdentity==='function'&&typeof issueDurableSession==='function',
   'CMS_PKCE_TRUSTED_ADAPTER_REQUIRED');
  const key=Buffer.from(secret);
+ const cipherKey=Buffer.from(hkdfSync('sha256',key,Buffer.alloc(0),'JIANSHI_G2H6_PKCE_PENDING_AES_GCM',32));
+ function seal(verifier,stateDigest,cookieDigest){
+  const iv=randomBytes(12),a=createCipheriv('aes-256-gcm',cipherKey,iv);
+  a.setAAD(Buffer.from(stateDigest+'|'+cookieDigest));
+  const ciphertext=Buffer.concat([a.update(verifier,'utf8'),a.final()]);
+  return 'v1.'+iv.toString('base64url')+'.'+ciphertext.toString('base64url')+'.'+a.getAuthTag().toString('base64url');
+ }
+ function open(encrypted,stateDigest,cookieDigest){
+  try{
+   const parts=encrypted.split('.');
+   need(parts.length===4&&parts[0]==='v1','CMS_PKCE_ENVELOPE_INVALID');
+   const iv=Buffer.from(parts[1],'base64url'),tag=Buffer.from(parts[3],'base64url');
+   need(iv.length===12&&tag.length===16,'CMS_PKCE_ENVELOPE_INVALID');
+   const d=createDecipheriv('aes-256-gcm',cipherKey,iv);
+   d.setAAD(Buffer.from(stateDigest+'|'+cookieDigest));d.setAuthTag(tag);
+   const result=Buffer.concat([d.update(Buffer.from(parts[2],'base64url')),d.final()]).toString('utf8');
+   need(STATE.test(result),'CMS_PKCE_ENVELOPE_INVALID');return result;
+  }catch{fail('CMS_PKCE_ENVELOPE_INVALID');}
+ }
  const publicHeaders=Object.freeze({
   'cache-control':'no-store, max-age=0',
   'referrer-policy':'no-referrer',
@@ -71,7 +90,8 @@ export function createPkceLoginContract({
    // Transactional state storage must expire and consume atomically, even
    // across different BFF instances; never store raw state/cookie or email.
    const issued=await pendingStore.issue({
-    stateDigest,cookieDigest,verifier,expiresAt:new Date(now()+TTL).toISOString()
+    stateDigest,cookieDigest,encryptedVerifier:seal(verifier,stateDigest,cookieDigest),
+    expiresAt:new Date(now()+TTL).toISOString()
    });
    need(issued===true,'CMS_PKCE_PENDING_ISSUE_FAILED');
    const redirectTo=origin+'/auth/callback?state='+encodeURIComponent(state);
@@ -102,11 +122,12 @@ export function createPkceLoginContract({
    });
    // consume is ATOMIC and one-time. A failed GoTrue exchange must still
    // permanently burn this challenge to prevent replay or parallel attempts.
-   need(pending&&pending.used===true&&typeof pending.verifier==='string'&&
-    STATE.test(pending.verifier),'CMS_PKCE_EXPIRED_OR_REPLAYED');
+   need(pending&&pending.used===true&&typeof pending.encryptedVerifier==='string','CMS_PKCE_EXPIRED_OR_REPLAYED');
    let result,actor,session;
    try{
-    result=await provider.exchangeCodeForSession({code,verifier:pending.verifier});
+    const verifier=open(pending.encryptedVerifier,
+      hash(key,'state',state),hash(key,'cookie',cookie));
+    result=await provider.exchangeCodeForSession({code,verifier});
     need(typeof result?.access_token==='string'&&result.access_token.length>=32&&
       typeof result?.refresh_token==='string'&&result.refresh_token.length>=32,
       'CMS_PKCE_PROVIDER_REJECTED');
