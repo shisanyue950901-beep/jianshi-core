@@ -17,6 +17,7 @@ from f21_catalog_filter import (
 from f21_g2b_guided_actions import (
     CSS as GUIDED_CSS, JS as GUIDED_JS, readiness, learning_selector, solution_trial,
 )
+from f21_g2c_related_quality import CSS as RELATED_CSS, render_related
 
 SITE = "https://jianshi-bua.pages.dev"
 PAGES = (
@@ -192,7 +193,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<link rel="canonical" href="' + SITE + '/' + path + '">'
         '<meta property="og:title" content="' + e(title) + '｜见势 JIANSHI 2.0">'
         '<meta property="og:description" content="' + e(description) + '">'
-        '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + (GUIDED_CSS if guided or trial_page else "") + '</style></head><body>'
+        '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + (GUIDED_CSS if guided or trial_page else "") + RELATED_CSS + '</style></head><body>'
         + site_header(current)
         + '<main><div class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
@@ -202,7 +203,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<div class="wrap content">'
         '<div class="status"><b>内容状态：</b>这是公开的应用指南与业务准备资料。'
         '当前平台尚未开放在线委托、人才竞标、支付或课程观看；此处的流程和成果是规划与示例，不是实际客户交付记录。</div>'
-        + body + '</div></main>' + site_footer()
+        + body + render_related(current) + '</div></main>' + site_footer()
         + ('<script>' + CATALOG_JS + '</script>' if catalogue else '')
         + ('<script>' + GUIDED_JS + '</script>' if guided else '')
         + '</body></html>\n'

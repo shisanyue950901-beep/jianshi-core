@@ -18,6 +18,7 @@ from p445_unified_home import build_home as build_jianshi2_home
 from p446_content_hubs import publish as publish_content_hubs, PAGES as CONTENT_PAGES
 from p448_v2_local_drafts import publish as publish_v2_drafts, PAGES as DRAFT_PAGES
 from f21_g2_discovery import publish as publish_discovery, ROUTE as DISCOVER_ROUTE
+from f21_g2c_related_quality import audit_release as audit_g2c_release
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
@@ -202,6 +203,11 @@ def build_release() -> dict:
     discovery_entries = publish_discovery(OUTPUT)
     if discovery_entries != 17:
         raise RuntimeError("G2-A public discovery catalogue incomplete")
+    # Validate rendered public page structure and all curated internal next-step links.
+    # This is a mechanical audit, not a claim of factual/editorial approval.
+    related_quality = audit_g2c_release(OUTPUT)
+    if related_quality["audited_pages"] != 9 or related_quality["related_links"] != 27:
+        raise RuntimeError("G2-C related-content quality gate incomplete")
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
         "opportunities": "/#j2-opportunities",
@@ -268,6 +274,7 @@ def build_release() -> dict:
         "anonymous_studies": anonymous_studies,
         "public_content_guides": content_guides,
         "discovery_entries": discovery_entries,
+        "g2c_related_quality": related_quality,
         "local_draft_tools": local_draft_tools,
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
