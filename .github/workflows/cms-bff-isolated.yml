@@ -32,6 +32,12 @@ on:
       - 'tests/g2h7e_worker_webcrypto.test.mjs'
       - 'scripts/security/g2h7e_worker_webcrypto_audit.mjs'
       - 'docs/F21_G2H7E_WORKER_WEBCRYPTO_SECURITY_AUDIT_CN.md'
+      - 'ops/cms-preview/worker-pg-disposable-http.mjs'
+      - 'scripts/qa/g2h7f_pg_http_runner.py'
+      - 'tests/g2h7f_worker_pg_http.test.mjs'
+      - 'tests/g2h7f_bridge_contract.test.mjs'
+      - 'scripts/security/g2h7f_http_pg_boundary_audit.mjs'
+      - 'docs/F21_G2H7F_WORKER_HTTP_REAL_PG_AUDIT_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -65,6 +71,12 @@ on:
       - 'tests/g2h7e_worker_webcrypto.test.mjs'
       - 'scripts/security/g2h7e_worker_webcrypto_audit.mjs'
       - 'docs/F21_G2H7E_WORKER_WEBCRYPTO_SECURITY_AUDIT_CN.md'
+      - 'ops/cms-preview/worker-pg-disposable-http.mjs'
+      - 'scripts/qa/g2h7f_pg_http_runner.py'
+      - 'tests/g2h7f_worker_pg_http.test.mjs'
+      - 'tests/g2h7f_bridge_contract.test.mjs'
+      - 'scripts/security/g2h7f_http_pg_boundary_audit.mjs'
+      - 'docs/F21_G2H7F_WORKER_HTTP_REAL_PG_AUDIT_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -125,3 +137,7 @@ jobs:
         run: node --test tests/g2h7e_worker_webcrypto.test.mjs
       - name: G2-H.7E independent Worker WebCrypto and release audit
         run: node scripts/security/g2h7e_worker_webcrypto_audit.mjs
+      - name: G2-H.7F fail-closed synthetic HTTP bridge contract
+        run: node --test tests/g2h7f_bridge_contract.test.mjs
+      - name: G2-H.7F independent disposable HTTP/PG boundary audit
+        run: node scripts/security/g2h7f_http_pg_boundary_audit.mjs
