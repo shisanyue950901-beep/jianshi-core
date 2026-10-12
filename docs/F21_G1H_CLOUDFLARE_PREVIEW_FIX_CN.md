@@ -43,3 +43,15 @@
 - **八项生产 Auth Gate 不得因为这一项成功而统一设置 PASS**，生产与 Staging 功能开关继续关闭。
 
 现行 Staging Edge Function 是 v4 纯 GET 302 跳转；早期 v2 HTML 与 v3 记载仅作事故历史。独立 Cloudflare branch 预览成功不代表主站账号上线。
+
+## 2026-10-12 浏览器退出后刷新（F5）补充验收
+
+用户在已成功退出的同一浏览器页面按 F5，截图显示普通状态文案「Staging 回调页面已就绪。请使用新的登录邮件进行测试。」；没有出现已登录界面或自动恢复身份。**依据用户实际浏览器操作，退出后前端临时会话清除/刷新不恢复：PASS**。
+
+同步只读核对 staging：\`auth.sessions=0\`、\`auth.users.email_confirmed_at IS NOT NULL\` 用户数 = 1；\`account_auth=false\`、\`cms_editor=false\`、\`v2_matchmaking=false\`。这与退出和前端刷新结果吻合，但 **不代表对旧 Access Token 的直接重放拒绝已经实测**，也不代表登录期间刷新能继续保持身份（此前未专门操作 F5）。
+
+建议后续验收按严格先后顺序：
+1. 隔离 Staging：独立测试账号 A/B，不能复用主站生产用户；禁止测试人之间交换登录凭据。
+2. 先不开放任何功能，只测 A/B JWT 归属、退出后旧令牌拒绝、跨用户只读/写入拒绝（IDOR）。
+3. 通过后再测试收藏/观察和 CMS 多角色流程，数据只用合成素材，CMS 开关保持关闭直到独立放行。
+4. 不以单账号登录成功代替八项 Auth Gate：生产账号、CMS、撮合保持关闭；P4.41 四个固定 UTC schedule 槽与采集限额原样不动。
