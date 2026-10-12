@@ -45,7 +45,7 @@ class StagingPreviewContract(unittest.TestCase):
         edge = EDGE.read_text(encoding="utf-8")
         self.assertIn("status:302", edge)
         self.assertIn("const DESTINATION = '" + PREVIEW + "'", edge)
-        self.assertIn("cache-control':'no-store", edge)
+        self.assertIn("'cache-control': 'no-store", edge)
         self.assertIn("req.method !== 'GET'", edge)
         self.assertIn("status:405", edge)
 
