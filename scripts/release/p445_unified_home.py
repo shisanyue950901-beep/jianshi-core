@@ -82,6 +82,7 @@ def build_home(cases: list[dict]) -> str:
         '<p>发现机会 · 掌握 AI · 对接需求 · 创造价值。</p>'
         '<p>历史经营数据仅供研究，企业撮合、人才入驻与课程平台尚在建设中。</p></div>'
         '<nav class="j2-footer-links" aria-label="其他信息">'
+        '<a href="/discover/">内容发现与筛选</a>'
         '<a href="/projects/">具名研究案例</a>'
         '<a href="/research/">匿名研究库</a>'
         '<a href="/validation/">证据边界</a>'

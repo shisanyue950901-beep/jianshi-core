@@ -56,7 +56,8 @@ class TestP412ProductionCandidate(unittest.TestCase):
     def test_public_build_has_no_repository_internal_directories(self):
         for name in [".github","config","db","docs","scripts","src","supabase","tests","fixtures"]:
             self.assertFalse((DIST/name).exists(),name)
-        self.assertEqual((DIST/"sitemap.xml").read_text().count("<url>"),18)
+        self.assertEqual((DIST/"sitemap.xml").read_text().count("<url>"),19)
+        self.assertTrue((DIST/"discover"/"index.html").is_file())
         self.assertTrue((DIST/"sources"/"index.html").is_file())
         self.assertIn("商业信息来源",(DIST/"sources"/"index.html").read_text(encoding="utf-8"))
         self.assertTrue((DIST/"projects"/"index.html").is_file())
