@@ -27,6 +27,7 @@ MIGRATIONS = (
     "0058_jianshi_cms_restore_private_rpc.sql",
     "0059_jianshi_cms_trusted_role_read.sql",
     "0060_jianshi_cms_durable_bff_sessions.sql",
+    "0061_jianshi_cms_pkce_one_time_state.sql",
 )
 EDITOR = "00000000-0000-4000-8000-00000000a001"
 REVIEWER = "00000000-0000-4000-8000-00000000a002"
@@ -206,7 +207,7 @@ CREATE TABLE auth.sessions (
         """SELECT (
           (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
            WHERE n.nspname='jianshi_cms' AND c.relkind='r'
-             AND c.relrowsecurity AND c.relforcerowsecurity)=7
+             AND c.relrowsecurity AND c.relforcerowsecurity)=8
           AND NOT has_schema_privilege('authenticated','jianshi_cms','USAGE')
           AND NOT has_schema_privilege('anon','jianshi_cms','USAGE')
         )::text;""")
@@ -405,6 +406,60 @@ def competing_clients():
 
 
 
+def pkce_single_use():
+    """Prove a single atomic winner among 6 independent real SQL connections."""
+    state = "c" * 64
+    cookie = "d" * 64
+    fake_envelope = "v1." + "x" * 96
+    priv = scalar(
+        "SELECT (NOT has_table_privilege('anon','jianshi_cms.bff_pkce_challenges','SELECT') "
+        "AND NOT has_table_privilege('authenticated','jianshi_cms.bff_pkce_challenges','SELECT') "
+        "AND has_table_privilege('service_role','jianshi_cms.bff_pkce_challenges','SELECT') "
+        "AND (SELECT relrowsecurity AND relforcerowsecurity FROM pg_class "
+        "WHERE oid='jianshi_cms.bff_pkce_challenges'::regclass))::text;")
+    require(priv=="true","private PKCE ACL or RLS missing")
+    issue = (
+        "SELECT jianshi_cms.bff_issue_pkce_v01("
+        f"'{state}','{cookie}','{fake_envelope}',now()+interval '3 minutes')::text;")
+    require(scalar(svc(issue))=="true","PKCE issue must be accepted only in disposable opened gates")
+    check_denial(issue,"permission denied",role="authenticated")
+    check_denial(issue,"duplicate key",role="service_role")
+    wrong = json.loads(scalar(svc(
+        "SELECT jianshi_cms.bff_consume_pkce_v01("
+        f"'{state}','{'f'*64}')::text;")))
+    require(wrong=={"used":False},"wrong cookie must not consume state")
+    query = svc("SELECT jianshi_cms.bff_consume_pkce_v01("
+                f"'{state}','{cookie}')::text;")
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        results=list(pool.map(lambda _: json.loads(scalar(query)),range(6)))
+    winners=[r for r in results if r.get("used") is True]
+    losers=[r for r in results if r=={"used":False}]
+    require(len(winners)==1 and len(losers)==5,"one-time concurrent CAS failed")
+    require(winners[0]["encryptedVerifier"]==fake_envelope,"encrypted verifier changed")
+    require(json.loads(scalar(svc(
+        "SELECT jianshi_cms.bff_consume_pkce_v01("
+        f"'{state}','{cookie}')::text;")))=={"used":False},"replay must fail")
+    expired_state="e"*64
+    require(scalar(svc("SELECT jianshi_cms.bff_issue_pkce_v01("
+                       f"'{expired_state}','{cookie}','{fake_envelope}',"
+                       "now()+interval '3 minutes')::text;"))=="true",
+            "expired test issue")
+    run_sql("UPDATE jianshi_cms.bff_pkce_challenges "
+            "SET issued_at=now()-interval '10 minutes',"
+            "expires_at=now()-interval '6 minutes' "
+            f"WHERE state_digest='{expired_state}';")
+    require(json.loads(scalar(svc("SELECT jianshi_cms.bff_consume_pkce_v01("
+                                  f"'{expired_state}','{cookie}')::text;")))=={"used":False},
+            "expired pending challenge accepted")
+    require(scalar("SELECT count(*)::text FROM jianshi_cms.bff_pkce_challenges;")=="2",
+            "unexpected synthetic pending challenge rows")
+    NEGATIVE.append("PKCE_ATOMIC_ONE_TIME_REPLAY_DENIED")
+    print("G2H6_SQL_PKCE_SINGLE_USE_PASS "+json.dumps({
+        "pending_rows":2,"concurrent_calls":6,"winners":len(winners),
+        "replay_denied":True,"expired_denied":True,"wrong_cookie_denied":True,
+    },sort_keys=True))
+
+
 def durable_sessions():
     """Actual SQL lifecycle, independent service clients and row-locked quotas.
 
@@ -494,7 +549,12 @@ def main():
     main_id = lifecycle()
     invalid_source()
     competing_clients()
+    pkce_single_use()
     durable_sessions()
+    check_denial("SELECT jianshi_cms.bff_issue_pkce_v01("
+                 + "'" + "c"*64 + "','" + "d"*64 + "','v1." + "x"*96
+                 + "',now()+interval '3 minutes');",
+                 "CMS_WRITE_DISABLED")
     # Only synthetic fixture rows should exist in disposable PG database.
     totals = scalar(
         "SELECT (SELECT count(*) FROM jianshi_cms.content_items)::text||':'||"
