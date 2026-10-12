@@ -24,3 +24,13 @@
 生产 Supabase 不运行迁移，账号/CMS/撮合开关维持关闭；Staging 不创建真实角色或内容。P4.41 四个 UTC schedule 时段 00:55/06:55/12:55/18:55、日 claim、HN7/RSS1/GitHub2 上限均不改；push 构建不计入 schedule 采集。只检查结构权限与行数聚合，不读取私有正文、Artifact 或凭证。
 
 真实正向 DB 事务、并发压力、可信授权前端、版权媒体扫描、正式站投影发布仍 NOT_TESTED / NOT_IMPLEMENTED。
+
+## 本轮最终真实 Staging 核验
+
+- PR #138 CI run 38241515654 = SUCCESS（Python + Node 真实离线行为模拟与原全量回归）；此结果不等于真实数据库正向 E2E。
+- 通过 Supabase Staging 的迁移接口安装 0057 追加函数，迁移返回 success=true；只对 apuibjhxinumxbfnqlkp 生效。
+- 只读 catalog：restore_draft_revision 存在，SECURITY DEFINER=false，anon EXECUTE=false，authenticated EXECUTE=false，service_role EXECUTE=true。
+- Staging 负向调用恢复函数，PostgreSQL SQLSTATE 42501 / CMS_WRITE_DISABLED，证明真实数据库写入门禁没有被绕过。
+- 迁移前后 Staging 的 content_items、content_revisions、review_events、editor_grants、publication_snapshots 均为 0；account_auth、cms_editor、v2_matchmaking 全为 false。
+- 只读 Production：jianshi_cms schema 仍不存在，account_auth=false，未在生产执行 DDL。
+- 严格验收结论：受控数据库函数部署/权限/负向拒绝 E2–E3 PASS。成功历史恢复、真实角色写入与浏览器后端 E2E 仍 NOT_TESTED，禁止误标 PASS。
