@@ -67,7 +67,7 @@ for(const required of [
  'G2H7G_CERT_ROTATION_REVOKED_A_PASS',
  'foreign certificate',
  'without certificate',
- 'SYNTHETIC_H7G_WORKER_B'
+ 'proxy.certificates.b'
 ])if(!integration.includes(required))problems.push('IDENTITY_REGRESSION_MISSING:'+required);
 for(const required of [
  'JIANSHI_G2H7G_MTLS_ONLY',
