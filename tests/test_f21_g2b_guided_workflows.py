@@ -62,7 +62,6 @@ class G2BPublicGuides(unittest.TestCase):
                 self.assertIn("data-g2b-progress",page)
                 self.assertIn("data-g2b-reset",page)
                 self.assertIn('aria-live="polite"',page)
-                self.assertIn("只有",page) if False else None
             if route.startswith("solutions/") and route!="solutions/":
                 self.assertIn("g2b-trial",page)
                 self.assertIn("低风险",page)
@@ -70,7 +69,6 @@ class G2BPublicGuides(unittest.TestCase):
             for banned in ("sb_secret_","service_role","SYNTHETIC_G1F","password=","@qq.com","@gmail.com"):
                 self.assertNotIn(banned,page,route)
         self.assertIn('id="g2b-academy-choice"',pages["academy/"])
-        self.assertIn("不可",pages["talent/"]) if False else None
 
     def test_browser_behavior_makes_no_network_or_persistence_calls(self):
         self.assertIn("document.querySelectorAll('[data-g2b-checklist]')",JS)
@@ -82,7 +80,6 @@ class G2BPublicGuides(unittest.TestCase):
                           "innerHTML","eval(","location.replace","window.location"):
             self.assertNotIn(forbidden,JS)
         self.assertIn("@media(max-width:700px)",CSS)
-        self.assertIn("prefers-reduced-motion",CSS) if False else None
 
     @unittest.skipUnless(shutil.which("node"),"Node unavailable; CI must test JS")
     def test_real_js_checkbox_reset_and_learning_selector(self):
