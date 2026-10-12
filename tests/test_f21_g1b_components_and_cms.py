@@ -109,8 +109,8 @@ class G1ComponentsAndCMS(unittest.TestCase):
     def test_other_guides_remain_static_and_all_study_links_work(self):
         pages = render_pages()
         for route, markup in pages.items():
-            if route != "solutions/":
-                self.assertEqual(markup.count("<script>"), 0, route)
+            expected_scripts = 1 if route in ("solutions/", "marketplace/", "talent/", "academy/") else 0
+            self.assertEqual(markup.count("<script>"), expected_scripts, route)
         for row in SOLUTIONS:
             self.assertIn('href="/solutions/' + row["slug"] + '/"', pages["solutions/"])
             self.assertIn('id="delivery"', pages["solutions/" + row["slug"] + "/"])
