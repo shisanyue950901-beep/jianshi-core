@@ -26,6 +26,7 @@ MIGRATIONS = (
     "0057_jianshi_cms_historical_draft_restore.sql",
     "0058_jianshi_cms_restore_private_rpc.sql",
     "0059_jianshi_cms_trusted_role_read.sql",
+    "0060_jianshi_cms_durable_bff_sessions.sql",
 )
 EDITOR = "00000000-0000-4000-8000-00000000a001"
 REVIEWER = "00000000-0000-4000-8000-00000000a002"
@@ -205,7 +206,7 @@ CREATE TABLE auth.sessions (
         """SELECT (
           (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
            WHERE n.nspname='jianshi_cms' AND c.relkind='r'
-             AND c.relrowsecurity AND c.relforcerowsecurity)=6
+             AND c.relrowsecurity AND c.relforcerowsecurity)=7
           AND NOT has_schema_privilege('authenticated','jianshi_cms','USAGE')
           AND NOT has_schema_privilege('anon','jianshi_cms','USAGE')
         )::text;""")
@@ -403,12 +404,97 @@ def competing_clients():
     NEGATIVE.append("CONCURRENT_STALE_REVISION")
 
 
+
+def durable_sessions():
+    """Actual SQL lifecycle, independent service clients and row-locked quotas.
+
+    No real GoTrue/JWT, sessions are synthetic auth.sessions fixture records.
+    Ciphertext is a fake opaque value; AES-GCM is tested separately by Node.
+    """
+    cookie = "a" * 64
+    csrf = "b" * 64
+    jwt_envelope = "SYNTHETIC_OPAQUE_AES_GCM_CIPHERTEXT_NOT_A_JWT"
+    auth_session = "00000000-0000-4000-8000-00000000b001"
+    # The real migration must refuse issue before Auth + CMS gates are opened.
+    # This function executes only AFTER the test setup explicitly opens the
+    # disposable-only flags, and the opening refusal is checked separately.
+    perms = scalar(
+        "SELECT (NOT has_table_privilege('anon','jianshi_cms.bff_sessions','SELECT') "
+        "AND NOT has_table_privilege('authenticated','jianshi_cms.bff_sessions','SELECT') "
+        "AND has_table_privilege('service_role','jianshi_cms.bff_sessions','SELECT') "
+        "AND (SELECT relrowsecurity AND relforcerowsecurity FROM pg_class "
+        "WHERE oid='jianshi_cms.bff_sessions'::regclass))::text;")
+    require(perms == "true", "private durable sessions RLS or privileges missing")
+    functions = scalar(
+        "SELECT (NOT has_function_privilege('authenticated',"
+        "'jianshi_cms.bff_consume_session(text,boolean,text)','EXECUTE') "
+        "AND NOT has_function_privilege('anon',"
+        "'jianshi_cms.bff_issue_session(uuid,uuid,text,text,text,text,timestamptz)',"
+        "'EXECUTE'))::text;")
+    require(functions == "true", "browser executable session function")
+    run_sql(
+        f"INSERT INTO auth.sessions(id,user_id,not_after) VALUES("
+        f"'{auth_session}'::uuid,'{EDITOR}'::uuid,now()+interval '10 minutes');")
+    issue = ("SELECT jianshi_cms.bff_issue_session("
+             f"'{EDITOR}'::uuid,'{auth_session}'::uuid,"
+             f"'{cookie}','{jwt_envelope}','k1','{csrf}',"
+             "now()+interval '5 minutes')::text;")
+    require(scalar(svc(issue)) == "true", "durable issue failed")
+    check_denial(issue, "permission denied", role="authenticated")
+    check_denial(issue, "duplicate key", role="service_role")
+    read_sql = (
+        "SELECT jianshi_cms.bff_consume_session("
+        f"'{cookie}',false,NULL)::text;"
+    )
+    read = json.loads(scalar(svc(read_sql)))
+    require(read["allowed"] is True and read["user_id"] == EDITOR and
+            read["auth_session_id"] == auth_session and
+            read["encrypted_jwt"] == jwt_envelope and
+            read["encryption_key_id"] == "k1", "durable read mismatch")
+    check_denial(
+        f"SELECT jianshi_cms.bff_consume_session('{cookie}',true,'{'c'*64}');",
+        "CMS_CSRF_DENIED")
+    # Concurrent calls are separate REAL psql backends contending on same row.
+    query = svc(
+        "SELECT jianshi_cms.bff_consume_session("
+        f"'{cookie}',true,'{csrf}')::text;"
+    )
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        futures = [pool.submit(scalar, query) for _ in range(12)]
+        responses = [json.loads(f.result()) for f in futures]
+    allowed = sum(x.get("allowed") is True for x in responses)
+    denied = sum(x == {"allowed":False,"status":"CMS_RATE_LIMITED"} for x in responses)
+    require((allowed,denied) == (8,4), "cross-connection SQL rate limiter race")
+    require(scalar("SELECT write_count::text FROM jianshi_cms.bff_sessions "
+                   f"WHERE cookie_digest='{cookie}';") == "8",
+            "rate-limit row counter should atomically equal eight")
+    # A GoTrue auth.sessions revoke immediately prevents active consumption.
+    run_sql(f"UPDATE auth.sessions SET not_after=now()-interval '1 second' "
+            f"WHERE id='{auth_session}'::uuid;")
+    check_denial(read_sql, "CMS_SESSION_REVOKED")
+    # Admin can revoke even when Auth/CMS feature flags are disabled.
+    run_sql("UPDATE public.product_feature_flags SET enabled=false "
+            "WHERE feature_key IN ('account_auth','cms_editor');")
+    require(scalar(svc("SELECT jianshi_cms.bff_revoke_session("
+                       f"'{cookie}')::text;")) == "true",
+            "emergency revoke must work when gates are closed")
+    check_denial(read_sql, "CMS_SESSION_INVALID")
+    require(scalar("SELECT count(*)::text FROM jianshi_cms.bff_sessions;") == "1",
+            "unexpected persisted synthetic fixture")
+    NEGATIVE.append("DURABLE_BFF_QUOTA_ONE_ROW_LOCK")
+    print("G2H4_SQL_DURABLE_SESSION_PASS " + json.dumps({
+        "session_rows":1,"accepted_writes":allowed,"rate_denied":denied,
+        "real_database_backends":12,"revoke_with_gates_closed":True
+    },sort_keys=True))
+
+
 def main():
     initialize()
     gate_test_and_synthetic_setup()
     main_id = lifecycle()
     invalid_source()
     competing_clients()
+    durable_sessions()
     # Only synthetic fixture rows should exist in disposable PG database.
     totals = scalar(
         "SELECT (SELECT count(*) FROM jianshi_cms.content_items)::text||':'||"
