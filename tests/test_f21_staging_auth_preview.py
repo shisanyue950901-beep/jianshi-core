@@ -46,8 +46,8 @@ class StagingPreviewContract(unittest.TestCase):
         self.assertIn("status:302", edge)
         self.assertIn("location:'" + PREVIEW + "'", edge)
         self.assertIn("cache-control':'no-store", edge)
-        self.assertIn("if(!await authenticate(token))", edge)
-        self.assertIn("NO_TOKEN", edge)
+        self.assertIn("req.method !== 'GET'", edge)
+        self.assertIn("status:405", edge)
 
     @unittest.skipUnless(shutil.which("node"), "Node runtime unavailable")
     def test_javascript_parses(self):
