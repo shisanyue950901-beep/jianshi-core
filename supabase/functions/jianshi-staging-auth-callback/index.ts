@@ -31,7 +31,13 @@ Deno.serve(async(req:Request)=>{
   const u=new URL(req.url);
   if(u.hostname!==REF+'.supabase.co')return result({ok:false,code:'STAGING_ONLY'},403);
   if(req.method==='GET')
-    return new Response(page,{headers:{...securityHeaders,'content-type':'text/html; charset=utf-8','content-security-policy':await csp()}});
+    // HTML is forced to text/plain with CSP sandbox by the Supabase Edge gateway.
+    // A pure HTTP redirect to the Cloudflare preview keeps the fragment in the
+    // browser under RFC redirect fragment inheritance, without logging tokens.
+    return new Response(null,{status:302,headers:{
+      ...securityHeaders,
+      location:'https://staging-auth-callback.jianshi-bua.pages.dev/_qa/staging-auth/'
+    }});
   const action = u.pathname.split('/').filter(Boolean).pop();
   if(req.method!=='POST' || !['session','logout'].includes(action||''))return result({ok:false,code:'NOT_FOUND'},404);
   const origin=req.headers.get('origin');
