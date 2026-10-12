@@ -60,6 +60,10 @@ function errorStatus(e){
  if(['CMS_SESSION_INVALID','CMS_SESSION_REVOKED','CMS_WRITE_DISABLED',
   'CMS_AUTH_NOT_READY','CMS_PERMISSION_DENIED','CMS_ROLE_FORBIDDEN'].includes(e?.code))return 401;
  if(e?.code==='CMS_RATE_LIMITED')return 429;
+ if(['CMS_OWNER_DENIED','CMS_CSRF_DENIED','CMS_ROLE_DENIED',
+     'CMS_ORIGIN_DENIED','CMS_FETCH_SITE_DENIED'].includes(e?.code))return 403;
+ if(['CMS_STALE_REVISION','CMS_DUPLICATE_REQUEST'].includes(e?.code))return 409;
+ if(['CMS_INVALID_RESTORE_PAYLOAD','CMS_RESTORE_REQUIRES_DRAFT'].includes(e?.code))return 422;
  return 503;
 }
 export function createDurableHttpsHarness({tls,vault,store,identity,dispatch,now=Date.now}={}){
