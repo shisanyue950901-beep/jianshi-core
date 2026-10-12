@@ -160,6 +160,6 @@ test('expired, invalid or revoked provider code can never be replayed',async()=>
 test('invalid test origin and missing provider adapter never open live login',()=>{
  assert.throws(()=>createPkceLoginContract({origin:'https://jianshi-bua.pages.dev'}),
   e=>e.code==='CMS_PKCE_FIXED_TEST_ORIGIN');
- assert.throws(()=>createPkceLoginContract({origin:'https://127.0.0.1',secret:randomBytes(32)}),
+ assert.throws(()=>createPkceLoginContract({origin:'https://127.0.0.1',secret:randomBytes(32),pendingStore:{issue:()=>{},consume:()=>{}}}),
   e=>e.code==='CMS_PKCE_TRUSTED_ADAPTER_REQUIRED');
 });
