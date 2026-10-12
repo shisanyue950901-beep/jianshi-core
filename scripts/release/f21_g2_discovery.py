@@ -14,6 +14,7 @@ import re
 from f21_components import site_header, site_footer
 from f21_design_tokens import render_css as design_css
 from p446_content_hubs import CSS as SHARED_CSS
+from f21_g2c_related_quality import CSS as RELATED_CSS, render_related
 
 SITE = "https://jianshi-bua.pages.dev"
 ROUTE = "discover/"
@@ -159,7 +160,7 @@ def render() -> str:
         '<title>内容发现｜见势 JIANSHI 2.0</title>'
         '<meta name="description" content="统一查找见势公开的企业 AI 方案、匿名模式研究、项目档案和实用指南。">'
         '<link rel="canonical" href="' + SITE + '/discover/">'
-        '<style>' + SHARED_CSS + design_css() + CSS + '</style></head><body>'
+        '<style>' + SHARED_CSS + design_css() + CSS + RELATED_CSS + '</style></head><body>'
         + site_header("/discover/")
         + '<main id="discover"><section class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / 内容发现</div>'
@@ -188,7 +189,7 @@ def render() -> str:
         '<p>先看发布日期、来源与证据类型，再判断是否适合你的实际条件。'
         '行业研究不等于个人可复制收益；方案指南不代表平台已经提供对应服务。'
         '阅读 <a href="/sources/">资料来源</a> 与 <a href="/validation/">证据边界</a>。</p>'
-        '</aside></div></main>' + site_footer()
+        '</aside>' + render_related('/discover/') + '</div></main>' + site_footer()
         + '<script>' + JS + '</script></body></html>\n'
     )
     if (body.count('<main ') != 1 or body.count('</main>') != 1
