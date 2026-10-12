@@ -3,7 +3,16 @@
 'use strict';
 const AUTH_ROOT='https://apuibjhxinumxbfnqlkp.supabase.co';
 const PUBLIC_KEY='sb_publishable_u1D2ab2cvdYqv0aYw2VF4w_4lTUDO2b';
-const TEST_EMAIL='caps67@qq.com';
+// Only compare a one-way digest in the public staging preview; never publish test mailbox addresses.
+const ALLOWED_ACCOUNT_HASHES=Object.freeze({
+  'ff4b0c0ba542821f637b175bcfc06b16c91a8b91c13a6b7f9b48e64ac3a66c7a':'A',
+  'd5dfd6daa5df559060648eebd051e4f77758917e76663933813fba5e1fd3491f':'B'
+});
+async function sha256hex(text){
+  const bytes=new TextEncoder().encode(text);
+  const hash=await crypto.subtle.digest('SHA-256',bytes);
+  return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
 const STORE='jianshi-staging-auth-smoke-v1';
 const base='/_qa/staging-auth/';
 const state=document.querySelector('#state');
@@ -40,7 +49,12 @@ async function whoami(v) {
   if(reply.status===401){v=await refreshSession(v);if(!v)return false;reply=await request(v.access_token);}
   if(!reply.ok)return false;
   const user=await reply.json();
-  return user&&user.email===TEST_EMAIL&&!!user.email_confirmed_at;
+  if(!user||typeof user.id!=='string'||typeof user.email!=='string'||!user.email_confirmed_at)return null;
+  const emailHash=await sha256hex(user.email.trim().toLowerCase());
+  const account=ALLOWED_ACCOUNT_HASHES[emailHash];
+  if(!account)return null;
+  // Only a truncated non-reversible identity fingerprint is rendered; never an email or JWT.
+  return {account,identity:(await sha256hex(user.id)).slice(0,12)};
 }
 async function check(){
   if(err&&!validShape(candidate))return;
@@ -48,7 +62,8 @@ async function check(){
   if(!validShape(v)){display('Staging 回调页面已就绪。请使用新的登录邮件进行测试。');return;}
   display('正在验证 Staging 账号…');
   try{
-    if(await whoami(v)){logoutBtn.hidden=false;display('Staging 登录验证通过：已确认邮箱，JWT 身份验证通过。刷新页面可再次检查会话。','success');}
+    const user=await whoami(v);
+    if(user){logoutBtn.hidden=false;display('Staging 账号 '+user.account+' 登录验证通过：已确认邮箱，JWT 身份验证通过。身份指纹 '+user.identity+'。刷新页面可再次检查会话。','success');}
     else{forget();display('会话无效或邮箱尚未确认。','error');}
   }catch(_err){display('网络访问失败，尚不能判断登录是否通过。','error');}
 }
