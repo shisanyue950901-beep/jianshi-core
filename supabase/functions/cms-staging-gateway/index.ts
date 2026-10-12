@@ -27,6 +27,9 @@ const EDIT_KEYS = new Set([
 const STATE_KEYS = new Set([
   "content_id","expected_revision","next_state","request_id","reason",
 ]);
+const RESTORE_KEYS = new Set([
+  "content_id","expected_revision","source_revision","request_id",
+]);
 
 function response(code: number, status: string): Response {
   return new Response(JSON.stringify({ status, code }), {
@@ -67,6 +70,12 @@ function bodyValid(operation: string, body: unknown): body is Record<string, unk
       isRecord(body.content) && Array.isArray(body.sources) && body.sources.length <= 30 &&
       typeof body.rights_declared === "boolean" && typeof body.facts_checked === "boolean";
   }
+  if (operation === "RESTORE") {
+    return limitedKeys(body, RESTORE_KEYS) && Object.keys(body).length === 4 &&
+      isUuid(body.request_id) && isUuid(body.content_id) &&
+      isPositiveInt(body.expected_revision) && isPositiveInt(body.source_revision) &&
+      body.source_revision < body.expected_revision;
+  }
   if (operation === "STATE") {
     return limitedKeys(body, STATE_KEYS) && isUuid(body.request_id) &&
       isUuid(body.content_id) && isPositiveInt(body.expected_revision) &&
@@ -103,7 +112,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const path = new URL(req.url).pathname;
     const operation = path.endsWith("/drafts") ? "CREATE" :
       path.endsWith("/edit") ? "EDIT" :
-      path.endsWith("/review") ? "STATE" : null;
+      path.endsWith("/review") ? "STATE" :
+      path.endsWith("/restore") ? "RESTORE" : null;
     if (!operation) return response(404, "CMS_ROUTE_NOT_FOUND");
 
     const url = Deno.env.get("SUPABASE_URL") || "";
@@ -152,9 +162,15 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return response(422, "CMS_INVALID_PAYLOAD");
 
     // Actor comes ONLY from verified Auth, never p_actor in request JSON.
-    const { data, error } = await admin.rpc("cms_internal_write_v01", {
-      p_actor:userId, p_operation:operation, p_payload:payload,
-    });
+    // RESTORE must take its own narrow service-only RPC; never extend generic
+    // operations or accept free-form client-supplied actor/role arguments.
+    const { data, error } = operation === "RESTORE"
+      ? await admin.rpc("cms_internal_restore_v01", {
+          p_actor:userId, p_payload:payload,
+        })
+      : await admin.rpc("cms_internal_write_v01", {
+          p_actor:userId, p_operation:operation, p_payload:payload,
+        });
     if (error) {
       // Do not expose SQL text, private row contents, keys or permissions.
       if (error.code === "40001" || error.code === "23505")

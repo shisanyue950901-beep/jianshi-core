@@ -24,6 +24,7 @@ MIGRATIONS = (
     "0055_jianshi_cms_transaction_gate.sql",
     "0056_jianshi_cms_session_guard.sql",
     "0057_jianshi_cms_historical_draft_restore.sql",
+    "0058_jianshi_cms_restore_private_rpc.sql",
 )
 EDITOR = "00000000-0000-4000-8000-00000000a001"
 REVIEWER = "00000000-0000-4000-8000-00000000a002"
@@ -152,6 +153,17 @@ def restore(actor: str, item: str, rev: int, source: int, request: int) -> int:
         f"'{actor}'::uuid,'{item}'::uuid,{rev},{source},'{rid(request)}'::uuid);")))
 
 
+def restore_gateway(actor: str, item: str, rev: int, source: int, request: int) -> int:
+    payload = {
+        "content_id":item, "expected_revision":rev,
+        "source_revision":source, "request_id":rid(request)
+    }
+    result = scalar(svc(
+        "SELECT public.cms_internal_restore_v01("
+        f"'{actor}'::uuid,{sql_quote(json.dumps(payload))}::jsonb);"))
+    return int(json.loads(result)["revision"])
+
+
 def initialize():
     require(os.environ.get("JIANSHI_G2F_EPHEMERAL_ONLY") == "1", "ephemeral guard")
     require(bool(re.fullmatch(r"[a-f0-9]{12,64}", CONTAINER)), "Docker container id required")
@@ -259,7 +271,8 @@ def lifecycle():
         "SELECT jianshi_cms.restore_draft_revision("
         f"'{EDITOR}'::uuid,'{ident}'::uuid,2,2,'{rid(12)}'::uuid);",
         "CMS_INVALID_SOURCE_REVISION")
-    require(restore(EDITOR, ident, 2, 1, 13) == 3, "real historical restoration")
+    require(restore_gateway(EDITOR, ident, 2, 1, 13) == 3,
+            "real authenticated-edge-compatible SQL RPC historical restoration")
     require(scalar(
         "SELECT (NOT rights_declared AND NOT facts_checked)::text "
         f"FROM jianshi_cms.content_revisions WHERE item_id='{ident}'::uuid "
@@ -273,9 +286,21 @@ def lifecycle():
         "AND actor_action='RESTORE';") == "1", "restore audit missing")
 
     check_denial(
-        "SELECT jianshi_cms.restore_draft_revision("
-        f"'{EDITOR}'::uuid,'{ident}'::uuid,3,1,'{rid(13)}'::uuid);",
+        "SELECT public.cms_internal_restore_v01("
+        f"'{EDITOR}'::uuid,"
+        + sql_quote(json.dumps({
+            "content_id":ident,"expected_revision":3,
+            "source_revision":1,"request_id":rid(13)
+        })) + "::jsonb);",
         "CMS_DUPLICATE_REQUEST")
+    check_denial(
+        "SELECT public.cms_internal_restore_v01("
+        f"'{EDITOR}'::uuid,"
+        + sql_quote(json.dumps({
+            "content_id":ident,"expected_revision":3,
+            "source_revision":1,"request_id":rid(36),"p_actor":OTHER
+        })) + "::jsonb);",
+        "CMS_INVALID_RESTORE_PAYLOAD")
     require(transition(EDITOR, ident, 3, "IN_REVIEW", 14) == 4, "review submit")
     check_denial(
         "SELECT jianshi_cms.change_review_state("
