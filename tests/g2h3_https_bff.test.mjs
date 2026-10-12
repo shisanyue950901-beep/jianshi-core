@@ -127,11 +127,12 @@ async function serve(ctx){
  return {base:'https://127.0.0.1:'+ctx.harness.server.address().port,
   stop:()=>new Promise(resolve=>ctx.harness.server.close(resolve))};
 }
-async function request(base,route,{method='GET',cookie,csrf,origin,body,host,fetchSite}={}){
+async function request(base,route,{method='GET',cookie,rawCookie,csrf,origin,body,host,fetchSite}={}){
  const u=new URL(base+route);
  const text=body===undefined?undefined:JSON.stringify(body);
  const headers={};
  if(cookie)headers.cookie=cookie.split(';')[0];
+ if(rawCookie)headers.cookie=rawCookie;
  if(csrf)headers['x-csrf-token']=csrf;
  if(origin!==undefined)headers.origin=origin;
  if(host)headers.host=host;
@@ -172,7 +173,7 @@ test('actual TLS: Secure HttpOnly session and strict host; no public login route
   assert.equal((await request(s.base,'/qa/api/state')).http,401);
   assert.equal((await request(s.base,'/qa/login',{cookie:a.setCookie})).http,405);
   assert.equal((await request(s.base,'/qa/api/session',{cookie:a.setCookie,host:'bad.test'})).http,403);
-  assert.equal((await request(s.base,'/qa/api/session',{cookie:a.setCookie+'; '+a.setCookie})).http,401);
+  assert.equal((await request(s.base,'/qa/api/session',{rawCookie:a.setCookie.split(';')[0]+'; '+a.setCookie.split(';')[0]})).http,401);
  }finally{await s.stop();}
 });
 test('real HTTPS action enforces CSRF, Origin, Fetch-Site, strict payload and RBAC',async()=>{
