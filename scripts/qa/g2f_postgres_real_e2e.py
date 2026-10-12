@@ -28,6 +28,7 @@ MIGRATIONS = (
     "0059_jianshi_cms_trusted_role_read.sql",
     "0060_jianshi_cms_durable_bff_sessions.sql",
     "0061_jianshi_cms_pkce_one_time_state.sql",
+    "0062_jianshi_cms_email_tokenhash_state.sql",
 )
 EDITOR = "00000000-0000-4000-8000-00000000a001"
 REVIEWER = "00000000-0000-4000-8000-00000000a002"
@@ -207,7 +208,7 @@ CREATE TABLE auth.sessions (
         """SELECT (
           (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
            WHERE n.nspname='jianshi_cms' AND c.relkind='r'
-             AND c.relrowsecurity AND c.relforcerowsecurity)=8
+             AND c.relrowsecurity AND c.relforcerowsecurity)=9
           AND NOT has_schema_privilege('authenticated','jianshi_cms','USAGE')
           AND NOT has_schema_privilege('anon','jianshi_cms','USAGE')
         )::text;""")
@@ -460,6 +461,60 @@ def pkce_single_use():
     },sort_keys=True))
 
 
+def email_tokenhash_state_single_use():
+    """Actual disposable PostgreSQL row-lock replay defense, never live Auth."""
+    state="6"*64
+    cookie="7"*64
+    perms=scalar(
+        "SELECT (NOT has_table_privilege('anon','jianshi_cms.bff_email_challenges','SELECT') "
+        "AND NOT has_table_privilege('authenticated','jianshi_cms.bff_email_challenges','SELECT') "
+        "AND has_table_privilege('service_role','jianshi_cms.bff_email_challenges','SELECT') "
+        "AND NOT has_function_privilege('anon',"
+        "'jianshi_cms.bff_consume_email_state_v01(text,text)','EXECUTE') "
+        "AND NOT has_function_privilege('authenticated',"
+        "'jianshi_cms.bff_issue_email_state_v01(text,text,timestamptz)','EXECUTE') "
+        "AND (SELECT relrowsecurity AND relforcerowsecurity FROM pg_class "
+        "WHERE oid='jianshi_cms.bff_email_challenges'::regclass))::text;")
+    require(perms=="true","private email state table or RPC exposed")
+    issue=("SELECT jianshi_cms.bff_issue_email_state_v01("
+           f"'{state}','{cookie}',now()+interval '3 minutes')::text;")
+    require(scalar(svc(issue))=="true","email state issue failed")
+    check_denial(issue,"permission denied",role="authenticated")
+    check_denial(issue,"duplicate key",role="service_role")
+    wrong=json.loads(scalar(svc(
+        "SELECT jianshi_cms.bff_consume_email_state_v01("
+        f"'{state}','{'8'*64}')::text;")))
+    require(wrong=={"used":False},"bad cookie must not consume email state")
+    query=svc("SELECT jianshi_cms.bff_consume_email_state_v01("
+              f"'{state}','{cookie}')::text;")
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        results=list(pool.map(lambda _:json.loads(scalar(query)),range(6)))
+    require(sum(row=={"used":True} for row in results)==1,
+            "email one-time CAS must have exactly one winner")
+    require(sum(row=={"used":False} for row in results)==5,
+            "email one-time CAS must have five rejects")
+    require(json.loads(scalar(query))=={"used":False},"email replay not denied")
+    expired_state="9"*64
+    require(scalar(svc("SELECT jianshi_cms.bff_issue_email_state_v01("
+                       f"'{expired_state}','{cookie}',now()+interval '3 minutes')::text;"))=="true",
+            "email expiry fixture issue failed")
+    run_sql("UPDATE jianshi_cms.bff_email_challenges "
+            "SET issued_at=now()-interval '10 minutes',"
+            "expires_at=now()-interval '6 minutes' "
+            f"WHERE state_digest='{expired_state}';")
+    require(json.loads(scalar(svc(
+        "SELECT jianshi_cms.bff_consume_email_state_v01("
+        f"'{expired_state}','{cookie}')::text;")))=={"used":False},
+        "email expired state accepted")
+    require(scalar("SELECT count(*)::text FROM jianshi_cms.bff_email_challenges;")=="2",
+            "unexpected email synthetic state rows")
+    NEGATIVE.append("EMAIL_TOKENHASH_ATOMIC_ONE_TIME_REPLAY_DENIED")
+    print("G2H7B_SQL_EMAIL_SINGLE_USE_PASS "+json.dumps({
+        "pending_rows":2,"concurrent_connections":6,"winners":1,
+        "replay_denied":True,"expired_denied":True,"wrong_cookie_denied":True
+    },sort_keys=True))
+
+
 def durable_sessions():
     """Actual SQL lifecycle, independent service clients and row-locked quotas.
 
@@ -550,9 +605,14 @@ def main():
     invalid_source()
     competing_clients()
     pkce_single_use()
+    email_tokenhash_state_single_use()
     durable_sessions()
     check_denial("SELECT jianshi_cms.bff_issue_pkce_v01("
                  + "'" + "c"*64 + "','" + "d"*64 + "','v1." + "x"*96
+                 + "',now()+interval '3 minutes');",
+                 "CMS_WRITE_DISABLED")
+    check_denial("SELECT jianshi_cms.bff_issue_email_state_v01("
+                 + "'" + "a"*64 + "','" + "b"*64
                  + "',now()+interval '3 minutes');",
                  "CMS_WRITE_DISABLED")
     # Only synthetic fixture rows should exist in disposable PG database.

@@ -16,6 +16,7 @@ on:
       - 'scripts/qa/g2h5_durable_https_bff.mjs'
       - 'tests/g2h5_durable_https_pg.test.mjs'
       - 'tests/test_f21_g2h5_chain_contract.py'
+      - 'db/migrations/0062_jianshi_cms_email_tokenhash_state.sql'
       - '.github/workflows/cms-postgres-isolated.yml'
   push:
     branches: [main]
@@ -33,6 +34,7 @@ on:
       - 'scripts/qa/g2h5_durable_https_bff.mjs'
       - 'tests/g2h5_durable_https_pg.test.mjs'
       - 'tests/test_f21_g2h5_chain_contract.py'
+      - 'db/migrations/0062_jianshi_cms_email_tokenhash_state.sql'
       - '.github/workflows/cms-postgres-isolated.yml'
 permissions:
   contents: read
