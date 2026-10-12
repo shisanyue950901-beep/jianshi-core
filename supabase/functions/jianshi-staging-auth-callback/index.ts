@@ -30,9 +30,10 @@ async function csp() {
 Deno.serve(async(req:Request)=>{
   const u=new URL(req.url);
   if(u.hostname!==REF+'.supabase.co')return result({ok:false,code:'STAGING_ONLY'},403);
-  if(req.method==='GET' && u.pathname===ROUTE)
+  if(req.method==='GET')
     return new Response(page,{headers:{...securityHeaders,'content-type':'text/html; charset=utf-8','content-security-policy':await csp()}});
-  if(req.method!=='POST' || ![ROUTE+'/session',ROUTE+'/logout'].includes(u.pathname))return result({ok:false,code:'NOT_FOUND'},404);
+  const action = u.pathname.split('/').filter(Boolean).pop();
+  if(req.method!=='POST' || !['session','logout'].includes(action||''))return result({ok:false,code:'NOT_FOUND'},404);
   const origin=req.headers.get('origin');
   const site=req.headers.get('sec-fetch-site');
   if(origin&&origin!==u.origin || site&&site!=='same-origin'&&site!=='none')return result({ok:false,code:'ORIGIN_REJECTED'},403);
@@ -41,7 +42,7 @@ Deno.serve(async(req:Request)=>{
   const token=raw.slice(7);
   try {
     if(!await authenticate(token))return result({ok:false,code:'INVALID_SESSION'},403);
-    if(u.pathname===ROUTE+'/session')return result({ok:true,masked_email:'ca***@qq.com'});
+    if(action==='session')return result({ok:true,masked_email:'ca***@qq.com'});
     const url=Deno.env.get('SUPABASE_URL')!;
     const key=Deno.env.get('SUPABASE_ANON_KEY')!;
     const done=await fetch(url+'/auth/v1/logout',{method:'POST',headers:{apikey:key,authorization:'Bearer '+token},signal:AbortSignal.timeout(8000)});
