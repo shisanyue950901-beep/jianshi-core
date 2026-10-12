@@ -1,0 +1,132 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow"><title>内容发现｜见势 JIANSHI 2.0</title><meta name="description" content="统一查找见势公开的企业 AI 方案、匿名模式研究、项目档案和实用指南。"><link rel="canonical" href="https://jianshi-bua.pages.dev/discover/"><style>
+:root{color-scheme:light}*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;min-width:320px;color:#132038;background:#f6f8fc;font:15px/1.8 "PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit}a:focus-visible,summary:focus-visible{outline:3px solid #77aafa;outline-offset:4px}
+.wrap{width:min(1180px,calc(100% - 44px));margin:auto}
+.top{background:#071120;color:#eff3ff;position:sticky;top:0;z-index:20;border-bottom:1px solid #263955;backdrop-filter:blur(14px)}
+.top .row{display:flex;justify-content:space-between;align-items:center;min-height:68px;gap:24px}
+.logo{font-size:22px;font-weight:850;white-space:nowrap;letter-spacing:-.04em}.logo small{margin-left:8px;letter-spacing:.13em;color:#a5b7d3;font-size:10px}
+.top nav{display:flex;gap:23px;align-items:center}.top nav a{font-size:13px;color:#c6d5e8}.top nav a[aria-current="page"]{color:#bdb0ff;font-weight:800}
+.mobile{display:none;position:relative}.mobile summary{border:1px solid #647390;padding:7px 13px;border-radius:11px;cursor:pointer;list-style:none}
+.mobile summary::-webkit-details-marker{display:none}
+.mobile nav{position:absolute;display:grid;gap:4px;right:0;top:calc(100% + 10px);background:#12233c;min-width:235px;box-shadow:0 12px 35px #0004;padding:14px;border-radius:14px}
+.mobile nav a{padding:8px 10px}
+.hero{background:#081223;color:#fff;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:650px;height:550px;right:-130px;top:-210px;background:radial-gradient(ellipse,#6e64e858,transparent 67%);pointer-events:none}
+.hero .wrap{position:relative;padding:76px 0 88px}
+.crumb{font-size:12px;letter-spacing:.02em;color:#adbcd7}.crumb a{text-decoration:underline;text-underline-offset:3px}
+.kicker{display:inline-flex;margin-top:34px;border:1px solid #4c5d7d;background:#142542;color:#c4cbff;border-radius:80px;padding:5px 13px;letter-spacing:.08em;font-size:11px;font-weight:750}
+h1{font-size:clamp(37px,5.7vw,67px);font-weight:850;line-height:1.14;letter-spacing:-.05em;max-width:920px;margin:20px 0}
+.hero p{max-width:780px;color:#c1cfe3;font-size:clamp(15px,1.8vw,19px);margin:0}
+.hero-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;align-items:center;border-radius:12px;min-height:46px;padding:10px 18px;font-size:13px;font-weight:800;border:1px solid #667590;color:#e7ecff}
+.btn.primary{background:linear-gradient(110deg,#8e70ff,#4a8fff);border-color:transparent;color:#fff}
+.content{padding:48px 0 95px}.status{border:1px solid #d8d9f7;border-left:4px solid #7869d5;border-radius:12px;background:#f0edff;padding:13px 17px;color:#42466b;font-size:13px;line-height:1.8;margin-bottom:32px}
+.section{margin:64px 0 0;scroll-margin-top:105px}.section:first-child{margin-top:0}
+.label{font-size:11px;letter-spacing:.17em;color:#6856cc;font-weight:850}
+h2{font-size:clamp(26px,3.2vw,39px);font-weight:820;letter-spacing:-.04em;line-height:1.26;color:#17253e;margin:9px 0 14px}
+h3{font-size:19px;line-height:1.35;margin:0 0 9px;color:#192945}
+.lead{font-size:14px;color:#60708c;max-width:820px;margin:0 0 23px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.cards.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{border-radius:17px;border:1px solid #e0e7f2;background:#fff;padding:23px;min-width:0}
+.card.link{transition:transform .23s,box-shadow .23s,border-color .23s;display:block}
+.card.link:hover{transform:translateY(-4px);box-shadow:0 16px 40px #23345619;border-color:#aea6ef}
+.card p,.card li{color:#60708a;font-size:13px;margin:0;line-height:1.85}
+.card strong{display:block;color:#6254bf;font-size:11px;letter-spacing:.08em;margin-bottom:8px}
+.card .go{display:block;margin-top:20px;color:#6357c9;font-weight:800;font-size:13px}
+.list{padding-left:19px;margin:0}.list li{margin-bottom:8px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.step{border-top:2px solid #8572dc;padding:17px 10px 0}
+.step b{display:block;color:#695cd4;font-size:12px;margin-bottom:12px}
+.step p{color:#65748d;font-size:13px;margin:0}
+.notice{background:#10203b;border-radius:19px;padding:29px;color:#eaf0fb}
+.notice h3{color:#fff}.notice p{color:#bdc8dd;margin:0;font-size:13px}
+table{width:100%;border-collapse:collapse;background:white;border:1px solid #e3e9f2;border-radius:16px;overflow:hidden}
+th,td{text-align:left;padding:15px 17px;border-bottom:1px solid #e7edf5;font-size:13px;vertical-align:top}
+th{background:#f0f3fb;color:#2a3d62}td{color:#60708a}tr:last-child td{border-bottom:0}
+details{background:#fff;border:1px solid #e2e9f4;border-radius:14px;padding:17px 20px;margin-top:12px}
+summary{cursor:pointer;color:#243956;font-weight:750}
+details p,details li{color:#62718b;font-size:13px;margin:11px 0}
+code,pre{font:12px/1.8 ui-monospace,Consolas,monospace}
+pre{white-space:pre-wrap;word-break:break-word;background:#f0f4fa;border:1px solid #e1e8f3;padding:16px;border-radius:13px}
+.footer{background:#0a1527;color:#c1cde2;padding:36px 0 43px}
+.footer .row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.footer p{font-size:12px;margin:5px 0;max-width:620px}
+.footer nav{display:flex;gap:16px;flex-wrap:wrap;font-size:12px}.footer nav a{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:1050px){.top .desktop{display:none}.mobile{display:block}.cards.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.wrap{width:calc(100% - 34px)}.hero .wrap{padding:42px 0 62px}.cards,.cards.four,.steps{grid-template-columns:1fr}.section{margin-top:46px}.content{padding-top:32px}.card{padding:20px}.status{padding:12px}.top .row{min-height:62px}th,td{padding:12px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card.link{transition:none;transform:none!important}}
+/* F2.1 common brand semantics; safe to append once */:root{--js21-bg-dark:#081120;--js21-bg-light:#F6F8FC;--js21-surface:#FFFFFF;--js21-text-main:#132038;--js21-text-muted:#64748B;--js21-border:#E0E7F2;--js21-accent-blue:#538DFF;--js21-accent-purple:#9975FF;--js21-radius-card:16px;--js21-radius-control:12px;--js21-content-max:1180px;}
+html{scroll-padding-top:80px}
+body{color:var(--js21-text-main)}
+.hero{background:var(--js21-bg-dark)}
+.top{background:var(--js21-bg-dark)}
+.card{border-color:var(--js21-border);border-radius:var(--js21-radius-card)}
+.card p,.lead{color:var(--js21-text-muted)}
+.tool-panel{border-color:var(--js21-border);border-radius:var(--js21-radius-card)}
+#j2 .j2-mast{background:var(--js21-bg-dark)}
+#j2 .j2-content{background:var(--js21-bg-light)}
+#j2 .j2-project,#j2 .j2-solution{border-color:var(--js21-border)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.discover-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.discover-intro .lead{margin:0;max-width:740px}
+.discover-search{margin:22px 0 0;padding:22px;background:#fff;border:1px solid #dce4f0;border-radius:20px;box-shadow:0 12px 30px #1727430a}
+.discover-search label{font-size:13px;font-weight:800;color:#20324f;display:block;margin-bottom:8px}
+.discover-search input{width:100%;min-height:51px;font:inherit;font-size:16px;color:#132038;border:1px solid #bac8dc;border-radius:11px;padding:12px 15px;outline-offset:3px}
+.discover-search input:focus-visible{outline:3px solid #8c80f2;border-color:#6656ca}
+.discover-controls{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-top:17px}
+.discover-filters{display:flex;gap:8px;flex-wrap:wrap}
+.discover-filters button{border:1px solid #cbd5e6;background:#f4f6fb;border-radius:999px;padding:7px 13px;cursor:pointer;color:#3b4c6b;font-size:12px;font-weight:750}
+.discover-filters button[aria-pressed=true]{background:#211d4d;border-color:#211d4d;color:#fff}
+.discover-filters button:focus-visible,#discover-reset:focus-visible{outline:3px solid #796ce8;outline-offset:3px}
+#discover-reset{border:0;background:transparent;color:#5548ac;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:8px;font-weight:750}
+.discover-meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:24px 0 14px;font-size:13px;color:#5c6a83}
+.discover-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.discover-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e0e7f2;border-radius:17px;padding:23px;min-width:0;min-height:240px;transition:transform .18s,border-color .18s,box-shadow .18s}
+.discover-card:hover{transform:translateY(-2px);border-color:#a49adb;box-shadow:0 14px 28px #1b2d4a12}
+.discover-card[hidden]{display:none}
+.discover-card .type{font-size:11px;color:#6755ba;font-weight:800;letter-spacing:.08em}
+.discover-card h3{margin:12px 0;font-size:19px}
+.discover-card p{margin:0;color:#66748a;font-size:13px;line-height:1.85;flex:1}
+.discover-card .source-note{font-size:11px;color:#7c8495;display:block;margin-top:16px}
+.discover-card .go{display:block;margin-top:12px;color:#4e45a7;font-size:13px;font-weight:800}
+#discover-empty{border:1px dashed #b6c1d7;background:#fff;border-radius:16px;padding:34px 24px;text-align:center;color:#475978}
+#discover-empty[hidden]{display:none}
+.discover-notice{border-radius:18px;padding:24px;background:#10203b;color:#d8e4f5;margin-top:55px}
+.discover-notice h2{font-size:23px;color:#fff;margin:0 0 12px}
+.discover-notice p{color:#bcd0e7;font-size:13px;margin:0}
+.discover-notice a{color:#dfd4ff;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:950px){.discover-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.discover-grid{grid-template-columns:1fr}.discover-card{min-height:0;padding:20px}.discover-search{padding:17px}.discover-intro{display:block}}
+@media(prefers-reduced-motion:reduce){.discover-card{transition:none;transform:none!important}}
+</style></head><body><header class="top"><div class="wrap row"><a class="logo" href="/" aria-label="见势首页">见势 <small>JIANSHI 2.0</small></a><div class="desktop"><nav aria-label="主要导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/">企业解决方案</a><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></div><details class="mobile"><summary aria-label="展开导航">☰ 菜单</summary><nav aria-label="移动导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/">企业解决方案</a><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></details></div></header><main id="discover"><section class="hero"><div class="wrap"><div class="crumb"><a href="/">见势首页</a> / 内容发现</div><span class="kicker">G2 / PUBLIC DISCOVERY</span><h1>从问题出发，找到可读的答案。</h1><p>把已经公开的方案、研究、项目档案和指南放在同一个入口。不混入未审核订单、私有采集记录或不存在的课程。</p></div></section><div class="wrap content"><section aria-labelledby="discover-title" class="section"><div class="discover-intro"><div><span class="label">01 / CONTENT DIRECTORY</span><h2 id="discover-title">探索已公开的内容</h2><p class="lead">按关键词或栏目筛选。所有搜索都在当前浏览器本地完成，不采集输入或发送查询请求。</p></div></div><form id="discover-form" role="search" class="discover-search"><label for="discover-query">搜索主题、场景或项目</label><input id="discover-query" type="search" placeholder="例如：自动化、SaaS、视频、版权" autocomplete="off" maxlength="80"><div class="discover-controls"><div class="discover-filters" role="group" aria-label="筛选内容栏目"><button type="button" data-discover-category="all" aria-pressed="true">全部内容 · 17</button><button type="button" data-discover-category="solutions" aria-pressed="false">企业方案 · 4</button><button type="button" data-discover-category="research" aria-pressed="false">行业研究 · 6</button><button type="button" data-discover-category="projects" aria-pressed="false">项目档案 · 3</button><button type="button" data-discover-category="guides" aria-pressed="false">实用指南 · 4</button></div><button type="button" id="discover-reset">重置筛选</button></div></form><div class="discover-meta"><span id="discover-count" role="status" aria-live="polite">共 17 条公开内容</span><span>仅收录可访问的正式公开页面，不代表实时更新或新增商机。</span></div><div class="discover-grid" id="discover-grid"><a class="discover-card" data-discover-card data-category="solutions" data-search="AI 电商视觉 商品图、详情页和活动视觉：从素材授权到交付验收的步骤。 应用指南 · 非成交服务 企业方案" href="/solutions/ecommerce-visual/"><span class="type">企业方案</span><h3>AI 电商视觉</h3><p>商品图、详情页和活动视觉：从素材授权到交付验收的步骤。</p><span class="source-note">应用指南 · 非成交服务</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="solutions" data-search="AI 视频与品牌短片 了解脚本、分镜、概念片、版权和短视频交付边界。 应用指南 · 非案例 企业方案" href="/solutions/brand-video/"><span class="type">企业方案</span><h3>AI 视频与品牌短片</h3><p>了解脚本、分镜、概念片、版权和短视频交付边界。</p><span class="source-note">应用指南 · 非案例</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="solutions" data-search="AI 企业自动化 从流程梳理、权限边界到人工复核与安全回退。 应用指南 · 非已售产品 企业方案" href="/solutions/automation/"><span class="type">企业方案</span><h3>AI 企业自动化</h3><p>从流程梳理、权限边界到人工复核与安全回退。</p><span class="source-note">应用指南 · 非已售产品</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="solutions" data-search="AI 出海内容与本地化 目标语言、营销渠道、术语表与人工审校的业务准备。 应用指南 · 非实际订单 企业方案" href="/solutions/localization/"><span class="type">企业方案</span><h3>AI 出海内容与本地化</h3><p>目标语言、营销渠道、术语表与人工审校的业务准备。</p><span class="source-note">应用指南 · 非实际订单</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="research" data-search="垂直行业 SaaS 查看匿名行业模式的研究、局限和可核验线索。 匿名模式研究 · 非个体收益 行业研究" href="/research/vertical-industry-saas/"><span class="type">行业研究</span><h3>垂直行业 SaaS</h3><p>查看匿名行业模式的研究、局限和可核验线索。</p><span class="source-note">匿名模式研究 · 非个体收益</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="research" data-search="细分品牌与 FBA 理解选品、履约、成本结构和竞争风险的研究框架。 匿名模式研究 · 非收益承诺 行业研究" href="/research/amazon-fba-niche-brand/"><span class="type">行业研究</span><h3>细分品牌与 FBA</h3><p>理解选品、履约、成本结构和竞争风险的研究框架。</p><span class="source-note">匿名模式研究 · 非收益承诺</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="research" data-search="数字产品业务 产品构建、分发、内容授权与续费机制的研究线索。 匿名模式研究 · 非收益承诺 行业研究" href="/research/digital-product-business/"><span class="type">行业研究</span><h3>数字产品业务</h3><p>产品构建、分发、内容授权与续费机制的研究线索。</p><span class="source-note">匿名模式研究 · 非收益承诺</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="research" data-search="联盟内容网站 搜索内容、佣金模式、流量依赖与平台政策风险。 匿名模式研究 · 非收益承诺 行业研究" href="/research/affiliate-content-site/"><span class="type">行业研究</span><h3>联盟内容网站</h3><p>搜索内容、佣金模式、流量依赖与平台政策风险。</p><span class="source-note">匿名模式研究 · 非收益承诺</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="research" data-search="KDP 数字出版 了解原创版权、平台规则与低成本试验的边界。 匿名模式研究 · 非收益承诺 行业研究" href="/research/amazon-kdp-publishing/"><span class="type">行业研究</span><h3>KDP 数字出版</h3><p>了解原创版权、平台规则与低成本试验的边界。</p><span class="source-note">匿名模式研究 · 非收益承诺</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="research" data-search="数字服务工作室 从客户问题、交付范围到服务流程与增长约束。 匿名模式研究 · 非收益承诺 行业研究" href="/research/agency-business/"><span class="type">行业研究</span><h3>数字服务工作室</h3><p>从客户问题、交付范围到服务流程与增长约束。</p><span class="source-note">匿名模式研究 · 非收益承诺</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="projects" data-search="Plausible 以已公开资料建立的具名项目研究档案，查看来源与证据边界。 公开项目档案 · 非投资建议 项目档案" href="/projects/plausible/"><span class="type">项目档案</span><h3>Plausible</h3><p>以已公开资料建立的具名项目研究档案，查看来源与证据边界。</p><span class="source-note">公开项目档案 · 非投资建议</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="projects" data-search="Carrd 以已公开资料整理的产品项目档案，区分事实与解读。 公开项目档案 · 非投资建议 项目档案" href="/projects/carrd/"><span class="type">项目档案</span><h3>Carrd</h3><p>以已公开资料整理的产品项目档案，区分事实与解读。</p><span class="source-note">公开项目档案 · 非投资建议</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="projects" data-search="NerdWallet 了解项目公开资料与可核验证据，不推断个人收益。 公开项目档案 · 非投资建议 项目档案" href="/projects/nerdwallet/"><span class="type">项目档案</span><h3>NerdWallet</h3><p>了解项目公开资料与可核验证据，不推断个人收益。</p><span class="source-note">公开项目档案 · 非投资建议</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="guides" data-search="商机大厅｜需求准备 在真实业务入口开放前，用指南整理目标、素材、时间与验收口径。 准备指南 · 暂无真实订单展示 实用指南" href="/marketplace/"><span class="type">实用指南</span><h3>商机大厅｜需求准备</h3><p>在真实业务入口开放前，用指南整理目标、素材、时间与验收口径。</p><span class="source-note">准备指南 · 暂无真实订单展示</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="guides" data-search="人才与服务商｜作品规范 学习作品授权、技能描述、审核与公开展示的基本规则。 准备指南 · 非服务商名录 实用指南" href="/talent/"><span class="type">实用指南</span><h3>人才与服务商｜作品规范</h3><p>学习作品授权、技能描述、审核与公开展示的基本规则。</p><span class="source-note">准备指南 · 非服务商名录</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="guides" data-search="AIGC 学院｜学习路径 图像、视频、Agent 与商业研究的学习计划和练习目标。 学习路线 · 非已上线付费课程 实用指南" href="/academy/"><span class="type">实用指南</span><h3>AIGC 学院｜学习路径</h3><p>图像、视频、Agent 与商业研究的学习计划和练习目标。</p><span class="source-note">学习路线 · 非已上线付费课程</span><span class="go">阅读公开内容 ↗</span></a><a class="discover-card" data-discover-card data-category="guides" data-search="资料来源与证据边界 理解研究资料来源、验证局限及不能公开的内容范围。 透明度说明 · 不含私有原文 实用指南" href="/sources/"><span class="type">实用指南</span><h3>资料来源与证据边界</h3><p>理解研究资料来源、验证局限及不能公开的内容范围。</p><span class="source-note">透明度说明 · 不含私有原文</span><span class="go">阅读公开内容 ↗</span></a></div><div id="discover-empty" role="status" hidden><h3>没有匹配的内容</h3><p>尝试更宽泛的关键词，或清除筛选重新浏览。</p></div></section><aside class="discover-notice" aria-label="研究与服务边界"><h2>如何判断一条信息是否值得行动？</h2><p>先看发布日期、来源与证据类型，再判断是否适合你的实际条件。行业研究不等于个人可复制收益；方案指南不代表平台已经提供对应服务。阅读 <a href="/sources/">资料来源</a> 与 <a href="/validation/">证据边界</a>。</p></aside></div></main><footer class="footer"><div class="wrap row"><div><b>见势 JIANSHI</b><p>发现机会 · 掌握 AI · 对接需求 · 创造价值。</p><p>商业研究不保证个人收益；企业撮合和课程能力以实际开放状态为准。</p></div><nav aria-label="辅助信息"><a href="/projects/">审核项目</a><a href="/research/">匿名研究</a><a href="/discover/">内容发现</a><a href="/sources/">数据来源</a><a href="/privacy/">隐私政策</a></nav></div></footer><script>(function(){'use strict';
+const root=document.getElementById('discover');
+const input=document.getElementById('discover-query');
+const controls=Array.from(root.querySelectorAll('[data-discover-category]'));
+const cards=Array.from(root.querySelectorAll('[data-discover-card]'));
+const counter=document.getElementById('discover-count');
+const empty=document.getElementById('discover-empty');
+const reset=document.getElementById('discover-reset');
+const form=document.getElementById('discover-form');
+let category='all';
+function update(){
+ const query=input.value.trim().toLocaleLowerCase('zh-CN');
+ let visible=0;
+ cards.forEach(card=>{
+  const match=(category==='all'||card.dataset.category===category)
+   &&(!query||card.dataset.search.toLocaleLowerCase('zh-CN').includes(query));
+  card.hidden=!match;
+  if(match)visible++;
+ });
+ controls.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.discoverCategory===category)));
+ counter.textContent='已找到 '+visible+' 条公开内容 · 共 '+cards.length+' 条';
+ empty.hidden=visible!==0;
+}
+controls.forEach(btn=>btn.addEventListener('click',()=>{category=btn.dataset.discoverCategory;update();}));
+input.addEventListener('input',update);
+reset.addEventListener('click',()=>{input.value='';category='all';update();input.focus();});
+form.addEventListener('submit',event=>event.preventDefault());
+update();
+})();</script></body></html>
