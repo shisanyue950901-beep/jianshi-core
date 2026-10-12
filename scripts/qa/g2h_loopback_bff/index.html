@@ -1,0 +1,43 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>见势｜G2-H CMS 隔离工作台</title>
+<link rel="stylesheet" href="/qa/cms/style.css"></head><body>
+<main><header>
+<p class="kicker">JIANSHI / G2-H / SYNTHETIC LOOPBACK</p>
+<h1>CMS 编辑与审核工作台</h1>
+<p class="warning">仅用于本机安全测试：所有账号、文章、审核与快照都是合成数据。
+不连接 Supabase、Cloudflare 或真实企业资料。无法从此页面创建真实账号或公开发布。</p>
+</header>
+<section class="panel" aria-label="会话状态">
+<h2>会话与工作流</h2>
+<p id="session" role="status" aria-live="polite">正在检查隔离会话…</p>
+<p id="workflow"></p>
+</section>
+<section class="panel" aria-labelledby="operate">
+<h2 id="operate">操作面板</h2>
+<label for="doc-title">文章标题（合成数据）</label>
+<input id="doc-title" maxlength="80" value="重新核验后的合成稿" autocomplete="off">
+<div class="checks">
+<label><input type="checkbox" id="rights"> 版权材料已重新核对（模拟）</label>
+<label><input type="checkbox" id="facts"> 内容事实已重新核对（模拟）</label>
+</div>
+<div class="actions">
+<button type="button" data-action="RESTORE">恢复第一版</button>
+<button type="button" data-action="EDIT">保存草稿</button>
+<button type="button" data-action="SUBMIT">提交审核</button>
+<button type="button" data-action="APPROVE">审核通过</button>
+<button type="button" data-action="REJECT">驳回</button>
+<button type="button" data-action="PUBLISH">内部模拟发布</button>
+<button type="button" data-action="RETRACT">撤回模拟发布</button>
+</div>
+<p id="result" role="status" aria-live="polite">未发生写入操作。</p>
+</section>
+<div class="cols">
+<section class="panel"><h2>修订历史</h2><ol id="revisions"></ol></section>
+<section class="panel"><h2>审计事件</h2><ol id="events"></ol></section>
+<section class="panel"><h2>内部快照</h2><ol id="snapshots"></ol></section>
+</div>
+<footer>仅测试 HTTP 同源 / Cookie / CSRF / 角色拒绝 / 版本冲突。
+在真实 GoTrue JWT、审查角色、限流及部署隔离被完整验收前，不允许启动生产 CMS。</footer>
+</main><script defer src="/qa/cms/app.js"></script></body></html>

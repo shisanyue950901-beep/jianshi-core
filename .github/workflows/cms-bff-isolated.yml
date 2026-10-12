@@ -1,0 +1,39 @@
+name: JianShi G2-H Local BFF Security E2E
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qa/g2h_loopback_bff/**'
+      - 'tests/g2h_loopback_bff.test.mjs'
+      - 'tests/test_f21_g2h_loopback_bff.py'
+      - '.github/workflows/cms-bff-isolated.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/qa/g2h_loopback_bff/**'
+      - 'tests/g2h_loopback_bff.test.mjs'
+      - 'tests/test_f21_g2h_loopback_bff.py'
+      - '.github/workflows/cms-bff-isolated.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic-loopback-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reject remote CMS credentials and publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e web/dist/qa/cms/index.html
+          test ! -e web/dist/cms-admin/index.html
+          ! grep -q 'g2h_loopback_bff' scripts/release/p412_build_public.py
+          ! grep -q 'g2h_loopback_bff' .github/workflows/publish-static.yml
+      - name: Real local HTTP session and CMS security integration tests
+        env:
+          JIANSHI_G2H_SYNTHETIC_ONLY: '1'
+        run: node --test tests/g2h_loopback_bff.test.mjs
