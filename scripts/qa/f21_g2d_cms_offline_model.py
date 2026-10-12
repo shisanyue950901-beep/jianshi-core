@@ -217,6 +217,37 @@ class OfflineCms:
         self.items[key] = item
         return item.revision
 
+    def restore_revision(self, actor: str, key: str, expected: int,
+                         source_revision: int, request_id: str) -> int:
+        """G2-E parity model: immutable historical copy -> NEW unapproved draft."""
+        self._gate(actor, ("EDITOR",))
+        item = self._copy(key)
+        self._request(item, request_id)
+        if item.owner != actor:
+            raise Rejected("CMS_OWNER_DENIED")
+        if item.state not in {"DRAFT", "REJECTED"}:
+            raise Rejected("CMS_RESTORE_REQUIRES_DRAFT")
+        self._expected(item, expected)
+        if not isinstance(source_revision, int) or isinstance(source_revision, bool) or (
+                source_revision < 1 or source_revision >= item.revision):
+            raise Rejected("CMS_INVALID_SOURCE_REVISION")
+        if any(s["lifecycle"] == "STAGED" for s in item.snapshots):
+            raise Rejected("CMS_ACTIVE_PUBLICATION_BLOCKS_RESTORE")
+        previous = item.versions.get(source_revision)
+        if previous is None:
+            raise Rejected("CMS_SOURCE_REVISION_NOT_FOUND")
+        prior_state = item.state
+        item.revision += 1
+        item.state = "DRAFT"
+        item.last_reviewer = None
+        item.versions[item.revision] = Revision(
+            item.revision, deepcopy(previous.content),
+            deepcopy(previous.sources_private), False, False)
+        item.events.append(("RESTORE", item.revision, actor, prior_state))
+        item.request_ids.add(request_id)
+        self.items[key] = item
+        return item.revision
+
     def restore_old_revision(self, *_args):
         # Not in SQL 0055. Prohibited until a new author+reviewer release
         # contract is approved; never silently change revision history.
