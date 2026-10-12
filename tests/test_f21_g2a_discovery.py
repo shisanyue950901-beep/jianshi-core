@@ -63,7 +63,7 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn('aria-live="polite"',html)
         self.assertIn('href="/sources/"',html)
         self.assertIn('href="/validation/"',html)
-        self.assertIn("不是",html)
+        self.assertIn("不代表",html)
         for banned in ("SMTP_PASSWORD","sb_secret_","private_notes",
                        "SYNTHETIC_G1F","listing_number","用户联系邮箱"):
             self.assertNotIn(banned,html)
