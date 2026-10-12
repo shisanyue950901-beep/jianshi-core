@@ -54,6 +54,20 @@ class StagingPreviewContract(unittest.TestCase):
         self.assertNotIn("@qq.com", js)
         self.assertNotIn("TEST_EMAIL=", js)
 
+    def test_live_auth_negative_permission_smoke_is_read_only(self):
+        html = HTML.read_text(encoding="utf-8")
+        js = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn('id="audit"', html)
+        self.assertIn('id="audit-result"', html)
+        self.assertIn("auditBtn.addEventListener('click'", js)
+        self.assertIn("new Set([401,403,404,406])", js)
+        self.assertIn("'Accept-Profile':'jianshi_v2'", js)
+        self.assertIn("/rest/v1/organizations?select=id&limit=0", js)
+        self.assertIn("/rest/v1/rpc/cms_internal_session_v01", js)
+        self.assertIn("NOT_TESTED：网络或 CORS 失败", js)
+        self.assertIn("A/B 互访 E2E 仍未完成", js)
+        self.assertNotIn("console.log(", js)
+
     def test_unsafe_edge_html_replaced_by_http_redirect(self):
         edge = EDGE.read_text(encoding="utf-8")
         self.assertIn("status:302", edge)
