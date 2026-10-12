@@ -19,6 +19,10 @@ const state=document.querySelector('#state');
 const logoutBtn=document.querySelector('#logout');
 const auditBtn=document.querySelector('#audit');
 const auditResult=document.querySelector('#audit-result');
+const relogin=document.querySelector('#relogin');
+const loginEmail=document.querySelector('#login-email');
+const sendLogin=document.querySelector('#send-login');
+const mailStatus=document.querySelector('#mail-status');
 function display(value,kind='info'){state.textContent=value;state.dataset.kind=kind;}
 function forget(){try{sessionStorage.removeItem(STORE);}catch(_err){}}
 function remember(v){try{sessionStorage.setItem(STORE,JSON.stringify(v));}catch(_err){}}
@@ -30,7 +34,8 @@ const candidate={access_token:params.get('access_token')||'',refresh_token:param
 // Strip tokens synchronously, before any network action; URLs, history, page content, and logs must not disclose tokens.
 if(location.hash||location.search)history.replaceState(null,'',base);
 if(validShape(candidate))remember(candidate);
-if(err&&!validShape(candidate)){forget();display('验证链接返回错误；请申请新的登录邮件。','error');}
+// Stale mail-link error does not revoke an unrelated existing browser session.
+const staleLinkError=Boolean(err&&!validShape(candidate));
 const headers=(token)=>({'apikey':PUBLIC_KEY,'authorization':'Bearer '+token});
 async function refreshSession(v){
   const reply=await fetch(AUTH_ROOT+'/auth/v1/token?grant_type=refresh_token',{
@@ -59,15 +64,18 @@ async function whoami(v) {
   return {account,identity:(await sha256hex(user.id)).slice(0,12)};
 }
 async function check(){
-  if(err&&!validShape(candidate))return;
   const v=stored();
-  if(!validShape(v)){display('Staging 回调页面已就绪。请使用新的登录邮件进行测试。');return;}
+  if(!validShape(v)){
+    relogin.hidden=false;
+    display(staleLinkError?'邮件链接已失效。可以在下面自行重新申请登录邮件。':'Staging 回调页面已就绪。可使用测试邮箱申请新的登录邮件。',staleLinkError?'error':'info');
+    return;
+  }
   display('正在验证 Staging 账号…');
   try{
     const user=await whoami(v);
-    if(user){logoutBtn.hidden=false;auditBtn.hidden=false;display('Staging 账号 '+user.account+' 登录验证通过：已确认邮箱，JWT 身份验证通过。身份指纹 '+user.identity+'。刷新页面可再次检查会话。','success');}
-    else{forget();display('会话无效或邮箱尚未确认。','error');}
-  }catch(_err){display('网络访问失败，尚不能判断登录是否通过。','error');}
+    if(user){logoutBtn.hidden=false;auditBtn.hidden=false;auditBtn.disabled=false;relogin.hidden=true;display('Staging 账号 '+user.account+' 登录验证通过：已确认邮箱，JWT 身份验证通过。身份指纹 '+user.identity+'。刷新页面可再次检查会话。','success');}
+    else{forget();relogin.hidden=false;display('会话无效或邮箱尚未确认；可以在下方重新申请登录邮件。','error');}
+  }catch(_err){relogin.hidden=false;display('网络访问失败，保留当前会话；不能判定登录失效。','error');}
 }
 // Minimal live rejection probes. Only logged-in user identity is used; no other
 // users' IDs, private content, or writes. Never interpret a network error as PASS.
@@ -76,7 +84,7 @@ auditBtn.addEventListener('click',async()=>{
   auditBtn.disabled=true;
   auditResult.textContent='正在执行只读安全验收…';
   const v=stored();
-  if(!validShape(v)){auditResult.textContent='BLOCKED：没有有效的 Staging 会话。';return;}
+  if(!validShape(v)){auditBtn.disabled=false;auditResult.textContent='BLOCKED：没有有效的 Staging 会话。';return;}
   try{
     const current=await whoami(v);
     if(!current){auditResult.textContent='BLOCKED：身份校验未通过。';return;}
@@ -107,10 +115,44 @@ auditBtn.addEventListener('click',async()=>{
       '（HTTP '+org.status+'）｜CMS 内部 RPC '+
       (rpcDenied?'拒绝 PASS':'FAIL/未知')+'（HTTP '+rpc.status+'）。'+
       (orgDenied&&rpcDenied?'默认拒绝安全检查 PASS；A/B 互访 E2E 仍未完成。':'发现未确认拒绝状态；保持所有功能关闭。');
-  }catch(_err){auditResult.textContent='NOT_TESTED：网络或 CORS 失败，不能判定权限通过。';}
+  }catch(_err){auditResult.textContent='NOT_TESTED：网络或 CORS 失败，不能判定权限通过。';}finally{auditBtn.disabled=false;}
 });
+// Do not send automatically. Email requests only happen after an explicit
+// user submit and only for the two fixed staging identities.
+relogin.addEventListener('submit',async(event)=>{
+  event.preventDefault();
+  const address=loginEmail.value.trim().toLowerCase();
+  if(!address){mailStatus.textContent='请输入测试邮箱。';return;}
+  const hash=await sha256hex(address);
+  const selected=ALLOWED_ACCOUNT_HASHES[hash];
+  loginEmail.value='';
+  if(!selected){mailStatus.textContent='该邮箱不是已登记的 Staging A/B 测试账号。';return;}
+  const cooldownKey='jianshi-staging-login-cooldown';
+  const now=Date.now();
+  let last=0;
+  try{last=Number(sessionStorage.getItem(cooldownKey)||0)}catch(_err){}
+  if(now-last<90000){mailStatus.textContent='请求间隔不足 90 秒，请稍后再试。';return;}
+  sendLogin.disabled=true;
+  mailStatus.textContent='正在请求发送一次性测试登录邮件…';
+  try{
+    const response=await fetch(AUTH_ROOT+'/auth/v1/otp',{
+      method:'POST',
+      headers:{apikey:PUBLIC_KEY,'content-type':'application/json'},
+      body:JSON.stringify({email:address,create_user:false}),
+      cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'
+    });
+    if(!response.ok){
+      mailStatus.textContent='邮件请求未被接受（HTTP '+response.status+'）。请稍后重试，不要连续点击。';
+      return;
+    }
+    try{sessionStorage.setItem(cooldownKey,String(now))}catch(_err){}
+    mailStatus.textContent='账号 '+selected+' 的新登录邮件请求已被接受。请到邮箱打开最新邮件（不代表已经送达）。';
+  }catch(_err){mailStatus.textContent='邮件请求网络异常，是否送达未知；请先检查邮箱再重试。';}
+  finally{sendLogin.disabled=false;}
+});
+
 logoutBtn.addEventListener('click',async()=>{
-  const v=stored();forget();logoutBtn.hidden=true;auditBtn.hidden=true;auditResult.textContent='';
+  const v=stored();forget();logoutBtn.hidden=true;auditBtn.hidden=true;relogin.hidden=false;auditResult.textContent='';
   if(validShape(v)){
     try{const res=await fetch(AUTH_ROOT+'/auth/v1/logout',{
       method:'POST',headers:headers(v.access_token),
