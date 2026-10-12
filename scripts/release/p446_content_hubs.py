@@ -14,6 +14,9 @@ from f21_components import site_header, site_footer
 from f21_catalog_filter import (
     CSS as CATALOG_CSS, JS as CATALOG_JS, filter_panel, empty_state, category_for_slug,
 )
+from f21_g2b_guided_actions import (
+    CSS as GUIDED_CSS, JS as GUIDED_JS, readiness, learning_selector, solution_trial,
+)
 
 SITE = "https://jianshi-bua.pages.dev"
 PAGES = (
@@ -178,6 +181,8 @@ def shell(path: str, title: str, description: str, label: str, body: str,
     buttons = ''.join('<a class="btn ' + ("primary" if i == 0 else "") + '" href="' + e(href) + '">' + e(text) + ' ↗</a>' for i, (text, href) in enumerate(actions))
     current = "/" + path
     catalogue = path == "solutions/"
+    guided = path in ("marketplace/", "talent/", "academy/")
+    trial_page = path.startswith("solutions/") and not catalogue
     return (
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
@@ -187,7 +192,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<link rel="canonical" href="' + SITE + '/' + path + '">'
         '<meta property="og:title" content="' + e(title) + '｜见势 JIANSHI 2.0">'
         '<meta property="og:description" content="' + e(description) + '">'
-        '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + '</style></head><body>'
+        '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + (GUIDED_CSS if guided or trial_page else "") + '</style></head><body>'
         + site_header(current)
         + '<main><div class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
@@ -199,6 +204,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '当前平台尚未开放在线委托、人才竞标、支付或课程观看；此处的流程和成果是规划与示例，不是实际客户交付记录。</div>'
         + body + '</div></main>' + site_footer()
         + ('<script>' + CATALOG_JS + '</script>' if catalogue else '')
+        + ('<script>' + GUIDED_JS + '</script>' if guided else '')
         + '</body></html>\n'
     )
 
@@ -264,6 +270,10 @@ def solution_detail(row: dict) -> str:
         "03 / ACCEPTANCE",
     )
     body += section(
+        "先试一个低风险的最小项目", "先把实践目标与人工复核条件写清，不需要提交客户资料。",
+        solution_trial(row["slug"]), "04 / SELF PRACTICE",
+    )
+    body += section(
         "风险与下一步", "应用方案并不意味着存在某个已经验证的平台客户或服务团队。",
         '<div class="notice"><h3>使用与责任边界</h3><p>' + e(row["boundary"]) +
         '</p><p style="margin-top:13px">请避免将未经授权的客户信息、员工个人信息、'
@@ -295,6 +305,11 @@ def marketplace_page() -> str:
         '<pre>项目名称：\n行业及业务场景：\n目前的问题：\n预期交付物与数量：\n目标用户与使用渠道：\n现有资料及使用授权：\n期望完成时间：\n质量验收与修改标准：\n预算约束（可选）：\n保密、数据及审批要求：</pre>'
         '<p>仅为本地编辑参考。本站当前无上传、邮件发送、竞价或订单创建功能。</p>''<a class="btn primary" style="margin-top:18px" href="/marketplace/brief/">打开本地需求整理器 ↗</a></div>',
         "02 / REQUEST BRIEF",
+    )
+    body += section(
+        "你准备好发布一个真实需求了吗？",
+        "以下是浏览器本地的准备清单，勾选结果不会上传、保存或创建商单。",
+        readiness("marketplace"), "03 / READINESS",
     )
     body += section(
         "哪些需求不能直接进入撮合？",
@@ -335,6 +350,11 @@ def talent_page() -> str:
         '</tbody></table>''<p style="margin-top:18px"><a class="btn primary" href="/talent/portfolio/">打开作品集本地整理器 ↗</a></p>', "02 / PORTFOLIO",
     )
     body += section(
+        "整理完成后，先核对公开边界",
+        "这不是人才入驻申请。逐项自查作品内容、贡献和版权。",
+        readiness("talent"), "03 / PORTFOLIO READINESS",
+    )
+    body += section(
         "未来的入驻与接单路径", "不是已经存在的账户或认证服务。",
         '<div class="steps">'
         '<div class="step"><b>01 · 准备作品</b><h3>建立能力档案</h3><p>将练习项目与真实商业交付明确区分。</p></div>'
@@ -364,6 +384,11 @@ def academy_page() -> str:
         "学习方向与实战成果规划",
         "这里只公开计划课程方向与练习成果，没有伪造授课视频、讲师、学习人数或学员案例。",
         '<div class="cards">' + cards + '</div>', "01 / LEARNING PATHS",
+    )
+    body += section(
+        "选择你的下一项可检验练习",
+        "每个方向都给出准备材料和三项具体练习，不涉及账户、付款或课程观看。",
+        learning_selector(), "02 / YOUR PRACTICE",
     )
     body += section(
         "未来每门课程的结构", "优先让学员能拿出可检验的作品，而不是堆叠知识点。",
@@ -409,7 +434,7 @@ def render_pages() -> dict[str, str]:
     if set(pages) != set(PAGES):
         raise RuntimeError("Content page contract changed")
     for key, document in pages.items():
-        expected_scripts = 1 if key == "solutions/" else 0
+        expected_scripts = 1 if key in ("solutions/", "marketplace/", "talent/", "academy/") else 0
         if (document.count("<main>") != 1 or document.count("</main>") != 1
                 or document.count("<style>") != 1
                 or document.count("<script>") != expected_scripts
