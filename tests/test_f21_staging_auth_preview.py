@@ -57,7 +57,7 @@ class StagingPreviewContract(unittest.TestCase):
     def test_stale_link_does_not_automatically_destroy_valid_session(self):
         html = HTML.read_text(encoding="utf-8")
         js = SCRIPT.read_text(encoding="utf-8")
-        self.assertNotIn(r"\\n", html, "raw escaped newline leaked into HTML")
+        self.assertNotIn(r"\n", html, "raw escaped newline leaked into HTML")
         self.assertIn('id="relogin"', html)
         self.assertIn('id="login-email"', html)
         self.assertIn('id="send-login"', html)
