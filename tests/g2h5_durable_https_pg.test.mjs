@@ -251,7 +251,8 @@ test('closed gate rejects new session issue; no public login or remote credentia
   e=>e.code==='CMS_WRITE_DISABLED');
  const response=await request(t1,'/qa/login');
  assert.equal(response.http,404);
- assert.equal(await scalar('SELECT count(*)::text FROM jianshi_cms.bff_sessions;'),'4');
+ // The preceding G2-F durable SQL fixture persists one synthetic row.
+ assert.equal(await scalar('SELECT count(*)::text FROM jianshi_cms.bff_sessions;'),'5');
  // Every row contains only synthetic encrypted envelopes/digests.
  console.log('G2H5_HTTPS_DURABLE_SQL_CHAIN_PASS',JSON.stringify({
   tls:true,actual_postgres:true,two_instances:true,raw_jwt_database:false,
