@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
+import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -37,8 +38,12 @@ test('fail-closed synthetic runtime, fixed loopback host, and non-public UI',asy
   assert.match(await page.text(),/仅用于本机安全测试/);
   assert.match(page.headers.get('content-security-policy'),/frame-ancestors 'none'/);
   assert.match(page.headers.get('x-robots-tag'),/noindex/);
-  const bad=await fetch(s.base+'/qa/api/state',{headers:{host:'unsafe.example'}});
-  assert.equal(bad.status,403);
+  const bad=await new Promise((resolve,reject)=>{
+   http.get(s.base+'/qa/api/state',{headers:{Host:'unsafe.example'}},r=>{
+    r.resume();r.on('end',()=>resolve(r.statusCode));
+   }).on('error',reject);
+  });
+  assert.equal(bad,403);
   const a=s.h.issueFixture('SYNTHETIC_AUTHOR_A');
   assert.match(a.cookie,/HttpOnly; SameSite=Strict; Path=\/qa/);
   assert.equal((await get(s,'/qa/api/session',a)).body.role,'EDITOR');
@@ -109,7 +114,8 @@ test('idempotency, stale revision, revoked and expired sessions and rate limit',
   assert.equal(duplicate.body.status,'CMS_DUPLICATE_REQUEST');
   assert.equal((await action(s,a,'SUBMIT',2)).body.status,'CMS_STALE_REVISION');
   assert.equal((await action(s,a,'PUBLISH',3)).body.status,'CMS_PUBLISHER_DENIED');
-  assert.equal((await action(s,a,'SUBMIT',3)).http,429);
+  const over=await action(s,a,'SUBMIT',3);
+  assert.equal(over.http,429);assert.equal(over.body.status,'CMS_RATE_LIMITED');
   s.h.revokeFixture(a.id);
   assert.equal((await get(s,'/qa/api/state',a)).http,401);
   const b=s.h.issueFixture('SYNTHETIC_AUTHOR_A');
