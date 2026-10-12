@@ -17,6 +17,7 @@ from p429_build_source_atlas import build as build_source_atlas
 from p445_unified_home import build_home as build_jianshi2_home
 from p446_content_hubs import publish as publish_content_hubs, PAGES as CONTENT_PAGES
 from p448_v2_local_drafts import publish as publish_v2_drafts, PAGES as DRAFT_PAGES
+from f21_g2_discovery import publish as publish_discovery, ROUTE as DISCOVER_ROUTE
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "web" / "dist"
@@ -198,6 +199,9 @@ def build_release() -> dict:
     local_draft_tools=publish_v2_drafts(OUTPUT)
     if local_draft_tools != len(DRAFT_PAGES) or local_draft_tools != 2:
         raise RuntimeError('Private-local V2 draft tool contract incomplete')
+    discovery_entries = publish_discovery(OUTPUT)
+    if discovery_entries != 17:
+        raise RuntimeError("G2-A public discovery catalogue incomplete")
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
         "opportunities": "/#j2-opportunities",
@@ -236,6 +240,7 @@ def build_release() -> dict:
         + "".join(f"<url><loc>{SITE}/projects/{p.name}/</loc></url>" for p in sorted((OUTPUT/"projects").iterdir()) if p.is_dir())
         + ''.join(f'<url><loc>{SITE}/{route}</loc></url>' for route in CONTENT_PAGES)
         + ''.join(f'<url><loc>{SITE}/{route}</loc></url>' for route in DRAFT_PAGES)
+        + f'<url><loc>{SITE}/{DISCOVER_ROUTE}</loc></url>'
         +         '</urlset>\n'
     )
     (OUTPUT / "sitemap.xml").write_text(sitemap, encoding="utf-8")
@@ -262,6 +267,7 @@ def build_release() -> dict:
         "curated_market_sources": market_sources["sources"],
         "anonymous_studies": anonymous_studies,
         "public_content_guides": content_guides,
+        "discovery_entries": discovery_entries,
         "local_draft_tools": local_draft_tools,
         "legacy_redirects": len(destinations),
         "slug_rewrites": len(list(item_dir.glob("*/index.html"))) if item_dir.is_dir() else 0,
