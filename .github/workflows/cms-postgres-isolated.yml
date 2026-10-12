@@ -39,16 +39,16 @@ jobs:
           --health-interval 3s
           --health-timeout 3s
           --health-retries 12
-    env:
-      G2F_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
-      G2F_POSTGRES_DATABASE: jianshi_g2f
-      JIANSHI_G2F_EPHEMERAL_ONLY: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Assert container and no external database credentials
+        env:
+          G2F_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          G2F_POSTGRES_DATABASE: jianshi_g2f
+          JIANSHI_G2F_EPHEMERAL_ONLY: "1"
         shell: bash
         run: |
           set -euo pipefail
@@ -56,6 +56,10 @@ jobs:
           test -n "${G2F_POSTGRES_CONTAINER}"
           docker inspect "${G2F_POSTGRES_CONTAINER}" --format '{{.State.Running}}' | grep -qx true
       - name: Real PostgreSQL CMS transaction and concurrency E2E
+        env:
+          G2F_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          G2F_POSTGRES_DATABASE: jianshi_g2f
+          JIANSHI_G2F_EPHEMERAL_ONLY: "1"
         run: python scripts/qa/g2f_postgres_real_e2e.py
       - name: Verify no production or collection workflow was invoked
         run: |
