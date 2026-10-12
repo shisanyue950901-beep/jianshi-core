@@ -28,7 +28,7 @@ class Links(HTMLParser):
             self.sections+=1
 
 def shell(route:str,contents:str|None=None)->str:
-    body=contents if contents is not None else render_related(route)
+    body=contents if contents is not None else (render_related(route) if route in RELATED else '<p>已公开站内内容</p>')
     return ('<!doctype html><html lang="zh-CN"><head><title>受控测试</title>'
             '<meta name="description" content="人工审核后发布">'
             '<meta name="viewport" content="width=device-width">'
