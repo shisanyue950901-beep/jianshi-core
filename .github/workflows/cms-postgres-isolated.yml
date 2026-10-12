@@ -17,6 +17,12 @@ on:
       - 'tests/g2h5_durable_https_pg.test.mjs'
       - 'tests/test_f21_g2h5_chain_contract.py'
       - 'db/migrations/0062_jianshi_cms_email_tokenhash_state.sql'
+      - 'ops/cms-preview/worker-pg-disposable-http.mjs'
+      - 'scripts/qa/g2h7f_pg_http_runner.py'
+      - 'tests/g2h7f_worker_pg_http.test.mjs'
+      - 'tests/g2h7f_bridge_contract.test.mjs'
+      - 'scripts/security/g2h7f_http_pg_boundary_audit.mjs'
+      - 'docs/F21_G2H7F_WORKER_HTTP_REAL_PG_AUDIT_CN.md'
       - '.github/workflows/cms-postgres-isolated.yml'
   push:
     branches: [main]
@@ -35,6 +41,12 @@ on:
       - 'tests/g2h5_durable_https_pg.test.mjs'
       - 'tests/test_f21_g2h5_chain_contract.py'
       - 'db/migrations/0062_jianshi_cms_email_tokenhash_state.sql'
+      - 'ops/cms-preview/worker-pg-disposable-http.mjs'
+      - 'scripts/qa/g2h7f_pg_http_runner.py'
+      - 'tests/g2h7f_worker_pg_http.test.mjs'
+      - 'tests/g2h7f_bridge_contract.test.mjs'
+      - 'scripts/security/g2h7f_http_pg_boundary_audit.mjs'
+      - 'docs/F21_G2H7F_WORKER_HTTP_REAL_PG_AUDIT_CN.md'
       - '.github/workflows/cms-postgres-isolated.yml'
 permissions:
   contents: read
@@ -91,3 +103,10 @@ jobs:
         run: |
           test ! -e web/dist/prototypes/f21g2e/index.html
           test ! -e web/dist/cms-admin/index.html
+      - name: G2-H.7F real disposable Worker HTTP to PostgreSQL integration
+        env:
+          G2F_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          G2F_POSTGRES_DATABASE: jianshi_g2f
+          JIANSHI_G2F_EPHEMERAL_ONLY: '1'
+          JIANSHI_G2H7F_DISPOSABLE_ONLY: '1'
+        run: python scripts/qa/g2h7f_pg_http_runner.py
