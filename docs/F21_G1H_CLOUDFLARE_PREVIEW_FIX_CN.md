@@ -55,3 +55,11 @@
 2. 先不开放任何功能，只测 A/B JWT 归属、退出后旧令牌拒绝、跨用户只读/写入拒绝（IDOR）。
 3. 通过后再测试收藏/观察和 CMS 多角色流程，数据只用合成素材，CMS 开关保持关闭直到独立放行。
 4. 不以单账号登录成功代替八项 Auth Gate：生产账号、CMS、撮合保持关闭；P4.41 四个固定 UTC schedule 槽与采集限额原样不动。
+
+## 2026-10-12 UTC 09:04｜第二个测试账号 B 冷启动
+
+- Cloudflare staging-auth-callback 预览页已扩展为 A/B 受限身份识别；账号邮箱明文不发布，脚本通过邮箱 SHA-256 摘要分类，只在页面显示「A/B」及脱敏的用户身份指纹。注意此客户端分类不是后端权限边界，不能据此认定 IDOR 安全。
+- CI run 38227445668 的 Tests / Runtime contract PASS；独立 Pages 预览脚本响应 HTTP 200、application/javascript，确实包含新版 A/B 判断、无两个邮箱明文。
+- 对第二个测试账号 B 只发出一次 Staging Auth 邮件请求：网络收据 #208，HTTP 200、无传输错误；数据库聚合 users_total=2、confirmed_count=1、active_sessions=0，说明 B 已创建但**尚未确认邮件或登录**。邮件送达和 B 的真实浏览器 JWT、退出、不同用户资源权限未核实。
+- 保持 staging account_auth/cms_editor/v2_matchmaking=false；不得扩大到生产、不得启用 CMS、不得修改 P4.41 日程与采集限额。
+- 下一步需要用户从 Gmail 收件箱打开新的邮箱确认邮件；仅上传浏览器页面正文截图，不上传带 token 的完整链接。B 登录成功后，才能研究实际跨账号授权拒绝；不能凭两用户数量宣称 A/B 隔离 PASS。
