@@ -12,3 +12,11 @@
 - 原 P4.41 四个 UTC 时槽、HN7/RSS1/GitHub2 限额保持；没有任何新增采集请求。
 
 后续按阶段做 JWT 正向身份归属、真实 A/B 负向 IDOR、过期/注销 JWT、CMS 角色和版本锁；任何扩大权限操作必须独立验收与明确开闸审批。
+
+## 2026-10-12 后续自动验收补充
+
+- SQL 审计已在 Staging 实际执行并得到 `PASS_DENY_BY_DEFAULT`：schema_count=2、total_private_tables=12、force_rls_tables=12、untrusted_table_grants=0、private_policy_count=0、schema_usage_closed=true、internal_rpc_count=2、internal_rpc_closed=true、closed_feature_count=3、features_closed=true。
+- 浏览器 Staging 预览页增加「一键安全自测（只读）」：仅在 A/B 成功登录后显示，点击执行使用当前 JWT 的私有组织只读请求和 CMS 内部 RPC 全零 UUID 拒绝探针；不写入业务数据，也不读取响应正文。只根据 401/403/404/406 判定“默认拒绝”，其他状态 FAIL/未知，网络/CORS 错误一律 NOT_TESTED。
+- 真实 Cloudflare 预览 HTTP 检查：HTML id=211 返回 200 text/html，包含新按钮；JS id=212 返回 200 application/javascript，包含受限接口安全自测代码。
+- 静态与单元测试 CI run 38230700715 SUCCESS。这仍不是**已登录 JWT 的实际授权拒绝**，需要账号 B 在浏览器内点击一次按钮才可认定相应两项 HTTP 拒绝 PASS。
+- 即使按钮两项通过，也不等于完整 A/B 跨账号 IDOR：目前私有表和后台默认完全关闭，开放业务 API 后仍必须重新执行完整角色×资源×操作测试。
