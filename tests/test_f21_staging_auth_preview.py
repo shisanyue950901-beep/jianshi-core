@@ -54,6 +54,32 @@ class StagingPreviewContract(unittest.TestCase):
         self.assertNotIn("@qq.com", js)
         self.assertNotIn("TEST_EMAIL=", js)
 
+    def test_stale_link_does_not_automatically_destroy_valid_session(self):
+        html = HTML.read_text(encoding="utf-8")
+        js = SCRIPT.read_text(encoding="utf-8")
+        self.assertNotIn(r"\\n", html, "raw escaped newline leaked into HTML")
+        self.assertIn('id="relogin"', html)
+        self.assertIn('id="login-email"', html)
+        self.assertIn('id="send-login"', html)
+        self.assertIn("const staleLinkError=Boolean(err&&!validShape(candidate))", js)
+        self.assertNotIn("if(err&&!validShape(candidate)){forget()", js)
+        self.assertIn("if(!validShape(v)){", js)
+        self.assertIn("const user=await whoami(v)", js)
+        self.assertIn("relogin.hidden=false", js)
+        self.assertIn("relogin.addEventListener('submit'", js)
+        self.assertIn("create_user:false", js)
+        self.assertIn("auditBtn.disabled=false", js)
+        self.assertIn("const cooldownKey='jianshi-staging-login-cooldown'", js)
+
+    def test_no_automatic_mail_send_on_render(self):
+        js = SCRIPT.read_text(encoding="utf-8")
+        self.assertEqual(js.count("'/auth/v1/otp'"), 1)
+        request=js.index("'/auth/v1/otp'")
+        trigger=js.index("relogin.addEventListener('submit'")
+        self.assertGreater(request,trigger)
+        self.assertNotIn("shisanyue950901@gmail.com",js)
+        self.assertNotIn("caps67@qq.com",js)
+
     def test_live_auth_negative_permission_smoke_is_read_only(self):
         html = HTML.read_text(encoding="utf-8")
         js = SCRIPT.read_text(encoding="utf-8")
