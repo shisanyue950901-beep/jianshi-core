@@ -179,8 +179,9 @@ class CmsOfflineContract(unittest.TestCase):
                          "CMS_EVIDENCE_OR_RIGHTS_MISSING","CMS_MEDIA_RIGHTS_NOT_READY",
                          "CMS_SOURCE_UNSAFE","CMS_INVALID_PUBLIC_PROJECTION",
                          "'PUBLISHED'","'UNPUBLISHED'","'RETRACTED'",
-                         "FOR UPDATE","publication_snapshots"):
+                         "publication_snapshots"):
             self.assertIn(expected,sql)
+        self.assertIn("for update",sql.lower())
         for op in ("CREATE", "EDIT", "STATE"):
             self.assertIn("p_operation='"+op+"'",api)
         self.assertIn("REVOKE",api.upper())
