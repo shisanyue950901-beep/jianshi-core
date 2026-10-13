@@ -75,8 +75,8 @@ class TestB1A04ProjectFirst(unittest.TestCase):
         self.assertIn("<details class=\"notice\"><summary>这些案例从哪里来？</summary>", page)
         self.assertIn("只找到官网或标价", page)  # clear limitation preserved
         self.assertEqual(len(re.findall(r'href="/projects/[a-z0-9-]+/"', page)), 3)
-        self.assertIn("证据层级优先", page)  # sort contract unchanged
-        self.assertIn("待补证据优先", page)
+        self.assertIn("资料更完整", page)  # sort contract unchanged
+        self.assertIn("还需核实较多", page)
         self.assertNotIn("直接复制就能赚到钱", page)
 
     def test_security_and_page_count_stay_frozen(self):
