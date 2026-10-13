@@ -78,7 +78,7 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("谁付钱",html)
         self.assertIn("怎么收费",html)
         self.assertIn("广告及商业合作伙伴",html)
-        self.assertIn("历史案例不保证你照着做能赚钱",html)
+        self.assertIn("不保证照着做能赚钱",html)
         self.assertLess(html.index('href="/projects/carrd/"'),
                         html.index('href="/projects/plausible/"'))
         self.assertLess(html.index('href="/projects/plausible/"'),
