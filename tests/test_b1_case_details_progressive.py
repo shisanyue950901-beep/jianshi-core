@@ -110,8 +110,11 @@ class FounderCaseDetailTests(unittest.TestCase):
         self.assertIn('color-scheme:dark',html)
         self.assertIn("@media print",html)
         for danger in ("<form","type=\"email\"","navigator.sendBeacon",
-                       "XMLHttpRequest(","localStorage.setItem"):
+                       "XMLHttpRequest(","fetch(","sessionStorage.setItem"):
             self.assertNotIn(danger,html)
+        # Theme preference is the only existing local browser storage.
+        self.assertIn("localStorage.setItem('jianshi-theme',next)",html)
+        self.assertNotIn("localStorage.setItem('customer-",html)
 
     def test_source_integrity_and_no_marketing_rewrite(self):
         for slug,case in self.cases.items():
