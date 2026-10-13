@@ -60,7 +60,7 @@ class TestP426Digests(unittest.TestCase):
             self.assertIn("30 秒看懂这门生意",page)
             self.assertIn(derive_digest(self.cases[slug]).evidence,page)
             self.assertIn(derive_digest(self.cases[slug]).limitation,page)
-            for required in ("卖什么？","怎么收费？","找到什么经营证据？","还不能证明什么？",
+            for required in ("做什么？","谁付钱？","怎么收费？","找到什么经营证据？","还不能证明什么？",
                              "公开资料的时间：","查看原始经营依据"):
                 self.assertIn(required,page)
             self.assertIn('rel="noopener noreferrer"',page)

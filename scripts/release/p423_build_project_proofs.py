@@ -52,8 +52,8 @@ PAYING_PARTIES = {
     "nerdwallet": "网站广告合作伙伴；读者不等于广告付款方",
 }
 CSS = """
-:root{color-scheme:light;--bg:#f7f6f1;--ink:#202823;--muted:#59615a;--line:#c8c9c3;--panel:#fffefa;--accent:#286b56}
-html[data-theme=dark]{color-scheme:dark;--bg:#080a09;--ink:#f4f2ef;--muted:#adb0ab;--line:#51534f;--panel:#151814;--accent:#86b4a3}
+:root{color-scheme:light;--bg:#f7f8fc;--ink:#1c2a44;--muted:#566581;--line:#dce3ee;--panel:#ffffff;--accent:#6254b9}
+html[data-theme=dark]{color-scheme:dark;--bg:#0c1222;--ink:#f0f1fd;--muted:#b8bfd4;--line:#424b66;--panel:#161e31;--accent:#b7aaff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.8 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
 a{color:var(--accent);text-underline-offset:4px}a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 header,main,footer{max-width:1050px;margin:auto;padding-inline:clamp(18px,4vw,52px)}
@@ -121,7 +121,7 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 @media(max-width:590px){.decision-report{margin:18px 0 28px}.decision-intro{font-size:13px}}
 /* B1-A03: hand-fillable, print-friendly founder validation worksheet.
    Source reviewed, never captured in browser storage or sent to a server. */
-.decision-workbook-link{display:inline-flex;margin-top:17px;align-items:center;min-height:44px;font-size:14px;font-weight:700}
+.decision-workbook-link{display:inline-flex;margin-top:13px;align-items:center;min-height:44px;font-size:14px;font-weight:700}
 .founder-workbook{scroll-margin-top:98px;border:2px solid var(--accent);background:var(--panel);padding:clamp(18px,3.3vw,32px);margin-top:45px}
 .founder-workbook h2{margin:9px 0 14px;font-size:clamp(22px,2.7vw,31px)}
 .workbook-intro,.workbook-fineprint{font-size:13px;line-height:1.8;color:var(--muted)}
@@ -134,6 +134,26 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 .workbook-blank span{display:block;overflow-wrap:anywhere;color:var(--muted);letter-spacing:.08em;line-height:2.2}
 @media(max-width:700px){.workbook-steps{grid-template-columns:1fr}.workbook-step{padding:16px}}
 @media print{.founder-workbook{break-before:page;page-break-before:always;box-shadow:none;color:#111;background:#fff;border-color:#777}.workbook-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.workbook-step{break-inside:avoid;page-break-inside:avoid;background:#fff}.workbook-blank span{line-height:3}.decision-workbook-link{display:none}}
+/* Founder first: deep sources and long worksheets are voluntary reading. */
+.decision-next{background:color-mix(in srgb,var(--accent) 6%,var(--panel));padding:15px 18px;border:1px solid var(--line);margin:0}
+.decision-next strong{display:block;color:var(--accent);font-size:13px;margin-top:9px}
+.decision-next strong:first-child{margin-top:0}
+.decision-next p{margin:4px 0 12px;font-size:15px;line-height:1.65;color:var(--ink)}
+.decision-report{margin:22px 0 28px;padding:clamp(16px,2.7vw,25px)}
+.decision-verdict{margin:0 0 12px}
+.decision-more,.dossier-more,.workbook-fold{border:1px solid var(--line);background:var(--panel);border-radius:12px;margin:18px 0;padding:0 18px 12px}
+.decision-more summary,.dossier-more summary,.workbook-fold summary{cursor:pointer;padding:15px 4px;min-height:48px;font-size:15px;font-weight:700;color:var(--accent)}
+.decision-more summary:focus-visible,.dossier-more summary:focus-visible,.workbook-fold summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.decision-more[open] summary,.dossier-more[open] summary,.workbook-fold[open] summary{border-bottom:1px solid var(--line);margin-bottom:15px}
+.decision-more .decision-columns{margin-top:14px}
+.dossier-more>.section:first-of-type{border-top:0;margin-top:5px}
+.dossier-more .section{margin-top:25px}
+.dossier-more .notice{margin:15px 0}
+.dossier-more .statusgrid{margin:20px 0}
+.workbook-fold .founder-workbook{margin:12px 0 4px;border:0;scroll-margin-top:80px;padding:12px 0}
+.case-back{display:inline-flex;margin:0 0 5px;align-items:center;min-height:38px;text-decoration:none;font-size:13px;font-weight:700}
+@media(max-width:590px){main{padding-block:26px 60px}h1{font-size:clamp(32px,7vw,45px);margin:10px 0 14px}.lead{font-size:14px;line-height:1.6}.digest{margin:14px 0;padding:15px}.digestgrid{gap:11px}.decision-report{margin:14px 0;padding:15px}.decision-more,.dossier-more,.workbook-fold{padding:0 12px 8px;margin:12px 0}.decision-next p{font-size:14px}.statusgrid{gap:8px}}
+@media print{.dossier-more:not([open]),.workbook-fold:not([open]),.decision-more:not([open]){display:none}}
 
 """
 
@@ -275,20 +295,25 @@ def project_page(case: dict) -> str:
     summary_box = (
         '<section class="digest" aria-label="项目概况"><h2>30 秒看懂这门生意</h2>'
         '<div class="digestgrid">'
-        f'<p><b>卖什么？</b>{txt(digest.offer)}</p>'
+        f'<p><b>做什么？</b>{txt(digest.offer)}</p>'
+        f'<p><b>谁付钱？</b>{txt(PAYING_PARTIES[slug])}</p>'
         f'<p><b>怎么收费？</b>{txt(digest.revenue)}</p>'
-        f'<p class="digest-proof"><b>找到什么经营证据？</b>{txt(digest.evidence)}</p>'
-        f'<p><b>还不能证明什么？</b>{txt(digest.limitation)}</p>'
+        f'<p class="digest-proof"><b>什么还不确定？</b>{txt(digest.limitation)}</p>'
         '</div>'
         f'<p class="digest-meta">公开资料的时间：{txt(digest.period)} · '
         f'<a href="{txt(safe_url(digest.source_url))}" target="_blank" rel="noopener noreferrer">'
         '查看原始经营依据 ↗</a></p></section>'
     )
-    body = f"""<span class="kicker">看看别人怎么做生意</span>
+    body = f"""<a class="case-back" href="/projects/">← 返回项目列表</a>
+<span class="kicker">看看别人怎么做生意</span>
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
 {summary_box}
-<div class="notice"><b>先提醒：</b>{txt(findings_intro)} 这家企业以前的经营结果，不代表你照着做也能赚钱。</div>
 {decision_html}
+<details class="dossier-more" id="case-details">
+<summary>查看资料来源、成本和更多风险说明</summary>
+<div class="notice"><b>先提醒：</b>{txt(findings_intro)} 这家企业以前的经营结果，不代表你照着做也能赚钱。</div>
+<p><b>找到什么经营证据？</b>{txt(digest.evidence)}</p>
+<p><b>还不能证明什么？</b>{txt(digest.limitation)}</p>
 <div class="statusgrid" aria-label="项目商业验证状态">
 <div class="status"><b>产品／服务：有官方依据</b><small>可进入对应官网或产品页核对公开供应</small></div>
 <div class="status"><b>收费机制：有公开说明</b><small>标价或收费方案不代表已成交、已收到款项</small></div>
@@ -313,7 +338,11 @@ def project_page(case: dict) -> str:
 <p><b>项目自身销售／利润：</b>{txt(finance_boundary)} 本站的排序仅代表资料层级，不是赚钱排名。</p></section>
 <section class="section"><h2>下一步可以看看什么？</h2><p>{txt(case.get("learning") or "进一步独立核查真实购买需求、履约成本与客户留存。")}</p>
 <p><a href="/validation/">查看资料有什么不确定 →</a> · <a href="/projects/">返回项目列表 →</a></p></section>
-{workbook_html}"""
+</details>
+<details class="workbook-fold" id="founder-workbook-toggle">
+<summary>想自己验证？打开四步工作单</summary>
+{workbook_html}
+</details>"""
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
 
 def index_page(cases: list[dict]) -> str:
