@@ -72,7 +72,7 @@ class B1P2PublicEmptyStates(unittest.TestCase):
             with self.subTest(route=route):
                 page=self.pages[route]
                 self.assertIn('<details class="guide-more">',page)
-                self.assertEqual(page.count('type="checkbox"'),len(CHECKLISTS[key]))
+                self.assertEqual(page.count('<input type="checkbox"'),len(CHECKLISTS[key]))
                 self.assertIn("不存储、不登录、不发送",page)
                 self.assertIn("关闭或刷新后内容会消失",page)
                 for item in CHECKLISTS[key]:
@@ -83,7 +83,7 @@ class B1P2PublicEmptyStates(unittest.TestCase):
     def test_academy_uses_one_learning_selector_not_duplicate_five_card_catalog(self):
         page=self.pages["academy/"]
         self.assertEqual(page.count("data-g2b-plan="),len(ACADEMY_PLANS))
-        self.assertEqual(page.count('type="checkbox"'),15)
+        self.assertEqual(page.count('<input type="checkbox"'),15)
         self.assertEqual(page.count('id="g2b-academy-choice"'),1)
         self.assertIn('href="/projects/"',page)
         self.assertNotIn("以后课程会怎么安排",page)
