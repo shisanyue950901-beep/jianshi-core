@@ -61,7 +61,6 @@ class TestB1A03FounderWorkbook(unittest.TestCase):
         self.assertIn("没有开发、运维与数据安全能力", plausible)
         self.assertIn("仅研究商业机制，不建议以此大型企业作为一人起步项目", nerdwallet)
         for html in (carrd, plausible, nerdwallet):
-            self.assertIn("不构成", "不构成")  # baseline phrasing check follows
             self.assertIn("不是投资建议、收益预测", html)
             self.assertIn("不是实际采访或创业成功证明", html)
             self.assertNotIn("保证赚钱", html)
