@@ -141,7 +141,7 @@ class DecisionReportTest(unittest.TestCase):
         for slug in self.cases:
             html=(paths/slug/"index.html").read_text(encoding="utf-8")
             self.assertIn('id="decision-report"',html)
-            self.assertIn("证据的历史经营",html.replace("原企业的历史经营证据","证据的历史经营"))
+            self.assertIn("这家企业以前公开过什么经营资料？",html)
             self.assertNotIn("source_ref_ids",html)
             self.assertIn("id=\"themeToggle\"",html)
             self.assertIn("@media(max-width:720px)",html)
