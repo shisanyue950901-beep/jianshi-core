@@ -69,6 +69,21 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 .decision-report a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:720px){.decision-action ol{grid-template-columns:1fr}.decision-columns{grid-template-columns:1fr}.decision-action li{padding:13px}}
 @media(max-width:590px){.decision-report{margin:18px 0 28px}.decision-intro{font-size:13px}}
+/* B1-A03: hand-fillable, print-friendly founder validation worksheet.
+   Source reviewed, never captured in browser storage or sent to a server. */
+.decision-workbook-link{display:inline-flex;margin-top:17px;align-items:center;min-height:44px;font-size:14px;font-weight:700}
+.founder-workbook{scroll-margin-top:98px;border:2px solid var(--accent);background:var(--panel);padding:clamp(18px,3.3vw,32px);margin-top:45px}
+.founder-workbook h2{margin:9px 0 14px;font-size:clamp(22px,2.7vw,31px)}
+.workbook-intro,.workbook-fineprint{font-size:13px;line-height:1.8;color:var(--muted)}
+.workbook-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:23px}
+.workbook-step{border:1px solid var(--line);background:var(--bg);padding:19px;min-width:0}
+.workbook-step>span{display:block;color:var(--accent);font-size:11px;font-weight:750;letter-spacing:.08em}
+.workbook-step h3{margin:9px 0 12px;font-size:18px;line-height:1.5}
+.workbook-step p{font-size:13px;line-height:1.8;color:var(--ink)}
+.workbook-blank{font-size:12px;font-weight:650;color:var(--ink);margin-top:15px;border-top:1px dashed var(--line);padding-top:12px}
+.workbook-blank span{display:block;overflow-wrap:anywhere;color:var(--muted);letter-spacing:.08em;line-height:2.2}
+@media(max-width:700px){.workbook-steps{grid-template-columns:1fr}.workbook-step{padding:16px}}
+@media print{.founder-workbook{break-before:page;page-break-before:always;box-shadow:none;color:#111;background:#fff;border-color:#777}.workbook-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.workbook-step{break-inside:avoid;page-break-inside:avoid;background:#fff}.workbook-blank span{line-height:3}.decision-workbook-link{display:none}}
 
 </style></head><body><header><a class="logo" href="/">见势 JIANSHI</a>
 <nav aria-label="页面导航"><a href="/validation/">方向证据</a><a href="/projects/">具名项目</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
