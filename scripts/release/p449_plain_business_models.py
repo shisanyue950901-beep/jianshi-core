@@ -86,8 +86,11 @@ STYLE = """
 .model-card span{font-size:13px;line-height:1.7;color:#54647d}
 .model-card small{font-size:12px;font-weight:750;color:#6656bf;margin-top:auto;padding-top:5px}
 .model-index-intro{background:transparent;border:0;padding:5px 0}
-@media(max-width:720px){.model-facts,.model-grid{grid-template-columns:1fr}.model-overview{padding:18px}.model-overview .model-lead{font-size:14px}.model-facts div{padding:13px}.model-card{padding:16px}.model-data-fold{padding:0 12px 12px}}
-@media print{.model-data-fold{display:none}.model-overview{break-inside:avoid}.model-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* The last fact takes the full width: no empty generic 'next step' tile. */
+.model-facts div:last-child{grid-column:1/-1}
+.model-data-fold{scroll-margin-top:80px}
+@media(max-width:720px){.model-facts,.model-grid{grid-template-columns:1fr}.model-overview{padding:16px;margin-top:12px}.model-overview .model-lead{font-size:14px}.model-facts{gap:9px;margin:16px 0}.model-facts div{padding:12px}.model-card{padding:15px}.model-data-fold{padding:0 12px 12px}}
+@media print{.model-data-fold:not([open]){display:none}.model-overview{break-inside:avoid}.model-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 """
 
 
@@ -116,7 +119,7 @@ def _fold_between(markup: str, begin: str, end: str, *, sample_count: str | None
     if start >= finish:
         raise RuntimeError("B1 research statistics in wrong order")
     opening = ('<details class="model-data-fold" id="historical-stats">'
-               '<summary>查看历史样本、统计数字与详细说明（展开）</summary>')
+               '<summary>想看历史数据？点这里展开</summary>')
     # Existing Cloudflare snapshot gate compares public and archival
     # sample counts. Retain this ORIGINAL count only inside collapsed data.
     if sample_count is not None:
@@ -126,19 +129,42 @@ def _fold_between(markup: str, begin: str, end: str, *, sample_count: str | None
     return markup[:start] + opening + markup[start:finish] + "</details>\n" + markup[finish:]
 
 
+
+def _simple_site_chrome(markup: str) -> str:
+    """Use the normal founder journey for seven research pages.
+
+    The old research header led users back to 'trend signals' and
+    methodology instead of helping them find their next business.
+    """
+    header = (
+        '<header class="site-header"><div class="wrap nav-v2">'
+        '<a class="brand-v2" href="/" aria-label="见势首页">'
+        '<strong>见势</strong><span>JIANSHI</span></a>'
+        '<nav aria-label="网站导航"><a href="/discover/">找创业项目</a>'
+        '<a href="/research/">六种生意</a></nav>'
+        '</div></header>'
+    )
+    footer = (
+        '<footer><div class="wrap footer-v2">'
+        '<div><strong>见势 JIANSHI</strong><span>发现生意，理解怎么赚钱</span></div>'
+        '<p>本页仅供研究参考，不保证收益。</p></div></footer>'
+    )
+    markup = _replace_one(markup, r'<header class="site-header">.*?</header>', header)
+    return _replace_one(markup, r'<footer>.*?</footer>', footer)
+
+
 def _detail_intro(slug: str) -> str:
     item = MODEL_SUMMARIES[slug]
     return (
         '<section class="model-overview" aria-label="这是什么生意">'
         '<a class="breadcrumb-v2" href="/research/">← 返回六种生意</a>'
-        '<div class="model-hint">先看这门生意怎么做</div>'
+        '<div class="model-hint">这门生意怎么赚钱</div>'
         '<h1>' + _e(item["title"]) + '</h1>'
         '<p class="model-lead">' + _e(item["what"]) + '</p>'
         '<dl class="model-facts">'
         '<div><dt>谁付钱</dt><dd>' + _e(item["payer"]) + '</dd></div>'
         '<div><dt>怎么赚钱</dt><dd>' + _e(item["charge"]) + '</dd></div>'
-        '<div><dt>需要什么</dt><dd>' + _e(item["needs"]) + '</dd></div>'
-        '<div><dt>适合先做什么</dt><dd>先了解客户需求，别急着投入</dd></div></dl>'
+        '<div><dt>需要什么</dt><dd>' + _e(item["needs"]) + '</dd></div></dl>'
         '<div class="model-first"><strong>第一步可以怎么做？</strong>'
         + _e(item["first"]) + '</div>'
         '<p class="model-warning">这是生意模式介绍，不代表你能直接照做赚钱。'
@@ -164,8 +190,8 @@ def _index_intro() -> str:
         '<p class="model-lead">这些是六种常见生意模式，不是六个已验证能赚钱的项目。'
         '先了解卖什么、谁付钱，再决定要不要深入研究。</p>'
         '<div class="model-grid">' + cards + '</div>'
-        '<p class="model-warning">以前企业报过的收入，不代表你也能赚到钱。'
-        '详细样本数据和计算口径可以在下面展开查看。</p>'
+        '<p class="model-warning">这是六种生意的研究参考，不是收益排名。'
+        '历史统计放在下方，可自行展开查看。</p>'
         '</section>'
     )
 
@@ -174,7 +200,7 @@ def simplify(markup: str, slug: str | None = None) -> str:
     """Pure transformation of an already approved public research HTML page."""
     if slug is not None and slug not in MODEL_SUMMARIES:
         raise RuntimeError("B1 unsupported business research slug")
-    markup = _inject_css(markup)
+    markup = _simple_site_chrome(_inject_css(markup))
     if slug is None:
         if ('id="category-comparison"' not in markup
                 or markup.count('class="research-card-v2"') < 6):
