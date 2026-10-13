@@ -43,6 +43,14 @@ MODEL_LABELS = {
     "saas": "订阅软件", "digital": "数字产品", "content": "内容与推荐",
     "kdp": "图书出版", "fba": "实体产品", "agency": "专业服务",
 }
+
+# Reviewed audience labels only for the three source-admitted public cases.
+# Do not conflate a product's readers/users with its actual commercial payers.
+PAYING_PARTIES = {
+    "carrd": "需要专业功能的个人或小商家（按年订阅）",
+    "plausible": "购买网站统计订阅服务的站长或运营团队",
+    "nerdwallet": "网站广告合作伙伴；读者不等于广告付款方",
+}
 CSS = """
 :root{color-scheme:light;--bg:#f7f6f1;--ink:#202823;--muted:#59615a;--line:#c8c9c3;--panel:#fffefa;--accent:#286b56}
 html[data-theme=dark]{color-scheme:dark;--bg:#080a09;--ink:#f4f2ef;--muted:#adb0ab;--line:#51534f;--panel:#151814;--accent:#86b4a3}
@@ -323,7 +331,8 @@ def index_page(cases: list[dict]) -> str:
         digestmini = (
             '<div class="digestmini" aria-label="自动提炼的证据要点">'
             f'<p><b>做什么：</b>{txt(summary.offer)}</p>'
-            f'<p><b>谁可能付钱：</b>{txt(item["buyer"])}</p>'
+            f'<p><b>谁在用：</b>{txt(item["buyer"])}</p>'
+            f'<p><b>谁付钱：</b>{txt(PAYING_PARTIES[item["id"]])}</p>'
             f'<p><b>怎么赚钱：</b>{txt(summary.revenue)}</p>'
             '<small>历史经营资料不代表你也能赚到钱；详情里有来源和风险。</small></div>'
         )
