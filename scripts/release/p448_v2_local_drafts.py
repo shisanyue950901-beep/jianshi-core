@@ -67,10 +67,12 @@ SCRIPT = r"""
   const copy = document.getElementById('draft-copy');
   const clear = document.getElementById('draft-clear');
   const heading = root.getAttribute('data-heading') || '见势｜本地草稿';
+  const progressBar = document.getElementById('draft-progress-bar');
   const update = function () {
     const entered = inputs.filter(function (item) { return item.value.trim().length > 0; });
     document.getElementById('draft-progress').textContent =
       String(entered.length) + ' / ' + String(inputs.length) + ' 项已填写';
+    progressBar.style.width = String(Math.round(entered.length / inputs.length * 100)) + '%';
     return entered;
   };
   inputs.forEach(function (item) { item.addEventListener('input', update); });
@@ -133,6 +135,48 @@ CSS_EXTRA = """
 """
 
 
+
+B1_DRAFT_VISUAL_CSS = """
+.tool-hero{isolation:isolate;background:radial-gradient(ellipse 40% 120% at 91% 8%,#6753b361,transparent 80%),radial-gradient(ellipse 45% 100% at 2% 100%,#23649c5f,transparent 75%),linear-gradient(130deg,#0a1324,#142440 73%,#1b1f45)}
+.tool-hero:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(#9cb8ff0d 1px,transparent 1px),linear-gradient(90deg,#9cb8ff0d 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(90deg,transparent,#0009)}
+.tool-hero .wrap{position:relative;z-index:1;padding:34px 0 39px}
+.tool-hero .kicker{margin-top:14px;background:#8984f126;border-color:#9b9ff15c}
+.tool-hero h1{font-size:clamp(33px,4.5vw,52px);margin:14px 0 11px}
+.tool-hero p{font-size:clamp(14px,1.55vw,17px);line-height:1.7;max-width:690px}
+.tool-hero .hero-links{margin-top:22px}
+.draft-hero-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.draft-hero-badges span{display:inline-flex;align-items:center;min-height:29px;border-radius:30px;padding:5px 11px;border:1px solid #aabaf554;background:#e0e5ff13;color:#d4dff5;font-size:11px}
+.draft-content{padding-top:27px}
+.draft-content #draft-privacy{border-left-color:#7869d5;background:linear-gradient(110deg,#f0edff,#ecf4ff);border-radius:14px;color:#4d5473;margin-bottom:20px}
+.tool-layout{gap:21px;scroll-margin-top:91px;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)}
+.tool-layout .tool-panel{border:1px solid #dfe6f3;background:linear-gradient(180deg,#fff,#fbfcff);border-radius:20px;padding:26px;box-shadow:0 8px 28px #273d7010;min-width:0}
+.tool-panel h2{font-size:25px;letter-spacing:-.035em;color:#1a2b48}
+.tool-panel>p{line-height:1.75}
+.tool-panel .tool-progress{background:#f0ecff;color:#5d54b9;display:inline-flex;font-weight:800;padding:7px 12px}
+.tool-progress-track{height:7px;border-radius:9px;background:#edf0f8;overflow:hidden;margin:0 0 27px}
+.tool-progress-track span{display:block;width:0;height:100%;border-radius:9px;background:linear-gradient(90deg,#8162eb,#5f93f5);transition:width .25s}
+.tool-fields{counter-reset:field}
+.tool-fields .tool-field{counter-increment:field;margin:19px 0}
+.tool-fields .tool-field label{font-size:13px;color:#283b5a;line-height:1.65}
+.tool-fields .tool-field label:before{content:counter(field, decimal-leading-zero);display:inline-grid;place-items:center;min-width:26px;height:24px;padding:0 4px;border-radius:8px;background:#f0edff;color:#655ac5;font-size:10px;font-weight:850;margin-right:10px}
+.tool-field textarea{background:#f9faff;border:1px solid #d4deef;border-radius:12px;min-height:102px;padding:13px 14px;font-size:14px;line-height:1.7;transition:background .2s,border-color .2s}
+.tool-field textarea:focus{background:#fff;border-color:#8179e7;outline:3px solid #d6d0ff;outline-offset:1px}
+.tool-field textarea::placeholder{color:#8b99af}
+.tool-actions button{border-radius:11px;min-height:46px}
+.tool-actions button:hover:not(:disabled){border-color:#8f82ed;box-shadow:0 6px 17px #4e5ab11e}
+.tool-actions button:focus-visible{outline:3px solid #a79afd;outline-offset:3px}
+.tool-actions .primary{box-shadow:0 9px 21px #7160ce23}
+.tool-preview{background:repeating-linear-gradient(180deg,#f9fbff,#f9fbff 34px,#f3f6fd 35px);border:1px dashed #b8c7e6;min-height:280px;padding:21px;line-height:1.85;border-radius:15px;color:#243958}
+.tool-preview:empty::before{content:attr(data-placeholder);color:#8493ac;display:block;text-align:center;white-space:pre-line;line-height:2;max-width:220px;margin:66px auto 0;font-size:13px}
+.tool-status{padding:11px 13px;background:#f0effd;border-radius:11px;min-height:40px!important;line-height:1.65}
+.tool-help{line-height:1.65}
+@media(min-width:811px){.tool-layout>.tool-panel:last-child{position:sticky;top:88px}}
+@media(max-width:810px){.tool-layout{grid-template-columns:1fr}.tool-layout>.tool-panel:last-child{position:static}.tool-layout .tool-panel{padding:21px}}
+@media(max-width:650px){.tool-hero .wrap{padding:25px 0 29px}.tool-hero h1{font-size:clamp(31px,8vw,42px)}.tool-hero:after{background-size:33px 33px}.draft-content{padding-top:21px}.draft-hero-badges span{font-size:10px}.tool-layout .tool-panel{padding:19px}.tool-preview{min-height:235px}.tool-preview:empty::before{margin-top:42px}}
+@media(prefers-reduced-motion:reduce){.tool-field textarea,.tool-progress-track span{transition:none}}
+"""
+
+
 def e(raw: str) -> str:
     return escape(raw, quote=True)
 
@@ -156,16 +200,18 @@ def render_one(route: str) -> str:
         '<meta name="description" content="' + e(d["description"]) + '">'
         '<link rel="canonical" href="' + SITE + '/' + route + '">'
         '<meta name="referrer" content="no-referrer">'
-        '<style>' + CSS + CSS_EXTRA + render_design_css() + '</style></head><body>'
+        '<style>' + CSS + CSS_EXTRA + render_design_css() + B1_DRAFT_VISUAL_CSS + '</style></head><body>'
         + site_header("/" + route)
-        + '<main><div class="hero"><div class="wrap">'
+        + '<main><div class="hero tool-hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / <a href="' + d["back"] + '">'
         + e(d["back_label"]) + '</a> / 本地草稿工具</div>'
         '<span class="kicker">仅在当前页面整理</span>'
         '<h1>' + e(d["title"]) + '</h1><p>' + e(d["description"]) + '</p>'
+        '<div class="draft-hero-badges" aria-label="本地工具数据说明">'
+        '<span>不需注册</span><span>不上传数据</span><span>关闭页面即消失</span></div>'
         '<div class="hero-links"><a class="btn primary" href="#draft-tool">开始整理 ↗</a>'
         '<a class="btn" href="' + d["back"] + '">' + e(d["back_label"]) + ' ↗</a></div>'
-        '</div></div><div class="wrap content">'
+        '</div></div><div class="wrap content draft-content">'
         '<div class="status" id="draft-privacy"><b>注意：</b>这里不会上传或保存你写的内容。'
         '关闭或刷新页面后内容会消失，请先复制保存。不要填写密码、客户隐私或商业秘密。'
         '目前还不能在这里发布订单或申请入驻。</div>'
@@ -174,14 +220,16 @@ def render_one(route: str) -> str:
         '<p>不要求提供企业真实名称或个人联系方式。可用匿名代号起草。</p>'
         '<div class="tool-progress" id="draft-progress" aria-live="polite">0 / '
         + str(len(d["fields"])) + ' 项已填写</div>'
-        + fields
+        '<div class="tool-progress-track" aria-hidden="true"><span id="draft-progress-bar"></span></div>'
+        '<div class="tool-fields">' + fields + '</div>'
         + '<div class="tool-actions"><button type="button" id="draft-generate" class="primary">生成本地草稿</button>'
         '<button type="button" id="draft-clear">清空内容</button></div></div>'
         '<div class="tool-panel"><h2>草稿预览</h2>'
         '<p>草稿只在当前页面生成。复制后请自行保存在可控的位置；没有上传或发布按钮。</p>'
         '<div class="tool-actions"><button type="button" id="draft-copy" disabled>复制草稿</button></div>'
         '<p id="draft-status" class="tool-status" role="status" aria-live="polite">填写后点击“生成本地草稿”。</p>'
-        '<div class="tool-preview" id="draft-preview" aria-label="本地草稿预览"></div>'
+        '<div class="tool-preview" id="draft-preview" aria-label="本地草稿预览"'
+        ' data-placeholder="你的草稿会在这里呈现。&#10;填写后点击“生成本地草稿”。"></div>'
         '<p class="tool-help">此工具不是招聘、交易或电子签约系统，不产生任何平台订单记录。</p></div>'
         '</section></div></main>'
         + site_footer() + '<script>' + SCRIPT + '</script></body></html>\n'
