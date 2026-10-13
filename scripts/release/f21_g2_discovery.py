@@ -22,7 +22,7 @@ ROUTE = "discover/"
 ENTRIES = (
     ("/solutions/ecommerce-visual/", "solutions", "AI 电商做图", "制作商品图、详情页图片和活动海报。", "企业 AI 用法 · 未开放购买"),
     ("/solutions/brand-video/", "solutions", "AI 短视频制作", "了解如何制作短视频脚本、画面和样片。", "企业 AI 用法 · 未开放购买"),
-    ("/solutions/automation/", "solutions", "AI 帮你处理重复工作", "看看客服辅助、整理资料和工单处理怎么开始。", "企业 AI 用法 · 未开放购买"),
+    ("/solutions/automation/", "solutions", "AI 帮你处理重复工作", "看看如何自动化处理客服辅助、资料整理和工单。", "企业 AI 用法 · 未开放购买"),
     ("/solutions/localization/", "solutions", "AI 出海内容", "制作多语言内容前，要先确认翻译、审核和授权。", "企业 AI 用法 · 未开放购买"),
     ("/research/vertical-industry-saas/", "research", "行业订阅软件", "为某类行业做工具，按月或按年向客户收费。", "商业模式参考 · 非现成项目"),
     ("/research/amazon-fba-niche-brand/", "research", "电商细分品牌", "找到细分商品需求，卖产品时要核算库存、运费和退货。", "商业模式参考 · 非收益承诺"),
