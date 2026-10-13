@@ -12,7 +12,7 @@ from f21_design_tokens import render_css as render_design_css
 SITE = "https://jianshi-bua.pages.dev"
 TITLE = "见势｜找创业项目，看懂怎么赚钱"
 DESCRIPTION = ("直接看创业案例：做什么、谁付钱、怎么赚钱、需要什么能力。"
-               "所有案例仅供参考，不保证收益；也有中小企业 AI 应用方向。")
+               "所有案例仅供参考，不承诺盈利；也有中小企业 AI 应用方向。")
 
 EXTRA_STYLE = """
 html{scroll-behavior:smooth;scroll-padding-top:88px}
