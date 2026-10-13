@@ -94,9 +94,9 @@ class P446ContentHubs(unittest.TestCase):
 
     def test_academy_is_a_course_plan_not_fake_videos(self):
         page = self.pages["academy/"]
-        self.assertEqual(page.count("计划实战成果："), len(hubs.COURSE_PATHS))
+        self.assertEqual(page.count("data-g2b-plan="), len(hubs.COURSE_PATHS))
         self.assertIn('id="learning-paths"', page)
-        self.assertIn("课程还在准备什么", page)
+        self.assertIn("选一个方向，做三项练习", page)
         self.assertIn("没有已上线的可播放课程", page)
         self.assertNotIn('<video', page)
         self.assertNotIn("付款购买", page)
