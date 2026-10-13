@@ -106,8 +106,22 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 @media(max-width:590px){main{padding-block:26px 60px}h1{font-size:clamp(32px,7vw,45px);margin:10px 0 14px}.lead{font-size:14px;line-height:1.6}.digest{margin:14px 0;padding:15px}.digestgrid{gap:11px}.decision-report{margin:14px 0;padding:15px}.decision-more,.dossier-more,.workbook-fold{padding:0 12px 8px;margin:12px 0}.decision-next p{font-size:14px}.statusgrid{gap:8px}}
 @media print{.dossier-more:not([open]),.workbook-fold:not([open]),.decision-more:not([open]){display:none}}
 
+/* B1-P0: concise project cards using the original blue-violet palette. */
+.directory{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.directory a.case-card{display:flex;flex-direction:column;gap:11px;min-width:0;padding:21px;border-radius:16px}
+.directory a.case-card strong{font-size:20px;line-height:1.4;overflow-wrap:anywhere}
+.directory a.case-card small{margin:0;color:var(--accent);line-height:1.45}
+.directory a .case-facts{display:grid;gap:10px;margin-top:4px}
+.directory a .case-facts p{border-top:1px solid var(--line);padding-top:8px;margin:0;font-size:13px;line-height:1.6;color:var(--ink)}
+.directory a .case-facts b{display:block;margin-bottom:2px;color:var(--accent);font-size:12px}
+.directory a .case-action{margin-top:auto;padding:10px 13px;border-radius:10px;min-height:44px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));color:var(--accent);font-weight:700}
+.case-browse{margin:20px 0 12px;font-size:14px;font-weight:700}
+.case-browse a{display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:900px){.directory{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){header{flex-wrap:wrap;padding-block:14px}header nav{width:100%;flex-wrap:wrap;gap:8px 12px}.directory{grid-template-columns:1fr;margin-top:15px}.directory a.case-card{padding:18px}.case-browse{margin:10px 0}}
+
 </style></head><body><header><a class="logo" href="/">见势 JIANSHI</a>
-<nav aria-label="页面导航"><a href="/validation/">方向证据</a><a href="/projects/">具名项目</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
+<nav aria-label="页面导航"><a href="/discover/">找项目</a><a href="/projects/">公司案例</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
 <main><a class="case-back" href="/projects/">← 返回项目列表</a>
 <span class="kicker">看看别人怎么做生意</span>
 <h1>Plausible｜隐私优先的网站统计</h1><p class="lead">为网站经营者提供易读的访问量、来源和转化数据，并以网站流量和功能档位提供订阅服务。</p>
