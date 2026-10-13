@@ -120,11 +120,96 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 @media(max-width:900px){.directory{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){header{flex-wrap:wrap;padding-block:14px}header nav{width:100%;flex-wrap:wrap;gap:8px 12px}.directory{grid-template-columns:1fr;margin-top:15px}.directory a.case-card{padding:18px}.case-browse{margin:10px 0}}
 
+
+/* B1: company directory and evidence pages retain factual contents, update look. */
+body{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}
+header{max-width:1180px;padding-block:17px;min-height:72px}
+.logo{font:850 22px/1.4 "PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif;letter-spacing:-.04em}
+header nav a{font-weight:700;text-decoration:none;font-size:13px;min-height:44px;display:inline-flex;align-items:center}
+header nav a:hover{color:var(--accent)}header button{border-radius:11px;cursor:pointer}
+main{padding-block:38px 85px}
+h1,h2,h3{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}
+h1{font-size:clamp(35px,5vw,56px);font-weight:850;letter-spacing:-.048em;line-height:1.22}
+h2{font-weight:800;letter-spacing:-.03em}
+.case-directory-hero{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;
+ padding:36px clamp(23px,4vw,46px) 32px;margin:0 0 25px;
+ background:radial-gradient(ellipse 50% 130% at 90% 7%,#6156ab65,transparent 72%),
+ radial-gradient(ellipse 43% 105% at 4% 100%,#23689a55,transparent 80%),
+ linear-gradient(130deg,#0b1528,#182849 70%,#231d49);
+ box-shadow:0 19px 42px #1a32622a;color:#f3f6ff}
+.case-directory-hero:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background-image:linear-gradient(#abc2ff0c 1px,transparent 1px),linear-gradient(90deg,#abc2ff0c 1px,transparent 1px);
+ background-size:42px 42px;mask-image:linear-gradient(90deg,transparent,#000b)}
+.case-directory-hero .kicker{color:#c6c8ff;background:#7e79ef26;border:1px solid #a4a7ff53;
+ border-radius:50px;padding:5px 12px;display:inline-flex;font-size:11px}
+.case-directory-hero h1{color:#fff;max-width:760px;font-size:clamp(34px,4.7vw,55px);margin:15px 0 14px}
+.case-directory-hero .lead{color:#c7d3e8;font-size:15px;line-height:1.75;max-width:700px}
+.case-directory-hero .case-browse{margin:13px 0 0}
+.case-directory-hero .case-browse a{color:#fff;text-decoration:none;min-height:44px;border-radius:11px;
+ background:linear-gradient(110deg,#8265e9,#5089ee);padding:10px 18px;box-shadow:0 7px 20px #4341ac51}
+.case-directory-hero .case-browse a:hover{filter:brightness(1.09)}
+.case-directory-proof{display:flex;gap:9px;flex-wrap:wrap;margin-top:19px}
+.case-directory-proof span{display:inline-flex;align-items:center;min-height:31px;
+ border:1px solid #a6b5e844;background:#f1f2ff11;color:#dce6fa;
+ padding:5px 11px;border-radius:25px;font-size:11px}
+.directory{gap:16px}
+.directory a.case-card{border-radius:19px;border:1px solid var(--line);
+ padding:23px;box-shadow:0 5px 22px #273f7210;
+ background:var(--panel);transition:border-color .18s,transform .18s,box-shadow .18s}
+.directory a.case-card:hover,.directory a.case-card:focus-visible{border-color:var(--accent);
+ box-shadow:0 17px 36px #293f8020;transform:translateY(-3px)}
+.directory a.case-card small{align-self:flex-start;border-radius:24px;
+ padding:5px 10px;background:color-mix(in srgb,var(--accent) 11%,var(--panel));
+ color:var(--accent);font-size:11px;font-weight:750}
+.directory a.case-card strong{font-size:20px;line-height:1.4;letter-spacing:-.025em}
+.directory a .case-facts{margin-top:7px;gap:8px}
+.directory a .case-facts p{padding-top:8px;font-size:12px;line-height:1.6}
+.directory a .case-facts b{font-size:11px}
+.directory a .case-action{display:flex;align-items:center;justify-content:space-between;
+ margin-top:auto;padding:11px 14px;border-radius:11px;
+ background:color-mix(in srgb,var(--accent) 12%,var(--panel));
+ color:var(--accent);font-size:13px;font-weight:800}
+.case-detail-hero{border:1px solid var(--line);padding:27px clamp(20px,3.5vw,34px);
+ border-radius:22px;background:linear-gradient(130deg,
+ color-mix(in srgb,var(--accent) 9%,var(--panel)),var(--panel) 65%);margin:8px 0 19px}
+.case-detail-hero .kicker{display:inline-block;margin:0;padding:4px 10px;
+ border:1px solid color-mix(in srgb,var(--accent) 32%,var(--panel));border-radius:30px}
+.case-detail-hero h1{margin:14px 0 10px;max-width:840px;
+ font-size:clamp(32px,4.3vw,48px);font-weight:850}
+.case-detail-hero .lead{font-size:15px;line-height:1.75;margin:0;max-width:750px}
+.case-detail-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.case-detail-proof span{display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--line);
+ border-radius:24px;padding:4px 10px;font-size:11px;color:var(--muted);background:var(--panel)}
+.digest,.decision-report,.decision-more,.dossier-more,.workbook-fold{border-radius:17px}
+.digest{box-shadow:0 6px 24px #2a3d7710}
+.digest h2,.decision-report h2{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif;font-weight:800}
+.digestgrid{gap:14px}
+.digestgrid p{border:1px solid var(--line);border-radius:12px;padding:13px;min-width:0}
+.digestgrid .digest-proof{border-left:3px solid var(--accent)}
+.decision-report{box-shadow:0 5px 24px #2a3d7710}
+@media(max-width:650px){
+ header{min-height:60px}main{padding-block:24px 65px}
+ .case-directory-hero{padding:25px 20px;margin-bottom:12px;border-radius:19px}
+ .case-directory-hero h1{font-size:clamp(32px,8vw,44px)}
+ .case-directory-hero .lead{font-size:13px;line-height:1.7}
+ .case-directory-hero:before{background-size:32px 32px}
+ .case-directory-proof{margin-top:12px}
+ .directory a.case-card{padding:19px}
+ .case-detail-hero{padding:20px;border-radius:17px}
+ .case-detail-hero h1{font-size:clamp(29px,7.5vw,40px)}
+ .case-detail-hero .lead{font-size:13px}
+ .digestgrid p{padding:10px}
+}
+@media(prefers-reduced-motion:reduce){.directory a.case-card{transition:none;transform:none!important}}
+
 </style></head><body><header><a class="logo" href="/">见势 JIANSHI</a>
 <nav aria-label="页面导航"><a href="/discover/">找项目</a><a href="/projects/">公司案例</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
 <main><a class="case-back" href="/projects/">← 返回项目列表</a>
+<section class="case-detail-hero" aria-label="历史公司案例概览">
 <span class="kicker">看看别人怎么做生意</span>
 <h1>Carrd｜单页网站搭建工具</h1><p class="lead">帮助个人和小型商家快速创建单页网站，提供免费使用和不同等级的 Pro 服务。</p>
+<div class="case-detail-proof" aria-label="研究资料边界"><span>历史经营资料</span>
+<span>不等于创业收益预测</span><span>建议核查来源和成本</span></div></section>
 <section class="digest" aria-label="项目概况"><h2>30 秒看懂这门生意</h2><div class="digestgrid"><p><b>做什么？</b>模板式网页编辑器、托管发布功能及不同级别的专业功能。</p><p><b>谁付钱？</b>需要专业功能的个人或小商家（按年订阅）</p><p><b>怎么收费？</b>基础网站免费，围绕自定义域名、表单、更多站点及高级功能提供按年付费的 Pro 计划。</p><p class="digest-proof"><b>什么还不确定？</b>这是创始人或公司自行披露的历史经营数据，未经独立财务审计；不是当前收入。</p></div><p class="digest-meta">公开资料的时间：2022 年前后访谈 · <a href="https://saasclub.io/podcast/carrd-aj-306/" target="_blank" rel="noopener noreferrer">查看原始经营依据 ↗</a></p></section>
 <section class="decision-report" id="decision-report" aria-labelledby="decision-title"><span class="decision-eyebrow">一个人能试吗？</span><h2 id="decision-title">这个方向适合你吗？</h2><div class="decision-verdict" data-solo-fit="TEST_IDEA_ONLY"><span class="decision-verdict__label">目前的判断</span><strong>可以先研究一个低成本需求测试方向</strong><small>已验证可直接投入创业：0。以下只是研究参考，不是收益承诺。</small></div><div class="decision-next"><strong>可以先尝试什么？</strong><p>细分行业单页建站服务（启发自 Carrd，不等同于 Carrd 的 SaaS 收入模式）</p><strong>第一步怎么做？</strong><p>先锁定一个更小的客户群，访谈真实需求、做一页演示样板并争取一笔明确付费的试单；无购买信号就停止投入。</p></div><a class="decision-workbook-link" href="#founder-workbook-toggle">想动手验证？查看四步工作单 ↓</a><details class="decision-more" id="decision-more"><summary>查看能力门槛、成本和其他需要核实的问题</summary><div class="decision-columns"><article><h3>可以从哪个小方向试起？</h3><p>细分行业单页建站服务（启发自 Carrd，不等同于 Carrd 的 SaaS 收入模式）</p><small>可由一人先访谈、展示样板并提供有限范围的手工建站服务；不需要先组建团队或自主开发建站软件。</small></article><article><h3>需要什么能力</h3><p>需要基础网页排版、客户沟通与交付；可先使用现成工具，不要求自行写 SaaS。</p><h3>可能需要花哪些钱？</h3><p>不要求先囤货或租实体场地；工具订阅、域名、时间成本及获客费用尚未核实。</p></article></div><div class="decision-proof" aria-label="有出处的历史证据"><h3>这家企业以前公开过什么经营资料？</h3><p>创始人 AJ 在公开访谈中自述当时约 10 万美元 MRR、约 120 万美元 ARR</p><p><b>对应时期：</b>2022 年前后访谈</p><p><b>不能证明：</b>这是创始人或公司自行披露的历史经营数据，未经独立财务审计；不是当前收入。</p><a href="https://saasclub.io/podcast/carrd-aj-306/" rel="noopener noreferrer" referrerpolicy="no-referrer" target="_blank">打开原始经营来源 ↗</a></div><div class="decision-action" id="validation-plan"><h3>可以如何进一步核实？</h3><ol><li><b>先做需求实验</b><p>先锁定一个更小的客户群，访谈真实需求、做一页演示样板并争取一笔明确付费的试单；无购买信号就停止投入。</p></li><li><b>明确继续投入前缺少的证据</b><p>还没有该具体细分市场的有效付费试单、获客成本与交付成本证据。</p></li><li><b>继续核对原企业经营资料</b><p>搜集更新的官方财务公开、独立客户/付费样本；没有审计时维持自述标签。</p></li></ol></div><p class="decision-disclaimer">注意：原企业历史营收、收费方案或技术活跃度均不能证明新进入者能获得付费客户；具体预算、获客成本和可复制性未经独立验证。</p></details></section>
 <details class="dossier-more" id="case-details">
