@@ -122,10 +122,10 @@ class DecisionReportTest(unittest.TestCase):
 
     def test_project_list_only_shows_three_decision_briefs(self):
         html=index_page(list(self.cases.values()))
-        self.assertEqual(html.count('class="decision-mini"'),3)
+        self.assertEqual(html.count('class="case-card"'),3)
         self.assertEqual(len(re.findall(r'href="/projects/[a-z0-9-]+/"',html)),3)
-        self.assertIn("一人起步判断：",html)
-        self.assertIn("待补验证：",html)
+        self.assertIn("上手门槛：",html)
+        self.assertNotIn("待补验证：",html)
         for slug in self.cases:
             self.assertIn('/projects/'+slug+'/',html)
         self.assertNotIn("Easlo｜",html)
