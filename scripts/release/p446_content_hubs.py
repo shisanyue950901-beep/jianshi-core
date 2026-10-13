@@ -89,7 +89,7 @@ SOLUTIONS = (
 COURSE_PATHS = (
     ("AI 图像与电商设计", "掌握素材授权、图片生成、商品信息校验与导出规格。", "完成一套含审核说明的商品视觉练习。"),
     ("AI 视频与短片制作", "理解脚本、分镜、镜头一致性、剪辑及传播版权。", "完成一支标注为概念练习的短片与分镜。"),
-    ("AI 智能助手与自动化", "学习用 AI 完成重复任务，并在重要环节保留人工检查。", "制作一个可以随时停止的自动化演示。"),
+    ("AI Agent 与工作流", "学习用 AI 完成重复任务，并在重要环节保留人工检查。", "制作一个可以随时停止的自动化演示。"),
     ("AI 出海内容表达", "熟悉多语言信息核对、文化适配与审校流程。", "制作两种语种的内容对照与审校清单。"),
     ("AI 商业机会研究", "区分产品存在、公开收费、历史经营和新进入者可行性。", "写一份说明赚钱方式、事实来源和未知风险的项目简介。"),
 )
@@ -269,7 +269,7 @@ def solution_detail(row: dict) -> str:
         "03 / ACCEPTANCE",
     )
     body += section(
-        "先做一个小测试", "先把实践目标与人工复核条件写清，不需要提交客户资料。",
+        "先做一个低风险的小测试", "先把实践目标与人工复核条件写清，不需要提交客户资料。",
         solution_trial(row["slug"]), "04 / SELF PRACTICE",
     )
     body += section(
@@ -370,7 +370,7 @@ def talent_page() -> str:
 
 def academy_page() -> str:
     cards = ''.join(
-        '<article class="card"><h3>' + e(title) + '</h3><p>' + e(goal)
+        '<article class="card"><h3>' + e("AI 智能助手与自动化" if title == "AI Agent 与工作流" else title) + '</h3><p>' + e(goal)
         + '</p><p style="margin-top:13px"><b>计划实战成果：</b>' + e(work)
         + '</p></article>'
         for i, (title, goal, work) in enumerate(COURSE_PATHS, start=1)
