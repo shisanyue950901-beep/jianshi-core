@@ -69,7 +69,9 @@ class TestB1A04ProjectFirst(unittest.TestCase):
         page = self.listing
         self.assertIn("看看它们怎么赚钱", page)
         self.assertIn("怎么赚钱：", page)
-        self.assertIn("谁可能付钱：", page)
+        self.assertIn("谁在用：", page)
+        self.assertIn("谁付钱：", page)
+        self.assertIn("广告合作伙伴；读者不等于广告付款方", page)
         self.assertIn("<details class=\"notice\"><summary>这些项目怎么选出来的？</summary>", page)
         self.assertIn("产品存在", page)  # evidence contract still accessible
         self.assertEqual(len(re.findall(r'href="/projects/[a-z0-9-]+/"', page)), 3)
