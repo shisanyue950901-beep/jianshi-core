@@ -168,6 +168,11 @@ body:has(#j2) #splash{display:none!important}
 #j2 .j2-journey b{display:grid;place-items:center;width:25px;height:25px;border-radius:9px;border:1px solid #6d83b878;
  color:#bdc9ff;background:#6c78e421;font-size:10px}
 #j2 .j2-journey-arrow{color:#758cb9}
+#j2 .j2-first-service{display:inline-flex;align-items:center;min-height:43px;color:#e2d8ff;
+ border-bottom:1px solid #b1a6ff80;font-size:13px;font-weight:800;line-height:1.5;
+ margin-top:11px;text-decoration:none}
+#j2 .j2-first-service:hover,#j2 .j2-first-service:focus-visible{color:#fff;border-bottom-color:#fff}
+#j2 .j2-first-service:focus-visible{outline:3px solid #bcaeff;outline-offset:3px}
 #j2 .j2-proofnote{margin-top:16px;color:#a7b9d5}
 #j2 .j2-visual{min-height:222px;display:grid;place-items:center}
 #j2 .j2-visual img{max-height:170px;max-width:183px;position:absolute;bottom:4px;right:3px;
@@ -344,6 +349,7 @@ def render_portal(cases: list[dict]) -> str:
         '<span><b>01</b> 发现方向</span><span class="j2-journey-arrow" aria-hidden="true">→</span>'
         '<span><b>02</b> 核查依据</span><span class="j2-journey-arrow" aria-hidden="true">→</span>'
         '<span><b>03</b> 决定下一步</span></div>'
+        '<a class="j2-first-service" href="/start/">不知道从哪个方向开始？用 3 个问题生成研究卡 →</a>'
         '<p class="j2-proofnote">先看模式，再看风险。历史案例不代表照着做就能赚钱；概念配图不是项目证明。</p></div>'
         '<div class="j2-visual"><div class="j2-visual-panel" aria-hidden="true"><div class="j2-visual-top">'
         '<span class="j2-visual-led"></span><span>JIANSHI / RESEARCH</span><span>✦</span></div>'
