@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {execFileSync,spawnSync} from 'node:child_process';
 import {inspectMultiZoneReadOnly}
  from '../scripts/security/g2h7j_multizone_readonly.mjs';
 
@@ -171,4 +172,18 @@ test('caller cannot use wrong read mode, malformed account or missing token',asy
  for(const v of bad)await assert.rejects(inspect(f,v),e=>
   e.code?.startsWith('CMS_H7J_'));
  assert.equal(f.seen.length,0);
+});
+
+test('default CLI is zero-network; explicit remote flag alone never runs',()=>{
+ const env={PATH:process.env.PATH};
+ const out=execFileSync(process.execPath,[
+  'scripts/security/g2h7j_multizone_cli.mjs'
+ ],{encoding:'utf8',env});
+ assert.match(out,/G2H7J_NOT_CONNECTED/);
+ assert.match(out,/"cloudflareCalls":0/);
+ const denied=spawnSync(process.execPath,[
+  'scripts/security/g2h7j_multizone_cli.mjs','--remote-read-only'
+ ],{encoding:'utf8',env});
+ assert.equal(denied.status,2);
+ assert.match(denied.stderr,/G2H7J_REMOTE_READONLY_DENIED/);
 });
