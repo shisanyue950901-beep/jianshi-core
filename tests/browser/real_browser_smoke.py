@@ -94,6 +94,53 @@ def snapshot(page, base: str, route: str, slug: str, width: int):
     require(screenshot.stat().st_size > 1500, "Empty screenshot file")
 
 
+def ui_secondary_mobile_menu(page, base: str, width: int):
+    # Explicit computed CSS checks: a browser can otherwise produce a giant
+    # white box around <details class="mobile"> while all links still work.
+    routes = ("/solutions/", "/discover/", "/marketplace/brief/", "/talent/portfolio/")
+    for route in routes:
+        page.goto(base + route, wait_until="load")
+        menu = page.locator(".top .mobile")
+        summary = menu.locator("summary")
+        popup = menu.locator("nav")
+        if width > 1050:
+            require(not menu.is_visible(), f"{route}: mobile control shown on desktop")
+            require(page.locator(".top .desktop").is_visible(), f"{route}: desktop nav hidden")
+            continue
+        require(menu.is_visible(), f"{route}: mobile control hidden")
+        require(not popup.is_visible(), f"{route}: closed dropdown is visible")
+        appearance = menu.evaluate("""el => {
+          const container = getComputedStyle(el);
+          const button = getComputedStyle(el.querySelector('summary'));
+          return { background: container.backgroundColor, padding: container.paddingTop,
+                   margin: container.marginTop, border: container.borderTopWidth,
+                   buttonBackground: button.backgroundColor, buttonColor: button.color,
+                   buttonHeight: el.querySelector('summary').getBoundingClientRect().height,
+                   menuWidth: el.getBoundingClientRect().width };
+        }""")
+        require(appearance["background"] in ("rgba(0, 0, 0, 0)", "transparent"),
+                f"{route}: WHITE MENU BOX detected: {appearance}")
+        require(appearance["padding"] == "0px" and appearance["margin"] == "0px",
+                f"{route}: mobile nav inherited article panel padding: {appearance}")
+        require(appearance["border"] == "0px", f"{route}: mobile nav inherited border")
+        require(appearance["buttonBackground"] != "rgb(255, 255, 255)",
+                f"{route}: menu trigger became white")
+        require(appearance["buttonHeight"] <= 50 and appearance["menuWidth"] <= 105,
+                f"{route}: mobile trigger is oversized: {appearance}")
+        summary.click()
+        require(menu.get_attribute("open") is not None,
+                f"{route}: menu cannot open")
+        require(popup.is_visible(), f"{route}: opened dropdown missing")
+        popupBackground = popup.evaluate("el => getComputedStyle(el).backgroundColor")
+        require(popupBackground not in ("rgb(255, 255, 255)", "rgba(0, 0, 0, 0)"),
+                f"{route}: opened dropdown lacks dark surface: {popupBackground}")
+        image_name = route.strip("/").replace("/", "-") + "-menu-open"
+        page.screenshot(path=str(OUT / str(width) / f"{image_name}.png"),
+                        full_page=False, animations="disabled", timeout=8000)
+        summary.click()
+        require(not popup.is_visible(), f"{route}: menu can't close")
+
+
 def ui_home(page, base: str, mobile: bool):
     page.goto(base + "/", wait_until="load")
     if mobile:
@@ -318,6 +365,9 @@ def main():
                     check("snapshot-" + slug,
                           lambda route=route, slug=slug: snapshot(page, base, route, slug, width),
                           viewport=width, page=page)
+                check("subpage-mobile-menu-surface-and-toggle",
+                      lambda: ui_secondary_mobile_menu(page, base, width),
+                      viewport=width, page=page)
                 check("home-menu-and-navigation", lambda: ui_home(page, base, width == 390),
                       viewport=width, page=page)
                 check("company-to-evidence", lambda: ui_company(page, base),
