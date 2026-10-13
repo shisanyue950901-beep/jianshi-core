@@ -100,7 +100,7 @@ class TestB1A03FounderWorkbook(unittest.TestCase):
             original = render_decision_panel(decision_data(case))
             self.assertEqual(original.count("<li>"), 3)
             self.assertEqual(original.count('id="decision-report"'), 1)
-            self.assertIn("原企业的历史经营证据", original)
+            self.assertIn("这家企业以前公开过什么经营资料？", original)
             self.assertIn("已验证可直接投入创业：0", original)
         listings = index_page(list(self.cases.values()))
         self.assertEqual(listings.count('class="decision-mini"'), 3)
