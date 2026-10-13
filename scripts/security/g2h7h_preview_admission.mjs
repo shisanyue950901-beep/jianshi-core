@@ -63,6 +63,7 @@ export function assessPreviewSafety({config,manifest,workerSource,releaseSource,
   /\b(?:import|require|eval|Function)\s*(?:\(|.*from\b)/.test(workerSource)||
   /\b(?:fetch|console|Math\.random|WebSocket|EventSource)\s*\(/.test(
    workerSource.replace(/async fetch\s*\(/,'async handler('))||
+  /\bconsole\s*\./.test(workerSource)||
   /\bprocess\.env\b/.test(workerSource)||
   /(?:authorization|token_hash|service_role|supabase|pages\.dev)/i.test(
    workerSource.replace(/token_hash/g,'MOCK_ONLY'))){
