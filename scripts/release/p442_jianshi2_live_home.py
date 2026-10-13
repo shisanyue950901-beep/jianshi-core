@@ -98,6 +98,52 @@ body:has(#j2) #splash{display:none!important}
 @media(max-width:760px){#j2 .j2-wrap{width:calc(100% - 36px)}#j2 .j2-hero{grid-template-columns:1fr;padding-top:52px;padding-bottom:85px;gap:15px;min-height:0}#j2 .j2-visual img{max-height:310px}#j2 h1{font-size:clamp(36px,8.9vw,53px)}#j2 .j2-actions .j2-button{min-height:45px}#j2 .j2-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}#j2 .j2-metric{padding:14px 11px}#j2 .j2-metric strong{font-size:clamp(22px,6vw,31px)}#j2 .j2-metric span{font-size:10px}#j2 .j2-content{padding-top:41px}#j2 .j2-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#j2 .j2-study-paths{grid-template-columns:1fr;gap:10px}#j2 .j2-projects{grid-template-columns:1fr}#j2 .j2-two{grid-template-columns:1fr}#j2 .j2-section{margin-top:52px}#j2 .j2-sectionhead{align-items:start;flex-direction:column;gap:8px}#j2 .j2-panel{padding:25px}#j2 .j2-academy{padding:27px 23px}}
 @media(max-width:450px){#j2 .j2-solutions{grid-template-columns:1fr}#j2 .j2-intro{display:block}#j2 .j2-shortcut{min-height:115px;padding:15px}}
 @media(prefers-reduced-motion:reduce){#j2 .j2-visual img{animation:none}#j2 .j2-button,#j2 .j2-project,#j2 .j2-shortcut{transition:none;transform:none!important}}
+
+/* B1-A04: Show real projects immediately, remove wall-of-jargon UI. */
+#j2 .j2-hero{min-height:0;grid-template-columns:minmax(0,1fr) 210px;padding-top:36px;padding-bottom:44px;gap:18px}
+#j2 .j2-kicker{font-size:11px}
+#j2 h1{font-size:clamp(36px,4vw,58px);margin:14px 0 10px;line-height:1.18}
+#j2 .j2-lead{font-size:16px;line-height:1.65;margin:0 0 18px;max-width:700px}
+#j2 .j2-visual img{max-height:185px;animation:none;filter:none}
+#j2 .j2-visual:before{display:none}
+#j2 .j2-button{min-height:43px}
+#j2 .j2-proofnote{margin-top:13px;max-width:730px}
+#j2 .j2-content{padding-top:26px}
+#j2 .j2-section{margin-top:0}
+#j2 .j2-intro{margin-bottom:16px}
+#j2 .j2-project{gap:10px;padding:21px}
+#j2 .j2-project .j2-case-type{color:#5b46ad}
+#j2 .j2-project h3{font-size:21px}
+#j2 .j2-project p{flex-grow:0;line-height:1.55}
+#j2 .j2-project-facts{margin:5px 0 0;display:grid;gap:8px}
+#j2 .j2-project-facts div{border-top:1px solid #edf0f8;padding-top:8px}
+#j2 .j2-project-facts dt{font-size:11px;color:#69788f;font-weight:650}
+#j2 .j2-project-facts dd{font-size:14px;color:#1b2b42;margin:3px 0 0;font-weight:600;line-height:1.45}
+#j2 .j2-project-action{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;background:#f1edff;border-radius:10px;min-height:42px;padding:10px 12px}
+#j2 .j2-simple-notice{font-size:12px;color:#65728a;margin:14px 0 0;line-height:1.65}
+#j2 .j2-after-projects{margin-top:34px;padding-top:26px;border-top:1px solid #e1e6ef}
+#j2 .j2-after-projects h2{font-size:26px}
+#j2 .j2-study-paths{margin:16px 0 16px}
+#j2 .j2-study-path{min-height:105px;padding:16px}
+#j2 .j2-study-path span{font-size:12px}
+#j2 .j2-shortcuts{margin-bottom:34px}
+#j2 .j2-shortcut{min-height:95px;padding:14px}
+#j2 .j2-solutions{margin-top:18px}
+#j2 .j2-metrics{transform:none;margin:18px 0 0;box-shadow:none;background:#182840;border-radius:12px}
+#j2 .j2-metric{padding:13px}
+#j2 .j2-metric strong{font-size:24px}
+#j2 .j2-metric span{font-size:11px}
+@media(max-width:760px){
+ #j2 .j2-hero{grid-template-columns:1fr;padding-top:20px;padding-bottom:26px}
+ #j2 .j2-visual{display:none}
+ #j2 h1{font-size:clamp(34px,8vw,45px)}
+ #j2 .j2-lead{font-size:14px;line-height:1.55}
+ #j2 .j2-content{padding-top:22px}
+ #j2 .j2-projects{grid-template-columns:1fr}
+ #j2 .j2-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+ #j2 .j2-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 """
 
 
@@ -149,40 +195,75 @@ def _get_visual() -> str:
     return hits[0]
 
 
+# Clear, source-constrained preview copy, never an audited profit/fit forecast.
+# These are short editorial summaries of the existing allowed dossier data.
+PROJECT_PREVIEWS = {
+    "carrd": {
+        "headline": "做单页网站",
+        "sub": "帮个人和小商家快速建立展示页面",
+        "buyer": "创作者、自由职业者、小商家",
+        "revenue": "基础免费，高级功能按年订阅",
+        "difficulty": "可以从小范围建站服务试单；不是复制 Carrd",
+        "label": "可研究低成本服务",
+    },
+    "plausible": {
+        "headline": "网站数据分析工具",
+        "sub": "帮站长看流量、来源和转化",
+        "buyer": "站长、网站运营团队",
+        "revenue": "按网站流量和功能收订阅费",
+        "difficulty": "需要开发、运维与隐私保护能力",
+        "label": "技术门槛较高",
+    },
+    "nerdwallet": {
+        "headline": "金融产品比较网站",
+        "sub": "帮消费者理解和比较金融产品",
+        "buyer": "用户看内容；广告合作伙伴付费",
+        "revenue": "广告和商业合作，不代表每笔成交都收佣金",
+        "difficulty": "大型平台模式，不建议一人直接照搬",
+        "label": "学习商业模式",
+    },
+}
+
+
 def render_portal(cases: list[dict]) -> str:
     metrics = public_metrics(cases)
-    if set(CASES) != {case["id"] for case in cases}:
+    if {case["id"] for case in cases} != set(PROJECT_PREVIEWS) or len(cases) != 3:
         raise RuntimeError("Only source-admitted cases can enter JIANSHI2 homepage")
-    case_rows = "".join(
-        '<article class="j2-project"><span class="j2-case-type">已审核历史研究案例 · '
-        + ("监管历史财报" if case["evidence_level"] == 4 else "历史经营自述") + "</span>"
-        + "<h3>" + escape(case["title"].split("｜", 1)[0]) + "</h3>"
-        + "<p>" + escape(CASES[case["id"]][1]) + "</p>"
-        + '<dl class="j2-research-check"><dt>先研究什么</dt><dd>'
-        + escape(RESEARCH_QUESTIONS[case["id"]][0])
-        + '</dd><dt>哪些问题还不知道</dt><dd>'
-        + escape(RESEARCH_QUESTIONS[case["id"]][1])
-        + '</dd><dt>可以怎样开始核实</dt><dd>'
-        + escape(RESEARCH_QUESTIONS[case["id"]][2])
-        + '</dd></dl>'
-        + '<a href="/projects/' + escape(case["id"], quote=True)
-        + '/">查看来源和证据边界 ↗</a></article>'
-        for case in cases
-    )
+    # Editorial preview remains subordinate to the strict source-admission gate.
+    case_by_id = {case["id"]: case for case in cases}
+    projects = []
+    for slug in ("carrd", "plausible", "nerdwallet"):
+        case = case_by_id[slug]
+        preview = PROJECT_PREVIEWS[slug]
+        def h(k: str) -> str:
+            return escape(preview[k], quote=True)
+        projects.append(
+            '<article class="j2-project">'
+            '<span class="j2-case-type">' + h("label") + ' · 历史案例</span>'
+            '<h3>' + h("headline") + ' <small>｜'
+            + escape(case["title"].split("｜", 1)[0]) + '</small></h3>'
+            '<p>' + h("sub") + '</p>'
+            '<dl class="j2-project-facts">'
+            '<div><dt>谁需要</dt><dd>' + h("buyer") + '</dd></div>'
+            '<div><dt>怎么赚钱</dt><dd>' + h("revenue") + '</dd></div>'
+            '<div><dt>上手门槛</dt><dd>' + h("difficulty") + '</dd></div>'
+            '</dl><a class="j2-project-action" href="/projects/'
+            + escape(slug, quote=True) + '/">看项目详情 →</a></article>'
+        )
     solution_rows = "".join(
         '<article class="j2-solution"><div class="j2-art" aria-hidden="true">'
         + escape(icon) + '</div><div class="j2-solution-body"><h3>'
         + escape(title) + "</h3><p>" + escape(desc)
-        + '</p><small>应用方向示意 · 暂无已核实平台交付案例</small>'
-        + '<a href="/solutions/' + slug + '/">查看场景与交付清单 ↗</a></div></article>'
+        + '</p><small>仅供了解方向，尚无平台已交付案例</small>'
+        + '<a href="/solutions/' + slug + '/">了解这个方向 →</a></div></article>'
         for (icon, title, desc), slug in zip(SOLUTIONS, SOLUTION_SLUGS)
     )
     shortcut_data = (
-        ("◈", "商业机会库", "经审核的公开研究", "j2-opportunities"),
-        ("▤", "企业解决方案", "从业务问题出发", "j2-solutions"),
-        ("◇", "商机大厅", "需求撮合规划", "j2-marketplace"),
-        ("♙", "人才与服务商", "作品与技能体系", "j2-talent"),
-        ("✧", "AIGC 学院", "自主课程筹备", "j2-academy"),
+        ("◈", "找创业项目", "看商业案例和赚钱方式", "j2-opportunities"),
+        ("▤", "企业用 AI", "了解企业可用的方案", "j2-solutions"),
+        ("◇", "找业务需求", "尚未开放真实商单", "j2-marketplace"),
+        ("♙", "找合作伙伴", "尚未开放入驻", "j2-talent"),
+        ("✧", "学 AI 技能", "课程还在筹备", "j2-academy"),
     )
     shortcuts = "".join(
         '<a class="j2-shortcut" href="#' + anchor + '"><i aria-hidden="true">'
@@ -195,74 +276,74 @@ def render_portal(cases: list[dict]) -> str:
     return (
         '<section id="j2" aria-label="见势 2.0 商业机会与解决方案门户">'
         '<div class="j2-mast"><div class="j2-wrap j2-hero">'
-        '<div><span class="j2-kicker">JIANSHI 2.0 · 个人创业机会发现与决策</span>'
+        '<div><span class="j2-kicker">JIANSHI · 帮你找创业项目</span>'
         '<h1>发现值得研究的<br><em>商业机会。</em></h1>'
-        '<p class="j2-lead">面向个人创业者与小团队，发现经审核的真实商业案例，'
-        '看懂收费模式、证据与风险，找到下一步值得核实的问题。'
+        '<p class="j2-lead">想找个项目做？先看看别人做什么、卖给谁、怎么赚钱。'
         '不仅研究 AI，也关注电商、内容、数字产品和服务等商业模式。</p>'
         '<div class="j2-actions">'
-        '<a class="j2-button j2-button--primary" href="#j2-opportunities">开始找项目 ↗</a>'
-        '<a class="j2-button" href="/discover/">按主题筛选研究 ↗</a></div>'
-        '<p class="j2-proofnote">见势帮助做研究判断，不保证项目收益或可复制性。'
-        '商业证据有历史期间和来源局限；企业 AI 方案研究另见下方独立板块。'
-        '概念配图不是项目证明，企业接单及课程平台正在建设中。</p></div>'
+        '<a class="j2-button j2-button--primary" href="#j2-opportunities">直接看项目 ↓</a>'
+        '<a class="j2-button" href="/discover/">按方向找项目 →</a></div>'
+        '<p class="j2-proofnote">先看模式，再看风险。历史案例不代表照着做就能赚钱；概念配图不是项目证明。</p></div>'
         '<div class="j2-visual"><img width="800" height="650" fetchpriority="high"'
         ' decoding="async" alt="AI 生成的见势 2.0 概念主视觉，非真实项目案例或企业客户"'
         ' src="' + image + '"></div></div></div>'
-        '<div class="j2-wrap"><div class="j2-metrics" aria-label="真实来源受控研究概况">'
+        '<div class="j2-wrap j2-content">'
+        '<section class="j2-section" id="j2-opportunities">'
+        '<div class="j2-sectionhead"><div>'
+        '<span class="j2-overline">先看项目 · 再做决定</span>'
+        '<h2>现在可以看的创业案例</h2>'
+        '<p class="j2-muted">直接比较做什么、谁付费、怎么赚钱、要什么能力。</p></div>'
+        '<a class="j2-plainlink" href="/projects/">全部案例 →</a></div>'
+        '<div class="j2-projects">' + "".join(projects) + '</div>'
+        '<p class="j2-simple-notice">目前只展示已有历史经营资料的 3 个案例，'
+        '并不代表任何一个可以直接复制盈利。更多项目需要继续核实。</p>'
+        '</section>'
+        '<div class="j2-after-projects">'
+        '<h2>还想看看其他方向？</h2>'
+        '<nav class="j2-study-paths" aria-label="创业机会三条研究路径">'
+        '<a class="j2-study-path" href="/projects/"><strong>找真实案例</strong>'
+        '<span>三个有经营资料的公开案例。</span><small>看案例 →</small></a>'
+        '<a class="j2-study-path" href="/research/"><strong>比较商业模式</strong>'
+        '<span>看看不同生意一般怎么运作。</span><small>了解六类模式 →</small></a>'
+        '<a class="j2-study-path" href="/discover/"><strong>按主题探索</strong>'
+        '<span>根据感兴趣的领域浏览内容。</span><small>按方向找 →</small></a>'
+        '</nav>'
+        '<div class="j2-metrics" aria-label="当前公开研究数量">'
         '<div class="j2-metric"><strong>' + str(metrics["approved_cases"]) + '</strong><span>有历史经营证据的具名案例</span></div>'
         '<div class="j2-metric"><strong>' + str(metrics["verified_launch"]) + '</strong><span>已验证可直接启动的项目</span></div>'
         '<div class="j2-metric"><strong>' + str(metrics["business_models"]) + '</strong><span>已整理的商业模式</span></div>'
         '</div></div>'
-        '<div class="j2-wrap j2-content">'
-        '<div class="j2-intro"><div><span class="j2-overline">FIND · COMPARE · VERIFY</span>'
-        '<h2>找项目，先从可信的研究开始。</h2>'
-        '<p>三个入口帮助你按现有证据找项目、看商业模式，不要求注册。</p></div></div>'
-        '<nav class="j2-study-paths" aria-label="创业机会三条研究路径">'
-        '<a class="j2-study-path" href="/projects/"><strong>找真实案例</strong>'
-        '<span>先看已审核的具名经营案例与原始来源。</span><small>查看具名案例 →</small></a>'
-        '<a class="j2-study-path" href="/research/"><strong>比较商业模式</strong>'
-        '<span>了解匿名分类研究，辨别数据样本与真实企业的区别。</span><small>比较六类模式 →</small></a>'
-        '<a class="j2-study-path" href="/discover/"><strong>按主题探索</strong>'
-        '<span>浏览已经审核的项目、行业与实用指南，不新增未经证实的推荐。</span><small>进入内容发现 →</small></a>'
-        '</nav>'
-        '<div class="j2-intro"><div><span class="j2-overline">MORE FROM JIANSHI</span>'
-        '<h2>从商业机会研究，延伸到企业 AI 应用。</h2>'
-        '<p>个人创业研究是当前核心业务；其他方向按实际开放状态展示。</p></div></div>'
+        '<div class="j2-after-projects">'
+        '<div class="j2-intro"><div><span class="j2-overline">见势的其他板块</span>'
+        '<h2>企业 AI 方案、合作与学习</h2>'
+        '<p>先放在这里，需要的时候再看。未开放的服务会明确标注。</p></div></div>'
         '<nav class="j2-shortcuts" aria-label="见势 2.0 五大业务入口">' + shortcuts + '</nav>'
-        '<section class="j2-section" id="j2-opportunities"><div class="j2-sectionhead">'
-        '<div><span class="j2-overline">RESEARCH OPPORTUNITIES</span><h2>有证据的商业机会研究</h2>'
-        '<p class="j2-muted">历史案例供研究参考，不代表可以直接复制收益。</p></div>'
-        '<a class="j2-plainlink" href="/projects/">查看全部严格收录档案 ↗</a></div>'
-        '<div class="j2-projects">' + case_rows + '</div>'
-        '<p class="j2-muted" style="margin-top:18px">另有六类匿名商业挂牌研究，'
-        '不与具名公司收入或项目推荐混合。 <a href="/research/">查看匿名分类研究 →</a></p></section>'
+        '</div>'
         '<section class="j2-section" id="j2-solutions"><div class="j2-sectionhead">'
-        '<div><span class="j2-overline">BUSINESS SOLUTIONS</span><h2>企业的问题，用合适的 AI 方法解决。</h2>'
-        '<p class="j2-muted">首期展示典型应用场景，尚未开放真实服务采购或报价。</p></div>''<a class="j2-plainlink" href="/solutions/">查看完整解决方案指南 ↗</a></div>'
+        '<div><span class="j2-overline">企业 AI 服务</span><h2>企业想用 AI，可以从哪做起？</h2>'
+        '<p class="j2-muted">目前提供四类场景介绍，尚未开放真实服务采购或报价。</p></div>'
+        '<a class="j2-plainlink" href="/solutions/">查看企业方案 →</a></div>'
         '<div class="j2-solutions">' + solution_rows + '</div></section>'
         '<div class="j2-two">'
         '<section class="j2-panel" id="j2-marketplace"><span class="j2-status">商机大厅 · 建设中</span>'
-        '<h2>让需求找到合适的交付者。</h2>'
-        '<p class="j2-muted">企业需求发布、实名认证、审核及创作者项目申请将在 V2 开放。'
-        '当前不展示虚构企业、订单、竞标人数或服务报价。</p>'
-        '<a href="/marketplace/">查看企业需求模板与审核流程 ↗</a></section>'
+        '<h2>以后可以在这里找客户需求。</h2>'
+        '<p class="j2-muted">尚未开放真实商单。当前不展示虚构企业、订单和报价。</p>'
+        '<a href="/marketplace/">了解企业需求应该怎么写 →</a></section>'
         '<section class="j2-panel j2-panel--dark" id="j2-talent">'
-        '<span class="j2-status">人才与服务商 · 建设中</span>'
-        '<h2>让技能和作品成为可信的履历。</h2>'
-        '<p class="j2-muted">计划提供作品集、技能标签、授权联系方式及人工审核。'
-        '目前未开放真实入驻、自动匹配或项目投递。</p>'
-        '<a href="/talent/">查看人才入驻与作品集准备指南 ↗</a></section>'
+        '<span class="j2-status">合作伙伴 · 建设中</span>'
+        '<h2>以后可以在这里找合作团队。</h2>'
+        '<p class="j2-muted">目前未开放真实入驻、自动匹配或项目投递。</p>'
+        '<a href="/talent/">准备自己的作品介绍 →</a></section>'
         '</div><section class="j2-academy" id="j2-academy">'
-        '<span class="j2-overline" style="color:#bdb2ff">JIANSHI AIGC ACADEMY</span>'
-        '<h2>学到的 AI 技能，最终形成可展示的作品。</h2>'
-        '<p>课程视频、章节、学习进度、作业与作品集将在 V3 陆续开放。'
-        '课程由团队后续自主制作并上传，当前不展示虚构的课程数、讲师或学员。</p>'
-        '<div class="j2-tags"><span>AI 商业视觉</span><span>AI 视频与短片</span>'
-        '<span>企业智能体</span><span>自动化工作流</span>'
-        '<span>商业项目验证</span></div>''<a class="j2-button" style="margin-top:22px" href="/academy/">查看课程路线与实战成果规划 ↗</a></section>'
+        '<span class="j2-overline" style="color:#bdb2ff">AI 技能学习 · 筹备中</span>'
+        '<h2>想学 AI？先了解可以做什么。</h2>'
+        '<p>课程由团队后续自主制作并上传，目前只展示学习路线，暂时没有上线课程。</p>'
+        '<div class="j2-tags"><span>电商图片</span><span>AI 视频</span>'
+        '<span>企业自动化</span><span>做产品</span><span>测试创业想法</span></div>'
+        '<a class="j2-button" style="margin-top:22px" href="/academy/">查看学习方向 →</a></section>'
         '</div></section>'
     )
+
 
 
 def integrate(portal_ready_html: str, admitted_cases: list[dict]) -> str:
@@ -304,9 +385,9 @@ def integrate(portal_ready_html: str, admitted_cases: list[dict]) -> str:
     old_title = "<title>见势 JIANSHI｜发现海外项目，看懂一门生意</title>"
     old_description = ('<meta name="description" content="探索海外真实项目和商业模式，'
                        '了解它们提供什么、向谁收费、如何运作，以及哪些经营事实还需要进一步核实。">')
-    title = "见势 JIANSHI 2.0｜个人创业机会发现与商业研究"
-    description = ("面向个人创业者发现和研究商业机会：审核过的真实案例、商业模式、证据和未知项。"
-                   "企业 AI 解决方案为独立探索方向；历史经营不代表可复制收益。")
+    title = "见势｜找创业项目，看懂怎么赚钱"
+    description = ("直接看创业案例：做什么、谁付钱、怎么赚钱、需要什么能力。"
+                   "所有案例仅供参考，不承诺盈利；也有中小企业 AI 应用方向。")
     if integrated.count(old_title) != 1 or integrated.count(old_description) != 1:
         raise RuntimeError("Homepage metadata source contract changed")
     integrated = integrated.replace(old_title, "<title>" + escape(title) + "</title>", 1)

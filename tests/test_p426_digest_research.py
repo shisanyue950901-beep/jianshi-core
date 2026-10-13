@@ -49,12 +49,15 @@ class TestP426Digests(unittest.TestCase):
         self.assertEqual(result["cases"],3)
         index=(ROOT/"web/dist/projects/index.html").read_text(encoding="utf-8")
         self.assertEqual(index.count('aria-label="自动提炼的证据要点"'),3)
-        self.assertIn("实际经营依据：",index)
-        self.assertIn("8.366 亿美元",index)
-        self.assertIn("未经独立财务审计",index)
+        # List views show short buyer/revenue facts first; full historic source
+        # evidence remains available on each audited dossier, not hidden.
+        self.assertIn("谁可能付钱：",index)
+        self.assertIn("怎么赚钱：",index)
         for slug in self.cases:
             page=(ROOT/f"web/dist/projects/{slug}/index.html").read_text(encoding="utf-8")
             self.assertIn("30 秒看懂这门生意",page)
+            self.assertIn(derive_digest(self.cases[slug]).evidence,page)
+            self.assertIn(derive_digest(self.cases[slug]).limitation,page)
             for required in ("卖什么？","怎么收费？","找到什么经营证据？","还不能证明什么？",
                              "披露时期：","查看原始经营依据"):
                 self.assertIn(required,page)

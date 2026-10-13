@@ -107,6 +107,7 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 .decision-disclaimer{font-size:12px;line-height:1.75;color:var(--muted);margin:21px 0 0}
 .directory a .decision-mini{display:block;border-top:1px solid var(--line);padding-top:11px;margin-top:11px;font-size:12px;line-height:1.8;color:var(--muted)}
 .directory a .decision-mini b{color:var(--accent)}
+.notice summary{cursor:pointer;font-size:14px;font-weight:700;min-height:38px;padding:6px 0}.notice[open] summary{margin-bottom:14px}.directory a .digestmini p{font-size:13px;color:var(--ink)}.directory a .decision-mini{font-size:12px}
 .decision-report a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:720px){.decision-action ol{grid-template-columns:1fr}.decision-columns{grid-template-columns:1fr}.decision-action li{padding:13px}}
 @media(max-width:590px){.decision-report{margin:18px 0 28px}.decision-intro{font-size:13px}}
@@ -316,29 +317,28 @@ def index_page(cases: list[dict]) -> str:
     for rank, item in enumerate(cases, 1):
         classification = MODEL_LABELS[item["model"]]
         level = item["evidence_level"]
-        snippet = f"{classification} · L{level} {LABELS[level]} · 编辑资料记录 {item['verifiedOn']}"
+        snippet = f"{classification} · 看卖什么、谁付钱、怎么收钱"
         summary = derive_digest(item)
         decision = render_decision_listing(decision_data(item))
         digestmini = (
             '<div class="digestmini" aria-label="自动提炼的证据要点">'
-            f'<p><b>卖什么：</b>{txt(summary.offer)}</p>'
-            f'<p><b>怎么收费：</b>{txt(summary.revenue)}</p>'
-            f'<p><b>实际经营依据：</b>{txt(summary.evidence)}</p>'
-            f'<small>资料时期：{txt(summary.period)} · {txt(summary.certainty)}'
-            f'。{txt(summary.limitation)}</small></div>'
+            f'<p><b>做什么：</b>{txt(summary.offer)}</p>'
+            f'<p><b>谁可能付钱：</b>{txt(item["buyer"])}</p>'
+            f'<p><b>怎么赚钱：</b>{txt(summary.revenue)}</p>'
+            '<small>历史经营资料不代表你也能赚到钱；详情里有来源和风险。</small></div>'
         )
         tiles.append(f'<a href="/projects/{txt(item["id"])}/" data-level="{level}" data-id="{txt(item["id"])}">'
-                     f'<small>#{rank:02d} · {txt(LABELS[level])}</small>'
+                     f'<small>#{rank:02d} · {txt(classification)}</small>'
                      f'<strong>{txt(item["title"])}</strong><span>{txt(snippet)}</span>'
                      f'{digestmini}{decision}<span class="digest-more">查看来源、风险与研究缺口 ↗</span></a>')
     counts = " · ".join(f"{MODEL_LABELS[k]} {v}" for k,v in sorted(count.items()))
     body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
-<h1>{len(cases)} 个正式项目，<br>只收录有经营证据的。</h1>
-<p class="lead">先确认项目实际公开了什么，再区分“产品存在”“收费方案”“实际成交”“独立核实的利润”。我们不会把同一行业的挂牌利润填到某个具名公司名下。</p>
-<div class="notice"><b>排名解释：</b>默认为资料证据的可核查层级（L4 监管申报历史财务、L3 企业历史自述、L2 平台第三方旁证、L1 官网产品及收费）。同等级按项目 ID 确定性排序，绝不按销售额、利润或创业成功率排名。少数项目已找到历史经营披露，但大多数企业的当前销量与获客成本尚无独立证据。</div>
+<h1>{len(cases)} 个正式项目，<br>看看它们怎么赚钱。</h1>
+<p class="lead">不用先看术语。直接看项目做什么、卖给谁、怎么收钱。想深入了解时再查看详细来源。这里是历史案例，不是现成赚钱项目。</p>
+<details class="notice"><summary>这些项目怎么选出来的？</summary><p>产品存在不等于有人付款；公开定价不等于实际成交。</p><b>排名解释：</b>默认为资料证据的可核查层级（L4 监管申报历史财务、L3 企业历史自述、L2 平台第三方旁证、L1 官网产品及收费）。同等级按项目 ID 确定性排序，绝不按销售额、利润或创业成功率排名。少数项目已找到历史经营披露，但大多数企业的当前销量与获客成本尚无独立证据。</details>
 <p class="muted">分类：{txt(counts)}</p><div class="sort-controls" role="group" aria-label="项目证据排序"><button type="button" data-sort="depth" aria-pressed="true">证据层级优先</button><button type="button" data-sort="gaps" aria-pressed="false">待补证据优先</button></div><p class="muted" id="sortHelp" aria-live="polite">优先展示具有监管申报、历史经营自述或平台旁证的项目。排名不会代表投资价值。</p><label for="projectSearch">搜索项目名称或简介</label>
 <p><input type="search" id="projectSearch" aria-label="搜索具名项目" placeholder="例如 Carrd、图书出版、设计服务…" autocomplete="off"></p>
-<p id="resultCount" aria-live="polite">{len(cases)} 个可查看的具名项目</p>
+<p id="resultCount" aria-live="polite">{len(cases)} 个可查看的项目</p>
 <div class="directory" id="directory">{''.join(tiles)}</div>
 <section class="section"><h2>这些项目通过商业验证了吗？</h2>
 <p>正式收录项目均有可归属的商业经营披露：监管申报与创始人／企业历史自述按不同等级展示。<b>仅有官网、价格页、平台上架说明的项目均不进入正式收录榜。</b>行业匿名挂牌记录不能被归因到具名企业。</p>
