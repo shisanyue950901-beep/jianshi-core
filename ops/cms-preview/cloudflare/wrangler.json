@@ -1,0 +1,13 @@
+{
+  "name": "jianshi-cms-auth-admission-locked",
+  "main": "./locked-worker.mjs",
+  "compatibility_date": "2026-10-13",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [],
+  "mtls_certificates": [],
+  "vars": {
+    "JIANSHI_AUTH_ENABLED": "0",
+    "JIANSHI_PREVIEW_ADMISSION": "DENY_ALL"
+  }
+}
