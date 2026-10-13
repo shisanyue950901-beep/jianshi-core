@@ -28,14 +28,16 @@
 .model-card span{font-size:13px;line-height:1.7;color:#54647d}
 .model-card small{font-size:12px;font-weight:750;color:#6656bf;margin-top:auto;padding-top:5px}
 .model-index-intro{background:transparent;border:0;padding:5px 0}
-@media(max-width:720px){.model-facts,.model-grid{grid-template-columns:1fr}.model-overview{padding:18px}.model-overview .model-lead{font-size:14px}.model-facts div{padding:13px}.model-card{padding:16px}.model-data-fold{padding:0 12px 12px}}
-@media print{.model-data-fold{display:none}.model-overview{break-inside:avoid}.model-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* The last fact takes the full width: no empty generic 'next step' tile. */
+.model-facts div:last-child{grid-column:1/-1}
+.model-data-fold{scroll-margin-top:80px}
+@media(max-width:720px){.model-facts,.model-grid{grid-template-columns:1fr}.model-overview{padding:16px;margin-top:12px}.model-overview .model-lead{font-size:14px}.model-facts{gap:9px;margin:16px 0}.model-facts div{padding:12px}.model-card{padding:15px}.model-data-fold{padding:0 12px 12px}}
+@media print{.model-data-fold:not([open]){display:none}.model-overview{break-inside:avoid}.model-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
-<header class="site-header"><div class="wrap nav-v2"><a class="brand-v2" href="/"><strong>见势</strong><span>JIANSHI</span></a>
-<nav><a href="/research/">项目研究库</a><a href="/today/">趋势信号</a><a href="/#method">数据口径</a><a href="/privacy/">隐私</a></nav></div></header>
+<header class="site-header"><div class="wrap nav-v2"><a class="brand-v2" href="/" aria-label="见势首页"><strong>见势</strong><span>JIANSHI</span></a><nav aria-label="网站导航"><a href="/discover/">找创业项目</a><a href="/research/">六种生意</a></nav></div></header>
 <main class="wrap research-detail-v2">
-<section class="model-overview" aria-label="这是什么生意"><a class="breadcrumb-v2" href="/research/">← 返回六种生意</a><div class="model-hint">先看这门生意怎么做</div><h1>卖模板、资料和数字工具</h1><p class="model-lead">把一项具体需求做成能重复交付的模板、素材或数字商品。</p><dl class="model-facts"><div><dt>谁付钱</dt><dd>愿意购买成品的个人或组织</dd></div><div><dt>怎么赚钱</dt><dd>按次购买、按套售卖或按授权收费</dd></div><div><dt>需要什么</dt><dd>确定买家需求，制作商品，确认版权和交付方式</dd></div><div><dt>适合先做什么</dt><dd>先了解客户需求，别急着投入</dd></div></dl><div class="model-first"><strong>第一步可以怎么做？</strong>先制作一份小样，给目标用户看，再了解是否有人愿意实际付款。</div><p class="model-warning">这是生意模式介绍，不代表你能直接照做赚钱。下方历史挂牌数字是第三方披露资料，见势未独立审计；它们不代表新项目的收入、利润或实际工作时间。</p></section>
-<details class="model-data-fold" id="historical-stats"><summary>查看历史样本、统计数字与详细说明（展开）</summary><p class="model-sample-count">当前分类包含 9 个去重项目案例。这些是历史匿名样本，不代表新创业者收益。</p><nav class="research-anchor-nav-v2" aria-label="本页阅读导航">
+<section class="model-overview" aria-label="这是什么生意"><a class="breadcrumb-v2" href="/research/">← 返回六种生意</a><div class="model-hint">这门生意怎么赚钱</div><h1>卖模板、资料和数字工具</h1><p class="model-lead">把一项具体需求做成能重复交付的模板、素材或数字商品。</p><dl class="model-facts"><div><dt>谁付钱</dt><dd>愿意购买成品的个人或组织</dd></div><div><dt>怎么赚钱</dt><dd>按次购买、按套售卖或按授权收费</dd></div><div><dt>需要什么</dt><dd>确定买家需求，制作商品，确认版权和交付方式</dd></div></dl><div class="model-first"><strong>第一步可以怎么做？</strong>先制作一份小样，给目标用户看，再了解是否有人愿意实际付款。</div><p class="model-warning">这是生意模式介绍，不代表你能直接照做赚钱。下方历史挂牌数字是第三方披露资料，见势未独立审计；它们不代表新项目的收入、利润或实际工作时间。</p></section>
+<details class="model-data-fold" id="historical-stats"><summary>想看历史数据？点这里展开</summary><p class="model-sample-count">当前分类包含 9 个去重项目案例。这些是历史匿名样本，不代表新创业者收益。</p><nav class="research-anchor-nav-v2" aria-label="本页阅读导航">
 <a href="#sample-scope">样本规则</a>
 <a href="#sample-metrics">统计与分布</a>
 <a href="#sample-examples">匿名案例</a>
@@ -75,15 +77,15 @@
 <div class="evidence-table-wrap-v2" role="region" aria-label="匿名项目金额区间表，可横向滚动" tabindex="0"><table class="evidence-table-v2">
 <thead><tr><th>中文项目案例</th><th>月营收区间</th><th>月净利润区间</th><th>报价区间</th></tr></thead>
 <tbody><tr>
-<td><small class="anonymous-row-index-v2">匿名案例 01</small><strong>其他领域 · 数字产品项目</strong></td>
+<td><small class="anonymous-row-index-v2">匿名案例 01</small><strong>宗教与文化 · 数字产品项目</strong></td>
 <td>不足1万美元</td>
 <td>不足1万美元</td>
 <td>5万—10万美元</td>
 </tr><tr>
-<td><small class="anonymous-row-index-v2">匿名案例 02</small><strong>宗教与文化 · 数字产品项目</strong></td>
+<td><small class="anonymous-row-index-v2">匿名案例 02</small><strong>设计 · 数字产品项目</strong></td>
+<td>1万—5万美元</td>
 <td>不足1万美元</td>
-<td>不足1万美元</td>
-<td>5万—10万美元</td>
+<td>10万—50万美元</td>
 </tr><tr>
 <td><small class="anonymous-row-index-v2">匿名案例 03</small><strong>商业服务 · 数字产品项目</strong></td>
 <td>1万—5万美元</td>
@@ -95,15 +97,15 @@
 <td>1万—5万美元</td>
 <td>10万—50万美元</td>
 </tr><tr>
-<td><small class="anonymous-row-index-v2">匿名案例 05</small><strong>设计 · 数字产品项目</strong></td>
-<td>1万—5万美元</td>
+<td><small class="anonymous-row-index-v2">匿名案例 05</small><strong>科技 · 数字产品项目</strong></td>
 <td>不足1万美元</td>
-<td>10万—50万美元</td>
+<td>不足1万美元</td>
+<td>5万—10万美元</td>
 </tr><tr>
-<td><small class="anonymous-row-index-v2">匿名案例 06</small><strong>艺术 · 数字产品项目</strong></td>
-<td>1万—5万美元</td>
+<td><small class="anonymous-row-index-v2">匿名案例 06</small><strong>其他领域 · 数字产品项目</strong></td>
 <td>不足1万美元</td>
-<td>10万—50万美元</td>
+<td>不足1万美元</td>
+<td>5万—10万美元</td>
 </tr></tbody>
 </table></div>
 <p class="sample-reading-note-v2"><strong>阅读提示</strong> 匿名案例仅用于展示当前允许公开的样本结构。逐条金额为区间展示；与上方分类中位数口径不同，也不代表实际成交价或经审计财务。</p>
@@ -153,5 +155,5 @@
 </a></div>
 </section>
 </main>
-<footer><div class="wrap footer-v2"><div><strong>见势 JIANSHI</strong><span>公开商业数据研究工具</span></div><p>数据用于研究与信息整理，不构成投资、经营或收益承诺。</p></div></footer>
+<footer><div class="wrap footer-v2"><div><strong>见势 JIANSHI</strong><span>发现生意，理解怎么赚钱</span></div><p>本页仅供研究参考，不承诺盈利。</p></div></footer>
 <script src="/search.js" defer></script><script>window.JIANSHI_ANALYTICS_CONFIG={"enabled":true,"endpoint":"https://dalfvgehosxfyxkptxwx.supabase.co/functions/v1/behavior-track"};</script><script src="/analytics.js" defer></script></body></html>
