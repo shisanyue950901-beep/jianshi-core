@@ -187,6 +187,74 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f0f4fa;border:1px sol
 """
 
 
+
+# B1: visual continuity for the four already approved solution guides.
+# Appended after the existing filter/guided CSS to preserve controls.
+B1_SOLUTIONS_VISUAL_CSS = """
+.solution-hero{isolation:isolate;background:
+ radial-gradient(ellipse 43% 135% at 94% 2%,#5d4caf55,transparent 82%),
+ radial-gradient(ellipse 46% 110% at 4% 100%,#2664a568,transparent 78%),
+ linear-gradient(135deg,#081221 8%,#142542 75%,#1b2045)}
+.solution-hero:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:linear-gradient(#a3b9ff0d 1px,transparent 1px),linear-gradient(90deg,#a3b9ff0d 1px,transparent 1px);
+ background-size:44px 44px;mask-image:linear-gradient(90deg,transparent,#0009)}
+.solution-hero .wrap{position:relative;z-index:1;padding:37px 0 42px}
+.solution-hero h1{margin:14px 0 12px;font-size:clamp(34px,4.5vw,55px);letter-spacing:-.05em}
+.solution-hero p{font-size:clamp(14px,1.55vw,17px);line-height:1.72}
+.solution-journey{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin-top:20px}
+.solution-journey span:not(.solution-journey-arrow){display:inline-flex;align-items:center;gap:7px;
+ color:#d5dff4;font-size:12px}
+.solution-journey b{min-width:27px;height:27px;padding:0 4px;display:grid;place-items:center;
+ border:1px solid #a0affb61;background:#8582ff23;border-radius:9px;color:#cfcaff;font-size:10px}
+.solution-journey .solution-journey-arrow{color:#8da6cf;font-size:12px}
+.f21-filters{background:linear-gradient(180deg,#fff,#fcfdff);border:1px solid #dce4f1;
+ border-radius:19px;box-shadow:0 12px 31px #283f7610;padding:21px}
+.f21-filter-field input,.f21-filter-field select{border-radius:11px;background:#f9faff}
+.f21-filter-field input:focus-visible,.f21-filter-field select:focus-visible{outline-color:#b6abff}
+.f21-catalog-grid .card.link{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#fcfdff);
+ border-radius:19px;border:1px solid #dfe6f4;box-shadow:0 6px 23px #293f6e0b;
+ padding:24px;transition:transform .2s,border-color .2s,box-shadow .2s}
+.f21-catalog-grid .card.link:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+ background:linear-gradient(90deg,#9675f4,#6c96ff,#65caee)}
+.f21-catalog-grid .card.link:nth-child(2):before{background:linear-gradient(90deg,#6f84ff,#77c0ff)}
+.f21-catalog-grid .card.link:nth-child(3):before{background:linear-gradient(90deg,#2ba6c6,#63bd9f)}
+.f21-catalog-grid .card.link:nth-child(4):before{background:linear-gradient(90deg,#8464d9,#6f85d8)}
+.f21-catalog-grid .card.link:hover,.f21-catalog-grid .card.link:focus-visible{transform:translateY(-3px);
+ border-color:#a2a8f4;box-shadow:0 17px 39px #303c921f}
+.f21-catalog-grid .solution-icon{width:44px;height:44px;display:grid;place-items:center;
+ border-radius:14px;background:linear-gradient(135deg,#ede7ff,#e4edff);font-size:23px;
+ color:#6156c2;margin-bottom:15px}
+.f21-catalog-grid .card.link:nth-child(3) .solution-icon{background:#e0f5f4;color:#258c9a}
+.f21-catalog-grid .card.link:nth-child(4) .solution-icon{background:#efebff;color:#7254c8}
+.f21-catalog-grid .card.link strong{color:#6962b9}
+.f21-catalog-grid .card.link h3{font-size:21px;letter-spacing:-.03em}
+.f21-catalog-grid .solution-facts{padding-top:15px;gap:10px}
+.f21-catalog-grid .solution-facts dt{font-weight:750}
+.f21-catalog-grid .go{display:flex;align-items:center;justify-content:space-between;
+ background:linear-gradient(90deg,#f0edff,#eaf3ff);padding:12px 14px;
+ min-height:45px;border-radius:11px;margin-top:auto}
+.solution-detail-guide .cards .card,.solution-technical .cards .card{border:1px solid #dfe6f2;
+ box-shadow:0 5px 20px #273c7610;background:linear-gradient(180deg,#fff,#fbfcff)}
+.solution-detail-guide .g2b-trial{border-color:#d5dff1;box-shadow:0 10px 27px #344a8210}
+.solution-detail-guide .solution-risk{background:linear-gradient(120deg,#eff3fc,#f5f2ff);
+ border-color:#d9def1}
+.solution-detail-guide .section h2{font-size:clamp(24px,3vw,35px)}
+.solution-detail-guide .solution-technical{border-color:#dce3f2}
+.solution-guide,.solution-technical{box-shadow:0 4px 18px #20385a09}
+@media(max-width:650px){
+ .solution-hero .wrap{padding:26px 0 31px}
+ .solution-hero h1{font-size:clamp(31px,8vw,42px)}
+ .solution-hero:after{background-size:33px 33px}
+ .solution-journey{gap:7px;margin-top:17px}
+ .solution-journey span:not(.solution-journey-arrow){font-size:11px}
+ .solution-journey b{width:24px;height:24px}
+ .f21-filters{padding:16px}
+ .f21-catalog-grid .card.link{padding:21px}
+}
+@media(prefers-reduced-motion:reduce){.f21-catalog-grid .card.link{transition:none;transform:none!important}}
+"""
+
+
 def e(s: str) -> str:
     return escape(s, quote=True)
 
@@ -218,6 +286,12 @@ def shell(path: str, title: str, description: str, label: str, body: str,
     trial_page = path.startswith("solutions/") and not catalogue
     solution_route = catalogue or trial_page
     kicker = "" if solution_route or guided else '<span class="kicker">' + e(label) + '</span>'
+    visual_steps = (
+        '<div class="solution-journey" aria-label="企业 AI 方案的三个步骤">'
+        '<span><b>01</b> 选业务问题</span><span class="solution-journey-arrow" aria-hidden="true">→</span>'
+        '<span><b>02</b> 看参考做法</span><span class="solution-journey-arrow" aria-hidden="true">→</span>'
+        '<span><b>03</b> 先小范围测试</span></div>'
+    ) if solution_route else ''
     guide_status = {
         "marketplace/": "商机列表尚未开放，暂时不能在网站上购买服务或发布订单。",
         "talent/": "尚未开放创作者入驻或接单，暂时不能在网站上购买服务。",
@@ -237,14 +311,14 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<link rel="canonical" href="' + SITE + '/' + path + '">'
         '<meta property="og:title" content="' + e(title) + '｜见势 JIANSHI 2.0">'
         '<meta property="og:description" content="' + e(description) + '">'
-        '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + (GUIDED_CSS if guided or trial_page else "") + RELATED_CSS + '</style></head><body>'
+        '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + (GUIDED_CSS if guided or trial_page else "") + B1_SOLUTIONS_VISUAL_CSS + RELATED_CSS + '</style></head><body>'
         + site_header(current)
         + '<main><div class="hero' + (' solution-hero' if solution_route else ' guide-hero' if guided else '') + '"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
         + kicker
         + '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
-        + buttons_markup + '</div></div>'
-        '<div class="wrap content">'
+        + visual_steps + buttons_markup + '</div></div>'
+        '<div class="wrap content' + (' solution-detail-guide' if trial_page else '') + '">'
         '<div class="status">' + status + '</div>'
         + body + render_related(current) + '</div></main>' + site_footer()
         + ('<script>' + CATALOG_JS + '</script>' if catalogue else '')
@@ -299,9 +373,12 @@ def solution_link(row: dict) -> str:
         '<div><dt>' + e(title) + '</dt><dd>' + e(preview[key]) + '</dd></div>'
         for title, key in (("适合谁", "fit"), ("参考成果", "result"), ("先准备", "prepare"))
     )
+    icon = {"ecommerce-visual": "✦", "brand-video": "▣",
+            "automation": "⌘", "localization": "◎"}[row["slug"]]
     return (
         '<a class="card link" data-f21-solution data-category="' + category
         + '" data-keywords="' + keywords + '" href="/solutions/' + e(row["slug"]) + '/">'
+        '<span class="solution-icon" aria-hidden="true">' + icon + '</span>'
         '<strong>' + e(row["tag"]) + '</strong>'
         '<h3>' + e(row["name"]) + '</h3>'
         '<p class="solution-problem">' + e(preview["problem"]) + '</p>'
