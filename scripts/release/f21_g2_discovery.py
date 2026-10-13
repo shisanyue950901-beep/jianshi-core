@@ -185,9 +185,16 @@ def render() -> str:
         + "</button>" for key, label in CATEGORIES
     )
     order = {"projects": 0, "research": 1, "solutions": 2, "guides": 3}
+    # Editorial viewing order matches the founder-first homepage, not
+    # financial return or a newly inferred project success ranking.
+    case_order = {
+        "/projects/carrd/": 0,
+        "/projects/plausible/": 1,
+        "/projects/nerdwallet/": 2,
+    }
     cards = []
     for route, group, title, description, status in sorted(
-        ENTRIES, key=lambda item: order[item[1]]
+        ENTRIES, key=lambda item: (order[item[1]], case_order.get(item[0], 99))
     ):
         if route in PROJECT_FACTS:
             l1, v1, l2, v2 = PROJECT_FACTS[route]
