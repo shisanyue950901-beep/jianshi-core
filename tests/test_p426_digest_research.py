@@ -51,7 +51,9 @@ class TestP426Digests(unittest.TestCase):
         self.assertEqual(index.count('aria-label="自动提炼的证据要点"'),3)
         # List views show short buyer/revenue facts first; full historic source
         # evidence remains available on each audited dossier, not hidden.
-        self.assertIn("谁可能付钱：",index)
+        self.assertIn("谁在用：",index)
+        self.assertIn("谁付钱：",index)
+        self.assertIn("广告合作伙伴；读者不等于广告付款方",index)
         self.assertIn("怎么赚钱：",index)
         for slug in self.cases:
             page=(ROOT/f"web/dist/projects/{slug}/index.html").read_text(encoding="utf-8")
