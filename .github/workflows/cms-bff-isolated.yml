@@ -44,6 +44,12 @@ on:
       - 'tests/g2h7g_mtls_pg.test.mjs'
       - 'scripts/security/g2h7g_mtls_boundary_audit.mjs'
       - 'docs/F21_G2H7G_TRUSTED_MTLS_RELEASE_GATE_CN.md'
+      - 'ops/cms-preview/cloudflare/locked-worker.mjs'
+      - 'ops/cms-preview/cloudflare/wrangler.json'
+      - 'ops/cms-preview/cloudflare/deploy-admission.json'
+      - 'tests/g2h7h_preview_admission.test.mjs'
+      - 'scripts/security/g2h7h_preview_admission.mjs'
+      - 'docs/F21_G2H7H_CLOUDFLARE_PREVIEW_ADMISSION_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -89,6 +95,12 @@ on:
       - 'tests/g2h7g_mtls_pg.test.mjs'
       - 'scripts/security/g2h7g_mtls_boundary_audit.mjs'
       - 'docs/F21_G2H7G_TRUSTED_MTLS_RELEASE_GATE_CN.md'
+      - 'ops/cms-preview/cloudflare/locked-worker.mjs'
+      - 'ops/cms-preview/cloudflare/wrangler.json'
+      - 'ops/cms-preview/cloudflare/deploy-admission.json'
+      - 'tests/g2h7h_preview_admission.test.mjs'
+      - 'scripts/security/g2h7h_preview_admission.mjs'
+      - 'docs/F21_G2H7H_CLOUDFLARE_PREVIEW_ADMISSION_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -157,3 +169,7 @@ jobs:
         run: node --test tests/g2h7g_mtls_contract.test.mjs
       - name: G2-H.7G independent mTLS release and credential audit
         run: node scripts/security/g2h7g_mtls_boundary_audit.mjs
+      - name: G2-H.7H deny-only Cloudflare Worker and adversarial admission tests
+        run: node --test tests/g2h7h_preview_admission.test.mjs
+      - name: G2-H.7H independent non-deployment security gate
+        run: node scripts/security/g2h7h_preview_admission.mjs

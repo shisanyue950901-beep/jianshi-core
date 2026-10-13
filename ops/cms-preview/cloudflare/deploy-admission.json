@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "stage": "G2-H.7H",
+  "scope": "ISOLATED_DENY_ALL_NON_DEPLOYED",
+  "gate": "BLOCKED_BY_DEFAULT",
+  "real_cloudflare_deployment": false,
+  "dedicated_worker_account_authorized": false,
+  "separate_worker_identity_verified": false,
+  "cloudflare_mtls_certificate_bound": false,
+  "verified_unproxied_mtls_origin": false,
+  "isolated_secret_store_reviewed": false,
+  "verified_go_true_email_template": false,
+  "real_staging_login_ab_idor_pass": false,
+  "independent_human_security_review": false,
+  "explicit_future_remote_deploy_approval": false,
+  "production_auth_activation": false,
+  "production_schema_mutation": false,
+  "readiness_evidence_links": []
+}
