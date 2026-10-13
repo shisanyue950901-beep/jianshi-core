@@ -120,6 +120,7 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("aria-pressed",JS)
         self.assertIn("empty.hidden=visible!==0",JS)
         self.assertIn("reset.addEventListener('click'",JS)
+        self.assertIn("reset.hidden=category==='founder'&&!query",JS)
 
     @unittest.skipUnless(shutil.which("node"),"Node not installed")
     def test_actual_js_filters_chinese_keywords_categories_empty_and_reset(self):
@@ -148,7 +149,9 @@ const m={'discover':root,'discover-query':input,'discover-count':counter,
 vm.runInNewContext(code,{document:{getElementById:id=>m[id]}});
 assert.equal(cards.filter(x=>!x.hidden).length,9);
 assert.equal(buttons[0]['aria-pressed'],'true');
+assert.equal(reset.hidden,true);
 buttons[1].handlers.click();
+assert.equal(reset.hidden,false);
 assert.equal(cards.filter(x=>!x.hidden).length,3);
 buttons[2].handlers.click();
 assert.equal(cards.filter(x=>!x.hidden).length,6);
@@ -165,6 +168,7 @@ reset.handlers.click();
 assert.equal(cards.filter(x=>!x.hidden).length,9);
 assert.equal(buttons[0]['aria-pressed'],'true');
 assert.equal(input.value,'');
+assert.equal(reset.hidden,true);
 assert.equal(events.focus,1);
 let prevented=false;form.handlers.submit({preventDefault(){prevented=true;}});
 assert.equal(prevented,true);
