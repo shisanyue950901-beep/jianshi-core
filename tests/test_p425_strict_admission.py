@@ -29,7 +29,7 @@ class StrictPublicAdmissionTest(unittest.TestCase):
         paths={p.parent.name for p in (DIST/"projects").glob("*/index.html")}
         self.assertEqual(paths,{"nerdwallet","carrd","plausible"})
         home=(DIST/"projects/index.html").read_text(encoding="utf-8")
-        self.assertIn('3 个正式项目',home)
+        self.assertIn('3 家公司的生意',home)
         self.assertNotIn('Easlo｜',home)
         self.assertNotIn('Louise Lennox',home)
         self.assertNotIn('Tally｜',home)
