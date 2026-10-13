@@ -59,6 +59,7 @@ export function assessPreviewSafety({config,manifest,workerSource,releaseSource,
  if(typeof workerSource!=='string'||
   !/async fetch\s*\(/.test(workerSource)||
   !/new Response\('Not Found',\{status:404,headers:HEADERS\}\)/.test(workerSource)||
+  (workerSource.match(/\bnew\s+Response\s*\(/g)||[]).length!==1||
   /\b(?:import|require|eval|Function)\s*(?:\(|.*from\b)/.test(workerSource)||
   /\b(?:fetch|console|Math\.random|WebSocket|EventSource)\s*\(/.test(
    workerSource.replace(/async fetch\s*\(/,'async handler('))||
