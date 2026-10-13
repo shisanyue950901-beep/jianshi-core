@@ -243,9 +243,9 @@ def project_page(case: dict) -> str:
         published = audit.get("published_on") or audit["period"]
         source = txt(safe_url(audit["source_url"]))
         audited_section = (
-            '<section class="section"><h2>新增项目级经营依据</h2>'
-            f'<p><b>证据等级：</b>L{tier} · {txt(LABELS[tier])}。'
-            f'<b>来源时点：</b>{txt(published)}（不代表当期实时数据）</p>'
+            '<section class="section"><h2>这家企业公开过哪些经营资料？</h2>'
+            f'<p><b>资料来源：</b>{txt(LABELS[tier])}。'
+            f'<b>资料时间：</b>{txt(published)}（不代表现在的经营情况）</p>'
             f'<p>{txt(audit["claim"])}</p>'
             f'<p><a href="{source}" target="_blank" rel="noopener noreferrer">查看可归属的原始经营证据 ↗</a></p>'
             f'<p><b>下一步主动核查：</b>{txt(audit["next_research"])}</p></section>'
@@ -273,24 +273,22 @@ def project_page(case: dict) -> str:
     decision_html = render_decision_panel(decision_data(case))
     workbook_html = render_founder_workbook(case)
     summary_box = (
-        '<section class="digest" aria-label="证据提炼摘要"><h2>30 秒看懂这门生意</h2>'
+        '<section class="digest" aria-label="项目概况"><h2>30 秒看懂这门生意</h2>'
         '<div class="digestgrid">'
         f'<p><b>卖什么？</b>{txt(digest.offer)}</p>'
         f'<p><b>怎么收费？</b>{txt(digest.revenue)}</p>'
         f'<p class="digest-proof"><b>找到什么经营证据？</b>{txt(digest.evidence)}</p>'
         f'<p><b>还不能证明什么？</b>{txt(digest.limitation)}</p>'
         '</div>'
-        f'<p class="digest-meta">来源级别：{txt(digest.certainty)} · '
-        f'披露时期：{txt(digest.period)} · '
+        f'<p class="digest-meta">公开资料的时间：{txt(digest.period)} · '
         f'<a href="{txt(safe_url(digest.source_url))}" target="_blank" rel="noopener noreferrer">'
         '查看原始经营依据 ↗</a></p></section>'
     )
-    body = f"""<span class="kicker">PROJECT EVIDENCE / 项目证据档案</span>
+    body = f"""<span class="kicker">看看别人怎么做生意</span>
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
-<p><b>编辑归类：</b>{txt(MODEL_LABELS[case["model"]])}　<b>资料记录：</b>{txt(case["verifiedOn"])}（非实时经营审计）</p>
-<div class="notice"><b>证据阶段：</b>{txt(findings_intro)} 即使行业方向达标，也不能算作某家企业的经营证明；不使用行业匿名挂牌推断它的收入。</div>
-{decision_html}
 {summary_box}
+<div class="notice"><b>先提醒：</b>{txt(findings_intro)} 这家企业以前的经营结果，不代表你照着做也能赚钱。</div>
+{decision_html}
 <div class="statusgrid" aria-label="项目商业验证状态">
 <div class="status"><b>产品／服务：有官方依据</b><small>可进入对应官网或产品页核对公开供应</small></div>
 <div class="status"><b>收费机制：有公开说明</b><small>标价或收费方案不代表已成交、已收到款项</small></div>
@@ -314,7 +312,7 @@ def project_page(case: dict) -> str:
 <p><b>独立客户需求：</b>尚无该项目可计入的需求实证；不能将行业级技术或商业证据视为这家企业的客户证据。</p>
 <p><b>项目自身销售／利润：</b>{txt(finance_boundary)} 本站的排序仅代表资料层级，不是赚钱排名。</p></section>
 <section class="section"><h2>05｜下一步研究</h2><p>{txt(case.get("learning") or "进一步独立核查真实购买需求、履约成本与客户留存。")}</p>
-<p><a href="/validation/">了解同类行业方向的研究边界 →</a> · <a href="/projects/">返回 3 个已审项目档案 →</a></p></section>
+<p><a href="/validation/">查看资料有什么不确定 →</a> · <a href="/projects/">返回项目列表 →</a></p></section>
 {workbook_html}"""
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
 
