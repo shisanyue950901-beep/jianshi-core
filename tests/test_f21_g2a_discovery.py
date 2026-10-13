@@ -12,7 +12,7 @@ import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"scripts/release"))
-from f21_g2_discovery import ENTRIES,CATEGORIES,JS,render,publish
+from f21_g2_discovery import ENTRIES,CATEGORIES,PROJECT_FACTS,RESEARCH_FACTS,PICK_COUNT,JS,render,publish
 
 class Scanner(HTMLParser):
     def __init__(self):
@@ -68,6 +68,26 @@ class DiscoveryTests(unittest.TestCase):
                        "SYNTHETIC_G1F","listing_number","用户联系邮箱"):
             self.assertNotIn(banned,html)
 
+    def test_founder_first_default_before_enterprise_ai_without_fake_opportunities(self):
+        html=render()
+        self.assertEqual(PICK_COUNT,9)
+        self.assertEqual(len(PROJECT_FACTS),3)
+        self.assertEqual(len(RESEARCH_FACTS),6)
+        self.assertIn('data-discover-category="founder" aria-pressed="true"',html)
+        self.assertIn("找创业项目，先看怎么赚钱",html)
+        self.assertIn("谁付钱",html)
+        self.assertIn("怎么收费",html)
+        self.assertIn("广告及商业合作伙伴",html)
+        self.assertIn("历史案例不保证你照着做能赚钱",html)
+        self.assertLess(html.index('href="/projects/plausible/"'),
+                        html.index('href="/research/vertical-industry-saas/"'))
+        self.assertLess(html.index('href="/research/vertical-industry-saas/"'),
+                        html.index('href="/solutions/ecommerce-visual/"'))
+        self.assertNotIn("G2 / PUBLIC DISCOVERY",html)
+        self.assertNotIn("01 / CONTENT DIRECTORY",html)
+        for slug in ("projects","research","solutions","guides","all"):
+            self.assertIn('data-discover-category="'+slug+'"',html)
+
     def test_missing_or_redirected_public_destination_fails_closed(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)
@@ -115,35 +135,42 @@ function target(data={}){
  };
 }
 const input=target(),counter=target(),empty=target(),reset=target(),form=target();
-const buttons=['all','solutions','research','projects','guides']
+const buttons=['founder','projects','research','solutions','guides','all']
  .map(type=>target({discoverCategory:type}));
 const cards=records.map(r=>target({category:r.category,search:r.search}));
 const root={querySelectorAll:(sel)=>sel==='[data-discover-category]'?buttons:cards};
 const m={'discover':root,'discover-query':input,'discover-count':counter,
  'discover-empty':empty,'discover-reset':reset,'discover-form':form};
 vm.runInNewContext(code,{document:{getElementById:id=>m[id]}});
-assert.equal(cards.filter(x=>!x.hidden).length,17);
+assert.equal(cards.filter(x=>!x.hidden).length,9);
+assert.equal(buttons[0]['aria-pressed'],'true');
+buttons[1].handlers.click();
+assert.equal(cards.filter(x=>!x.hidden).length,3);
 buttons[2].handlers.click();
 assert.equal(cards.filter(x=>!x.hidden).length,6);
 assert.equal(buttons[2]['aria-pressed'],'true');
+input.value='自动化';input.handlers.input();
+assert.equal(cards.filter(x=>!x.hidden).length,1);
+assert.equal(buttons[5]['aria-pressed'],'true');
 input.value='行业';input.handlers.input();
 assert.equal(cards.filter(x=>!x.hidden).length>=1,true);
 input.value='绝不可能出现的关键词 123abc';input.handlers.input();
 assert.equal(cards.filter(x=>!x.hidden).length,0);
 assert.equal(empty.hidden,false);
 reset.handlers.click();
-assert.equal(cards.filter(x=>!x.hidden).length,17);
+assert.equal(cards.filter(x=>!x.hidden).length,9);
+assert.equal(buttons[0]['aria-pressed'],'true');
 assert.equal(input.value,'');
 assert.equal(events.focus,1);
 let prevented=false;form.handlers.submit({preventDefault(){prevented=true;}});
 assert.equal(prevented,true);
-console.log('G2 search/filter/empty/reset/keyboard 7/7 PASS');
+console.log('G2 founder-first search/filter/empty/reset/keyboard PASS');
 """
         result=subprocess.run(["node","-e",simulator,json.dumps(JS,ensure_ascii=False),
                                json.dumps(records,ensure_ascii=False)],
                               text=True,capture_output=True,cwd=ROOT,timeout=20)
         self.assertEqual(result.returncode,0,result.stderr[-2500:])
-        self.assertIn("7/7 PASS",result.stdout)
+        self.assertIn("founder-first search/filter/empty/reset/keyboard PASS",result.stdout)
 
 if __name__=="__main__":
     unittest.main()
