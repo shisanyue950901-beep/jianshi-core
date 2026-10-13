@@ -94,7 +94,7 @@ CSS = """
 .discover-filters button{border:1px solid #cbd5e6;background:#f4f6fb;border-radius:999px;padding:7px 13px;cursor:pointer;color:#3b4c6b;font-size:12px;font-weight:750}
 .discover-filters button[aria-pressed=true]{background:#211d4d;border-color:#211d4d;color:#fff}
 .discover-filters button:focus-visible,#discover-reset:focus-visible{outline:3px solid #796ce8;outline-offset:3px}
-#discover-reset{border:0;background:transparent;color:#5548ac;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:8px;font-weight:750}
+#discover-reset{border:0;background:transparent;color:#5548ac;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:8px;font-weight:750;min-height:44px}
 .discover-meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:24px 0 14px;font-size:13px;color:#5c6a83}
 .discover-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
 .discover-card{display:flex;flex-direction:column;background:#fff;border:1px solid #e0e7f2;border-radius:17px;padding:23px;min-width:0;min-height:240px;transition:transform .18s,border-color .18s,box-shadow .18s}
@@ -111,6 +111,10 @@ CSS = """
 .discover-notice h2{font-size:23px;color:#fff;margin:0 0 12px}
 .discover-notice p{color:#bcd0e7;font-size:13px;margin:0}
 .discover-notice a{color:#dfd4ff;text-decoration:underline;text-underline-offset:4px}
+.discover-notice summary{display:flex;align-items:center;min-height:44px;cursor:pointer;color:#fff;font-size:15px;font-weight:750}
+.discover-notice summary:focus-visible{outline:3px solid #ac9eff;outline-offset:3px}
+.discover-notice[open] p{padding-top:11px;border-top:1px solid #4b5873}
+#discover-reset[hidden]{display:none}
 @media(max-width:950px){.discover-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.discover-grid{grid-template-columns:1fr}.discover-card{min-height:0;padding:20px}.discover-search{padding:17px}.discover-intro{display:block}}
 @media(prefers-reduced-motion:reduce){.discover-card{transition:none;transform:none!important}}
@@ -137,6 +141,7 @@ function update(){
  controls.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.discoverCategory===category)));
  counter.textContent=category==='founder'?'找到 '+visible+' 个可研究的案例与方向':'找到 '+visible+' 条内容';
  empty.hidden=visible!==0;
+ reset.hidden=category==='founder'&&!query;
 }
 controls.forEach(btn=>btn.addEventListener('click',()=>{category=btn.dataset.discoverCategory;update();}));
 input.addEventListener('input',()=>{if(input.value.trim())category='all';update();});
@@ -231,28 +236,27 @@ def render() -> str:
         + '<main id="discover"><section class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / 找项目</div>'
         '<h1>找创业项目，先看怎么赚钱。</h1>'
-        '<p>先看真实公司案例，再看看不同生意怎么收费。历史案例不保证你照着做能赚钱。</p>'
+        '<p>这里有 3 家真实公司案例、6 种生意模式；可以借鉴做法，但不保证照着做能赚钱。</p>'
         '</div></section><div class="wrap content discover-shell">'
         '<section aria-labelledby="discover-title" class="section">'
-        '<div class="discover-intro"><div><h2 id="discover-title">按方向找</h2>'
-        '<p class="lead">先看创业案例与商业模式；企业 AI 方案在独立分类里。</p>'
-        '</div></div><form id="discover-form" role="search" class="discover-search">'
+        '<div class="discover-intro"><h2 id="discover-title">选个方向看看</h2></div>'
+        '<form id="discover-form" role="search" class="discover-search">'
         '<label for="discover-query">你想找什么生意？</label>'
         '<input id="discover-query" type="search" placeholder="例如：网站、数字产品、电商、内容"'
         ' autocomplete="off" maxlength="80">'
         '<div class="discover-controls"><div class="discover-filters" role="group" aria-label="按内容方向筛选">'
-        + filters + '</div><button type="button" id="discover-reset">清除筛选</button></div></form>'
+        + filters + '</div><button type="button" id="discover-reset" hidden>清除筛选</button></div></form>'
         '<div class="discover-meta"><span id="discover-count" role="status" aria-live="polite">'
-        '找到 ' + str(PICK_COUNT) + ' 个可研究的案例与方向</span>'
-        '<span>3 个真实公司案例和 6 种商业模式，都是研究参考，不是现成商机。</span></div>'
+        '找到 ' + str(PICK_COUNT) + ' 个可研究的案例与方向</span></div>'
         '<div class="discover-grid" id="discover-grid">' + "".join(cards) + '</div>'
         '<div id="discover-empty" role="status" hidden><h3>暂时没有找到</h3>'
         '<p>换个词试试，或者点击“清除筛选”。</p></div></section>'
-        '<aside class="discover-notice" aria-label="重要说明"><h2>这里的案例可以直接照做吗？</h2>'
-        '<p>不能这样保证。先了解项目怎么收费，再核实自己能不能找到客户、需要花多少钱。'
-        '想看出处，可以打开 <a href="/sources/">资料来源</a> 和 '
-        '<a href="/validation/">更多说明</a>。</p>'
-        '</aside>' + render_related('/discover/') + '</div></main>' + site_footer()
+        '<details class="discover-notice" aria-label="资料与风险说明"><summary>资料和风险怎么看？</summary>'
+        '<p>公开标价不代表实际成交，历史公司收入也不是个人创业收益。'
+        '决定动手前，先查客户需求和成本；可阅读 '
+        '<a href="/sources/">资料来源</a>、'
+        '<a href="/validation/">哪些结论还不能确定</a>。</p>'
+        '</details>' + render_related('/discover/') + '</div></main>' + site_footer()
         + '<script>' + JS + '</script></body></html>\n'
     )
     if (body.count('<main ') != 1 or body.count('</main>') != 1

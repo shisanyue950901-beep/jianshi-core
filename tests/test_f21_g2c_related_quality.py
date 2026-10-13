@@ -24,7 +24,7 @@ class Links(HTMLParser):
         attr=dict(attrs)
         if tag=="a" and attr.get("class")=="g2c-link":
             self.links.append(attr.get("href"))
-        if tag=="section" and attr.get("class")=="g2c-related":
+        if tag=="section" and "g2c-related" in attr.get("class","").split():
             self.sections+=1
 
 def shell(route:str,contents:str|None=None)->str:
