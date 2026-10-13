@@ -283,7 +283,7 @@ def render_portal(cases: list[dict]) -> str:
         '<div class="j2-actions">'
         '<a class="j2-button j2-button--primary" href="#j2-opportunities">直接看项目 ↓</a>'
         '<a class="j2-button" href="/discover/">按方向找项目 →</a></div>'
-        '<p class="j2-proofnote">先看模式，再看风险。历史案例不代表照着做就能赚钱。</p></div>'
+        '<p class="j2-proofnote">先看模式，再看风险。历史案例不代表照着做就能赚钱；概念配图不是项目证明。</p></div>'
         '<div class="j2-visual"><img width="800" height="650" fetchpriority="high"'
         ' decoding="async" alt="AI 生成的见势 2.0 概念主视觉，非真实项目案例或企业客户"'
         ' src="' + image + '"></div></div></div>'
@@ -385,9 +385,9 @@ def integrate(portal_ready_html: str, admitted_cases: list[dict]) -> str:
     old_title = "<title>见势 JIANSHI｜发现海外项目，看懂一门生意</title>"
     old_description = ('<meta name="description" content="探索海外真实项目和商业模式，'
                        '了解它们提供什么、向谁收费、如何运作，以及哪些经营事实还需要进一步核实。">')
-    title = "见势 JIANSHI 2.0｜个人创业机会发现与商业研究"
-    description = ("面向个人创业者发现和研究商业机会：审核过的真实案例、商业模式、证据和未知项。"
-                   "企业 AI 解决方案为独立探索方向；历史经营不代表可复制收益。")
+    title = "见势｜找创业项目，看懂怎么赚钱"
+    description = ("直接看创业案例：做什么、谁付钱、怎么赚钱、需要什么能力。"
+                   "所有案例仅供参考，不保证收益；也有中小企业 AI 应用方向。")
     if integrated.count(old_title) != 1 or integrated.count(old_description) != 1:
         raise RuntimeError("Homepage metadata source contract changed")
     integrated = integrated.replace(old_title, "<title>" + escape(title) + "</title>", 1)
