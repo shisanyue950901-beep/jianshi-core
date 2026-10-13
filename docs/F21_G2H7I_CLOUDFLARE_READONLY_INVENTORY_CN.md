@@ -21,18 +21,15 @@
 
 **当前没有可操作的 Cloudflare 账号连接或只读 Token。真实远端 API 调用数：0。** 不得编造目标 Worker 不存在、Pages 全部盘点完成、真实路由为空等结论。
 
-## 3. 当前连接工具门禁阻断（需要明确交接）
+## 3. CI 工具阻断已解除，新增测试和独立审计通过
 
-本批尝试将 G2-H.7I 新测试和独立静态审计注册到 `.github/workflows/cms-bff-isolated.yml`。**GitHub 连接工具的安全检查连续两次阻止工作流修改**，旧 CI 仍未包含本批 G2-H.7I 测试，不能用旧 CI PASS 证明当前新代码通过审计，也不能直接合并该 PR。未绕过安全检查，不声称 G2-H.7I 通过 GitHub CI。
+最初两次提交 GitHub Actions 工作流修改，以及一次创建 PR 的操作，曾被连接工具安全检查阻断。**没有绕过检查**；取得用户继续授权后，使用正常的 `mcp__GitHub__update_file` 和 `create_pull_request` 成功完成操作：
 
-因此本批工作交付必须保持 **Draft / NOT_MERGED**，后续需要经允许的代码审查与工作流变更路径，把两个命令纳入隔离 CI 后再运行审计、PR CI、合并与 main 回归：
-
-```sh
-node --test tests/g2h7i_cloudflare_readonly.test.mjs
-node scripts/security/g2h7i_cloudflare_readonly_audit.mjs
-```
-
-第二条静态门禁会在没有 CI 注册时 **预期失败**，这是安全要求，并非可以跳过的故障。将上述测试接入现有 BFF 工作流时需同时添加相应 PR/push 的路径触发，绝不在工作流里加 `--remote-read-only`、Token 或 Account ID。
+- [PR #155](https://github.com/shisanyue950901-beep/jianshi-core/pull/155) 于 2026-10-13 创建，初始为 Draft；安全测试验收通过后方可标记可审查并合并。
+- `.github/workflows/cms-bff-isolated.yml` 中的 PR/push 路径监测，现已新增本批五个新文件；强制执行 `node --test tests/g2h7i_cloudflare_readonly.test.mjs` 与 `node scripts/security/g2h7i_cloudflare_readonly_audit.mjs`。
+- [PR BFF 安全 #38348743630](https://github.com/shisanyue950901-beep/jianshi-core/actions/runs/38348743630) **SUCCESS**：本批八项只读模拟/负向测试 **8/8 PASS**，独立静态审计标记 `G2H7I_READONLY_CLOUDFLARE_INVENTORY_AUDIT_PASS`，明确 `cloudflareCallsDuringCI=0`、`remoteCloudVerification=NOT_CONNECTED`。
+- [PR 全量 CI #38348743572](https://github.com/shisanyue950901-beep/jianshi-core/actions/runs/38348743572) **SUCCESS**。
+- GitHub API 之外的 Cloudflare 真实账户仍**未连接、未读取、未部署**，没有将任何密钥放入仓库。此处 PASS 仅表示离线契约/发布隔离门禁符合已限定要求。
 
 ## 4. 严格安全冻结
 
@@ -43,6 +40,6 @@ node scripts/security/g2h7i_cloudflare_readonly_audit.mjs
 
 ## 5. 下一步实际验收标准
 
-1. 在获准更新 GitHub Actions 安全工作流后，新测试和独立审计真实 PASS；在此之前 **PR 只保留 Draft**。
+1. GitHub Actions 工作流已获准正常更新，本批 PR BFF 与完整 CI 均已 PASS；待 PR 正式审阅状态切换与合并后主分支复验，阶段才结项。
 2. Cloudflare 只读权限由用户在受控环境配置后，可使用 CLI 真实枚举指定账户与 Zone 的 Worker、Pages 和路由。它只用于形成待审查证据，不会更改任何资源。
 3. 即使真实只读盘点通过，独立 Cloudflare Preview 部署仍需再次授权、独立身份与实际 mTLS/GoTrue 安全审查；正式登录保持关闭。
