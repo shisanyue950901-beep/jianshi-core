@@ -200,7 +200,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
         '<div class="hero-links">' + buttons + '</div></div></div>'
         '<div class="wrap content">'
-        '<div class="status">这里只提供介绍和参考，暂时不能在网站上购买服务、发布订单、接单或观看课程。'</div>'
+        '<div class="status">这里只提供介绍和参考，暂时不能在网站上购买服务、发布订单、接单或观看课程。</div>'
         + body + render_related(current) + '</div></main>' + site_footer()
         + ('<script>' + CATALOG_JS + '</script>' if catalogue else '')
         + ('<script>' + GUIDED_JS + '</script>' if guided else '')
@@ -250,8 +250,8 @@ def solution_detail(row: dict) -> str:
     body = section(
         "这类 AI 能帮你做什么？", "看看问题和适用条件，再决定要不要尝试。",
         '<div class="cards">'
-        '<article class="card"><strong>PAIN POINT</strong><h3>典型业务问题</h3><p>' + e(row["problem"]) + '</p></article>'
-        '<article class="card"><strong>GOOD FIT</strong><h3>建议先核对的适用条件</h3><p>' + e(row["fit"]) + '</p></article>'
+        '<article class="card"><h3>能解决什么问题？</h3><p>' + e(row["problem"]) + '</p></article>'
+        '<article class="card"><h3>什么情况下适合用？</h3><p>' + e(row["fit"]) + '</p></article>'
         '</div>', "01 / USE CASE",
     )
     body += section(
@@ -273,7 +273,7 @@ def solution_detail(row: dict) -> str:
         solution_trial(row["slug"]), "04 / SELF PRACTICE",
     )
     body += section(
-        "风险与下一步", "应用方案并不意味着存在某个已经验证的平台客户或服务团队。",
+        "风险与下一步", "这些只是可参考的做法，并不是本站已经完成的客户项目。",
         '<div class="notice"><h3>使用与责任边界</h3><p>' + e(row["boundary"]) +
         '</p><p style="margin-top:13px">请避免将未经授权的客户信息、员工个人信息、'
         '商业机密或真实凭证粘贴到公开渠道；需求发布功能启用之前，不在本站采集这些材料。</p>'
@@ -370,8 +370,7 @@ def talent_page() -> str:
 
 def academy_page() -> str:
     cards = ''.join(
-        '<article class="card"><strong>CURRICULUM PLAN · ' + str(i).zfill(2)
-        + '</strong><h3>' + e(title) + '</h3><p>' + e(goal)
+        '<article class="card"><h3>' + e(title) + '</h3><p>' + e(goal)
         + '</p><p style="margin-top:13px"><b>计划实战成果：</b>' + e(work)
         + '</p></article>'
         for i, (title, goal, work) in enumerate(COURSE_PATHS, start=1)
