@@ -57,7 +57,7 @@ export async function inspectMultiZoneReadOnly({
   !/\s/.test(token),'TOKEN_INVALID');
  ensure(typeof fetchImpl==='function','FETCH_INVALID');
  let used=0;
- async function get(path){
+ async function get(path,{expectObject=false}={}){
   // Strictly-bound paths constructed by local functions only.
   ensure(path.startsWith(P+'/')&&path.length<350&&
    !/[\s#]/.test(path),'PATH_INVALID');
@@ -80,6 +80,13 @@ export async function inspectMultiZoneReadOnly({
    ensure(raw.length>0&&raw.length<=262144,'RESPONSE_LIMIT');
    data=JSON.parse(raw);
   }catch{deny('CMS_H7J_JSON_DENIED');}
+  if(expectObject){
+   ensure(data&&data.success===true&&data.result&&
+    typeof data.result==='object'&&!Array.isArray(data.result)&&
+    (!data.errors||Array.isArray(data.errors)&&data.errors.length===0),
+    'RESPONSE_OBJECT_API_REJECTED');
+   return data;
+  }
   return single(data,'RESPONSE');
  }
  // Reuse H7I's existing strict scripts/pages search. No user-provided zone ID.
@@ -134,7 +141,7 @@ export async function inspectMultiZoneReadOnly({
  let workerSubdomainEnabled=null,workerPreviewUrlsEnabled=null;
  if(base.candidateWorkerDetected){
   const x=await get(P+'/accounts/'+accountId+
-   '/workers/scripts/'+TARGET+'/subdomain');
+   '/workers/scripts/'+TARGET+'/subdomain',{expectObject:true});
   ensure(x?.result&&typeof x.result.enabled==='boolean'&&
    typeof x.result.previews_enabled==='boolean',
    'WORKER_SUBDOMAIN_STATUS_UNKNOWN');
