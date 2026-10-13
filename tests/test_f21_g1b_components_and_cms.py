@@ -97,7 +97,7 @@ class G1ComponentsAndCMS(unittest.TestCase):
         self.assertEqual(s.count('data-category="creative"'), 2)
         self.assertEqual(s.count('data-category="automation"'), 1)
         self.assertEqual(s.count('data-category="global"'), 1)
-        self.assertIn("已找到 ", JS)
+        self.assertIn("找到 ", JS)
         self.assertIn("card.hidden=!show;", JS)
         self.assertIn("empty.hidden=visible!==0;", JS)
         self.assertIn("reset.addEventListener('click'", JS)
