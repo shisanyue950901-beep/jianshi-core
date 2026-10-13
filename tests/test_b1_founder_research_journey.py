@@ -47,16 +47,16 @@ class TestB1FounderResearchJourney(unittest.TestCase):
 
     def test_primary_user_sees_founder_explanation_and_only_one_hero(self):
         self.assertEqual(self.rendered.count("<h1>"),1)
-        self.assertIn("个人创业机会发现与决策",self.rendered)
+        self.assertIn("想找个项目做？",self.rendered)
         self.assertIn("发现值得研究的",self.rendered)
         self.assertIn("商业机会。</em>",self.rendered)
         self.assertIn("不仅研究 AI",self.rendered)
-        self.assertIn("面向个人创业者",self.rendered)
+        self.assertIn("直接看项目 ↓",self.rendered)
         self.assertLess(
             self.rendered.index('href="#j2-opportunities"'),
             self.rendered.index('href="#j2-solutions"')
         )
-        self.assertIn("<title>见势 JIANSHI 2.0｜个人创业机会发现与商业研究</title>",self.rendered)
+        self.assertIn("<title>见势｜找创业项目，看懂怎么赚钱</title>",self.rendered)
         self.assertIn('property="og:title"',self.rendered)
 
     def test_study_paths_are_real_public_destinations_and_usable_without_auth(self):
@@ -68,7 +68,7 @@ class TestB1FounderResearchJourney(unittest.TestCase):
             self.assertIn(label,html)
             self.assertIn('href="'+path+'"',html)
             self.assertIn(path,self.parsed.anchors)
-        self.assertIn("不要求注册",html)
+        self.assertNotIn('type="email"',html)
         self.assertEqual(self.parsed.forms,0)
         self.assertEqual(self.parsed.inputs,0)
         self.assertEqual(self.parsed.scripts,1)
@@ -77,26 +77,30 @@ class TestB1FounderResearchJourney(unittest.TestCase):
                               "sessionStorage.setItem","fetch(","XMLHttpRequest("):
             self.assertNotIn(script_marker,html)
 
-    def test_all_named_cases_have_a_question_gap_and_research_step(self):
-        self.assertEqual(set(portal.RESEARCH_QUESTIONS),set(portal.CASES))
+    def test_all_named_cases_are_short_revenue_first_cards(self):
+        self.assertEqual(set(portal.PROJECT_PREVIEWS),set(portal.CASES))
         self.assertEqual({c["id"] for c in self.cases},set(portal.CASES))
-        self.assertEqual(self.rendered.count('class="j2-research-check"'),3)
+        self.assertEqual(self.rendered.count('class="j2-project-facts"'),3)
+        self.assertEqual(self.rendered.count('class="j2-project-action"'),3)
         for case in self.cases:
             slug=case["id"]
-            q=portal.RESEARCH_QUESTIONS[slug]
-            self.assertEqual(len(q),3)
-            for sentence in q:
-                self.assertGreater(len(sentence),18)
-                self.assertIn(sentence,self.rendered)
+            preview=portal.PROJECT_PREVIEWS[slug]
+            for field in ("headline","buyer","revenue","difficulty","label"):
+                self.assertIn(preview[field],self.rendered)
             self.assertIn('href="/projects/'+slug+'/"',self.rendered)
-        for text in ("先研究什么","哪些问题还不知道","可以怎样开始核实"):
-            self.assertEqual(self.rendered.count(text),3)
+        for label in ("谁需要","怎么赚钱","上手门槛"):
+            self.assertEqual(self.rendered.count('<dt>'+label+'</dt>'),3)
+        self.assertNotIn('class="j2-research-check"',self.rendered)
+        self.assertLess(self.rendered.index('class="j2-projects"'),
+                        self.rendered.index('class="j2-study-paths"'))
+        self.assertLess(self.rendered.index('class="j2-projects"'),
+                        self.rendered.index('class="j2-shortcuts"'))
 
     def test_research_never_claims_proven_entrepreneurial_return_or_users(self):
         for bad in ("保证赚钱","保证收益","已有 500 家企业",
                     "10,000+","立即竞标","已验证可以直接启动"):
             self.assertNotIn(bad,self.rendered)
-        self.assertIn("历史经营不代表可复制收益",self.rendered)
+        self.assertIn("历史案例不代表照着做就能赚钱",self.rendered)
         self.assertIn("概念配图不是项目证明",self.rendered)
         self.assertIn("尚未开放真实服务采购",self.rendered)
         self.assertIn("<strong>0</strong><span>已验证可直接启动的项目",self.rendered)
@@ -106,22 +110,25 @@ class TestB1FounderResearchJourney(unittest.TestCase):
                        "j2-talent","j2-academy"):
             self.assertEqual(self.rendered.count('id="'+anchor+'"'),1)
             self.assertIn('href="#'+anchor+'"',self.rendered)
-        self.assertLess(self.rendered.index("找项目，先从可信的研究开始。"),
-                        self.rendered.index("从商业机会研究，延伸到企业 AI 应用。"))
+        self.assertLess(self.rendered.index("现在可以看的创业案例"),
+                        self.rendered.index("企业 AI 方案、合作与学习"))
         self.assertLess(self.rendered.index('id="j2-opportunities"'),
                         self.rendered.index('id="j2-solutions"'))
 
     def test_only_source_admitted_three_cases_can_appear(self):
         with self.assertRaises(RuntimeError):
             home.build_home(self.cases[:2])
-        test=portal.RESEARCH_QUESTIONS.copy()
+        test=portal.PROJECT_PREVIEWS.copy()
         try:
-            with patch.dict(portal.RESEARCH_QUESTIONS,{"carrd":("<img onerror=alert(1)>","需核实","不确定")},clear=False):
+            with patch.dict(portal.PROJECT_PREVIEWS,{"carrd":{
+                    **portal.PROJECT_PREVIEWS["carrd"],
+                    "headline":'<img onerror=alert(1)>'
+                }},clear=False):
                 unsafe=home.build_home(self.cases)
-            self.assertNotIn("<img onerror=alert(1)>",unsafe)
-            self.assertIn("&lt;img onerror=alert(1)&gt;",unsafe)
+            self.assertNotIn('<img onerror=alert(1)>',unsafe)
+            self.assertIn('&lt;img onerror=alert(1)&gt;',unsafe)
         finally:
-            self.assertEqual(portal.RESEARCH_QUESTIONS,test)
+            self.assertEqual(portal.PROJECT_PREVIEWS,test)
 
     def test_static_publication_and_p441_schedule_unchanged(self):
         self.assertEqual(self.rendered.count("<main "),1)
