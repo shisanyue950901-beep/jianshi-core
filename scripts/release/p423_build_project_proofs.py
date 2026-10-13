@@ -170,6 +170,88 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 @media(max-width:900px){.directory{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){header{flex-wrap:wrap;padding-block:14px}header nav{width:100%;flex-wrap:wrap;gap:8px 12px}.directory{grid-template-columns:1fr;margin-top:15px}.directory a.case-card{padding:18px}.case-browse{margin:10px 0}}
 
+
+/* B1: company directory and evidence pages retain factual contents, update look. */
+body{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}
+header{max-width:1180px;padding-block:17px;min-height:72px}
+.logo{font:850 22px/1.4 "PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif;letter-spacing:-.04em}
+header nav a{font-weight:700;text-decoration:none;font-size:13px;min-height:44px;display:inline-flex;align-items:center}
+header nav a:hover{color:var(--accent)}header button{border-radius:11px;cursor:pointer}
+main{padding-block:38px 85px}
+h1,h2,h3{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}
+h1{font-size:clamp(35px,5vw,56px);font-weight:850;letter-spacing:-.048em;line-height:1.22}
+h2{font-weight:800;letter-spacing:-.03em}
+.case-directory-hero{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;
+ padding:36px clamp(23px,4vw,46px) 32px;margin:0 0 25px;
+ background:radial-gradient(ellipse 50% 130% at 90% 7%,#6156ab65,transparent 72%),
+ radial-gradient(ellipse 43% 105% at 4% 100%,#23689a55,transparent 80%),
+ linear-gradient(130deg,#0b1528,#182849 70%,#231d49);
+ box-shadow:0 19px 42px #1a32622a;color:#f3f6ff}
+.case-directory-hero:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background-image:linear-gradient(#abc2ff0c 1px,transparent 1px),linear-gradient(90deg,#abc2ff0c 1px,transparent 1px);
+ background-size:42px 42px;mask-image:linear-gradient(90deg,transparent,#000b)}
+.case-directory-hero .kicker{color:#c6c8ff;background:#7e79ef26;border:1px solid #a4a7ff53;
+ border-radius:50px;padding:5px 12px;display:inline-flex;font-size:11px}
+.case-directory-hero h1{color:#fff;max-width:760px;font-size:clamp(34px,4.7vw,55px);margin:15px 0 14px}
+.case-directory-hero .lead{color:#c7d3e8;font-size:15px;line-height:1.75;max-width:700px}
+.case-directory-hero .case-browse{margin:13px 0 0}
+.case-directory-hero .case-browse a{color:#fff;text-decoration:none;min-height:44px;border-radius:11px;
+ background:linear-gradient(110deg,#8265e9,#5089ee);padding:10px 18px;box-shadow:0 7px 20px #4341ac51}
+.case-directory-hero .case-browse a:hover{filter:brightness(1.09)}
+.case-directory-proof{display:flex;gap:9px;flex-wrap:wrap;margin-top:19px}
+.case-directory-proof span{display:inline-flex;align-items:center;min-height:31px;
+ border:1px solid #a6b5e844;background:#f1f2ff11;color:#dce6fa;
+ padding:5px 11px;border-radius:25px;font-size:11px}
+.directory{gap:16px}
+.directory a.case-card{border-radius:19px;border:1px solid var(--line);
+ padding:23px;box-shadow:0 5px 22px #273f7210;
+ background:var(--panel);transition:border-color .18s,transform .18s,box-shadow .18s}
+.directory a.case-card:hover,.directory a.case-card:focus-visible{border-color:var(--accent);
+ box-shadow:0 17px 36px #293f8020;transform:translateY(-3px)}
+.directory a.case-card small{align-self:flex-start;border-radius:24px;
+ padding:5px 10px;background:color-mix(in srgb,var(--accent) 11%,var(--panel));
+ color:var(--accent);font-size:11px;font-weight:750}
+.directory a.case-card strong{font-size:20px;line-height:1.4;letter-spacing:-.025em}
+.directory a .case-facts{margin-top:7px;gap:8px}
+.directory a .case-facts p{padding-top:8px;font-size:12px;line-height:1.6}
+.directory a .case-facts b{font-size:11px}
+.directory a .case-action{display:flex;align-items:center;justify-content:space-between;
+ margin-top:auto;padding:11px 14px;border-radius:11px;
+ background:color-mix(in srgb,var(--accent) 12%,var(--panel));
+ color:var(--accent);font-size:13px;font-weight:800}
+.case-detail-hero{border:1px solid var(--line);padding:27px clamp(20px,3.5vw,34px);
+ border-radius:22px;background:linear-gradient(130deg,
+ color-mix(in srgb,var(--accent) 9%,var(--panel)),var(--panel) 65%);margin:8px 0 19px}
+.case-detail-hero .kicker{display:inline-block;margin:0;padding:4px 10px;
+ border:1px solid color-mix(in srgb,var(--accent) 32%,var(--panel));border-radius:30px}
+.case-detail-hero h1{margin:14px 0 10px;max-width:840px;
+ font-size:clamp(32px,4.3vw,48px);font-weight:850}
+.case-detail-hero .lead{font-size:15px;line-height:1.75;margin:0;max-width:750px}
+.case-detail-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.case-detail-proof span{display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--line);
+ border-radius:24px;padding:4px 10px;font-size:11px;color:var(--muted);background:var(--panel)}
+.digest,.decision-report,.decision-more,.dossier-more,.workbook-fold{border-radius:17px}
+.digest{box-shadow:0 6px 24px #2a3d7710}
+.digest h2,.decision-report h2{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif;font-weight:800}
+.digestgrid{gap:14px}
+.digestgrid p{border:1px solid var(--line);border-radius:12px;padding:13px;min-width:0}
+.digestgrid .digest-proof{border-left:3px solid var(--accent)}
+.decision-report{box-shadow:0 5px 24px #2a3d7710}
+@media(max-width:650px){
+ header{min-height:60px}main{padding-block:24px 65px}
+ .case-directory-hero{padding:25px 20px;margin-bottom:12px;border-radius:19px}
+ .case-directory-hero h1{font-size:clamp(32px,8vw,44px)}
+ .case-directory-hero .lead{font-size:13px;line-height:1.7}
+ .case-directory-hero:before{background-size:32px 32px}
+ .case-directory-proof{margin-top:12px}
+ .directory a.case-card{padding:19px}
+ .case-detail-hero{padding:20px;border-radius:17px}
+ .case-detail-hero h1{font-size:clamp(29px,7.5vw,40px)}
+ .case-detail-hero .lead{font-size:13px}
+ .digestgrid p{padding:10px}
+}
+@media(prefers-reduced-motion:reduce){.directory a.case-card{transition:none;transform:none!important}}
+
 """
 
 def txt(value: object) -> str:
@@ -320,8 +402,11 @@ def project_page(case: dict) -> str:
         '查看原始经营依据 ↗</a></p></section>'
     )
     body = f"""<a class="case-back" href="/projects/">← 返回项目列表</a>
+<section class="case-detail-hero" aria-label="历史公司案例概览">
 <span class="kicker">看看别人怎么做生意</span>
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
+<div class="case-detail-proof" aria-label="研究资料边界"><span>历史经营资料</span>
+<span>不等于创业收益预测</span><span>建议核查来源和成本</span></div></section>
 {summary_box}
 {decision_html}
 <details class="dossier-more" id="case-details">
@@ -387,10 +472,13 @@ def index_page(cases: list[dict]) -> str:
             f'<p><b>上手门槛：</b>{txt(preview["difficulty"])}</p>'
             '</div><span class="case-action">看详情和第一步 →</span></a>'
         )
-    body = f"""<span class="kicker">创业案例</span>
+    body = f"""<section class="case-directory-hero" aria-label="公司的历史商业案例">
+<span class="kicker">创业案例</span>
 <h1>{len(cases)} 家公司的生意，<br>看看它们怎么赚钱。</h1>
 <p class="lead">先比较做什么、谁付钱、怎么收费、需要什么能力。这些是历史公司案例，不是已经验证可以照做赚钱的项目。</p>
 <p class="case-browse"><a href="/discover/">想看更多生意方向？去找项目 →</a></p>
+<div class="case-directory-proof" aria-label="研究证据边界"><span>3 个有历史经营资料的公司案例</span>
+<span>0 个已确认可以直接复制盈利的项目</span></div></section>
 <div class="directory" id="directory">{''.join(tiles)}</div>
 <details class="notice"><summary>资料来源和风险说明</summary>
 <p>公开定价不等于真实成交。公司历史经营结果也不等于新创业者的收入，当前没有已验证可直接盈利的创业项目。</p>

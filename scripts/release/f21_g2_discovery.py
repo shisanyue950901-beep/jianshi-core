@@ -117,6 +117,48 @@ CSS = """
 #discover-reset[hidden]{display:none}
 @media(max-width:950px){.discover-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.discover-grid{grid-template-columns:1fr}.discover-card{min-height:0;padding:20px}.discover-search{padding:17px}.discover-intro{display:block}}
+/* B1 visual continuity: finder keeps the same deep-blue research identity. */
+#discover .hero{background:
+ radial-gradient(ellipse 38% 110% at 92% 6%,#5b45b456,transparent 80%),
+ radial-gradient(ellipse 50% 110% at 7% 100%,#235a936b,transparent 73%),
+ linear-gradient(130deg,#08101f 10%,#121f3c 70%,#172042);isolation:isolate}
+#discover .hero:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:linear-gradient(#97b4ff0b 1px,transparent 1px),linear-gradient(90deg,#97b4ff0b 1px,transparent 1px);
+ background-size:44px 44px;mask-image:linear-gradient(90deg,transparent,#0009)}
+#discover .hero .wrap{z-index:1;padding:39px 0 43px}
+#discover .hero h1{font-size:clamp(33px,4.5vw,53px);letter-spacing:-.05em;margin:16px 0 10px}
+#discover .hero p{font-size:clamp(14px,1.5vw,17px);line-height:1.7;max-width:720px}
+.discover-steps{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center;margin-top:21px}
+.discover-steps span{display:inline-flex;align-items:center;gap:7px;color:#d1dcf4;font-size:12px;line-height:1.6}
+.discover-steps b{display:grid;place-items:center;background:#8296f126;border:1px solid #a0affb50;
+ border-radius:8px;min-width:27px;height:27px;padding:0 4px;font-size:10px;color:#c9c3ff}
+.discover-steps .step-separator{color:#8ea2c8}
+.discover-search{background:linear-gradient(180deg,#fff,#fcfdff);border-color:#dde4f2;
+ box-shadow:0 12px 35px #263f6b12}
+.discover-filters button{min-height:39px;border-color:#d7deeb;background:#f7f8fd;
+ transition:background .2s,border-color .2s}
+.discover-filters button[aria-pressed=true]{background:linear-gradient(110deg,#4c438e,#314e9d);border-color:transparent;color:#fff}
+.discover-card{border:1px solid #dde6f4;border-radius:19px;background:linear-gradient(180deg,#fff,#fcfdff);
+ box-shadow:0 5px 20px #2c477b0b}
+.discover-card:hover,.discover-card:focus-visible{border-color:#9eaaf4;
+ box-shadow:0 15px 36px #344ba925;transform:translateY(-3px)}
+.discover-card .go{display:flex;align-items:center;justify-content:space-between;min-height:42px;
+ margin-top:15px;border-radius:11px;background:linear-gradient(100deg,#f1edff,#ecf3ff);
+ color:#5049af;padding:10px 13px}
+.discover-card .type{display:inline-flex;align-self:start;padding:4px 10px;
+ border-radius:999px;background:#efecff;color:#584da5}
+@media(max-width:650px){
+ #discover .hero .wrap{padding:25px 0 31px}
+ #discover .hero h1{font-size:clamp(31px,8vw,42px)}
+ #discover .hero:after{background-size:32px 32px}
+ .discover-steps{gap:8px;margin-top:18px}
+ .discover-steps span{font-size:11px}
+ .discover-steps .step-separator{font-size:10px}
+ .discover-filters button{min-height:42px}
+ .discover-card{padding:19px}
+}
+@media(prefers-reduced-motion:reduce){.discover-card,.discover-filters button{transition:none;transform:none!important}}
+
 @media(prefers-reduced-motion:reduce){.discover-card{transition:none;transform:none!important}}
 """
 JS = """(function(){'use strict';
@@ -237,6 +279,10 @@ def render() -> str:
         '<div class="crumb"><a href="/">见势首页</a> / 找项目</div>'
         '<h1>找创业项目，先看怎么赚钱。</h1>'
         '<p>这里有 3 家真实公司案例、6 种生意模式；可以借鉴做法，但不保证照着做能赚钱。</p>'
+        '<div class="discover-steps" aria-label="项目研究的三个步骤">'
+        '<span><b>01</b> 找到方向</span><span class="step-separator" aria-hidden="true">→</span>'
+        '<span><b>02</b> 看懂收费</span><span class="step-separator" aria-hidden="true">→</span>'
+        '<span><b>03</b> 核查风险</span></div>'
         '</div></section><div class="wrap content discover-shell">'
         '<section aria-labelledby="discover-title" class="section">'
         '<div class="discover-intro"><h2 id="discover-title">选个方向看看</h2></div>'
