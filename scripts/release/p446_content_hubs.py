@@ -148,6 +148,20 @@ h3{font-size:19px;line-height:1.35;margin:0 0 9px;color:#192945}
 .solution-risk{padding:19px 22px;border:1px solid #d8dfed;background:#f0f3fb;border-radius:17px;margin-top:22px}
 .solution-risk h3{font-size:17px}
 .solution-risk p{font-size:13px;color:#536581;line-height:1.8;margin:7px 0}
+.guide-hero .wrap{padding:30px 0 38px}
+.guide-hero h1{font-size:clamp(31px,4.4vw,50px);margin:13px 0}
+.guide-first-action{max-width:880px;padding:26px}
+.guide-first-action h3{font-size:23px}
+.guide-first-action p{font-size:14px;line-height:1.75}
+.guide-first-action .btn{margin-top:18px}
+.guide-first-action .list{margin:15px 0 4px}
+.guide-first-action .guide-privacy{font-size:12px;color:#62718b;margin-top:14px}
+.guide-more{margin-top:25px;max-width:900px}
+.guide-more summary{min-height:44px;display:flex;align-items:center}
+.guide-more summary:focus-visible{outline:3px solid #796ce8;outline-offset:3px}
+.guide-more .g2b-panel{border:0;box-shadow:none;padding:14px 0 0}
+.guide-next{font-size:14px;color:#536581;margin-top:22px}
+.guide-next a{color:#5548ac;text-decoration:underline;text-underline-offset:3px}
 .list{padding-left:19px;margin:0}.list li{margin-bottom:8px}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .step{border-top:2px solid #8572dc;padding:17px 10px 0}
@@ -168,7 +182,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f0f4fa;border:1px sol
 .footer p{font-size:12px;margin:5px 0;max-width:620px}
 .footer nav{display:flex;gap:16px;flex-wrap:wrap;font-size:12px}.footer nav a{text-decoration:underline;text-underline-offset:4px}
 @media(max-width:1050px){.top .desktop{display:none}.mobile{display:block}.cards.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.wrap{width:calc(100% - 34px)}.hero .wrap{padding:42px 0 62px}.solution-hero .wrap{padding:24px 0 30px}.cards,.cards.four,.steps{grid-template-columns:1fr}.section{margin-top:46px}.content{padding-top:32px}.card{padding:20px}.status{padding:12px}.top .row{min-height:62px}th,td{padding:12px;font-size:12px}}
+@media(max-width:650px){.wrap{width:calc(100% - 34px)}.hero .wrap{padding:42px 0 62px}.solution-hero .wrap,.guide-hero .wrap{padding:24px 0 30px}.guide-first-action{padding:19px}.cards,.cards.four,.steps{grid-template-columns:1fr}.section{margin-top:46px}.content{padding-top:32px}.card{padding:20px}.status{padding:12px}.top .row{min-height:62px}th,td{padding:12px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card.link{transition:none;transform:none!important}}
 """
 
@@ -203,11 +217,16 @@ def shell(path: str, title: str, description: str, label: str, body: str,
     guided = path in ("marketplace/", "talent/", "academy/")
     trial_page = path.startswith("solutions/") and not catalogue
     solution_route = catalogue or trial_page
-    kicker = "" if solution_route else '<span class="kicker">' + e(label) + '</span>'
+    kicker = "" if solution_route or guided else '<span class="kicker">' + e(label) + '</span>'
+    guide_status = {
+        "marketplace/": "商机列表尚未开放，暂时不能在网站上购买服务或发布订单。",
+        "talent/": "尚未开放创作者入驻或接单，暂时不能在网站上购买服务。",
+        "academy/": "没有已上线的可播放课程，暂时不能在网站上购买服务。",
+    }
     status = (
         '这里只展示参考方案，暂时不能在网站上购买服务或提交企业需求。'
         if solution_route else
-        '这里只提供介绍和参考，暂时不能在网站上购买服务、发布订单、接单或观看课程。'
+        guide_status.get(path, '这里只提供介绍和参考，暂时不能在网站上购买服务。')
     )
     return (
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
@@ -220,7 +239,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<meta property="og:description" content="' + e(description) + '">'
         '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + (GUIDED_CSS if guided or trial_page else "") + RELATED_CSS + '</style></head><body>'
         + site_header(current)
-        + '<main><div class="hero' + (' solution-hero' if solution_route else '') + '"><div class="wrap">'
+        + '<main><div class="hero' + (' solution-hero' if solution_route else ' guide-hero' if guided else '') + '"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
         + kicker
         + '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
@@ -365,134 +384,79 @@ def solution_detail(row: dict) -> str:
 
 
 def marketplace_page() -> str:
+    """Unopened marketplace: an immediately usable local draft, not fake jobs."""
     body = section(
-        "企业与创作者，将如何建立合作？",
-        "首版计划采用人工审核及人工辅助匹配，避免把审核、支付和交付责任留成空白。",
-        '<div class="steps">'
-        '<div class="step"><b>01 · 企业描述问题</b><h3>明确交付</h3><p>围绕成果、使用范围、时间、约束及验收标准编写需求。</p></div>'
-        '<div class="step"><b>02 · 平台审核需求</b><h3>确认真实性</h3><p>核验企业身份、需求合规、素材授权和可公开字段。</p></div>'
-        '<div class="step"><b>03 · 创作者申请</b><h3>人工匹配</h3><p>基于作品和能力选择沟通对象；不展示未经授权的联系方式。</p></div>'
-        '</div>', "01 / FUTURE WORKFLOW",
+        "现在可以做什么？",
+        "",
+        '<article class="card guide-first-action" id="request-brief">'
+        '<h3>先把企业需求写清楚</h3>'
+        '<p>需求说明应包含的字段：要解决的问题、预期成果、素材授权、'
+        '期望完成时间、质量验收与修改标准。整理前先确认企业身份与联系人授权。</p>'
+        '<a class="btn primary" href="/marketplace/brief/">打开本地需求整理器 ↗</a>'
+        '<p class="guide-privacy">只在当前浏览器整理，不上传、不发布订单；关闭或刷新后内容会消失。</p>'
+        '</article>',
     )
-    body += section(
-        "企业需求准备模板", "可以在本地复制下面的字段，暂时无需向网站提交任何企业或个人资料。",
-        '<div class="card"><h3>需求说明应包含的字段</h3>'
-        '<pre>项目名称：\n行业及业务场景：\n目前的问题：\n预期交付物与数量：\n目标用户与使用渠道：\n现有资料及使用授权：\n期望完成时间：\n质量验收与修改标准：\n预算约束（可选）：\n保密、数据及审批要求：</pre>'
-        '<p>仅为本地编辑参考。本站当前无上传、邮件发送、竞价或订单创建功能。</p>''<a class="btn primary" style="margin-top:18px" href="/marketplace/brief/">打开本地需求整理器 ↗</a></div>',
-        "02 / REQUEST BRIEF",
+    body += (
+        '<details class="guide-more">'
+        '<summary>整理好了吗？做一次本地自检</summary>'
+        + readiness("marketplace")
+        + '</details>'
     )
-    body += section(
-        "你准备好发布一个真实需求了吗？",
-        "以下是浏览器本地的准备清单，勾选结果不会上传、保存或创建商单。",
-        readiness("marketplace"), "03 / READINESS",
+    return shell(
+        "marketplace/", "商机大厅（暂未开放）",
+        "这里还不能发布、查找或申请企业商单；可以先把真实需求整理成一份草稿。",
+        "商机大厅", body,
+        (("立即整理需求", "/marketplace/brief/"),),
     )
-    body += section(
-        "哪些需求不能直接进入撮合？",
-        "审核阶段首先保护企业和个人，而不是追求订单数量。",
-        '<div class="cards">'
-        + block("发布前必须核实", ("企业身份与联系人授权", "需求描述不侵犯他人著作权或肖像权", "可公开信息与仅对匹配者展示的信息分级"), "ADMISSION RULES")
-        + block("暂不支持", ("匿名要求他人提供账户、密码或内部数据", "虚构客户案例、实际收入或成交证明", "无法说明成果边界和验收责任的高风险任务"), "NOT SUPPORTED")
-        + '</div>', "03 / TRUST & SAFETY",
-    )
-    body += section("当前开放状态", "先用业务指南帮助你准确提出问题，而不是展示不存在的订单。",
-                    '<div class="notice"><h3>商机列表尚未开放</h3>'
-                    '<p>当前没有经后台审核并公开发布的真实企业商单。正式上线前将完成企业认证、'
-                    '角色权限、需求审核、创作者申请、状态记录及隐私授权。</p>'
-                    '<a class="btn primary" style="margin-top:20px" href="/solutions/">返回解决方案目录 ↗</a></div>',
-                    "04 / ROLLOUT")
-    return shell("marketplace/", "商机大厅（暂未开放）", "为企业需求和 AI 创作者建立透明的合作路径；先提供需求模板、审核规则及未来撮合流程，不展示虚构订单。",
-                 "商机大厅", body, (("查看需求准备模板", "#request-brief"), ("查看企业方案", "/solutions/"))).replace(
-                     '<div class="card"><h3>需求说明应包含的字段', '<div class="card" id="request-brief"><h3>需求说明应包含的字段', 1)
 
 
 def talent_page() -> str:
+    """Unopened service-provider directory: help visitors prepare real work."""
     body = section(
-        "作品比自我介绍更有说服力", "创作者可提前整理作品与能力，但目前尚无入驻、公开作品上传或真实商单投递功能。",
-        '<div class="cards">'
-        + block("视觉与视频创作", ("商品或品牌视觉样片", "脚本、分镜与视频成果", "原创及素材授权说明"), "CREATIVE")
-        + block("Agent 与自动化", ("沙盒演示或系统架构图", "人工审核、容错和权限说明", "明确可支持和不可支持的场景"), "AUTOMATION")
-        + block("出海及商业内容", ("多语言内容对照", "事实核查及本地化审校记录", "实际样本与使用规范"), "LOCALIZATION")
-        + block("商业分析与研究", ("研究假设和来源链接", "证据等级及限制", "不包含保证收益的表达"), "RESEARCH")
-        + '</div>', "01 / SKILL CATEGORIES",
+        "现在可以做什么？",
+        "",
+        '<article class="card guide-first-action" id="portfolio">'
+        '<h3>先整理一份自己的作品介绍</h3>'
+        '<p>作品介绍可以怎么写？说明你会做什么、实际负责哪些部分、'
+        '作品解决了什么问题，以及别人可以怎样核对。</p>'
+        '<ul class="list">'
+        '<li>演示作品明确标注，不能冒充客户交付。</li>'
+        '<li>图片、品牌、人物和客户资料：没有授权就不公开。</li>'
+        '<li>写清参考交付格式、修改范围和个人真实贡献。</li>'
+        '</ul>'
+        '<a class="btn primary" href="/talent/portfolio/">打开本地作品集整理器 ↗</a>'
+        '<p class="guide-privacy">仅供本地整理，不创建公开人才档案；关闭或刷新后内容会消失。</p>'
+        '</article>',
     )
-    body += section(
-        "作品介绍可以怎么写？", "无需晒出个人证件、真实客户的未授权信息或未经审计的营收数据。",
-        '<table><thead><tr><th>模块</th><th>需要说明</th><th>展示原则</th></tr></thead><tbody>'
-        '<tr><td>个人能力</td><td>技能方向、工具与可交付服务</td><td>避免夸大资历</td></tr>'
-        '<tr><td>代表作品</td><td>目标、方法、前后对比、你的真实贡献</td><td>演示作品明确标注</td></tr>'
-        '<tr><td>交付方式</td><td>格式、沟通、修订、验收和授权边界</td><td>双方确认范围</td></tr>'
-        '<tr><td>使用权</td><td>第三方素材、客户保密和商业使用许可</td><td>没有授权就不公开</td></tr>'
-        '</tbody></table>''<p style="margin-top:18px"><a class="btn primary" href="/talent/portfolio/">打开作品集本地整理器 ↗</a></p>', "02 / PORTFOLIO",
+    body += (
+        '<details class="guide-more">'
+        '<summary>作品准备好了？核对公开边界</summary>'
+        + readiness("talent")
+        + '</details>'
     )
-    body += section(
-        "整理完成后，先核对公开边界",
-        "这不是人才入驻申请。逐项自查作品内容、贡献和版权。",
-        readiness("talent"), "03 / PORTFOLIO READINESS",
+    return shell(
+        "talent/", "人才与服务商（暂未开放）",
+        "尚未开放创作者入驻、作品发布或接单；可以先整理一份有授权的作品介绍。",
+        "人才与服务商", body,
+        (("立即整理作品", "/talent/portfolio/"),),
     )
-    body += section(
-        "以后怎么接项目？", "不是已经存在的账户或认证服务。",
-        '<div class="steps">'
-        '<div class="step"><b>01 · 准备作品</b><h3>建立能力档案</h3><p>将练习项目与真实商业交付明确区分。</p></div>'
-        '<div class="step"><b>02 · 授权审核</b><h3>选择可公开信息</h3><p>按技能、作品版权和身份授权要求进行审核。</p></div>'
-        '<div class="step"><b>03 · 申请合作</b><h3>匹配真实需求</h3><p>企业审核通过后按需求申请，并由双方确认合作条件。</p></div>'
-        '</div>', "03 / FUTURE ONBOARDING",
-    )
-    body += section("当前开放状态", "我们先建设真实、可审核的供需结构。",
-                    '<div class="notice"><h3>尚未开放创作者入驻</h3>'
-                    '<p>目前没有“平台认证设计师”“已接单服务商”名单，也不采集简历、身份证件、'
-                    '手机号或私人作品文件。你可以先根据下方学习规划完善自己的交付能力。</p>'
-                    '<a class="btn primary" style="margin-top:20px" href="/academy/">查看 AIGC 学习路线 ↗</a></div>', "04 / ROLLOUT")
-    return shell("talent/", "人才与服务商", "这里可以了解如何准备作品和介绍自己的能力。目前还不能入驻或接单。",
-                 "人才与服务商", body, (("查看作品集结构", "#portfolio"), ("浏览学习路线", "/academy/"))).replace(
-                     '<table><thead>', '<table id="portfolio"><thead>', 1)
 
 
 def academy_page() -> str:
-    cards = ''.join(
-        '<article class="card"><h3>' + e("AI 智能助手与自动化" if title == "AI Agent 与工作流" else title) + '</h3><p>' + e(goal)
-        + '</p><p style="margin-top:13px"><b>计划实战成果：</b>' + e(work)
-        + '</p></article>'
-        for i, (title, goal, work) in enumerate(COURSE_PATHS, start=1)
-    )
+    """Unopened course catalog: retain the genuinely usable local exercises."""
     body = section(
-        "你想学哪种 AI 技能？",
-        "这里只公开计划课程方向与练习成果，没有伪造授课视频、讲师、学习人数或学员案例。",
-        '<div class="cards">' + cards + '</div>', "01 / LEARNING PATHS",
+        "选一个方向，做三项练习",
+        "",
+        '<div id="learning-paths">' + learning_selector() + '</div>'
+        '<p class="guide-next">也可以先到 <a href="/projects/">真实公司案例</a>'
+        ' 学习如何核对产品、收费方式和资料来源。</p>',
     )
-    body += section(
-        "选择你的下一项可检验练习",
-        "每个方向都给出准备材料和三项具体练习，不涉及账户、付款或课程观看。",
-        learning_selector(), "02 / YOUR PRACTICE",
+    return shell(
+        "academy/", "AI 技能学习（课程筹备中）",
+        "没有可播放课程或报名入口；先选择一种 AI 技能，照着练习清单动手。",
+        "AIGC 学院", body,
+        (("查看练习清单", "#learning-paths"),),
     )
-    body += section(
-        "以后课程会怎么安排？", "优先让学员能拿出可检验的作品，而不是堆叠知识点。",
-        '<div class="steps">'
-        '<div class="step"><b>01 · 目标</b><h3>场景与成果</h3><p>明确适合谁、需具备什么基础，以及实际要完成什么。</p></div>'
-        '<div class="step"><b>02 · 实操</b><h3>练习与拆解</h3><p>视频和配套素材待授权制作后发布，附练习步骤和常见错误。</p></div>'
-        '<div class="step"><b>03 · 验收</b><h3>作品与改进</h3><p>提交前检查事实、质量、版权和边界，逐步形成个人作品集。</p></div>'
-        '</div>', "02 / COURSE STRUCTURE",
-    )
-    body += section(
-        "课程还在准备什么？",
-        "不是所有课程都需要会员收费；先把内容质量与授权边界做好。",
-        '<div class="cards">'
-        + block("内容制作与上架", ("由授权讲师或团队自主录制课程", "课程视频、封面和演示素材完成版权核查", "设定章节、前置知识与更新记录"), "PUBLISHING")
-        + block("学习体验与安全", ("支持章节进度和作业结果归档", "不以虚构收入案例引导课程购买", "涉及个人资料时先完善账户授权与隐私设置"), "LEARNING EXPERIENCE")
-        + '</div>', "03 / RELEASE RULES",
-    )
-    body += section(
-        "现在可以做什么？",
-        "没有可播放课程时，仍然可以通过独立项目研究培养判断能力。",
-        '<div class="notice"><h3>自主课程制作中</h3>'
-        '<p>目前没有已上线的可播放课程，也没有公开课程支付入口。'
-        '先选择一条学习方向，使用公开工具练习，再到见势项目库阅读带来源的商业案例，'
-        '切勿根据历史企业收益推断个人学习变现。</p>'
-        '<a class="btn primary" style="margin-top:20px" href="/projects/">查看经审核的商业案例 ↗</a></div>',
-        "04 / START HERE",
-    )
-    return shell("academy/", "AI 技能学习（课程筹备中）", "从 AI 视觉、视频、Agent、自动化到商业研究，按可检验的交付成果设计学习路线。课程内容将后续制作并上传。",
-                 "AIGC 学院", body, (("浏览学习路径", "#learning-paths"), ("探索商业研究", "/projects/"))).replace(
-                     '<div class="cards">', '<div class="cards" id="learning-paths">', 1)
 
 
 def render_pages() -> dict[str, str]:
