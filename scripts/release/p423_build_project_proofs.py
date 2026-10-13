@@ -335,7 +335,7 @@ def index_page(cases: list[dict]) -> str:
     body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
 <h1>{len(cases)} 个正式项目，<br>看看它们怎么赚钱。</h1>
 <p class="lead">不用先看术语。直接看项目做什么、卖给谁、怎么收钱。想深入了解时再查看详细来源。这里是历史案例，不是现成赚钱项目。</p>
-<details class="notice"><summary>这些项目怎么选出来的？</summary><b>排名解释：</b>默认为资料证据的可核查层级（L4 监管申报历史财务、L3 企业历史自述、L2 平台第三方旁证、L1 官网产品及收费）。同等级按项目 ID 确定性排序，绝不按销售额、利润或创业成功率排名。少数项目已找到历史经营披露，但大多数企业的当前销量与获客成本尚无独立证据。</details>
+<details class="notice"><summary>这些项目怎么选出来的？</summary><p>产品存在不等于有人付款；公开定价不等于实际成交。</p><b>排名解释：</b>默认为资料证据的可核查层级（L4 监管申报历史财务、L3 企业历史自述、L2 平台第三方旁证、L1 官网产品及收费）。同等级按项目 ID 确定性排序，绝不按销售额、利润或创业成功率排名。少数项目已找到历史经营披露，但大多数企业的当前销量与获客成本尚无独立证据。</details>
 <p class="muted">分类：{txt(counts)}</p><div class="sort-controls" role="group" aria-label="项目证据排序"><button type="button" data-sort="depth" aria-pressed="true">证据层级优先</button><button type="button" data-sort="gaps" aria-pressed="false">待补证据优先</button></div><p class="muted" id="sortHelp" aria-live="polite">优先展示具有监管申报、历史经营自述或平台旁证的项目。排名不会代表投资价值。</p><label for="projectSearch">搜索项目名称或简介</label>
 <p><input type="search" id="projectSearch" aria-label="搜索具名项目" placeholder="例如 Carrd、图书出版、设计服务…" autocomplete="off"></p>
 <p id="resultCount" aria-live="polite">{len(cases)} 个可查看的项目</p>
