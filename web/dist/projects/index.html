@@ -3,8 +3,8 @@
 <meta name="referrer" content="no-referrer"><meta name="description" content="只展示有公开历史经营资料的案例，介绍做什么、谁付钱、怎么收费">
 <title>3 个有经营证据的项目｜见势 JIANSHI</title><link rel="canonical" href="https://jianshi-bua.pages.dev/projects/">
 <style>
-:root{color-scheme:light;--bg:#f7f6f1;--ink:#202823;--muted:#59615a;--line:#c8c9c3;--panel:#fffefa;--accent:#286b56}
-html[data-theme=dark]{color-scheme:dark;--bg:#080a09;--ink:#f4f2ef;--muted:#adb0ab;--line:#51534f;--panel:#151814;--accent:#86b4a3}
+:root{color-scheme:light;--bg:#f7f8fc;--ink:#1c2a44;--muted:#566581;--line:#dce3ee;--panel:#ffffff;--accent:#6254b9}
+html[data-theme=dark]{color-scheme:dark;--bg:#0c1222;--ink:#f0f1fd;--muted:#b8bfd4;--line:#424b66;--panel:#161e31;--accent:#b7aaff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.8 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
 a{color:var(--accent);text-underline-offset:4px}a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 header,main,footer{max-width:1050px;margin:auto;padding-inline:clamp(18px,4vw,52px)}
@@ -72,7 +72,7 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 @media(max-width:590px){.decision-report{margin:18px 0 28px}.decision-intro{font-size:13px}}
 /* B1-A03: hand-fillable, print-friendly founder validation worksheet.
    Source reviewed, never captured in browser storage or sent to a server. */
-.decision-workbook-link{display:inline-flex;margin-top:17px;align-items:center;min-height:44px;font-size:14px;font-weight:700}
+.decision-workbook-link{display:inline-flex;margin-top:13px;align-items:center;min-height:44px;font-size:14px;font-weight:700}
 .founder-workbook{scroll-margin-top:98px;border:2px solid var(--accent);background:var(--panel);padding:clamp(18px,3.3vw,32px);margin-top:45px}
 .founder-workbook h2{margin:9px 0 14px;font-size:clamp(22px,2.7vw,31px)}
 .workbook-intro,.workbook-fineprint{font-size:13px;line-height:1.8;color:var(--muted)}
@@ -85,6 +85,26 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 .workbook-blank span{display:block;overflow-wrap:anywhere;color:var(--muted);letter-spacing:.08em;line-height:2.2}
 @media(max-width:700px){.workbook-steps{grid-template-columns:1fr}.workbook-step{padding:16px}}
 @media print{.founder-workbook{break-before:page;page-break-before:always;box-shadow:none;color:#111;background:#fff;border-color:#777}.workbook-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.workbook-step{break-inside:avoid;page-break-inside:avoid;background:#fff}.workbook-blank span{line-height:3}.decision-workbook-link{display:none}}
+/* Founder first: deep sources and long worksheets are voluntary reading. */
+.decision-next{background:color-mix(in srgb,var(--accent) 6%,var(--panel));padding:15px 18px;border:1px solid var(--line);margin:0}
+.decision-next strong{display:block;color:var(--accent);font-size:13px;margin-top:9px}
+.decision-next strong:first-child{margin-top:0}
+.decision-next p{margin:4px 0 12px;font-size:15px;line-height:1.65;color:var(--ink)}
+.decision-report{margin:22px 0 28px;padding:clamp(16px,2.7vw,25px)}
+.decision-verdict{margin:0 0 12px}
+.decision-more,.dossier-more,.workbook-fold{border:1px solid var(--line);background:var(--panel);border-radius:12px;margin:18px 0;padding:0 18px 12px}
+.decision-more summary,.dossier-more summary,.workbook-fold summary{cursor:pointer;padding:15px 4px;min-height:48px;font-size:15px;font-weight:700;color:var(--accent)}
+.decision-more summary:focus-visible,.dossier-more summary:focus-visible,.workbook-fold summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.decision-more[open] summary,.dossier-more[open] summary,.workbook-fold[open] summary{border-bottom:1px solid var(--line);margin-bottom:15px}
+.decision-more .decision-columns{margin-top:14px}
+.dossier-more>.section:first-of-type{border-top:0;margin-top:5px}
+.dossier-more .section{margin-top:25px}
+.dossier-more .notice{margin:15px 0}
+.dossier-more .statusgrid{margin:20px 0}
+.workbook-fold .founder-workbook{margin:12px 0 4px;border:0;scroll-margin-top:80px;padding:12px 0}
+.case-back{display:inline-flex;margin:0 0 5px;align-items:center;min-height:38px;text-decoration:none;font-size:13px;font-weight:700}
+@media(max-width:590px){main{padding-block:26px 60px}h1{font-size:clamp(32px,7vw,45px);margin:10px 0 14px}.lead{font-size:14px;line-height:1.6}.digest{margin:14px 0;padding:15px}.digestgrid{gap:11px}.decision-report{margin:14px 0;padding:15px}.decision-more,.dossier-more,.workbook-fold{padding:0 12px 8px;margin:12px 0}.decision-next p{font-size:14px}.statusgrid{gap:8px}}
+@media print{.dossier-more:not([open]),.workbook-fold:not([open]),.decision-more:not([open]){display:none}}
 
 </style></head><body><header><a class="logo" href="/">见势 JIANSHI</a>
 <nav aria-label="页面导航"><a href="/validation/">方向证据</a><a href="/projects/">具名项目</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
