@@ -137,7 +137,7 @@ assert.equal(reset.hidden,false);
 kind.value='all';kind.handlers.change();
 query.value='自动化';query.handlers.input();
 assert.equal(cards.filter(x=>!x.hidden).length,1);
-assert.equal(empty.hidden,false);
+assert.equal(empty.hidden,true);
 query.value='不存在-987';query.handlers.input();
 assert.equal(cards.filter(x=>!x.hidden).length,0);
 assert.equal(empty.hidden,false);
