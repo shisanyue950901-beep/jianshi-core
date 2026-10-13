@@ -105,8 +105,8 @@ def render_related(route: str) -> str:
             '<section class="g2c-related g2c-related-compact" aria-label="相关内容与下一步">'
             '<details><summary>还想继续比较？</summary>'
             '<div class="g2c-links">' + cards + '</div>'
-            '<p class="g2c-intro">均为站内已有研究内容，不代表服务、课程或商单已开放；'
-            '不代表在线服务、课程或商单已开放。</p></details></section>'
+            '<p class="g2c-intro">链接仅指向已公开内容，不代表在线服务、课程或商单已开放。</p>'
+            '</details></section>'
         )
     return (
         '<section class="g2c-related" aria-label="相关内容与下一步">'
