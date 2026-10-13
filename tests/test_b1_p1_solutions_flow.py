@@ -134,6 +134,7 @@ assert.equal(reset.hidden,true);
 kind.value='creative';kind.handlers.change();
 assert.equal(cards.filter(x=>!x.hidden).length,2);
 assert.equal(reset.hidden,false);
+kind.value='all';kind.handlers.change();
 query.value='自动化';query.handlers.input();
 assert.equal(cards.filter(x=>!x.hidden).length,1);
 assert.equal(empty.hidden,false);
