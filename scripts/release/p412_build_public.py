@@ -7,6 +7,7 @@ Only web/dist is a valid deploy output. This script does not deploy itself.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import html
 import json
 import re
@@ -163,6 +164,40 @@ def publish_public_research_appendix() -> int:
     return len(RESEARCH_SLUGS)
 
 
+def publish_account_preview() -> None:
+    """Render an inert signup DESIGN preview; /account/ stays a safe redirect.
+
+    The B1 release intentionally never exposes any active Auth form. Import the
+    existing public builder without invoking web/build.py or any network calls.
+    Force the feature flag off independently from builder environment settings.
+    """
+    spec = importlib.util.spec_from_file_location(
+        "jianshi_b1_account_preview_builder", ROOT / "web" / "build.py"
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Cannot load reviewed account preview builder")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.AUTH_ENABLED = False
+    page = module.build_account_page()
+    if (page.count('class="account-entry-shell"') != 1
+            or "账户功能正在完成最后的邮件登录配置" not in page
+            or 'name="robots" content="noindex,nofollow"' not in page
+            or 'data-auth-email-form' in page
+            or "<form" in page
+            or 'type="email"' in page
+            or '<button type="button" disabled>' not in page):
+        raise RuntimeError("Public account preview must be fail-closed")
+    # A separate noindex design route. Never change the protected /account/.
+    page = page.replace(
+        '<link rel="canonical" href="' + SITE + '/account/">',
+        '<link rel="canonical" href="' + SITE + '/account/preview/">', 1
+    )
+    dest = OUTPUT / "account" / "preview" / "index.html"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(page, encoding="utf-8")
+
+
 def build_release() -> dict:
     if not OUTPUT.is_dir() or not (OUTPUT / "_redirects").is_file() or not (OUTPUT / "_headers").is_file():
         raise RuntimeError("web/build.py must create web/dist and security controls first")
@@ -214,6 +249,8 @@ def build_release() -> dict:
     related_quality = audit_g2c_release(OUTPUT)
     if related_quality["audited_pages"] != 9 or related_quality["related_links"] != 27:
         raise RuntimeError("G2-C related-content quality gate incomplete")
+    # Public-only design preview; /account/ must remain redirected and gated.
+    publish_account_preview()
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
         "opportunities": "/#j2-opportunities",
