@@ -150,7 +150,7 @@ def ui_founder_start(page, base: str):
     require(page.locator("#service-empty").is_visible(), "Empty research state missing")
     require(page.locator("#service-copy").is_disabled(), "Copy should be disabled before card")
     page.locator("#service-generate").click()
-    require("请选择三个问题" in page.locator("#service-message").inner_text(),
+    require("请先选择三个问题的答案" in page.locator("#service-message").inner_text(),
             "Unanswered questions must be handled")
     page.locator("#service-demo").click()
     choices=page.locator(".service-pick")
