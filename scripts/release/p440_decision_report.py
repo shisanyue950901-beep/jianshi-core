@@ -78,20 +78,29 @@ def decision_data(case: dict, *, profile: dict | None = None) -> dict:
 
 
 def render_decision_panel(data: dict) -> str:
-    """Emit static HTML only, with no Javascript, trackers or network actions."""
-    slug=data["slug"]
+    """Plain-language verdict and first action first; full evidence on demand.
+
+    Everything audited remains in the generated document, but detailed
+    technical/financial reasoning doesn't block the first-screen answer.
+    """
     def t(name: str) -> str:
         return escape(data[name], quote=True)
     return (
         '<section class="decision-report" id="decision-report" aria-labelledby="decision-title">'
-        '<span class="decision-eyebrow">适不适合你做？</span>'
+        '<span class="decision-eyebrow">一个人能试吗？</span>'
         '<h2 id="decision-title">这个方向适合你吗？</h2>'
-        '<p class="decision-intro">先分清原企业过去发生了什么，再判断个人能否以更小范围验证。'
-        '以下属于研究判断，不是直接创业、收入或投资建议。</p>'
         f'<div class="decision-verdict" data-solo-fit="{t("fit_status")}">'
-        '<span class="decision-verdict__label">一个人能试吗？</span>'
+        '<span class="decision-verdict__label">目前的判断</span>'
         f'<strong>{t("fit_label")}</strong>'
-        '<small>已验证可直接投入创业：0 · 不意味着成功率或预测收益</small></div>'
+        '<small>已验证可直接投入创业：0。以下只是研究参考，不是收益承诺。</small></div>'
+        '<div class="decision-next"><strong>可以先尝试什么？</strong>'
+        f'<p>{t("test_direction")}</p>'
+        '<strong>第一步怎么做？</strong>'
+        f'<p>{t("first_step")}</p></div>'
+        '<a class="decision-workbook-link" href="#founder-workbook-toggle">'
+        '想动手验证？查看四步工作单 ↓</a>'
+        '<details class="decision-more" id="decision-more">'
+        '<summary>查看能力门槛、成本和其他需要核实的问题</summary>'
         '<div class="decision-columns">'
         '<article><h3>可以从哪个小方向试起？</h3>'
         f'<p>{t("test_direction")}</p>'
@@ -110,16 +119,17 @@ def render_decision_panel(data: dict) -> str:
         'referrerpolicy="no-referrer" target="_blank">打开原始经营来源 ↗</a>'
         '</div>'
         '<div class="decision-action" id="validation-plan">'
-        '<h3>第一步可以怎么做？</h3>'
+        '<h3>可以如何进一步核实？</h3>'
         '<ol>'
         f'<li><b>先做需求实验</b><p>{t("first_step")}</p></li>'
         f'<li><b>明确继续投入前缺少的证据</b><p>{t("blocking_evidence")}</p></li>'
         f'<li><b>继续核对原企业经营资料</b><p>{t("company_followup")}</p></li>'
-        '</ol><a class="decision-workbook-link" href="#founder-workbook">填写创业验证工作单 ↓</a></div>'
+        '</ol></div>'
         '<p class="decision-disclaimer">注意：原企业历史营收、收费方案或技术活跃度'
         '均不能证明新进入者能获得付费客户；具体预算、获客成本和可复制性未经独立验证。</p>'
-        '</section>'
+        '</details></section>'
     )
+
 
 
 def render_decision_listing(data: dict) -> str:
