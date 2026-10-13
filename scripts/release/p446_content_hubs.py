@@ -33,7 +33,7 @@ PAGES = (
 
 SOLUTIONS = (
     {
-        "slug": "ecommerce-visual", "tag": "VISUAL COMMERCE",
+        "slug": "ecommerce-visual", "tag": "电商做图",
         "name": "AI 电商视觉", "icon": "✦",
         "subtitle": "让商品视觉制作从单张图片走向规范化内容流程",
         "summary": "适用于需要频繁制作商品主图、详情页视觉、活动海报与多尺寸素材的商家。",
@@ -46,7 +46,7 @@ SOLUTIONS = (
         "boundary": "AI 图像可能生成失真的商品外观；涉及产品功能、功效及价格的表述均须企业审核。",
     },
     {
-        "slug": "brand-video", "tag": "MOTION & STORY",
+        "slug": "brand-video", "tag": "短视频制作",
         "name": "AI 视频与品牌短片", "icon": "▣",
         "subtitle": "从创意分镜到可复用的短视频制作流程",
         "summary": "用于品牌短片、社交媒体创意视频和营销方案中的视觉预演，不代表视频效果保证。",
@@ -59,7 +59,7 @@ SOLUTIONS = (
         "boundary": "概念短片不能被冒充真实拍摄记录或客户见证；制作前确认使用权和传播许可。",
     },
     {
-        "slug": "automation", "tag": "AI OPERATIONS",
+        "slug": "automation", "tag": "日常工作自动化",
         "name": "AI 企业自动化", "icon": "⌘",
         "subtitle": "从业务流程梳理，到可人工接管的 AI 工作流",
         "summary": "适用于企业知识库、客服辅助、工单分流与重复文书流程的可控试点。",
@@ -72,7 +72,7 @@ SOLUTIONS = (
         "boundary": "示例流程不应直接接管付款、人员管理或重要客户决策；真实上线需独立安全审查。",
     },
     {
-        "slug": "localization", "tag": "GLOBAL CONTENT",
+        "slug": "localization", "tag": "出海内容",
         "name": "AI 出海内容与本地化", "icon": "◎",
         "subtitle": "用语言与文化适配，提高海外内容制作的可协同程度",
         "summary": "用于多语言网站文案、海外社媒内容、产品表达和营销素材的本地化准备。",
@@ -89,9 +89,9 @@ SOLUTIONS = (
 COURSE_PATHS = (
     ("AI 图像与电商设计", "掌握素材授权、图片生成、商品信息校验与导出规格。", "完成一套含审核说明的商品视觉练习。"),
     ("AI 视频与短片制作", "理解脚本、分镜、镜头一致性、剪辑及传播版权。", "完成一支标注为概念练习的短片与分镜。"),
-    ("AI Agent 与工作流", "学习触发、工具调用、权限、错误处理及人工复核。", "构建可暂停的沙盒自动化演示。"),
+    ("AI Agent 与工作流", "学习用 AI 完成重复任务，并在重要环节保留人工检查。", "制作一个可以随时停止的自动化演示。"),
     ("AI 出海内容表达", "熟悉多语言信息核对、文化适配与审校流程。", "制作两种语种的内容对照与审校清单。"),
-    ("AI 商业机会研究", "区分产品存在、公开收费、历史经营和新进入者可行性。", "完成注明证据等级与研究缺口的项目简报。"),
+    ("AI 商业机会研究", "区分产品存在、公开收费、历史经营和新进入者可行性。", "写一份说明赚钱方式、事实来源和未知风险的项目简介。"),
 )
 
 CSS = """
@@ -165,13 +165,12 @@ def items(seq: tuple[str, ...]) -> str:
 
 
 def block(title: str, lines: tuple[str, ...], caption: str = "") -> str:
-    return ('<article class="card"><strong>' + e(caption or "CONTENT GUIDE")
-            + '</strong><h3>' + e(title) + '</h3>' + items(lines) + '</article>')
+    return ('<article class="card"><h3>' + e(title) + '</h3>' + items(lines) + '</article>')
 
 
-def section(title: str, intro: str, body: str, label: str = "CONTENT / EDITORIAL") -> str:
-    return ('<section class="section"><span class="label">' + e(label)
-            + '</span><h2>' + e(title) + '</h2><p class="lead">'
+def section(title: str, intro: str, body: str, label: str = "使用说明") -> str:
+    return ('<section class="section"' + (' id="delivery"' if label == "02 / DELIVERY PROCESS" else "")
+            + '><h2>' + e(title) + '</h2><p class="lead">'
             + e(intro) + '</p>' + body + '</section>')
 
 
@@ -197,12 +196,11 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         + site_header(current)
         + '<main><div class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
-        '<span class="kicker">JIANSHI / ' + e(label) + '</span>'
+        '<span class="kicker">' + e(label) + '</span>'
         '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
         '<div class="hero-links">' + buttons + '</div></div></div>'
         '<div class="wrap content">'
-        '<div class="status"><b>内容状态：</b>这是公开的应用指南与业务准备资料。'
-        '当前平台尚未开放在线委托、人才竞标、支付或课程观看；此处的流程和成果是规划与示例，不是实际客户交付记录。</div>'
+        '<div class="status">这里只提供介绍和参考，暂时不能在网站上购买服务、发布订单、接单或观看课程。</div>'
         + body + render_related(current) + '</div></main>' + site_footer()
         + ('<script>' + CATALOG_JS + '</script>' if catalogue else '')
         + ('<script>' + GUIDED_JS + '</script>' if guided else '')
@@ -217,13 +215,13 @@ def solution_link(row: dict) -> str:
             + '" data-keywords="' + keywords + '" href="/solutions/' + row["slug"] + '/">'
             '<strong>' + e(row["tag"]) + '</strong><h3>' + e(row["icon"] + " " + row["name"])
             + '</h3><p>' + e(row["summary"]) + '</p>'
-            '<span class="go">查看应用场景、交付与验收清单 ↗</span></a>')
+            '<span class="go">看看可以怎么用 →</span></a>')
 
 
 def solutions_index() -> str:
     body = section(
-        "先找到问题，再决定用不用 AI",
-        "以下是四个可进一步研究的业务服务方向。不是已上架服务商或有报价的产品。",
+        "你想用 AI 解决什么问题？",
+        "先选一个你遇到的问题，看看 AI 有哪些用法。目前只提供介绍，不能在线购买。 ",
         filter_panel() + '<div class="cards f21-catalog-grid">'
         + ''.join(solution_link(row) for row in SOLUTIONS) + '</div>'
         + empty_state(),
@@ -244,16 +242,16 @@ def solutions_index() -> str:
                     '需要的模板在商机大厅指南中；平台正式开放后才会提供经授权的提交与审核入口。</p>'
                     '<a class="btn primary" style="margin-top:20px" href="/marketplace/">查看需求准备模板 ↗</a></div>',
                     "03 / NEXT ACTION")
-    return shell("solutions/", "企业 AI 解决方案", "按业务问题查找可实施的 AI 应用路径，了解典型交付物、试点步骤与风险边界。", "企业解决方案", body,
-                 (("探索解决方案", "#catalog"), ("准备企业需求", "/marketplace/"))).replace('<div class="cards f21-catalog-grid">', '<div class="cards f21-catalog-grid" id="catalog">', 1)
+    return shell("solutions/", "企业能用 AI 做什么？", "从你遇到的业务问题出发，看看 AI 能帮什么忙，需要准备什么，以及要注意什么。", "企业解决方案", body,
+                 (("查看四类 AI 用法", "#catalog"), ("整理业务需求", "/marketplace/"))).replace('<div class="cards f21-catalog-grid">', '<div class="cards f21-catalog-grid" id="catalog">', 1)
 
 
 def solution_detail(row: dict) -> str:
     body = section(
-        "适合什么业务场景？", "先判断这类 AI 应用是否真正适合当前企业条件。",
+        "这类 AI 能帮你做什么？", "看看问题和适用条件，再决定要不要尝试。",
         '<div class="cards">'
-        '<article class="card"><strong>PAIN POINT</strong><h3>典型业务问题</h3><p>' + e(row["problem"]) + '</p></article>'
-        '<article class="card"><strong>GOOD FIT</strong><h3>建议先核对的适用条件</h3><p>' + e(row["fit"]) + '</p></article>'
+        '<article class="card"><h3>能解决什么问题？</h3><p>' + e(row["problem"]) + '</p></article>'
+        '<article class="card"><h3>什么情况下适合用？</h3><p>' + e(row["fit"]) + '</p></article>'
         '</div>', "01 / USE CASE",
     )
     body += section(
@@ -264,19 +262,19 @@ def solution_detail(row: dict) -> str:
         "02 / DELIVERY PROCESS",
     )
     body += section(
-        "建议交付物与验收要点", "是否提供源文件、修改次数、使用权、售后或接口文档，均须在实际合作前明确。",
+        "最终应该拿到什么？", "是否提供源文件、修改次数、使用权、售后或接口文档，均须在实际合作前明确。",
         '<div class="cards">'
         + block("参考交付清单", row["outputs"], "DELIVERABLES")
         + block("验收与质量检查", row["checks"], "QUALITY GATE") + '</div>',
         "03 / ACCEPTANCE",
     )
     body += section(
-        "先试一个低风险的最小项目", "先把实践目标与人工复核条件写清，不需要提交客户资料。",
+        "先做一个低风险的小测试", "先把实践目标与人工复核条件写清，不需要提交客户资料。",
         solution_trial(row["slug"]), "04 / SELF PRACTICE",
     )
     body += section(
-        "风险与下一步", "应用方案并不意味着存在某个已经验证的平台客户或服务团队。",
-        '<div class="notice"><h3>使用与责任边界</h3><p>' + e(row["boundary"]) +
+        "风险与下一步", "这些只是可参考的做法，并不是本站已经完成的客户项目。",
+        '<div class="notice"><h3>使用时要注意什么？</h3><p>' + e(row["boundary"]) +
         '</p><p style="margin-top:13px">请避免将未经授权的客户信息、员工个人信息、'
         '商业机密或真实凭证粘贴到公开渠道；需求发布功能启用之前，不在本站采集这些材料。</p>'
         '<a class="btn primary" style="margin-top:22px" href="/marketplace/">查看企业需求模板 ↗</a></div>',
@@ -284,10 +282,7 @@ def solution_detail(row: dict) -> str:
     )
     return shell("solutions/" + row["slug"] + "/", row["name"], row["subtitle"] + "。" + row["summary"],
                  "解决方案 / " + row["name"], body,
-                 (("查看交付与验收", "#delivery"), ("返回方案目录", "/solutions/"))).replace(
-                     '<span class="label">02 / DELIVERY PROCESS</span>',
-                     '<span class="label" id="delivery">02 / DELIVERY PROCESS</span>', 1
-                 )
+                 (("查看交付与验收", "#delivery"), ("返回方案目录", "/solutions/")))
 
 
 def marketplace_page() -> str:
@@ -326,7 +321,7 @@ def marketplace_page() -> str:
                     '角色权限、需求审核、创作者申请、状态记录及隐私授权。</p>'
                     '<a class="btn primary" style="margin-top:20px" href="/solutions/">返回解决方案目录 ↗</a></div>',
                     "04 / ROLLOUT")
-    return shell("marketplace/", "商机大厅与合作流程", "为企业需求和 AI 创作者建立透明的合作路径；先提供需求模板、审核规则及未来撮合流程，不展示虚构订单。",
+    return shell("marketplace/", "商机大厅（暂未开放）", "为企业需求和 AI 创作者建立透明的合作路径；先提供需求模板、审核规则及未来撮合流程，不展示虚构订单。",
                  "商机大厅", body, (("查看需求准备模板", "#request-brief"), ("查看企业方案", "/solutions/"))).replace(
                      '<div class="card"><h3>需求说明应包含的字段', '<div class="card" id="request-brief"><h3>需求说明应包含的字段', 1)
 
@@ -342,7 +337,7 @@ def talent_page() -> str:
         + '</div>', "01 / SKILL CATEGORIES",
     )
     body += section(
-        "创作者作品集参考结构", "无需晒出个人证件、真实客户的未授权信息或未经审计的营收数据。",
+        "作品介绍可以怎么写？", "无需晒出个人证件、真实客户的未授权信息或未经审计的营收数据。",
         '<table><thead><tr><th>模块</th><th>需要说明</th><th>展示原则</th></tr></thead><tbody>'
         '<tr><td>个人能力</td><td>技能方向、工具与可交付服务</td><td>避免夸大资历</td></tr>'
         '<tr><td>代表作品</td><td>目标、方法、前后对比、你的真实贡献</td><td>演示作品明确标注</td></tr>'
@@ -356,7 +351,7 @@ def talent_page() -> str:
         readiness("talent"), "03 / PORTFOLIO READINESS",
     )
     body += section(
-        "未来的入驻与接单路径", "不是已经存在的账户或认证服务。",
+        "以后怎么接项目？", "不是已经存在的账户或认证服务。",
         '<div class="steps">'
         '<div class="step"><b>01 · 准备作品</b><h3>建立能力档案</h3><p>将练习项目与真实商业交付明确区分。</p></div>'
         '<div class="step"><b>02 · 授权审核</b><h3>选择可公开信息</h3><p>按技能、作品版权和身份授权要求进行审核。</p></div>'
@@ -368,21 +363,20 @@ def talent_page() -> str:
                     '<p>目前没有“平台认证设计师”“已接单服务商”名单，也不采集简历、身份证件、'
                     '手机号或私人作品文件。你可以先根据下方学习规划完善自己的交付能力。</p>'
                     '<a class="btn primary" style="margin-top:20px" href="/academy/">查看 AIGC 学习路线 ↗</a></div>', "04 / ROLLOUT")
-    return shell("talent/", "人才与服务商", "围绕作品集、技能与交付标准建设可信的 AI 创作者生态。当前可阅读准备指南，正式入驻和项目申请尚未开放。",
+    return shell("talent/", "人才与服务商", "这里可以了解如何准备作品和介绍自己的能力。目前还不能入驻或接单。",
                  "人才与服务商", body, (("查看作品集结构", "#portfolio"), ("浏览学习路线", "/academy/"))).replace(
                      '<table><thead>', '<table id="portfolio"><thead>', 1)
 
 
 def academy_page() -> str:
     cards = ''.join(
-        '<article class="card"><strong>CURRICULUM PLAN · ' + str(i).zfill(2)
-        + '</strong><h3>' + e(title) + '</h3><p>' + e(goal)
+        '<article class="card"><h3>' + e("AI 智能助手与自动化" if title == "AI Agent 与工作流" else title) + '</h3><p>' + e(goal)
         + '</p><p style="margin-top:13px"><b>计划实战成果：</b>' + e(work)
         + '</p></article>'
         for i, (title, goal, work) in enumerate(COURSE_PATHS, start=1)
     )
     body = section(
-        "学习方向与实战成果规划",
+        "你想学哪种 AI 技能？",
         "这里只公开计划课程方向与练习成果，没有伪造授课视频、讲师、学习人数或学员案例。",
         '<div class="cards">' + cards + '</div>', "01 / LEARNING PATHS",
     )
@@ -392,7 +386,7 @@ def academy_page() -> str:
         learning_selector(), "02 / YOUR PRACTICE",
     )
     body += section(
-        "未来每门课程的结构", "优先让学员能拿出可检验的作品，而不是堆叠知识点。",
+        "以后课程会怎么安排？", "优先让学员能拿出可检验的作品，而不是堆叠知识点。",
         '<div class="steps">'
         '<div class="step"><b>01 · 目标</b><h3>场景与成果</h3><p>明确适合谁、需具备什么基础，以及实际要完成什么。</p></div>'
         '<div class="step"><b>02 · 实操</b><h3>练习与拆解</h3><p>视频和配套素材待授权制作后发布，附练习步骤和常见错误。</p></div>'
@@ -400,7 +394,7 @@ def academy_page() -> str:
         '</div>', "02 / COURSE STRUCTURE",
     )
     body += section(
-        "课程正式上线前需要完成什么？",
+        "课程还在准备什么？",
         "不是所有课程都需要会员收费；先把内容质量与授权边界做好。",
         '<div class="cards">'
         + block("内容制作与上架", ("由授权讲师或团队自主录制课程", "课程视频、封面和演示素材完成版权核查", "设定章节、前置知识与更新记录"), "PUBLISHING")
@@ -417,7 +411,7 @@ def academy_page() -> str:
         '<a class="btn primary" style="margin-top:20px" href="/projects/">查看经审核的商业案例 ↗</a></div>',
         "04 / START HERE",
     )
-    return shell("academy/", "AIGC 学院｜课程规划", "从 AI 视觉、视频、Agent、自动化到商业研究，按可检验的交付成果设计学习路线。课程内容将后续制作并上传。",
+    return shell("academy/", "AI 技能学习（课程筹备中）", "从 AI 视觉、视频、Agent、自动化到商业研究，按可检验的交付成果设计学习路线。课程内容将后续制作并上传。",
                  "AIGC 学院", body, (("浏览学习路径", "#learning-paths"), ("探索商业研究", "/projects/"))).replace(
                      '<div class="cards">', '<div class="cards" id="learning-paths">', 1)
 

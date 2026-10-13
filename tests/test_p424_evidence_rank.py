@@ -49,29 +49,29 @@ class TestP424EvidenceRanking(unittest.TestCase):
         self.assertIn('data-sort="gaps"',directory)
         self.assertIn("Number(a.dataset.level)-Number(b.dataset.level)",directory)
         self.assertIn("Number(b.dataset.level)-Number(a.dataset.level)",directory)
-        self.assertIn("不是盈利或成功率排名",directory)
+        self.assertIn("不是盈利排名",directory)
         self.assertIn('aria-pressed="true"',directory)
         self.assertIn("data-theme=\"light\"",directory)
 
     def test_true_filing_self_report_and_ordinary_unknowns(self):
         directory=ROOT/"web/dist/projects"
         cases={
-            "nerdwallet":("历史公司级财务：有监管披露","8.366 亿美元","sec.gov/Archives/edgar"),
-            "carrd":("历史收入：创始人／企业公开自述","10 万美元 MRR","saasclub.io/podcast/carrd"),
-            "plausible":("历史收入：创始人／企业公开自述","7,000 多位","plausible.io/blog/open-source-saas"),
+            "nerdwallet":("这家公司有历史财报","8.366 亿美元","sec.gov/Archives/edgar"),
+            "carrd":("企业曾公开谈过收入","10 万美元 MRR","saasclub.io/podcast/carrd"),
+            "plausible":("企业曾公开谈过收入","7,000 多位","plausible.io/blog/open-source-saas"),
 
         }
         for slug,fragments in cases.items():
             x=(directory/slug/"index.html").read_text(encoding="utf-8")
             for fragment in fragments:
                 self.assertIn(fragment,x,slug)
-            self.assertIn("不能算作某家企业的经营证明",x)
+            self.assertIn("不代表你照着做也能赚钱",x)
             self.assertNotIn("Empire Flippers",x)
             self.assertNotIn("listing_number",x)
         self.assertFalse((directory/"tally/index.html").exists())
         self.assertFalse((directory/"easlo/index.html").exists())
-        self.assertNotIn("历史公司级财务：有监管披露",(directory/"carrd/index.html").read_text(encoding="utf-8"))
-        self.assertNotIn("历史公司级财务：有监管披露",(directory/"plausible/index.html").read_text(encoding="utf-8"))
+        self.assertNotIn("这家公司有历史财报",(directory/"carrd/index.html").read_text(encoding="utf-8"))
+        self.assertNotIn("这家公司有历史财报",(directory/"plausible/index.html").read_text(encoding="utf-8"))
 
 if __name__=="__main__":
     unittest.main()

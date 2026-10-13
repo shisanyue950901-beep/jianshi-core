@@ -18,9 +18,9 @@ PAGES = ("marketplace/brief/", "talent/portfolio/")
 # Field IDs/labels are fixed, generated offline and never accepted from URLs.
 SPEC = {
     "marketplace/brief/": {
-        "title": "企业需求整理器",
+        "title": "写下你的企业需求",
         "kicker": "ENTERPRISE REQUEST / LOCAL DRAFT",
-        "description": "在浏览器里梳理需求、交付、预算约束和验收标准。不会生成订单或发送企业信息。",
+        "description": "把你想解决的问题、预算和交付内容写清楚。这里不会提交订单。",
         "back": "/marketplace/",
         "back_label": "返回商机大厅",
         "fields": (
@@ -28,23 +28,23 @@ SPEC = {
             ("scene", "业务场景与当前问题", "你希望改变哪个实际流程？", 700),
             ("goal", "预期成果及使用场景", "希望拿到什么成果、用于哪些渠道？", 700),
             ("assets", "已有素材及授权情况", "仅描述素材种类；不要填写客户私密数据。", 500),
-            ("delivery", "交付清单和验收标准", "格式、数量、质量审核、修改流程。", 700),
+            ("delivery", "最终要交付什么？", "需要几张图、几个视频、什么格式，怎样才算完成？", 700),
             ("timeline", "时间安排与预算约束", "填写大致周期或预算范围即可。", 350),
             ("risk", "保密、合规及人工审核要求", "哪些材料不能对外公开？谁负责确认成果？", 500),
         ),
         "header": "见势 JIANSHI｜企业需求准备草稿（未提交）",
     },
     "talent/portfolio/": {
-        "title": "创作者作品集整理器",
+        "title": "整理你的作品介绍",
         "kicker": "CREATOR PORTFOLIO / LOCAL DRAFT",
-        "description": "按技能、作品目标、个人贡献和授权边界整理作品集。不是注册表单，不会创建公开人才档案。",
+        "description": "整理你会做什么、做过什么和想怎样合作。这不是入驻申请。",
         "back": "/talent/",
         "back_label": "返回人才与服务商",
         "fields": (
             ("skill", "技能方向与擅长场景", "例如：AI 电商视觉、AI 视频、Agent 工作流。", 200),
             ("sample", "代表作品或演示项目（可匿名）", "使用概念项目描述，不填写未授权客户信息。", 450),
             ("problem", "作品想解决的问题", "说明目标、使用场景或用户难点。", 450),
-            ("contribution", "本人真实贡献与使用工具", "区分个人原创、协作和 AI 辅助。", 500),
+            ("contribution", "哪些部分是你自己做的？", "说清你自己完成的部分，以及哪些使用了 AI。", 500),
             ("outcome", "交付内容与演示结果", "例如：样片、图片组合、测试流程；不编造成交数据。", 450),
             ("permission", "版权、素材和隐私授权边界", "是否能公开、有哪些限制、是否仅为练习。", 450),
             ("method", "合作方式和验收说明", "可完成的工作、沟通节点及复核方式。", 350),
@@ -161,15 +161,14 @@ def render_one(route: str) -> str:
         + '<main><div class="hero"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / <a href="' + d["back"] + '">'
         + e(d["back_label"]) + '</a> / 本地草稿工具</div>'
-        '<span class="kicker">' + e(d["kicker"]) + '</span>'
+        '<span class="kicker">仅在当前页面整理</span>'
         '<h1>' + e(d["title"]) + '</h1><p>' + e(d["description"]) + '</p>'
         '<div class="hero-links"><a class="btn primary" href="#draft-tool">开始整理 ↗</a>'
         '<a class="btn" href="' + d["back"] + '">' + e(d["back_label"]) + ' ↗</a></div>'
         '</div></div><div class="wrap content">'
-        '<div class="status" id="draft-privacy"><b>隐私与上线说明：</b>'
-        '这是纯浏览器本地草稿工具。不会提交、保存到服务器、发送网络请求或写入平台账户。'
-        '刷新或关闭页面后内容将丢失。请不要填写证件、账号密码、未授权客户资料或商业秘密。'
-        '尚不能在此发布商单、注册人才或申请合作。</div>'
+        '<div class="status" id="draft-privacy"><b>注意：</b>这里不会上传或保存你写的内容。'
+        '关闭或刷新页面后内容会消失，请先复制保存。不要填写密码、客户隐私或商业秘密。'
+        '目前还不能在这里发布订单或申请入驻。</div>'
         '<section class="tool-layout" id="draft-tool" data-heading="' + e(d["header"]) + '">'
         '<div class="tool-panel"><h2>整理关键内容</h2>'
         '<p>不要求提供企业真实名称或个人联系方式。可用匿名代号起草。</p>'

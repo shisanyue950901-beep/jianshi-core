@@ -53,7 +53,7 @@ class P446ContentHubs(unittest.TestCase):
                 self.assertNotIn("<form", html)
                 self.assertIn('href="/privacy/"', html)
                 self.assertIn("prefers-reduced-motion:reduce", html)
-                self.assertIn("尚未开放在线委托", html)
+                self.assertIn("暂时不能在网站上购买服务", html)
                 self.assertLess(len(html.encode("utf-8")), 80_000)
                 tags = Links()
                 tags.feed(html)
@@ -62,16 +62,16 @@ class P446ContentHubs(unittest.TestCase):
 
     def test_solution_directory_all_four_details_and_deliverables(self):
         main = self.pages["solutions/"]
-        self.assertIn("先找到问题", main)
+        self.assertIn("你想用 AI 解决什么问题", main)
         self.assertEqual(main.count('class="card link"'), 4)
         self.assertIn('id="catalog"', main)
         for row in hubs.SOLUTIONS:
             path = "solutions/" + row["slug"] + "/"
             detail = self.pages[path]
             self.assertIn('href="/solutions/' + row["slug"] + '/"', main)
-            for fragment in ("典型业务问题", "企业需要准备", "建议实施流程",
+            for fragment in ("能解决什么问题？", "企业需要准备", "建议实施流程",
                              "参考交付清单", "验收与质量检查",
-                             "使用与责任边界", row["boundary"]):
+                             "使用时要注意什么？", row["boundary"]):
                 self.assertIn(fragment, detail)
             self.assertEqual(detail.count('id="delivery"'), 1)
 
@@ -86,7 +86,7 @@ class P446ContentHubs(unittest.TestCase):
 
     def test_talent_protects_contact_information(self):
         page = self.pages["talent/"]
-        for x in ("作品集参考结构", "演示作品明确标注",
+        for x in ("作品介绍可以怎么写？", "演示作品明确标注",
                   "没有授权就不公开", "尚未开放创作者入驻"):
             self.assertIn(x, page)
         self.assertIn('id="portfolio"', page)
@@ -94,9 +94,9 @@ class P446ContentHubs(unittest.TestCase):
 
     def test_academy_is_a_course_plan_not_fake_videos(self):
         page = self.pages["academy/"]
-        self.assertEqual(page.count("CURRICULUM PLAN"), len(hubs.COURSE_PATHS))
+        self.assertEqual(page.count("计划实战成果："), len(hubs.COURSE_PATHS))
         self.assertIn('id="learning-paths"', page)
-        self.assertIn("课程正式上线前需要完成什么", page)
+        self.assertIn("课程还在准备什么", page)
         self.assertIn("没有已上线的可播放课程", page)
         self.assertNotIn('<video', page)
         self.assertNotIn("付款购买", page)

@@ -243,9 +243,9 @@ def project_page(case: dict) -> str:
         published = audit.get("published_on") or audit["period"]
         source = txt(safe_url(audit["source_url"]))
         audited_section = (
-            '<section class="section"><h2>新增项目级经营依据</h2>'
-            f'<p><b>证据等级：</b>L{tier} · {txt(LABELS[tier])}。'
-            f'<b>来源时点：</b>{txt(published)}（不代表当期实时数据）</p>'
+            '<section class="section"><h2>这家企业公开过哪些经营资料？</h2>'
+            f'<p><b>资料来源：</b>{txt(LABELS[tier])}。'
+            f'<b>资料时间：</b>{txt(published)}（不代表现在的经营情况）</p>'
             f'<p>{txt(audit["claim"])}</p>'
             f'<p><a href="{source}" target="_blank" rel="noopener noreferrer">查看可归属的原始经营证据 ↗</a></p>'
             f'<p><b>下一步主动核查：</b>{txt(audit["next_research"])}</p></section>'
@@ -258,63 +258,61 @@ def project_page(case: dict) -> str:
             '暂不推断客户量和利润。</p></section>'
         )
     if audit and audit["tier"] == "regulatory_filing":
-        finance_tile='<div class="status"><b>历史公司级财务：有监管披露</b><small>2025 年 SEC 10-K 合并报告；不能证明当前季度和各产品利润</small></div>'
+        finance_tile='<div class="status"><b>这家公司有历史财报</b><small>2025 年公开财报，不代表当前业绩或你能获得的利润</small></div>'
         findings_intro="存在可归属的历史监管申报财务，但不代表最新经营表现、单一产品利润或获客成本。"
         finance_boundary="可核实 2025 年公司合并财报的历史财务；当前业绩、业务线及可复制性仍需研究。"
     elif audit and audit["tier"] == "founder_historical":
-        finance_tile='<div class="status pending"><b>历史收入：创始人／企业公开自述</b><small>历史披露未经独立审计，不代表本期收入</small></div>'
+        finance_tile='<div class="status pending"><b>企业曾公开谈过收入</b><small>这是企业自己的历史说法，未经过独立财务核实，也不是当前收入</small></div>'
         findings_intro="找到可归属的创始人或企业历史经营自述，但尚未独立财务审计，不能当成当前净利润。"
         finance_boundary="有历史公开收入自述，但未独立审计，不能计算当前净利润或投资回报。"
     else:
-        finance_tile='<div class="status pending"><b>利润／经营成果：待独立核实</b><small>没有能够独立确认当前净利润与成本的记录</small></div>'
+        finance_tile='<div class="status pending"><b>实际赚多少钱还不清楚</b><small>还没有可以独立核实的成本和利润资料</small></div>'
         findings_intro="项目公开展示产品／服务及收费说明，但交易、净利与获客表现仍缺独立核验。"
         finance_boundary="仍未取得该企业自身可独立核实的财务经营数据。"
     digest = derive_digest(case)
     decision_html = render_decision_panel(decision_data(case))
     workbook_html = render_founder_workbook(case)
     summary_box = (
-        '<section class="digest" aria-label="证据提炼摘要"><h2>30 秒看懂这门生意</h2>'
+        '<section class="digest" aria-label="项目概况"><h2>30 秒看懂这门生意</h2>'
         '<div class="digestgrid">'
         f'<p><b>卖什么？</b>{txt(digest.offer)}</p>'
         f'<p><b>怎么收费？</b>{txt(digest.revenue)}</p>'
         f'<p class="digest-proof"><b>找到什么经营证据？</b>{txt(digest.evidence)}</p>'
         f'<p><b>还不能证明什么？</b>{txt(digest.limitation)}</p>'
         '</div>'
-        f'<p class="digest-meta">来源级别：{txt(digest.certainty)} · '
-        f'披露时期：{txt(digest.period)} · '
+        f'<p class="digest-meta">公开资料的时间：{txt(digest.period)} · '
         f'<a href="{txt(safe_url(digest.source_url))}" target="_blank" rel="noopener noreferrer">'
         '查看原始经营依据 ↗</a></p></section>'
     )
-    body = f"""<span class="kicker">PROJECT EVIDENCE / 项目证据档案</span>
+    body = f"""<span class="kicker">看看别人怎么做生意</span>
 <h1>{txt(name)}</h1><p class="lead">{txt(case["desc"])}</p>
-<p><b>编辑归类：</b>{txt(MODEL_LABELS[case["model"]])}　<b>资料记录：</b>{txt(case["verifiedOn"])}（非实时经营审计）</p>
-<div class="notice"><b>证据阶段：</b>{txt(findings_intro)} 即使行业方向达标，也不能算作某家企业的经营证明；不使用行业匿名挂牌推断它的收入。</div>
-{decision_html}
 {summary_box}
+<div class="notice"><b>先提醒：</b>{txt(findings_intro)} 这家企业以前的经营结果，不代表你照着做也能赚钱。</div>
+{decision_html}
 <div class="statusgrid" aria-label="项目商业验证状态">
 <div class="status"><b>产品／服务：有官方依据</b><small>可进入对应官网或产品页核对公开供应</small></div>
 <div class="status"><b>收费机制：有公开说明</b><small>标价或收费方案不代表已成交、已收到款项</small></div>
 <div class="status pending"><b>真实交易／客户：待独立核实</b><small>没有可证明实际销量、续费率或成交规模的项目级证据</small></div>
 {finance_tile}
 </div>
-<section class="section"><h2>01｜这个项目卖什么</h2><p>{txt(case["offer"])}</p>
+<section class="section"><h2>卖什么产品或服务？</h2><p>{txt(case["offer"])}</p>
 <h3>谁可能购买？</h3><p>{txt(case["buyer"])}</p>
 <h3>公开描述的收费方式</h3><p>{txt(case["revenue"])}</p></section>
-<section class="section"><h2>02｜可以核对哪些事实？</h2>{paragraphs(case["facts"])}
+<section class="section"><h2>这些信息从哪里来？</h2>{paragraphs(case["facts"])}
 <div class="links"><a href="{txt(safe_url(case["officialHomeUrl"]))}" target="_blank" rel="noopener noreferrer">打开项目官方网站 ↗</a>
 <a href="{txt(safe_url(case["sourceUrl"]))}" target="_blank" rel="noopener noreferrer">打开产品／收费核对依据 ↗</a>{more}</div>
 {f'<p>{txt(case["additionalEvidenceNote"])}</p>' if more else ''}
 <p>依据类别：项目自身官网/公开说明；第三方平台资料如有则单独标注。证据页面只支持它明确展示的事实，不证明营业额。</p></section>
 {audited_section}
-<section class="section"><h2>03｜经营环节与可能成本</h2>
+<section class="section"><h2>需要做哪些事，会花哪些钱？</h2>
 <h3>需要做什么</h3><p>{txt(case["process"])}</p>
 <h3>可能发生哪些成本</h3><p>{txt(case["cost"])}</p>
 <p>以上属于编辑性经营拆解，不代表已获得该企业内部成本表。</p></section>
-<section class="section"><h2>04｜还不能得出哪些结论？</h2>{paragraphs(case["unknowns"])}
+<section class="section"><h2>哪些地方还不确定？</h2>{paragraphs(case["unknowns"])}
 <p><b>独立客户需求：</b>尚无该项目可计入的需求实证；不能将行业级技术或商业证据视为这家企业的客户证据。</p>
 <p><b>项目自身销售／利润：</b>{txt(finance_boundary)} 本站的排序仅代表资料层级，不是赚钱排名。</p></section>
-<section class="section"><h2>05｜下一步研究</h2><p>{txt(case.get("learning") or "进一步独立核查真实购买需求、履约成本与客户留存。")}</p>
-<p><a href="/validation/">了解同类行业方向的研究边界 →</a> · <a href="/projects/">返回 3 个已审项目档案 →</a></p></section>
+<section class="section"><h2>下一步可以看看什么？</h2><p>{txt(case.get("learning") or "进一步独立核查真实购买需求、履约成本与客户留存。")}</p>
+<p><a href="/validation/">查看资料有什么不确定 →</a> · <a href="/projects/">返回项目列表 →</a></p></section>
 {workbook_html}"""
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
 
@@ -343,23 +341,23 @@ def index_page(cases: list[dict]) -> str:
     counts = " · ".join(f"{MODEL_LABELS[k]} {v}" for k,v in sorted(count.items()))
     body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
 <h1>{len(cases)} 个正式项目，<br>看看它们怎么赚钱。</h1>
-<p class="lead">不用先看术语。直接看项目做什么、卖给谁、怎么收钱。想深入了解时再查看详细来源。这里是历史案例，不是现成赚钱项目。</p>
-<details class="notice"><summary>这些项目怎么选出来的？</summary><p>产品存在不等于有人付款；公开定价不等于实际成交。</p><b>排名解释：</b>默认为资料证据的可核查层级（L4 监管申报历史财务、L3 企业历史自述、L2 平台第三方旁证、L1 官网产品及收费）。同等级按项目 ID 确定性排序，绝不按销售额、利润或创业成功率排名。少数项目已找到历史经营披露，但大多数企业的当前销量与获客成本尚无独立证据。</details>
-<p class="muted">分类：{txt(counts)}</p><div class="sort-controls" role="group" aria-label="项目证据排序"><button type="button" data-sort="depth" aria-pressed="true">证据层级优先</button><button type="button" data-sort="gaps" aria-pressed="false">待补证据优先</button></div><p class="muted" id="sortHelp" aria-live="polite">优先展示具有监管申报、历史经营自述或平台旁证的项目。排名不会代表投资价值。</p><label for="projectSearch">搜索项目名称或简介</label>
+<p class="lead">直接看项目做什么、谁在用、谁付钱、怎么收费。想了解更多，可以点进去看原始资料。过去有人做成，不代表你照着做也能赚钱。</p>
+<details class="notice"><summary>这些案例从哪里来？</summary><p>每个公开案例都有能查到的历史经营资料：有些来自企业财报，有些来自企业过去的公开说法。资料来源越容易核实，展示位置越靠前，但这不是赚钱排名。</p><p>公开定价不等于真实成交；过去的经营结果也不代表现在，更不代表你能复制。</p></details>
+<p class="muted">分类：{txt(counts)}</p><div class="sort-controls" role="group" aria-label="项目证据排序"><button type="button" data-sort="depth" aria-pressed="true">资料更完整</button><button type="button" data-sort="gaps" aria-pressed="false">还需核实较多</button></div><p class="muted" id="sortHelp" aria-live="polite">按资料的可核实程度排列，不是赚钱排名。</p><label for="projectSearch">搜索项目名称或简介</label>
 <p><input type="search" id="projectSearch" aria-label="搜索具名项目" placeholder="例如 Carrd、图书出版、设计服务…" autocomplete="off"></p>
 <p id="resultCount" aria-live="polite">{len(cases)} 个可查看的项目</p>
 <div class="directory" id="directory">{''.join(tiles)}</div>
-<section class="section"><h2>这些项目通过商业验证了吗？</h2>
-<p>正式收录项目均有可归属的商业经营披露：监管申报与创始人／企业历史自述按不同等级展示。<b>仅有官网、价格页、平台上架说明的项目均不进入正式收录榜。</b>行业匿名挂牌记录不能被归因到具名企业。</p>
+<section class="section"><h2>这些案例能照着做吗？</h2>
+<p>目前只展示有公开历史经营资料的案例。<b>只找到官网或标价，还不足以说明生意做成了。</b>其他公司的收入，也不能算到这个项目头上。</p>
 <a href="/validation/">查看行业商业证据与验证缺口 →</a></section>
 <script>
 (()=>{{const input=document.getElementById('projectSearch'),directory=document.getElementById('directory'),tiles=[...directory.querySelectorAll('a[data-level]')],count=document.getElementById('resultCount');
 const buttons=[...document.querySelectorAll('[data-sort]')],help=document.getElementById('sortHelp');
 function filter(){{const q=input.value.trim().toLocaleLowerCase('zh-CN');let n=0;for(const tile of tiles){{const show=!q||tile.textContent.toLocaleLowerCase('zh-CN').includes(q);tile.hidden=!show;if(show)n++}}count.textContent=n+' 个匹配的具名项目'}}
-buttons.forEach(btn=>btn.addEventListener('click',()=>{{const invert=btn.dataset.sort==='gaps';tiles.sort((a,b)=>(invert?Number(a.dataset.level)-Number(b.dataset.level):Number(b.dataset.level)-Number(a.dataset.level))||a.dataset.id.localeCompare(b.dataset.id));tiles.forEach((tile,i)=>{{tile.querySelector('small').textContent='#'+String(i+1).padStart(2,'0')+' · '+tile.querySelector('small').textContent.split(' · ').at(-1);directory.append(tile)}});buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));help.textContent=invert?'优先安排公开证据较少的项目开展后续核验；不是商业潜力排名。':'依据已归属的证据层级排序；同层稳定排列，不是盈利或成功率排名。';filter()}}));
+buttons.forEach(btn=>btn.addEventListener('click',()=>{{const invert=btn.dataset.sort==='gaps';tiles.sort((a,b)=>(invert?Number(a.dataset.level)-Number(b.dataset.level):Number(b.dataset.level)-Number(a.dataset.level))||a.dataset.id.localeCompare(b.dataset.id));tiles.forEach((tile,i)=>{{tile.querySelector('small').textContent='#'+String(i+1).padStart(2,'0')+' · '+tile.querySelector('small').textContent.split(' · ').at(-1);directory.append(tile)}});buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));help.textContent=invert?'先看仍有不少问题没查清的项目；不是赚钱排名。':'先看资料更容易核实的项目；不是盈利排名。';filter()}}));
 input.addEventListener('input',filter) }})();
 </script>"""
-    return shell(f"{len(cases)} 个有经营证据的项目", "只正式收录可归属的商业经营披露，区分监管财报与历史企业自述", body, "/projects/")
+    return shell(f"{len(cases)} 个有经营证据的项目", "只展示有公开历史经营资料的案例，介绍做什么、谁付钱、怎么收费", body, "/projects/")
 
 def build() -> dict:
     all_cases = parse_cases()

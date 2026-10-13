@@ -52,8 +52,8 @@ class LocalDraftTests(unittest.TestCase):
             self.assertIn("draft-progress", dom.ids)
             self.assertIn(SPEC[route]["back"], dom.links)
             self.assertIn('rel="canonical"', page)
-            self.assertIn("不会提交、保存到服务器", page)
-            self.assertIn("刷新或关闭页面后内容将丢失", page)
+            self.assertIn("不会上传或保存你写的内容", page)
+            self.assertIn("关闭或刷新页面后内容会消失", page)
             self.assertIn("未提交", page)
             for field in dom.fields:
                 self.assertTrue(int(field["maxlength"]) <= 700)
