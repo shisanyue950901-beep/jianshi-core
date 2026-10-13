@@ -20,32 +20,69 @@ SITE = "https://jianshi-bua.pages.dev"
 ROUTE = "discover/"
 # path, category, title, description, evidence/status label
 ENTRIES = (
-    ("/solutions/ecommerce-visual/", "solutions", "AI 电商视觉", "商品图、详情页和活动视觉：从素材授权到交付验收的步骤。", "应用指南 · 非成交服务"),
-    ("/solutions/brand-video/", "solutions", "AI 视频与品牌短片", "了解脚本、分镜、概念片、版权和短视频交付边界。", "应用指南 · 非案例"),
-    ("/solutions/automation/", "solutions", "AI 企业自动化", "从流程梳理、权限边界到人工复核与安全回退。", "应用指南 · 非已售产品"),
-    ("/solutions/localization/", "solutions", "AI 出海内容与本地化", "目标语言、营销渠道、术语表与人工审校的业务准备。", "应用指南 · 非实际订单"),
-    ("/research/vertical-industry-saas/", "research", "垂直行业 SaaS", "查看匿名行业模式的研究、局限和可核验线索。", "匿名模式研究 · 非个体收益"),
-    ("/research/amazon-fba-niche-brand/", "research", "细分品牌与 FBA", "理解选品、履约、成本结构和竞争风险的研究框架。", "匿名模式研究 · 非收益承诺"),
-    ("/research/digital-product-business/", "research", "数字产品业务", "产品构建、分发、内容授权与续费机制的研究线索。", "匿名模式研究 · 非收益承诺"),
-    ("/research/affiliate-content-site/", "research", "联盟内容网站", "搜索内容、佣金模式、流量依赖与平台政策风险。", "匿名模式研究 · 非收益承诺"),
-    ("/research/amazon-kdp-publishing/", "research", "KDP 数字出版", "了解原创版权、平台规则与低成本试验的边界。", "匿名模式研究 · 非收益承诺"),
-    ("/research/agency-business/", "research", "数字服务工作室", "从客户问题、交付范围到服务流程与增长约束。", "匿名模式研究 · 非收益承诺"),
-    ("/projects/plausible/", "projects", "Plausible", "以已公开资料建立的具名项目研究档案，查看来源与证据边界。", "公开项目档案 · 非投资建议"),
-    ("/projects/carrd/", "projects", "Carrd", "以已公开资料整理的产品项目档案，区分事实与解读。", "公开项目档案 · 非投资建议"),
-    ("/projects/nerdwallet/", "projects", "NerdWallet", "了解项目公开资料与可核验证据，不推断个人收益。", "公开项目档案 · 非投资建议"),
-    ("/marketplace/", "guides", "商机大厅｜需求准备", "在真实业务入口开放前，用指南整理目标、素材、时间与验收口径。", "准备指南 · 暂无真实订单展示"),
-    ("/talent/", "guides", "人才与服务商｜作品规范", "学习作品授权、技能描述、审核与公开展示的基本规则。", "准备指南 · 非服务商名录"),
-    ("/academy/", "guides", "AIGC 学院｜学习路径", "图像、视频、Agent 与商业研究的学习计划和练习目标。", "学习路线 · 非已上线付费课程"),
-    ("/sources/", "guides", "资料来源与证据边界", "理解研究资料来源、验证局限及不能公开的内容范围。", "透明度说明 · 不含私有原文"),
+    ("/solutions/ecommerce-visual/", "solutions", "AI 电商做图", "制作商品图、详情页图片和活动海报。", "企业 AI 用法 · 未开放购买"),
+    ("/solutions/brand-video/", "solutions", "AI 短视频制作", "了解如何制作短视频脚本、画面和样片。", "企业 AI 用法 · 未开放购买"),
+    ("/solutions/automation/", "solutions", "AI 帮你处理重复工作", "看看客服辅助、整理资料和工单处理怎么开始。", "企业 AI 用法 · 未开放购买"),
+    ("/solutions/localization/", "solutions", "AI 出海内容", "制作多语言内容前，要先确认翻译、审核和授权。", "企业 AI 用法 · 未开放购买"),
+    ("/research/vertical-industry-saas/", "research", "行业订阅软件", "为某类行业做工具，按月或按年向客户收费。", "商业模式参考 · 非现成项目"),
+    ("/research/amazon-fba-niche-brand/", "research", "电商细分品牌", "找到细分商品需求，卖产品时要核算库存、运费和退货。", "商业模式参考 · 非收益承诺"),
+    ("/research/digital-product-business/", "research", "数字产品", "出售模板、资料或数字工具，先核实客户真正需要什么。", "商业模式参考 · 非收益承诺"),
+    ("/research/affiliate-content-site/", "research", "内容推荐网站", "通过内容推荐相关产品，收入可能来自推广合作。", "商业模式参考 · 非收益承诺"),
+    ("/research/amazon-kdp-publishing/", "research", "电子书与出版", "制作原创图书或电子书，需遵守版权和销售平台规则。", "商业模式参考 · 非收益承诺"),
+    ("/research/agency-business/", "research", "为企业提供数字服务", "帮客户完成设计、内容或技术服务，按项目或服务收费。", "商业模式参考 · 非收益承诺"),
+    ("/projects/plausible/", "projects", "Plausible｜网站数据分析", "卖网站统计软件，需要开发和长期运维能力。", "真实公司案例 · 非创业收益"),
+    ("/projects/carrd/", "projects", "Carrd｜单页网站", "提供简洁建站工具，个人可研究小范围建站服务。", "真实公司案例 · 非创业收益"),
+    ("/projects/nerdwallet/", "projects", "NerdWallet｜金融产品比较", "内容与广告合作模式，不适合个人直接照搬大型平台。", "真实公司案例 · 非创业收益"),
+    ("/marketplace/", "guides", "商机大厅（暂未开放）", "先了解如何把客户需求写清楚；目前没有线上订单。", "功能说明 · 未开放接单"),
+    ("/talent/", "guides", "人才与服务商（暂未开放）", "看看如何整理作品，暂时无法注册或接单。", "功能说明 · 未开放入驻"),
+    ("/academy/", "guides", "AI 技能学习（筹备中）", "了解可以学的 AI 技能；目前还没有可观看的课程。", "学习方向 · 课程未开放"),
+    ("/sources/", "guides", "资料从哪里来？", "查看项目资料的来源、更新时间和使用限制。", "资料说明 · 不包含私有内容"),
 )
+
+# Founder-first default filter is a grouping of existing admitted public pages.
+# This grouping does not assert that the nine pages are executable startups.
 CATEGORIES = (
+    ("founder", "找创业方向"),
+    ("projects", "真实公司案例"),
+    ("research", "生意模式"),
+    ("solutions", "企业用 AI"),
+    ("guides", "其他"),
     ("all", "全部内容"),
-    ("solutions", "企业方案"),
-    ("research", "行业研究"),
-    ("projects", "项目档案"),
-    ("guides", "实用指南"),
 )
+PICK_COUNT = 9
+
+# Short, human-readable comparisons. These are editorial explanations of
+# how an existing business model operates, not new revenue or customer proof.
+PROJECT_FACTS = {
+    "/projects/carrd/": ("谁付钱", "付费使用高级功能的人", "怎么收费", "高级功能按年订阅"),
+    "/projects/plausible/": ("谁付钱", "使用网站统计服务的站长", "怎么收费", "按订阅方案收费"),
+    "/projects/nerdwallet/": ("谁付钱", "广告及商业合作伙伴", "怎么赚钱", "广告和商业合作"),
+}
+RESEARCH_FACTS = {
+    "/research/vertical-industry-saas/": "收费方式：软件订阅",
+    "/research/amazon-fba-niche-brand/": "收费方式：销售实体产品",
+    "/research/digital-product-business/": "收费方式：销售数字商品",
+    "/research/affiliate-content-site/": "收费方式：推广合作",
+    "/research/amazon-kdp-publishing/": "收费方式：销售图书",
+    "/research/agency-business/": "收费方式：按服务收费",
+}
+
 CSS = """
+.discover-shell{padding-top:22px}
+.discover-choice{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:0 0 16px;color:#475978;font-size:13px}
+.discover-choice strong{font-weight:800;color:#21304b}
+.discover-card .business-facts{display:grid;gap:7px;margin-top:12px;padding-top:13px;border-top:1px solid #edf0f6}
+.discover-card .business-facts div{font-size:13px;line-height:1.5;color:#263955}
+.discover-card .business-facts b{font-size:12px;color:#65748a;font-weight:700;margin-right:8px}
+.discover-card .business-facts span{font-weight:650}
+.discover-card .source-note{font-size:12px}
+.discover-card .type{letter-spacing:0}
+.discover-card h3{font-size:18px;line-height:1.4;margin:9px 0}
+.discover-card p{line-height:1.6}
+.discover-card .go{margin-top:auto;padding-top:15px;min-height:34px}
+.discover-notice{margin-top:30px;padding:17px 22px}
+.discover-notice h2{font-size:17px}
+@media(max-width:650px){.discover-choice{font-size:12px}.discover-card{padding:17px}.discover-card .business-facts div{font-size:12px}}
 .discover-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .discover-intro .lead{margin:0;max-width:740px}
 .discover-search{margin:22px 0 0;padding:22px;background:#fff;border:1px solid #dce4f0;border-radius:20px;box-shadow:0 12px 30px #1727430a}
@@ -87,23 +124,23 @@ const counter=document.getElementById('discover-count');
 const empty=document.getElementById('discover-empty');
 const reset=document.getElementById('discover-reset');
 const form=document.getElementById('discover-form');
-let category='all';
+let category='founder';
 function update(){
  const query=input.value.trim().toLocaleLowerCase('zh-CN');
  let visible=0;
  cards.forEach(card=>{
-  const match=(category==='all'||card.dataset.category===category)
+  const match=(category==='all'||category==='founder'&&['projects','research'].includes(card.dataset.category)||card.dataset.category===category)
    &&(!query||card.dataset.search.toLocaleLowerCase('zh-CN').includes(query));
   card.hidden=!match;
   if(match)visible++;
  });
  controls.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.discoverCategory===category)));
- counter.textContent='已找到 '+visible+' 条公开内容 · 共 '+cards.length+' 条';
+ counter.textContent=category==='founder'?'找到 '+visible+' 个可研究的案例与方向':'找到 '+visible+' 条内容';
  empty.hidden=visible!==0;
 }
 controls.forEach(btn=>btn.addEventListener('click',()=>{category=btn.dataset.discoverCategory;update();}));
-input.addEventListener('input',update);
-reset.addEventListener('click',()=>{input.value='';category='all';update();input.focus();});
+input.addEventListener('input',()=>{if(input.value.trim())category='all';update();});
+reset.addEventListener('click',()=>{input.value='';category='founder';update();input.focus();});
 form.addEventListener('submit',event=>event.preventDefault());
 update();
 })();"""
@@ -116,7 +153,7 @@ def e(value: str) -> str:
 def validate_entries(output: Path) -> None:
     if len(ENTRIES) != 17 or len({row[0] for row in ENTRIES}) != len(ENTRIES):
         raise RuntimeError("Discovery entry count or duplicate route invalid")
-    category_names = {key for key, _ in CATEGORIES} - {"all"}
+    category_names = {key for key, _ in CATEGORIES} - {"all", "founder"}
     for route, group, title, description, label in ENTRIES:
         if not re.fullmatch(r"/[a-z0-9/-]+/", route) or group not in category_names:
             raise RuntimeError("Discovery entry has unregistered route/category")
@@ -137,58 +174,77 @@ def validate_entries(output: Path) -> None:
 
 def render() -> str:
     counts = Counter(row[1] for row in ENTRIES)
+    if sum(counts[g] for g in ("projects", "research")) != PICK_COUNT:
+        raise RuntimeError("Founder-first content total drift")
+    labels = dict(CATEGORIES)
     filters = "".join(
-        '<button type="button" data-discover-category="' + key
-        + '" aria-pressed="' + ("true" if key == "all" else "false") + '">'
-        + e(label) + " · " + str(len(ENTRIES) if key == "all" else counts[key])
+        '<button type="button" data-discover-category="' + e(key)
+        + '" aria-pressed="' + ("true" if key == "founder" else "false") + '">'
+        + e(label) + " · " + str(PICK_COUNT if key == "founder"
+                  else len(ENTRIES) if key == "all" else counts[key])
         + "</button>" for key, label in CATEGORIES
     )
-    categories = dict(CATEGORIES)
-    cards = "".join(
-        '<a class="discover-card" data-discover-card data-category="' + e(group)
-        + '" data-search="' + e(" ".join((title, description, label, categories[group]))) + '"'
-        + ' href="' + e(route) + '"><span class="type">' + e(categories[group])
-        + '</span><h3>' + e(title) + '</h3><p>' + e(description)
-        + '</p><span class="source-note">' + e(label)
-        + '</span><span class="go">阅读公开内容 ↗</span></a>'
-        for route, group, title, description, label in ENTRIES
-    )
+    order = {"projects": 0, "research": 1, "solutions": 2, "guides": 3}
+    cards = []
+    for route, group, title, description, status in sorted(
+        ENTRIES, key=lambda item: order[item[1]]
+    ):
+        if route in PROJECT_FACTS:
+            l1, v1, l2, v2 = PROJECT_FACTS[route]
+            business_facts = (
+                '<div class="business-facts">'
+                '<div><b>' + e(l1) + '</b><span>' + e(v1) + '</span></div>'
+                '<div><b>' + e(l2) + '</b><span>' + e(v2) + '</span></div></div>'
+            )
+        elif route in RESEARCH_FACTS:
+            business_facts = '<div class="business-facts"><div><span>' + e(RESEARCH_FACTS[route]) + '</span></div></div>'
+        else:
+            business_facts = ""
+        searchable = " ".join((title, description, status, labels[group], business_facts))
+        cards.append(
+            '<a class="discover-card" data-discover-card data-category="' + e(group)
+            + '" data-search="' + e(searchable) + '"'
+            + ' href="' + e(route) + '"><span class="type">' + e(labels[group])
+            + '</span><h3>' + e(title) + '</h3><p>' + e(description)
+            + '</p>' + business_facts + '<span class="source-note">' + e(status)
+            + '</span><span class="go">' + (
+                "看这个案例 →" if group == "projects"
+                else "看看怎么做 →" if group == "research"
+                else "了解一下 →") + '</span></a>'
+        )
     body = (
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         '<meta name="robots" content="index,follow">'
-        '<title>内容发现｜见势 JIANSHI 2.0</title>'
-        '<meta name="description" content="统一查找见势公开的企业 AI 方案、匿名模式研究、项目档案和实用指南。">'
+        '<title>找创业项目与赚钱方式｜见势</title>'
+        '<meta name="description" content="先看真实公司案例，再比较六类商业模式。每张卡片告诉你卖什么、谁付钱、怎么收费，并明确哪些资料还不够。">'
         '<link rel="canonical" href="' + SITE + '/discover/">'
         '<style>' + SHARED_CSS + design_css() + CSS + RELATED_CSS + '</style></head><body>'
         + site_header("/discover/")
         + '<main id="discover"><section class="hero"><div class="wrap">'
-        '<div class="crumb"><a href="/">见势首页</a> / 内容发现</div>'
-        '<span class="kicker">G2 / PUBLIC DISCOVERY</span>'
-        '<h1>从问题出发，找到可读的答案。</h1>'
-        '<p>把已经公开的方案、研究、项目档案和指南放在同一个入口。'
-        '不混入未审核订单、私有采集记录或不存在的课程。</p>'
-        '</div></section><div class="wrap content">'
+        '<div class="crumb"><a href="/">见势首页</a> / 找项目</div>'
+        '<h1>找创业项目，先看怎么赚钱。</h1>'
+        '<p>先看真实公司案例，再看看不同生意怎么收费。历史案例不保证你照着做能赚钱。</p>'
+        '</div></section><div class="wrap content discover-shell">'
         '<section aria-labelledby="discover-title" class="section">'
-        '<div class="discover-intro"><div><span class="label">01 / CONTENT DIRECTORY</span>'
-        '<h2 id="discover-title">探索已公开的内容</h2>'
-        '<p class="lead">按关键词或栏目筛选。所有搜索都在当前浏览器本地完成，不采集输入或发送查询请求。</p>'
+        '<div class="discover-intro"><div><h2 id="discover-title">按方向找</h2>'
+        '<p class="lead">先看创业案例与商业模式；企业 AI 方案在独立分类里。</p>'
         '</div></div><form id="discover-form" role="search" class="discover-search">'
-        '<label for="discover-query">搜索主题、场景或项目</label>'
-        '<input id="discover-query" type="search" placeholder="例如：自动化、SaaS、视频、版权"'
+        '<label for="discover-query">你想找什么生意？</label>'
+        '<input id="discover-query" type="search" placeholder="例如：网站、数字产品、电商、内容"'
         ' autocomplete="off" maxlength="80">'
-        '<div class="discover-controls"><div class="discover-filters" role="group" aria-label="筛选内容栏目">'
-        + filters + '</div><button type="button" id="discover-reset">重置筛选</button></div></form>'
+        '<div class="discover-controls"><div class="discover-filters" role="group" aria-label="按内容方向筛选">'
+        + filters + '</div><button type="button" id="discover-reset">清除筛选</button></div></form>'
         '<div class="discover-meta"><span id="discover-count" role="status" aria-live="polite">'
-        '共 ' + str(len(ENTRIES)) + ' 条公开内容</span>'
-        '<span>仅收录可访问的正式公开页面，不代表实时更新或新增商机。</span></div>'
-        '<div class="discover-grid" id="discover-grid">' + cards + '</div>'
-        '<div id="discover-empty" role="status" hidden><h3>没有匹配的内容</h3>'
-        '<p>尝试更宽泛的关键词，或清除筛选重新浏览。</p></div></section>'
-        '<aside class="discover-notice" aria-label="研究与服务边界"><h2>如何判断一条信息是否值得行动？</h2>'
-        '<p>先看发布日期、来源与证据类型，再判断是否适合你的实际条件。'
-        '行业研究不等于个人可复制收益；方案指南不代表平台已经提供对应服务。'
-        '阅读 <a href="/sources/">资料来源</a> 与 <a href="/validation/">证据边界</a>。</p>'
+        '找到 ' + str(PICK_COUNT) + ' 个可研究的案例与方向</span>'
+        '<span>3 个真实公司案例和 6 种商业模式，都是研究参考，不是现成商机。</span></div>'
+        '<div class="discover-grid" id="discover-grid">' + "".join(cards) + '</div>'
+        '<div id="discover-empty" role="status" hidden><h3>暂时没有找到</h3>'
+        '<p>换个词试试，或者点击“清除筛选”。</p></div></section>'
+        '<aside class="discover-notice" aria-label="重要说明"><h2>这里的案例可以直接照做吗？</h2>'
+        '<p>不能这样保证。先了解项目怎么收费，再核实自己能不能找到客户、需要花多少钱。'
+        '想看出处，可以打开 <a href="/sources/">资料来源</a> 和 '
+        '<a href="/validation/">更多说明</a>。</p>'
         '</aside>' + render_related('/discover/') + '</div></main>' + site_footer()
         + '<script>' + JS + '</script></body></html>\n'
     )
