@@ -55,6 +55,11 @@ on:
       - 'scripts/security/g2h7i_cloudflare_readonly_audit.mjs'
       - 'tests/g2h7i_cloudflare_readonly.test.mjs'
       - 'docs/F21_G2H7I_CLOUDFLARE_READONLY_INVENTORY_CN.md'
+      - 'scripts/security/g2h7j_multizone_readonly.mjs'
+      - 'scripts/security/g2h7j_multizone_cli.mjs'
+      - 'scripts/security/g2h7j_multizone_audit.mjs'
+      - 'tests/g2h7j_multizone_readonly.test.mjs'
+      - 'docs/F21_G2H7J_MULTIZONE_SECURITY_AUDIT_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -111,6 +116,11 @@ on:
       - 'scripts/security/g2h7i_cloudflare_readonly_audit.mjs'
       - 'tests/g2h7i_cloudflare_readonly.test.mjs'
       - 'docs/F21_G2H7I_CLOUDFLARE_READONLY_INVENTORY_CN.md'
+      - 'scripts/security/g2h7j_multizone_readonly.mjs'
+      - 'scripts/security/g2h7j_multizone_cli.mjs'
+      - 'scripts/security/g2h7j_multizone_audit.mjs'
+      - 'tests/g2h7j_multizone_readonly.test.mjs'
+      - 'docs/F21_G2H7J_MULTIZONE_SECURITY_AUDIT_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -188,3 +198,7 @@ jobs:
         run: node --test tests/g2h7i_cloudflare_readonly.test.mjs
       - name: G2-H.7I independent API and release security audit
         run: node scripts/security/g2h7i_cloudflare_readonly_audit.mjs
+      - name: G2-H.7J bounded multi-zone read-only API behavior
+        run: node --test tests/g2h7j_multizone_readonly.test.mjs
+      - name: G2-H.7J independent zone coverage and non-deployment audit
+        run: node scripts/security/g2h7j_multizone_audit.mjs
