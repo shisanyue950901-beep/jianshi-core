@@ -10,9 +10,9 @@ from p442_jianshi2_live_home import STYLE, render_portal
 from f21_design_tokens import render_css as render_design_css
 
 SITE = "https://jianshi-bua.pages.dev"
-TITLE = "见势 JIANSHI 2.0｜AI 商业机会、企业解决方案与创作者"
-DESCRIPTION = ("发现经审核的 AI 商业机会研究，了解企业 AI 解决方案与创作者服务。"
-               "商机撮合与 AIGC 课程正在建设，项目历史经营不代表可复制收益。")
+TITLE = "见势 JIANSHI 2.0｜个人创业机会发现与商业研究"
+DESCRIPTION = ("面向个人创业者发现和研究商业机会：审核过的真实案例、商业模式、证据和未知项。"
+               "企业 AI 解决方案为独立探索方向；历史经营不代表可复制收益。")
 
 EXTRA_STYLE = """
 html{scroll-behavior:smooth;scroll-padding-top:88px}
