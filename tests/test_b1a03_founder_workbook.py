@@ -95,7 +95,7 @@ class TestB1A03FounderWorkbook(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             render_founder_workbook(c)
 
-    def test_existing_decision_report_and_listing_is_preserved(self):
+    def test_decision_report_remains_on_detail_but_directory_is_short(self):
         for case in self.cases.values():
             original = render_decision_panel(decision_data(case))
             self.assertEqual(original.count("<li>"), 3)
@@ -103,7 +103,7 @@ class TestB1A03FounderWorkbook(unittest.TestCase):
             self.assertIn("这家企业以前公开过什么经营资料？", original)
             self.assertIn("已验证可直接投入创业：0", original)
         listings = index_page(list(self.cases.values()))
-        self.assertEqual(listings.count('class="decision-mini"'), 3)
+        self.assertEqual(listings.count('class="case-card"'), 3)
         self.assertNotIn('id="founder-workbook"', listings)
 
     def test_no_network_persistence_or_new_collection_cost(self):
