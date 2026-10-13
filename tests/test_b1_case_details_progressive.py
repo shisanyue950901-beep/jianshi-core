@@ -69,7 +69,7 @@ class FounderCaseDetailTests(unittest.TestCase):
                 self.assertLess(html.index('id="decision-report"'),html.index('id="case-details"'))
                 self.assertLess(html.index('id="case-details"'),html.index('id="founder-workbook-toggle"'))
                 self.assertIn('href="/projects/"',html)
-                self.assertIn("不意味着成功",decision["fit_label"]+" 不意味着成功")
+                self.assertIn("已验证可直接投入创业：0",html)
 
     def test_native_disclosure_is_closed_has_workbook_and_preserves_sources(self):
         for slug,case in self.cases.items():
