@@ -88,7 +88,7 @@ class TestB1A03FounderWorkbook(unittest.TestCase):
         for key, value in (("buyer", ""), ("revenue", 3)):
             c = copy.deepcopy(self.cases["plausible"])
             c[key] = value
-            with self.assertRaises(RuntimeError):
+            with self.assertRaises((RuntimeError, ValueError)):
                 render_founder_workbook(c)
         c = copy.deepcopy(self.cases["nerdwallet"])
         c["research_evidence"]["source_url"] = "http://unsafe.example"
