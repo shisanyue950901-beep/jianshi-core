@@ -28,7 +28,7 @@ class TestB1A03FounderWorkbook(unittest.TestCase):
             with self.subTest(slug=slug):
                 html = project_page(case)
                 self.assertEqual(html.count('id="founder-workbook"'), 1)
-                self.assertEqual(html.count('href="#founder-workbook"'), 1)
+                self.assertEqual(html.count('href="#founder-workbook-toggle"'), 1)
                 self.assertEqual(html.count('class="workbook-step"'), 4)
                 self.assertLess(html.index('id="decision-report"'),
                                 html.index('id="founder-workbook"'))
