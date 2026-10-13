@@ -50,6 +50,11 @@ on:
       - 'tests/g2h7h_preview_admission.test.mjs'
       - 'scripts/security/g2h7h_preview_admission.mjs'
       - 'docs/F21_G2H7H_CLOUDFLARE_PREVIEW_ADMISSION_CN.md'
+      - 'scripts/security/g2h7i_cloudflare_readonly_client.mjs'
+      - 'scripts/security/g2h7i_cloudflare_readonly_cli.mjs'
+      - 'scripts/security/g2h7i_cloudflare_readonly_audit.mjs'
+      - 'tests/g2h7i_cloudflare_readonly.test.mjs'
+      - 'docs/F21_G2H7I_CLOUDFLARE_READONLY_INVENTORY_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
   push:
     branches: [main]
@@ -101,6 +106,11 @@ on:
       - 'tests/g2h7h_preview_admission.test.mjs'
       - 'scripts/security/g2h7h_preview_admission.mjs'
       - 'docs/F21_G2H7H_CLOUDFLARE_PREVIEW_ADMISSION_CN.md'
+      - 'scripts/security/g2h7i_cloudflare_readonly_client.mjs'
+      - 'scripts/security/g2h7i_cloudflare_readonly_cli.mjs'
+      - 'scripts/security/g2h7i_cloudflare_readonly_audit.mjs'
+      - 'tests/g2h7i_cloudflare_readonly.test.mjs'
+      - 'docs/F21_G2H7I_CLOUDFLARE_READONLY_INVENTORY_CN.md'
       - '.github/workflows/cms-bff-isolated.yml'
 permissions:
   contents: read
@@ -173,3 +183,8 @@ jobs:
         run: node --test tests/g2h7h_preview_admission.test.mjs
       - name: G2-H.7H independent non-deployment security gate
         run: node scripts/security/g2h7h_preview_admission.mjs
+
+      - name: G2-H.7I Cloudflare API read-only simulation tests
+        run: node --test tests/g2h7i_cloudflare_readonly.test.mjs
+      - name: G2-H.7I independent API and release security audit
+        run: node scripts/security/g2h7i_cloudflare_readonly_audit.mjs
