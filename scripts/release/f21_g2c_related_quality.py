@@ -54,9 +54,9 @@ RELATED = {
         ("/sources/", "了解证据判断方法", "研究之前先区分原始来源、推测和时间局限。"),
     ),
     "/discover/": (
-        ("/solutions/", "以企业问题为起点", "对照四类 AI 应用指南的输入条件与验收步骤。"),
-        ("/research/", "阅读匿名模式研究", "参考公开归纳，不把行业资料冒充个体收入。"),
-        ("/sources/", "检查资料来源", "了解哪些结论可以核验，哪些暂不能判断。"),
+        ("/projects/", "比较三家公司的做法", "看真实付款方、收费方式和上手门槛。"),
+        ("/research/", "了解六种生意模式", "对照卖什么、谁付款，选择一项再核实。"),
+        ("/sources/", "核对经营资料", "看看来源时间及尚未验证的部分。"),
     ),
 }
 
@@ -75,6 +75,12 @@ CSS = """
 @media(max-width:900px){.g2c-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.g2c-related{padding:17px;margin-top:38px}.g2c-links{grid-template-columns:1fr}.g2c-link{min-height:0;padding:16px}.g2c-related .g2c-intro{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.g2c-link{transition:none}}
+.g2c-related-compact{margin-top:20px;padding:12px 18px}
+.g2c-related-compact summary{cursor:pointer;font-size:14px;font-weight:750;color:#433984;min-height:44px;display:flex;align-items:center}
+.g2c-related-compact summary:focus-visible{outline:3px solid #7867d6;outline-offset:3px}
+.g2c-related-compact .g2c-links{margin:10px 0}
+.g2c-related-compact .g2c-link{min-height:110px;padding:13px 15px}
+.g2c-related-compact .g2c-intro{margin:4px 0 0}
 """
 
 
@@ -94,9 +100,17 @@ def render_related(route: str) -> str:
         + '</span><span class="g2c-action">继续阅读 ↗</span></a>'
         for target, title, reason in rows
     )
+    if route == "/discover/":
+        return (
+            '<section class="g2c-related g2c-related-compact" aria-label="相关内容与下一步">'
+            '<details><summary>还想继续比较？</summary>'
+            '<div class="g2c-links">' + cards + '</div>'
+            '<p class="g2c-intro">均为站内已有研究内容，不代表服务、课程或商单已开放；'
+            '不代表在线服务、课程或商单已开放。</p></details></section>'
+        )
     return (
         '<section class="g2c-related" aria-label="相关内容与下一步">'
-        '<div class="g2c-eyebrow">FURTHER READING / NEXT STEP</div>'
+        '<div class="g2c-eyebrow">更多选择</div>'
         '<h2>接下来，可以这样继续探索</h2>'
         '<p class="g2c-intro">根据当前主题，选择可实际阅读的公开指南。'
         '链接只指向站内已经发布的内容，不代表在线服务、课程或商单已开放。</p>'
