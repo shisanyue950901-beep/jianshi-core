@@ -71,7 +71,7 @@ class P446ContentHubs(unittest.TestCase):
             self.assertIn('href="/solutions/' + row["slug"] + '/"', main)
             for fragment in ("能解决什么问题？", "企业需要准备", "建议实施流程",
                              "参考交付清单", "验收与质量检查",
-                             "使用与责任边界", row["boundary"]):
+                             "使用时要注意什么？", row["boundary"]):
                 self.assertIn(fragment, detail)
             self.assertEqual(detail.count('id="delivery"'), 1)
 
