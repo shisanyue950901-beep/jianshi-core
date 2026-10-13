@@ -13,7 +13,7 @@ import shutil
 from collections import Counter
 from p425_public_admission import eligible_cases
 from p426_evidence_digest import derive_digest
-from p440_decision_report import decision_data, render_decision_panel, render_decision_listing
+from p440_decision_report import decision_data, render_decision_panel, render_decision_listing, render_founder_workbook
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -110,6 +110,21 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 .decision-report a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:720px){.decision-action ol{grid-template-columns:1fr}.decision-columns{grid-template-columns:1fr}.decision-action li{padding:13px}}
 @media(max-width:590px){.decision-report{margin:18px 0 28px}.decision-intro{font-size:13px}}
+/* B1-A03: hand-fillable, print-friendly founder validation worksheet.
+   Source reviewed, never captured in browser storage or sent to a server. */
+.decision-workbook-link{display:inline-flex;margin-top:17px;align-items:center;min-height:44px;font-size:14px;font-weight:700}
+.founder-workbook{scroll-margin-top:98px;border:2px solid var(--accent);background:var(--panel);padding:clamp(18px,3.3vw,32px);margin-top:45px}
+.founder-workbook h2{margin:9px 0 14px;font-size:clamp(22px,2.7vw,31px)}
+.workbook-intro,.workbook-fineprint{font-size:13px;line-height:1.8;color:var(--muted)}
+.workbook-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:23px}
+.workbook-step{border:1px solid var(--line);background:var(--bg);padding:19px;min-width:0}
+.workbook-step>span{display:block;color:var(--accent);font-size:11px;font-weight:750;letter-spacing:.08em}
+.workbook-step h3{margin:9px 0 12px;font-size:18px;line-height:1.5}
+.workbook-step p{font-size:13px;line-height:1.8;color:var(--ink)}
+.workbook-blank{font-size:12px;font-weight:650;color:var(--ink);margin-top:15px;border-top:1px dashed var(--line);padding-top:12px}
+.workbook-blank span{display:block;overflow-wrap:anywhere;color:var(--muted);letter-spacing:.08em;line-height:2.2}
+@media(max-width:700px){.workbook-steps{grid-template-columns:1fr}.workbook-step{padding:16px}}
+@media print{.founder-workbook{break-before:page;page-break-before:always;box-shadow:none;color:#111;background:#fff;border-color:#777}.workbook-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.workbook-step{break-inside:avoid;page-break-inside:avoid;background:#fff}.workbook-blank span{line-height:3}.decision-workbook-link{display:none}}
 
 """
 
@@ -247,6 +262,7 @@ def project_page(case: dict) -> str:
         finance_boundary="仍未取得该企业自身可独立核实的财务经营数据。"
     digest = derive_digest(case)
     decision_html = render_decision_panel(decision_data(case))
+    workbook_html = render_founder_workbook(case)
     summary_box = (
         '<section class="digest" aria-label="证据提炼摘要"><h2>30 秒看懂这门生意</h2>'
         '<div class="digestgrid">'
@@ -289,7 +305,8 @@ def project_page(case: dict) -> str:
 <p><b>独立客户需求：</b>尚无该项目可计入的需求实证；不能将行业级技术或商业证据视为这家企业的客户证据。</p>
 <p><b>项目自身销售／利润：</b>{txt(finance_boundary)} 本站的排序仅代表资料层级，不是赚钱排名。</p></section>
 <section class="section"><h2>05｜下一步研究</h2><p>{txt(case.get("learning") or "进一步独立核查真实购买需求、履约成本与客户留存。")}</p>
-<p><a href="/validation/">了解同类行业方向的研究边界 →</a> · <a href="/projects/">返回 3 个已审项目档案 →</a></p></section>"""
+<p><a href="/validation/">了解同类行业方向的研究边界 →</a> · <a href="/projects/">返回 3 个已审项目档案 →</a></p></section>
+{workbook_html}"""
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
 
 def index_page(cases: list[dict]) -> str:
