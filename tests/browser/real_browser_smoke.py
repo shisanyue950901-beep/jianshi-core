@@ -101,6 +101,15 @@ def ui_home(page, base: str, mobile: bool):
         require(page.locator(".j2-mobile[open]").count() == 1, "Mobile menu won't open")
         require(page.locator(".j2-mobile-list a[href='#j2-opportunities']").is_visible(),
                 "Mobile menu project entry hidden")
+        # The dropdown intentionally covers the area beneath it. A user must
+        # dismiss it before touching the covered hero CTA, not click through.
+        page.mouse.click(12, 180)
+        require(page.locator(".j2-mobile[open]").count() == 0,
+                "Mobile menu did not close on outside pointer tap")
+        menu.click()
+        page.keyboard.press("Escape")
+        require(page.locator(".j2-mobile[open]").count() == 0,
+                "Mobile menu did not close with Escape")
     else:
         require(page.locator(".j2-nav").is_visible(), "Desktop navigation hidden")
     page.locator(".j2-actions a[href='/discover/']").click()
