@@ -107,6 +107,22 @@ a{color:inherit;text-decoration:none}button{font:inherit}a:focus-visible,summary
 .mobile summary::-webkit-details-marker{display:none}
 .mobile nav{position:absolute;display:grid;gap:4px;right:0;top:calc(100% + 10px);background:#12233c;min-width:235px;box-shadow:0 12px 35px #0004;padding:14px;border-radius:14px}
 .mobile nav a{padding:8px 10px}
+/* B1: site navigation is NOT a document disclosure panel. Keep the mobile
+   header button compact and dark, including on the guide/detail routes. */
+.top .mobile{margin:0;padding:0;border:0;background:transparent;box-shadow:none}
+.top .mobile summary{display:flex;align-items:center;justify-content:center;
+ min-height:42px;padding:8px 12px;margin:0;border-radius:10px;
+ color:#eef3ff;background:#172943;border:1px solid #657795;
+ font-size:13px;font-weight:750;line-height:1.35}
+.top .mobile[open] summary{background:#263a5b;border-color:#a49af8}
+.top .mobile > nav{z-index:40;box-sizing:border-box;
+ width:min(252px,calc(100vw - 34px));min-width:0;max-height:min(68dvh,460px);
+ overflow-y:auto;overscroll-behavior:contain;border:1px solid #384b6c;
+ background:#12233c;color:#ecf2ff;border-radius:14px;box-shadow:0 18px 42px #0008}
+.top .mobile:not([open]) > nav{display:none}
+.top .mobile > nav a{display:block;min-height:43px;color:#dbe6f8;padding:9px 11px;border-radius:8px}
+.top .mobile > nav a[aria-current="page"]{color:#e7dcff;background:#554e9d49}
+.top .mobile > nav a:hover,.top .mobile > nav a:focus-visible{background:#253b60;color:#fff}
 .hero{background:#081223;color:#fff;position:relative;overflow:hidden}
 .hero:before{content:"";position:absolute;width:650px;height:550px;right:-130px;top:-210px;background:radial-gradient(ellipse,#6e64e858,transparent 67%);pointer-events:none}
 .hero .wrap{position:relative;padding:76px 0 88px}
@@ -172,9 +188,9 @@ h3{font-size:19px;line-height:1.35;margin:0 0 9px;color:#192945}
 table{width:100%;border-collapse:collapse;background:white;border:1px solid #e3e9f2;border-radius:16px;overflow:hidden}
 th,td{text-align:left;padding:15px 17px;border-bottom:1px solid #e7edf5;font-size:13px;vertical-align:top}
 th{background:#f0f3fb;color:#2a3d62}td{color:#60708a}tr:last-child td{border-bottom:0}
-details{background:#fff;border:1px solid #e2e9f4;border-radius:14px;padding:17px 20px;margin-top:12px}
-summary{cursor:pointer;color:#243956;font-weight:750}
-details p,details li{color:#62718b;font-size:13px;margin:11px 0}
+main details{background:#fff;border:1px solid #e2e9f4;border-radius:14px;padding:17px 20px;margin-top:12px}
+main summary{cursor:pointer;color:#243956;font-weight:750}
+main details p,main details li{color:#62718b;font-size:13px;margin:11px 0}
 code,pre{font:12px/1.8 ui-monospace,Consolas,monospace}
 pre{white-space:pre-wrap;word-break:break-word;background:#f0f4fa;border:1px solid #e1e8f3;padding:16px;border-radius:13px}
 .footer{background:#0a1527;color:#c1cde2;padding:36px 0 43px}
