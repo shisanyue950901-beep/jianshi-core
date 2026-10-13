@@ -65,7 +65,7 @@ class G2BPublicGuides(unittest.TestCase):
             if route.startswith("solutions/") and route!="solutions/":
                 self.assertIn("g2b-trial",page)
                 self.assertIn("低风险",page)
-                self.assertEqual(page.count('href="/marketplace/brief/"'),1)
+                self.assertEqual(page.count('href="/marketplace/brief/"'),2)
                 self.assertIn('aria-label="相关内容与下一步"',page)
             for banned in ("sb_secret_","service_role","SYNTHETIC_G1F","password=","@qq.com","@gmail.com"):
                 self.assertNotIn(banned,page,route)
