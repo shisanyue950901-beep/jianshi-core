@@ -147,7 +147,7 @@ def _simple_site_chrome(markup: str) -> str:
     footer = (
         '<footer><div class="wrap footer-v2">'
         '<div><strong>见势 JIANSHI</strong><span>发现生意，理解怎么赚钱</span></div>'
-        '<p>本页仅供研究参考，不保证收益。</p></div></footer>'
+        '<p>本页仅供研究参考，不承诺盈利。</p></div></footer>'
     )
     markup = _replace_one(markup, r'<header class="site-header">.*?</header>', header)
     return _replace_one(markup, r'<footer>.*?</footer>', footer)
