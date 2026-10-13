@@ -527,34 +527,77 @@ def account_action_block(item):
 </section>"""
 
 def build_account_page():
+    # The visual preview never collects an email or pretends signup is live.
+    # The actual Magic Link form below is emitted only behind the existing
+    # double-gated AUTH_ENABLED flag. No password, fake OAuth or storage added.
     if not AUTH_ENABLED:
         body="""<main class="wrap account-page">
-<section class="list-hero"><span class="section-kicker">我的见势</span><h1>账户功能正在完成最后的邮件登录配置。</h1>
-<p>收藏、观察清单和站内提醒的数据层已经上线。为了避免让用户遇到无法收到登录邮件的半成品体验，正式登录入口暂时不开闸。</p>
-<div class="history-note">当前状态：账户数据层 PASS · RLS PASS · 登录邮件通道待自定义 SMTP。</div></section>
-<section class="panel"><h2>开放后你可以做什么？</h2>
+<div class="account-entry-shell">
+<aside class="account-story">
+<a class="account-story-brand" href="/" aria-label="返回见势首页">见势 <span>JIANSHI</span></a>
+<div class="account-story-main">
+<span class="account-story-kicker">YOUR RESEARCH SPACE / 研究空间</span>
+<h1>好机会，<br><em>值得持续跟踪。</em></h1>
+<p>从发现方向，到核查证据，再到记录自己的判断。你的研究应该有迹可循。</p>
+<div class="account-story-journey" aria-label="研究的三个步骤">
+<span><b>01</b> 发现方向</span><span><b>02</b> 收藏研究</span><span><b>03</b> 持续观察</span>
+</div></div>
+<p class="account-story-foot">见势 JIANSHI 2.0 · 商业机会发现与决策</p>
+</aside>
+<section class="account-access" aria-labelledby="account-entry-title">
+<div class="account-availability"><span class="account-availability-dot" aria-hidden="true"></span>账户注册／登录尚未开放</div>
+<span class="account-access-eyebrow">CREATE YOUR SPACE</span>
+<h2 id="account-entry-title">创建你的<br>研究空间</h2>
+<p class="account-access-lead">账户功能正在完成最后的邮件登录配置。现在你仍然可以免费浏览全部公开研究内容。</p>
+<div class="account-form-preview" aria-label="注册界面预览，尚不能输入或提交邮箱">
+<span class="account-input-label">邮箱地址</span>
+<div class="account-input-example" aria-hidden="true">name@example.com <span>✉</span></div>
+<button type="button" disabled>邮箱注册／登录 · 即将开放 <span aria-hidden="true">→</span></button>
+<p class="account-form-help">开放后使用邮箱一次性链接，无需密码；首次使用即可注册。</p>
+</div>
+<p class="account-gate-note">当前不收集注册邮箱，不发送验证码，也不会为你创建账户。正式开放前需要完成邮件送达与账户安全验收。</p>
+<a class="account-back-link" href="/discover/">暂不注册，先去发现项目 <span aria-hidden="true">↗</span></a>
+</section>
+</div>
+<section class="account-feature-section" aria-label="账户开放后的功能">
+<div class="account-feature-heading"><span>COMING SOON</span><h2>未来，你可以在这里做什么？</h2></div>
 <div class="account-feature-grid">
-<div><b>收藏机会</b><span>把值得继续研究的方向保存到自己的空间。</span></div>
-<div><b>观察清单</b><span>关注首次验证、新增证据和明显分数变化。</span></div>
-<div><b>站内提醒</b><span>不依赖邮件，也能看到你关注方向今天发生了什么。</span></div>
+<div><span class="account-feature-icon" aria-hidden="true">✧</span><b>收藏机会</b><span>把值得继续研究的方向保存到自己的空间。</span></div>
+<div><span class="account-feature-icon" aria-hidden="true">◈</span><b>观察清单</b><span>记录关注的项目和重要证据变化。</span></div>
+<div><span class="account-feature-icon" aria-hidden="true">◎</span><b>站内提醒</b><span>上线后查看你关心的研究内容有何变化。</span></div>
 </div></section></main>"""
         return shell("我的见势｜账户功能准备中",body,
                      "见势账户功能准备页。登录开放后可收藏机会、建立观察清单和查看变化提醒。",
                      "/account/",robots="noindex,nofollow")
 
     body="""<main class="wrap account-page">
-<section class="list-hero"><span class="section-kicker">我的见势</span><h1>把值得跟踪的机会留在自己的清单里。</h1>
-<p>使用邮箱免密码登录。公开榜单始终免费；登录只用于收藏、观察和提醒。</p></section>
-
-<section class="panel auth-login" data-auth-logged-out>
-<h2>邮箱登录</h2>
-<form class="auth-email-form" data-auth-email-form>
-<input type="email" name="email" maxlength="254" autocomplete="email" placeholder="你的邮箱" required>
-<button type="submit">发送登录链接</button>
-<p class="auth-hint">我们会发送一次性登录链接，不需要设置密码。</p>
+<div class="account-entry-shell" data-auth-logged-out>
+<aside class="account-story">
+<a class="account-story-brand" href="/" aria-label="返回见势首页">见势 <span>JIANSHI</span></a>
+<div class="account-story-main">
+<span class="account-story-kicker">YOUR RESEARCH SPACE / 研究空间</span>
+<h1>好机会，<br><em>值得持续跟踪。</em></h1>
+<p>发现方向、收藏证据、关注变化。首次邮箱登录会创建你的账户。</p>
+<div class="account-story-journey" aria-label="研究的三个步骤">
+<span><b>01</b> 发现方向</span><span><b>02</b> 收藏研究</span><span><b>03</b> 持续观察</span>
+</div></div>
+<p class="account-story-foot">见势 JIANSHI 2.0 · 商业机会发现与决策</p>
+</aside>
+<section class="account-access auth-login" aria-labelledby="account-entry-title">
+<div class="account-availability account-availability--ready"><span class="account-availability-dot" aria-hidden="true"></span>邮箱免密注册／登录</div>
+<span class="account-access-eyebrow">WELCOME TO JIANSHI</span>
+<h2 id="account-entry-title">开启你的<br>研究空间</h2>
+<p class="account-access-lead">无需设置密码。填写邮箱，接收一次性登录链接；首次使用会创建账户。</p>
+<form class="auth-email-form account-live-form" data-auth-email-form>
+<label class="account-input-label" for="account-email">邮箱地址</label>
+<input id="account-email" type="email" name="email" maxlength="254" autocomplete="email" inputmode="email" placeholder="name@example.com" required>
+<button type="submit">发送登录链接 <span aria-hidden="true">→</span></button>
+<p class="auth-hint">仅用于账户注册／登录；请到邮箱查收一次性链接。</p>
 <p class="auth-status" data-auth-status role="status" aria-live="polite"></p>
 </form>
+<a class="account-back-link" href="/discover/">先不登录，去发现项目 <span aria-hidden="true">↗</span></a>
 </section>
+</div>
 
 <section class="account-dashboard" data-auth-logged-in hidden>
 <div class="account-toolbar"><div><span class="section-kicker">当前账号</span><b data-auth-user-email></b></div><button type="button" class="secondary" data-auth-signout>退出登录</button></div>
