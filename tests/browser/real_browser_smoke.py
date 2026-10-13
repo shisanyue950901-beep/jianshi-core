@@ -119,9 +119,15 @@ def ui_home(page, base: str, mobile: bool):
 
 def ui_company(page, base: str):
     page.goto(base + "/projects/", wait_until="load")
+    require(page.locator(".case-directory-hero").is_visible(),
+            "Branded company index header missing")
+    require(page.locator(".case-directory-proof span").count() == 2,
+            "Visible case/evidence boundaries absent")
     require(page.locator("a[href='/projects/carrd/']").count() >= 1, "Carrd link missing")
     page.locator("a[href='/projects/carrd/']").first.click()
     require(page.url.endswith("/projects/carrd/"), "Company card navigation failed")
+    require(page.locator(".case-detail-hero").is_visible(),
+            "Consistent project evidence header missing")
     fold = page.locator("#case-details summary")
     require(fold.count() == 1, "Detailed company evidence fold missing")
     fold.click()
@@ -131,6 +137,8 @@ def ui_company(page, base: str):
 
 def ui_discover(page, base: str):
     page.goto(base + "/discover/", wait_until="load")
+    require(page.locator(".discover-steps span").count() == 5,
+            "Branded research process steps missing")
     cards = page.locator("[data-discover-card]:visible")
     require(cards.count() == 9, f"Expected 9 default research cards, got {cards.count()}")
     reset = page.locator("#discover-reset")
