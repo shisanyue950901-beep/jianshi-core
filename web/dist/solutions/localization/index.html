@@ -126,6 +126,68 @@ body{color:var(--js21-text-main)}
 .g2b-trial li{margin:8px 0;color:#536780;font-size:13px;line-height:1.8}
 @media(max-width:700px){.g2b-choices{grid-template-columns:1fr}.g2b-panel,.g2b-trial{padding:18px}}
 
+.solution-hero{isolation:isolate;background:
+ radial-gradient(ellipse 43% 135% at 94% 2%,#5d4caf55,transparent 82%),
+ radial-gradient(ellipse 46% 110% at 4% 100%,#2664a568,transparent 78%),
+ linear-gradient(135deg,#081221 8%,#142542 75%,#1b2045)}
+.solution-hero:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:linear-gradient(#a3b9ff0d 1px,transparent 1px),linear-gradient(90deg,#a3b9ff0d 1px,transparent 1px);
+ background-size:44px 44px;mask-image:linear-gradient(90deg,transparent,#0009)}
+.solution-hero .wrap{position:relative;z-index:1;padding:37px 0 42px}
+.solution-hero h1{margin:14px 0 12px;font-size:clamp(34px,4.5vw,55px);letter-spacing:-.05em}
+.solution-hero p{font-size:clamp(14px,1.55vw,17px);line-height:1.72}
+.solution-journey{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin-top:20px}
+.solution-journey span:not(.solution-journey-arrow){display:inline-flex;align-items:center;gap:7px;
+ color:#d5dff4;font-size:12px}
+.solution-journey b{min-width:27px;height:27px;padding:0 4px;display:grid;place-items:center;
+ border:1px solid #a0affb61;background:#8582ff23;border-radius:9px;color:#cfcaff;font-size:10px}
+.solution-journey .solution-journey-arrow{color:#8da6cf;font-size:12px}
+.f21-filters{background:linear-gradient(180deg,#fff,#fcfdff);border:1px solid #dce4f1;
+ border-radius:19px;box-shadow:0 12px 31px #283f7610;padding:21px}
+.f21-filter-field input,.f21-filter-field select{border-radius:11px;background:#f9faff}
+.f21-filter-field input:focus-visible,.f21-filter-field select:focus-visible{outline-color:#b6abff}
+.f21-catalog-grid .card.link{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#fcfdff);
+ border-radius:19px;border:1px solid #dfe6f4;box-shadow:0 6px 23px #293f6e0b;
+ padding:24px;transition:transform .2s,border-color .2s,box-shadow .2s}
+.f21-catalog-grid .card.link:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+ background:linear-gradient(90deg,#9675f4,#6c96ff,#65caee)}
+.f21-catalog-grid .card.link:nth-child(2):before{background:linear-gradient(90deg,#6f84ff,#77c0ff)}
+.f21-catalog-grid .card.link:nth-child(3):before{background:linear-gradient(90deg,#2ba6c6,#63bd9f)}
+.f21-catalog-grid .card.link:nth-child(4):before{background:linear-gradient(90deg,#8464d9,#6f85d8)}
+.f21-catalog-grid .card.link:hover,.f21-catalog-grid .card.link:focus-visible{transform:translateY(-3px);
+ border-color:#a2a8f4;box-shadow:0 17px 39px #303c921f}
+.f21-catalog-grid .solution-icon{width:44px;height:44px;display:grid;place-items:center;
+ border-radius:14px;background:linear-gradient(135deg,#ede7ff,#e4edff);font-size:23px;
+ color:#6156c2;margin-bottom:15px}
+.f21-catalog-grid .card.link:nth-child(3) .solution-icon{background:#e0f5f4;color:#258c9a}
+.f21-catalog-grid .card.link:nth-child(4) .solution-icon{background:#efebff;color:#7254c8}
+.f21-catalog-grid .card.link strong{color:#6962b9}
+.f21-catalog-grid .card.link h3{font-size:21px;letter-spacing:-.03em}
+.f21-catalog-grid .solution-facts{padding-top:15px;gap:10px}
+.f21-catalog-grid .solution-facts dt{font-weight:750}
+.f21-catalog-grid .go{display:flex;align-items:center;justify-content:space-between;
+ background:linear-gradient(90deg,#f0edff,#eaf3ff);padding:12px 14px;
+ min-height:45px;border-radius:11px;margin-top:auto}
+.solution-detail-guide .cards .card,.solution-technical .cards .card{border:1px solid #dfe6f2;
+ box-shadow:0 5px 20px #273c7610;background:linear-gradient(180deg,#fff,#fbfcff)}
+.solution-detail-guide .g2b-trial{border-color:#d5dff1;box-shadow:0 10px 27px #344a8210}
+.solution-detail-guide .solution-risk{background:linear-gradient(120deg,#eff3fc,#f5f2ff);
+ border-color:#d9def1}
+.solution-detail-guide .section h2{font-size:clamp(24px,3vw,35px)}
+.solution-detail-guide .solution-technical{border-color:#dce3f2}
+.solution-guide,.solution-technical{box-shadow:0 4px 18px #20385a09}
+@media(max-width:650px){
+ .solution-hero .wrap{padding:26px 0 31px}
+ .solution-hero h1{font-size:clamp(31px,8vw,42px)}
+ .solution-hero:after{background-size:33px 33px}
+ .solution-journey{gap:7px;margin-top:17px}
+ .solution-journey span:not(.solution-journey-arrow){font-size:11px}
+ .solution-journey b{width:24px;height:24px}
+ .f21-filters{padding:16px}
+ .f21-catalog-grid .card.link{padding:21px}
+}
+@media(prefers-reduced-motion:reduce){.f21-catalog-grid .card.link{transition:none;transform:none!important}}
+
 .g2c-related{margin:54px 0 0;padding:25px;border-radius:20px;background:#eef2fa;border:1px solid #d7e0f0}
 .g2c-related .g2c-eyebrow{font-size:11px;color:#6858ae;letter-spacing:.1em;font-weight:850}
 .g2c-related h2{font-size:clamp(22px,2.8vw,30px);margin:8px 0}
@@ -146,4 +208,4 @@ body{color:var(--js21-text-main)}
 .g2c-related-compact .g2c-links{margin:10px 0}
 .g2c-related-compact .g2c-link{min-height:110px;padding:13px 15px}
 .g2c-related-compact .g2c-intro{margin:4px 0 0}
-</style></head><body><header class="top"><div class="wrap row"><a class="logo" href="/" aria-label="见势首页">见势 <small>JIANSHI 2.0</small></a><div class="desktop"><nav aria-label="主要导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/" aria-current="page">企业解决方案</a><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></div><details class="mobile"><summary aria-label="展开导航">☰ 菜单</summary><nav aria-label="移动导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/" aria-current="page">企业解决方案</a><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></details></div></header><main><div class="hero solution-hero"><div class="wrap"><div class="crumb"><a href="/">见势首页</a> / 解决方案 / AI 出海内容与本地化</div><h1>AI 出海内容与本地化</h1><p>用于多语言网站文案、海外社媒内容、产品表达和营销素材的本地化准备。</p><div class="hero-links"><a class="btn primary" href="#delivery">查看准备材料 ↗</a><a class="btn " href="/solutions/">返回全部方案 ↗</a></div></div></div><div class="wrap content"><div class="status">这里只展示参考方案，暂时不能在网站上购买服务或提交企业需求。</div><section class="section"><h2>这类 AI 能帮你做什么？</h2><div class="cards"><article class="card"><h3>能解决什么问题？</h3><p>直译内容可能与当地语境不符，文化元素、商品表述和广告限制需要逐地区确认。</p></article><article class="card"><h3>什么情况下适合用？</h3><p>已确定目标地区、产品定位和合规要求，具备对应语言的人工审校资源。</p></article></div></section><section class="section" id="delivery"><h2>先看准备材料和参考成果</h2><div class="cards"><article class="card"><h3>企业需要准备</h3><ul class="list"><li>目标国家、语言及渠道</li><li>真实产品信息、术语表与品牌用语</li><li>当地法律限制和人工审校负责人</li></ul></article><article class="card"><h3>参考交付清单</h3><ul class="list"><li>多语言内容草案与术语表</li><li>按地区区分的文案和创意方向</li><li>待人工确认项、禁用词及审核记录</li></ul></article></div></section><section class="section"><h2>先做一个低风险的小测试</h2><p class="lead">这是可以自己尝试的步骤，不是已交付的客户案例。</p><div class="g2b-trial"><h3>两种语言的内容审校练习</h3><ol><li>选择真实可核对的产品介绍，整理目标国家和渠道要求。</li><li>为两种目标语言制作草稿，对照术语、单位和事实来源。</li><li>交由有语言能力的人员复核文化表达和当地合规事项。</li></ol><p class="g2b-note">本练习只帮助判断实施准备度，不是已发生的客户合作、成交成果或平台服务报价。</p><a class="btn primary" style="margin-top:16px" href="/marketplace/brief/">整理自己的需求草稿 ↗</a></div></section><details class="solution-technical"><summary>展开实施流程和验收检查</summary><div class="cards"><article class="card"><h3>建议实施流程</h3><ul class="list"><li>整理产品事实与目标市场表达规范</li><li>生成多版本内容并请语言人员校验</li><li>审核法规和渠道规范后制作最终素材</li></ul></article><article class="card"><h3>验收与质量检查</h3><ul class="list"><li>产品事实与价格不因翻译产生偏差</li><li>本地敏感表达及营销合规被检查</li><li>可按地区和版本追踪修改记录</li></ul></article></div><p>实际交付范围、使用权、修改次数和验收标准，应在真实合作前由双方明确。</p></details><aside class="solution-risk" aria-label="使用提醒"><h3>使用时要注意什么？</h3><p>AI 生成的市场资料、法规摘要和翻译不得替代当地专业审核。</p><p>这里只提供参考。不要上传未经授权的客户数据、个人信息或商业机密；本站不接收此类需求文件。</p></aside><section class="g2c-related g2c-related-compact" aria-label="相关内容与下一步"><details><summary>相关内容和下一步</summary><div class="g2c-links"><a class="g2c-link" href="/academy/"><strong>做多语言审校练习</strong><span>从术语表、事实核对和语言复核开始。</span><span class="g2c-action">继续阅读 ↗</span></a><a class="g2c-link" href="/research/agency-business/"><strong>研究服务模式</strong><span>参考匿名数字服务模式研究，保留证据局限。</span><span class="g2c-action">继续阅读 ↗</span></a><a class="g2c-link" href="/marketplace/brief/"><strong>准备出海需求</strong><span>注明目标市场、内容渠道、授权与合规负责人。</span><span class="g2c-action">继续阅读 ↗</span></a></div><p class="g2c-intro">链接仅指向已公开内容，不代表在线服务、课程或商单已开放。</p></details></section></div></main><footer class="footer"><div class="wrap row"><div><b>见势 JIANSHI</b><p>发现机会 · 掌握 AI · 对接需求 · 创造价值。</p><p>商业研究不保证个人收益；企业撮合和课程能力以实际开放状态为准。</p></div><nav aria-label="辅助信息"><a href="/projects/">审核项目</a><a href="/research/">匿名研究</a><a href="/discover/">内容发现</a><a href="/sources/">数据来源</a><a href="/privacy/">隐私政策</a></nav></div></footer></body></html>
+</style></head><body><header class="top"><div class="wrap row"><a class="logo" href="/" aria-label="见势首页">见势 <small>JIANSHI 2.0</small></a><div class="desktop"><nav aria-label="主要导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/" aria-current="page">企业解决方案</a><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></div><details class="mobile"><summary aria-label="展开导航">☰ 菜单</summary><nav aria-label="移动导航"><a href="/">首页</a><a href="/projects/">商业机会</a><a href="/solutions/" aria-current="page">企业解决方案</a><a href="/marketplace/">商机大厅</a><a href="/talent/">人才与服务商</a><a href="/academy/">AIGC 学院</a></nav></details></div></header><main><div class="hero solution-hero"><div class="wrap"><div class="crumb"><a href="/">见势首页</a> / 解决方案 / AI 出海内容与本地化</div><h1>AI 出海内容与本地化</h1><p>用于多语言网站文案、海外社媒内容、产品表达和营销素材的本地化准备。</p><div class="solution-journey" aria-label="企业 AI 方案的三个步骤"><span><b>01</b> 选业务问题</span><span class="solution-journey-arrow" aria-hidden="true">→</span><span><b>02</b> 看参考做法</span><span class="solution-journey-arrow" aria-hidden="true">→</span><span><b>03</b> 先小范围测试</span></div><div class="hero-links"><a class="btn primary" href="#delivery">查看准备材料 ↗</a><a class="btn " href="/solutions/">返回全部方案 ↗</a></div></div></div><div class="wrap content solution-detail-guide"><div class="status">这里只展示参考方案，暂时不能在网站上购买服务或提交企业需求。</div><section class="section"><h2>这类 AI 能帮你做什么？</h2><div class="cards"><article class="card"><h3>能解决什么问题？</h3><p>直译内容可能与当地语境不符，文化元素、商品表述和广告限制需要逐地区确认。</p></article><article class="card"><h3>什么情况下适合用？</h3><p>已确定目标地区、产品定位和合规要求，具备对应语言的人工审校资源。</p></article></div></section><section class="section" id="delivery"><h2>先看准备材料和参考成果</h2><div class="cards"><article class="card"><h3>企业需要准备</h3><ul class="list"><li>目标国家、语言及渠道</li><li>真实产品信息、术语表与品牌用语</li><li>当地法律限制和人工审校负责人</li></ul></article><article class="card"><h3>参考交付清单</h3><ul class="list"><li>多语言内容草案与术语表</li><li>按地区区分的文案和创意方向</li><li>待人工确认项、禁用词及审核记录</li></ul></article></div></section><section class="section"><h2>先做一个低风险的小测试</h2><p class="lead">这是可以自己尝试的步骤，不是已交付的客户案例。</p><div class="g2b-trial"><h3>两种语言的内容审校练习</h3><ol><li>选择真实可核对的产品介绍，整理目标国家和渠道要求。</li><li>为两种目标语言制作草稿，对照术语、单位和事实来源。</li><li>交由有语言能力的人员复核文化表达和当地合规事项。</li></ol><p class="g2b-note">本练习只帮助判断实施准备度，不是已发生的客户合作、成交成果或平台服务报价。</p><a class="btn primary" style="margin-top:16px" href="/marketplace/brief/">整理自己的需求草稿 ↗</a></div></section><details class="solution-technical"><summary>展开实施流程和验收检查</summary><div class="cards"><article class="card"><h3>建议实施流程</h3><ul class="list"><li>整理产品事实与目标市场表达规范</li><li>生成多版本内容并请语言人员校验</li><li>审核法规和渠道规范后制作最终素材</li></ul></article><article class="card"><h3>验收与质量检查</h3><ul class="list"><li>产品事实与价格不因翻译产生偏差</li><li>本地敏感表达及营销合规被检查</li><li>可按地区和版本追踪修改记录</li></ul></article></div><p>实际交付范围、使用权、修改次数和验收标准，应在真实合作前由双方明确。</p></details><aside class="solution-risk" aria-label="使用提醒"><h3>使用时要注意什么？</h3><p>AI 生成的市场资料、法规摘要和翻译不得替代当地专业审核。</p><p>这里只提供参考。不要上传未经授权的客户数据、个人信息或商业机密；本站不接收此类需求文件。</p></aside><section class="g2c-related g2c-related-compact" aria-label="相关内容与下一步"><details><summary>相关内容和下一步</summary><div class="g2c-links"><a class="g2c-link" href="/academy/"><strong>做多语言审校练习</strong><span>从术语表、事实核对和语言复核开始。</span><span class="g2c-action">继续阅读 ↗</span></a><a class="g2c-link" href="/research/agency-business/"><strong>研究服务模式</strong><span>参考匿名数字服务模式研究，保留证据局限。</span><span class="g2c-action">继续阅读 ↗</span></a><a class="g2c-link" href="/marketplace/brief/"><strong>准备出海需求</strong><span>注明目标市场、内容渠道、授权与合规负责人。</span><span class="g2c-action">继续阅读 ↗</span></a></div><p class="g2c-intro">链接仅指向已公开内容，不代表在线服务、课程或商单已开放。</p></details></section></div></main><footer class="footer"><div class="wrap row"><div><b>见势 JIANSHI</b><p>发现机会 · 掌握 AI · 对接需求 · 创造价值。</p><p>商业研究不保证个人收益；企业撮合和课程能力以实际开放状态为准。</p></div><nav aria-label="辅助信息"><a href="/projects/">审核项目</a><a href="/research/">匿名研究</a><a href="/discover/">内容发现</a><a href="/sources/">数据来源</a><a href="/privacy/">隐私政策</a></nav></div></footer></body></html>
