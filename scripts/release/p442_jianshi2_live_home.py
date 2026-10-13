@@ -304,9 +304,9 @@ def integrate(portal_ready_html: str, admitted_cases: list[dict]) -> str:
     old_title = "<title>见势 JIANSHI｜发现海外项目，看懂一门生意</title>"
     old_description = ('<meta name="description" content="探索海外真实项目和商业模式，'
                        '了解它们提供什么、向谁收费、如何运作，以及哪些经营事实还需要进一步核实。">')
-    title = "见势 JIANSHI 2.0｜AI 商业机会、企业解决方案与创作者"
-    description = ("发现经审核的 AI 商业机会研究，了解企业 AI 解决方案与创作者服务。"
-                   "商机撮合与 AIGC 课程正在建设，项目历史经营不代表可复制收益。")
+    title = "见势 JIANSHI 2.0｜个人创业机会发现与商业研究"
+    description = ("面向个人创业者发现和研究商业机会：审核过的真实案例、商业模式、证据和未知项。"
+                   "企业 AI 解决方案为独立探索方向；历史经营不代表可复制收益。")
     if integrated.count(old_title) != 1 or integrated.count(old_description) != 1:
         raise RuntimeError("Homepage metadata source contract changed")
     integrated = integrated.replace(old_title, "<title>" + escape(title) + "</title>", 1)
