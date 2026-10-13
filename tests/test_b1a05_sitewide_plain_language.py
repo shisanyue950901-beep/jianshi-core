@@ -75,7 +75,7 @@ class SitewidePlainLanguage(unittest.TestCase):
 
     def test_solution_pages_communicate_user_actions_and_still_mark_unreleased(self):
         directory=self.pages["/solutions/"]
-        self.assertIn("你想用 AI 解决什么问题",directory)
+        self.assertIn("选一个业务问题",directory)
         self.assertIn("暂时不能在网站上购买服务",directory)
         self.assertEqual(directory.count('class="card link"'),4)
         for page in self.pages.values():
