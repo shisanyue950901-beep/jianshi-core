@@ -144,6 +144,63 @@ body:has(#j2) #splash{display:none!important}
  #j2 .j2-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
+/* B1 visual polish: editorial research first, motion second. No external assets. */
+#j2 .j2-mast{background:
+ radial-gradient(ellipse 45% 85% at 88% 22%,#453c8545,transparent 83%),
+ radial-gradient(ellipse 50% 140% at 9% 140%,#1e57995c,transparent 70%),
+ linear-gradient(130deg,#080f1f 8%,#101b35 67%,#101935)}
+#j2 .j2-mast:after{content:"";position:absolute;inset:0;
+ background-image:linear-gradient(#91aaff0c 1px,transparent 1px),linear-gradient(90deg,#91aaff0c 1px,transparent 1px);
+ background-size:46px 46px;mask-image:linear-gradient(90deg,transparent,#0009);pointer-events:none}
+#j2 .j2-mast:before{z-index:0;filter:blur(28px)}
+#j2 .j2-hero{z-index:1;grid-template-columns:minmax(0,1fr) 275px;gap:30px;padding-top:44px;padding-bottom:48px}
+#j2 .j2-kicker{gap:9px;border:1px solid #788cc960;color:#dde3ff;background:#5e64d619;
+ box-shadow:inset 0 1px #ffffff1c;letter-spacing:.08em}
+#j2 .j2-kicker:before{content:"";display:block;width:7px;height:7px;border-radius:50%;background:#86d8fd;box-shadow:0 0 0 4px #86d8fd1d,0 0 18px #73b5ff}
+#j2 h1{font-size:clamp(38px,4.1vw,59px);letter-spacing:-.052em;margin:17px 0 15px;text-wrap:balance}
+#j2 h1 em{background-image:linear-gradient(100deg,#c1a5ff,#7eacff 50%,#80e6ff)}
+#j2 .j2-lead{max-width:625px;color:#c8d3e9}
+#j2 .j2-button{border-radius:13px;min-height:47px;padding:12px 19px}
+#j2 .j2-button--primary{background:linear-gradient(110deg,#8f6bff,#538cfa);box-shadow:0 10px 30px #7768ff38}
+#j2 .j2-journey{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:21px;
+ color:#b6c9e7;font-size:12px}
+#j2 .j2-journey span:not(.j2-journey-arrow){display:flex;align-items:center;gap:8px}
+#j2 .j2-journey b{display:grid;place-items:center;width:25px;height:25px;border-radius:9px;border:1px solid #6d83b878;
+ color:#bdc9ff;background:#6c78e421;font-size:10px}
+#j2 .j2-journey-arrow{color:#758cb9}
+#j2 .j2-proofnote{margin-top:16px;color:#a7b9d5}
+#j2 .j2-visual{min-height:222px;display:grid;place-items:center}
+#j2 .j2-visual img{max-height:170px;max-width:183px;position:absolute;bottom:4px;right:3px;
+ filter:drop-shadow(0 16px 25px #040a179a);border-radius:20px}
+#j2 .j2-visual-panel{position:relative;width:100%;height:218px;border:1px solid #899fd058;border-radius:23px;
+ background:linear-gradient(158deg,#ffffff16,#849df307 42%,#231a4b4d 98%);box-shadow:0 24px 60px #030b1c85,inset 0 1px #ffffff21;
+ overflow:hidden;backdrop-filter:blur(5px)}
+#j2 .j2-visual-panel:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 68% 65%,#866fff45,transparent 49%);pointer-events:none}
+#j2 .j2-visual-top{display:flex;align-items:center;gap:9px;border-bottom:1px solid #8196be3c;padding:15px;
+ font-size:9px;letter-spacing:.11em;color:#b3c2e1}
+#j2 .j2-visual-top span:last-child{margin-left:auto;color:#c4b1ff;font-size:14px}
+#j2 .j2-visual-led{width:7px;height:7px;border-radius:50%;background:#81d9f5;box-shadow:0 0 13px #81d9f58b}
+#j2 .j2-visual-caption{position:relative;z-index:1;padding:24px 18px}
+#j2 .j2-visual-caption strong{display:block;color:#f6f7ff;font-size:23px;line-height:1.45;letter-spacing:-.04em}
+#j2 .j2-visual-caption small{display:block;color:#b1c1df;font-size:10px;margin-top:15px;letter-spacing:.06em}
+#j2 .j2-project{border:1px solid #e0e7f7;border-radius:19px;box-shadow:0 7px 25px #273c6710;
+ background:linear-gradient(180deg,#fff,#fcfdff)}
+#j2 .j2-project:hover,#j2 .j2-project:focus-within{border-color:#9caefa;box-shadow:0 19px 44px #303ca521}
+#j2 .j2-project-action{background:linear-gradient(90deg,#f1edff,#eaf3ff);color:#534cc4;font-weight:850}
+#j2 .j2-project-action:hover,#j2 .j2-project-action:focus-visible{background:#e4e3ff}
+#j2 .j2-study-path,#j2 .j2-shortcut{box-shadow:0 5px 25px #2c3d670a}
+#j2 .j2-after-projects{border-top-color:#e0e7f5}
+@media(max-width:760px){
+ #j2 .j2-hero{grid-template-columns:1fr;padding-top:27px;padding-bottom:31px;gap:15px}
+ #j2 .j2-visual{display:none}
+ #j2 .j2-journey{gap:7px 9px;margin-top:17px;font-size:11px}
+ #j2 .j2-journey b{width:23px;height:23px}
+ #j2 .j2-journey-arrow{font-size:10px}
+ #j2 .j2-mast:after{background-size:34px 34px}
+}
+@media(max-width:360px){#j2 .j2-journey{gap:6px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){#j2 .j2-visual img,#j2 .j2-project{transition:none;animation:none}}
+
 """
 
 
@@ -283,8 +340,16 @@ def render_portal(cases: list[dict]) -> str:
         '<div class="j2-actions">'
         '<a class="j2-button j2-button--primary" href="#j2-opportunities">直接看项目 ↓</a>'
         '<a class="j2-button" href="/discover/">按方向找项目 →</a></div>'
+        '<div class="j2-journey" aria-label="见势三步研究路径">'
+        '<span><b>01</b> 发现方向</span><span class="j2-journey-arrow" aria-hidden="true">→</span>'
+        '<span><b>02</b> 核查依据</span><span class="j2-journey-arrow" aria-hidden="true">→</span>'
+        '<span><b>03</b> 决定下一步</span></div>'
         '<p class="j2-proofnote">先看模式，再看风险。历史案例不代表照着做就能赚钱；概念配图不是项目证明。</p></div>'
-        '<div class="j2-visual"><img width="800" height="650" fetchpriority="high"'
+        '<div class="j2-visual"><div class="j2-visual-panel" aria-hidden="true"><div class="j2-visual-top">'
+        '<span class="j2-visual-led"></span><span>JIANSHI / RESEARCH</span><span>✦</span></div>'
+        '<div class="j2-visual-caption"><strong>让每一个想法<br>都有依据。</strong>'
+        '<small>Discover · Verify · Decide</small></div></div>'
+        '<img width="800" height="650" fetchpriority="high"'
         ' decoding="async" alt="AI 生成的见势 2.0 概念主视觉，非真实项目案例或企业客户"'
         ' src="' + image + '"></div></div></div>'
         '<div class="j2-wrap j2-content">'
