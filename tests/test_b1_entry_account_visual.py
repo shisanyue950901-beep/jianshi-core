@@ -3,14 +3,16 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"scripts"/"release"))
 from p423_build_project_proofs import parse_cases
 from p425_public_admission import eligible_cases
 from p445_unified_home import build_home
-from p412_build_public import assert_safe_source
+from p412_build_public import assert_safe_source, publish_account_preview
 
 
 def builder():
@@ -65,6 +67,23 @@ class B1EntryAccountVisual(unittest.TestCase):
         self.assertNotIn('name="password"',page)
         self.assertNotIn("data-password-form",page)
         self.assertNotIn("action=\"http",page)
+
+    def test_public_preview_is_static_separate_and_auth_route_stays_redirect(self):
+        from p412_build_public import safe_redirect
+        with tempfile.TemporaryDirectory() as temp:
+            with patch("p412_build_public.OUTPUT",Path(temp)):
+                publish_account_preview()
+            doc=(Path(temp)/"account/preview/index.html").read_text(encoding="utf-8")
+            self.assertIn('class="account-entry-shell"',doc)
+            self.assertIn('href="https://jianshi-bua.pages.dev/account/preview/"',doc)
+            self.assertIn("noindex,nofollow",doc)
+            self.assertIn('button type="button" disabled',doc)
+            self.assertNotIn("data-auth-email-form",doc)
+            self.assertNotIn("<form",doc)
+        source=(ROOT/"scripts/release/p412_build_public.py").read_text(encoding="utf-8")
+        self.assertIn('"account": "/"',source)
+        self.assertIn("safe_redirect(target)",source)
+        self.assertIn('href="/discover/"',doc)
 
     def test_account_styles_are_responsive_and_scoped(self):
         css=(ROOT/"web"/"static"/"styles.css").read_text(encoding="utf-8")
