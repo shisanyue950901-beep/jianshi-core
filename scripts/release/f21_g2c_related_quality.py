@@ -100,10 +100,11 @@ def render_related(route: str) -> str:
         + '</span><span class="g2c-action">继续阅读 ↗</span></a>'
         for target, title, reason in rows
     )
-    if route == "/discover/":
+    if route == "/discover/" or route.startswith("/solutions/"):
+        heading = "还想继续比较？" if route == "/discover/" else "相关内容和下一步"
         return (
             '<section class="g2c-related g2c-related-compact" aria-label="相关内容与下一步">'
-            '<details><summary>还想继续比较？</summary>'
+            '<details><summary>' + e(heading) + '</summary>'
             '<div class="g2c-links">' + cards + '</div>'
             '<p class="g2c-intro">链接仅指向已公开内容，不代表在线服务、课程或商单已开放。</p>'
             '</details></section>'
