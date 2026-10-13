@@ -24,14 +24,14 @@ class TestP423NamedEvidence(unittest.TestCase):
         self.assertEqual(report["public_pages"],4)
         html=(DIST/"projects/index.html").read_text(encoding="utf-8")
         self.assertEqual(len(re.findall(r'href="/projects/[a-z0-9-]+/"',html)),3)
-        self.assertIn("产品存在",html)
-        self.assertIn("待补证据优先",html)
-        self.assertIn("证据层级优先",html)
+        self.assertIn("公开定价不等于真实成交",html)
+        self.assertIn("还需核实较多",html)
+        self.assertIn("资料更完整",html)
         profiles=list((DIST/"projects").glob("*/index.html"))
         self.assertEqual(len(profiles),3)
         for p in profiles:
             s=p.read_text(encoding="utf-8")
-            for marker in ("官方依据","收费机制：有公开说明","真实交易／客户：待独立核实",
+            for marker in ("官方依据","收费方式有公开介绍","实际客户数量还不清楚",
                            "打开项目官方网站",
                            "打开产品／收费核对依据","独立客户需求"):
                 if marker == "官方依据":
@@ -39,9 +39,9 @@ class TestP423NamedEvidence(unittest.TestCase):
                 else:
                     self.assertIn(marker,s,str(p))
             if p.parent.name == "nerdwallet":
-                self.assertIn("历史公司级财务：有监管披露",s)
+                self.assertIn("这家公司有历史财报",s)
             elif p.parent.name in ("plausible","carrd"):
-                self.assertIn("历史收入：创始人／企业公开自述",s)
+                self.assertIn("企业曾公开谈过收入",s)
             else:
                 self.assertIn("利润／经营成果：待独立核实",s)
             self.assertIn('rel="noopener noreferrer"',s)
