@@ -162,7 +162,7 @@ def ui_founder_start(page, base: str):
             "Second demonstration direction missing")
     require(page.locator("#service-plan li").count()==4, "7-day plan should have 4 tasks")
     require(page.locator("#service-copy").is_enabled(), "Copy must enable after generation")
-    require(page.locator("#service-result a[href^='/research/']").count()==2,
+    require(page.locator(".service-picks a[href^='/research/']").count()==2,
             "Recommended direction links must lead to public model records")
     page.locator("#service-skill").select_option("writing")
     page.locator("#service-preference").select_option("content")
