@@ -28,6 +28,7 @@ OUT = ROOT / "browser-smoke-evidence"
 VIEWPORTS = (390, 1440)
 ROUTES = {
     "/": "home",
+    "/start/": "founder-research-start",
     "/projects/": "company-directory",
     "/discover/": "discover",
     "/projects/carrd/": "carrd-detail",
@@ -139,6 +140,43 @@ def ui_secondary_mobile_menu(page, base: str, width: int):
                         full_page=False, animations="disabled", timeout=8000)
         summary.click()
         require(not popup.is_visible(), f"{route}: menu can't close")
+
+
+def ui_founder_start(page, base: str):
+    page.goto(base + "/start/",wait_until="load")
+    require(page.locator("#service-skill").is_visible(), "Service question missing")
+    require(page.locator("select[id^='service-']").count()==3,
+            "Three-choice research flow changed")
+    require(page.locator("#service-empty").is_visible(), "Empty research state missing")
+    require(page.locator("#service-copy").is_disabled(), "Copy should be disabled before card")
+    page.locator("#service-generate").click()
+    require("请选择三个问题" in page.locator("#service-message").inner_text(),
+            "Unanswered questions must be handled")
+    page.locator("#service-demo").click()
+    choices=page.locator(".service-pick")
+    require(choices.count()==2, "Demonstration must produce exactly two research directions")
+    first=choices.nth(0)
+    require("靠专业服务接项目" in first.inner_text(),
+            "Demonstration does not use reviewed agency model")
+    require(choices.nth(1).get_by_text("卖模板、资料和数字工具").is_visible(),
+            "Second demonstration direction missing")
+    require(page.locator("#service-plan li").count()==4, "7-day plan should have 4 tasks")
+    require(page.locator("#service-copy").is_enabled(), "Copy must enable after generation")
+    require(page.locator("#service-result a[href^='/research/']").count()==2,
+            "Recommended direction links must lead to public model records")
+    page.locator("#service-skill").select_option("writing")
+    page.locator("#service-preference").select_option("content")
+    page.locator("#service-resource").select_option("low")
+    page.locator("#service-generate").click()
+    require("做内容，再通过推荐赚钱" in choices.nth(0).inner_text(),
+            "Different preferences must change the first direction")
+    require("写书并在线销售" in choices.nth(1).inner_text(),
+            "Different preferences must change the second direction")
+    page.locator("#service-reset").click()
+    require(page.locator("#service-empty").is_visible(), "Reset must restore empty guidance")
+    require(page.locator("#service-result").is_hidden(), "Reset left sensitive result visible")
+    require(page.locator("#service-copy").is_disabled(), "Reset left copy enabled")
+    require(page.locator("#service-skill").input_value()=="", "Reset did not clear choices")
 
 
 def ui_home(page, base: str, mobile: bool):
@@ -367,6 +405,9 @@ def main():
                           viewport=width, page=page)
                 check("subpage-mobile-menu-surface-and-toggle",
                       lambda: ui_secondary_mobile_menu(page, base, width),
+                      viewport=width, page=page)
+                check("founder-3-questions-to-research-plan",
+                      lambda: ui_founder_start(page, base),
                       viewport=width, page=page)
                 check("home-menu-and-navigation", lambda: ui_home(page, base, width == 390),
                       viewport=width, page=page)
