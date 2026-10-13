@@ -17,6 +17,7 @@ from p429_build_source_atlas import build as build_source_atlas
 from p445_unified_home import build_home as build_jianshi2_home
 from p446_content_hubs import publish as publish_content_hubs, PAGES as CONTENT_PAGES
 from p448_v2_local_drafts import publish as publish_v2_drafts, PAGES as DRAFT_PAGES
+from p449_plain_business_models import simplify as simplify_business_research, MODEL_SUMMARIES
 from f21_g2_discovery import publish as publish_discovery, ROUTE as DISCOVER_ROUTE
 from f21_g2c_related_quality import audit_release as audit_g2c_release
 
@@ -152,6 +153,11 @@ def publish_public_research_appendix() -> int:
                 f'{SITE}/research/{slug}/')
         if '/opportunity/' in markup and ('href="/opportunity/' in markup or f'{SITE}/opportunity/' in markup):
             raise RuntimeError("Research appendix still links to legacy redirects")
+        # Front-end words are deliberately simpler than the historical data.
+        # Only transform approved public mirrors, after anonymization checks.
+        if set(MODEL_SUMMARIES) != set(RESEARCH_SLUGS):
+            raise RuntimeError("B1 model editorial cards lost approved research alignment")
+        markup = simplify_business_research(markup, None if is_index else src.parent.name)
         target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(markup,encoding="utf-8")
     return len(RESEARCH_SLUGS)
