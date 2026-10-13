@@ -1,0 +1,80 @@
+{
+  "version": "B0-2026-10-13",
+  "status": "STRATEGY_APPROVED_VALIDATION_PENDING",
+  "positioning": "面向中国个人创业者的商业机会发现与决策平台",
+  "brand_promise": "发现机会，让机会变成生意。",
+  "primary_business": {
+    "id": "opportunity_intelligence",
+    "name": "个人创业机会发现",
+    "audience": "个人创业者、一人公司、小团队",
+    "priority": 1,
+    "ratio_target_pct": 65,
+    "core_entities": [
+      "OPPORTUNITY",
+      "EVIDENCE",
+      "CASE",
+      "TOPIC",
+      "SIGNAL"
+    ],
+    "north_star": "有效机会研究用户每周重复研究行为",
+    "leading_metrics": [
+      "详情有效阅读",
+      "第二条机会浏览",
+      "7日回访",
+      "研究有用性反馈"
+    ],
+    "real_users_confirmed": false
+  },
+  "secondary_business": {
+    "id": "sme_ai_adoption",
+    "name": "中小企业 AI 落地服务验证",
+    "audience": "有明确业务问题、愿意试点且无成熟AI实施团队的中小企业",
+    "priority": 2,
+    "ratio_target_pct": 25,
+    "trial_mode": "MANUAL_DIAGNOSIS_AND_SCOPED_POC",
+    "initial_vertical_hypothesis": "电商内容生产与流程自动化",
+    "leading_metrics": [
+      "合格需求访谈",
+      "有预算的真实需求",
+      "实际报价接受",
+      "付费诊断或PoC",
+      "交付验收与直接成本"
+    ],
+    "enterprise_revenue_assumed": false
+  },
+  "shared_foundation": {
+    "ratio_target_pct": 10,
+    "enabled_work": "必要安全维护及证据与来源质量",
+    "new_features": "ONLY_WHEN_USER_VALUE_REQUIRES"
+  },
+  "stage_goals": {
+    "opportunity_real_target_users": 30,
+    "opportunity_min_repeat_usage_observation_days": 7,
+    "enterprise_interviews": 15,
+    "enterprise_verified_providers": 3,
+    "enterprise_paid_poc_target": 1,
+    "window_days": 90,
+    "all_goals_are": "EXPERIMENT_ASSUMPTIONS_NOT_RESULTS"
+  },
+  "delivery_constraints": {
+    "new_live_auth": false,
+    "staging_flags_change": false,
+    "production_writes": false,
+    "cloudflare_worker_deploy": false,
+    "open_marketplace": false,
+    "self_custody_payments": false,
+    "unverified_supplier_publication": false,
+    "fictional_reviews_or_cases": false,
+    "private_user_data_from_static_pages": false,
+    "third_party_listing_mirror": false,
+    "p441_schedule_change": false
+  },
+  "strategy_revision_requires": "EXPLICIT_USER_DECISION",
+  "release_gate": "NO_PRODUCT_DEPLOYMENT_IN_B0",
+  "reference_docs": [
+    "docs/P33_PRODUCT_FRAMEWORK_FREEZE.md",
+    "docs/P35_BUSINESS_MODEL_AUDIT_AND_5Y_ROADMAP.md",
+    "docs/JIANSHI2_F1_PRODUCT_UI_FREEZE_20261011.md",
+    "docs/F21_00_PRODUCT_PAGES_AND_G0_AUDIT_CN.md"
+  ]
+}
