@@ -103,7 +103,7 @@ class G2CContentQuality(unittest.TestCase):
                 audit_release(root)
             lost.write_text(shell("/sources/"),encoding="utf-8")
             first=root/"academy/index.html"
-            first.write_text(shell("/academy/").replace('class="g2c-related"','class="lost-section"'),
+            first.write_text(shell("/academy/").replace('class="g2c-related g2c-related-compact"','class="lost-section"'),
                              encoding="utf-8")
             with self.assertRaisesRegex(RuntimeError,"integrity failure"):
                 audit_release(root)
