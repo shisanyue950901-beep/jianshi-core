@@ -19,6 +19,7 @@ from p445_unified_home import build_home as build_jianshi2_home
 from p446_content_hubs import publish as publish_content_hubs, PAGES as CONTENT_PAGES
 from p448_v2_local_drafts import publish as publish_v2_drafts, PAGES as DRAFT_PAGES
 from p449_plain_business_models import simplify as simplify_business_research, MODEL_SUMMARIES
+from p450_founder_start import publish as publish_founder_start, ROUTE as FOUNDER_START_ROUTE
 from f21_g2_discovery import publish as publish_discovery, ROUTE as DISCOVER_ROUTE
 from f21_g2c_related_quality import audit_release as audit_g2c_release
 
@@ -244,6 +245,9 @@ def build_release() -> dict:
     discovery_entries = publish_discovery(OUTPUT)
     if discovery_entries != 17:
         raise RuntimeError("G2-A public discovery catalogue incomplete")
+    founder_start_pages = publish_founder_start(OUTPUT)
+    if founder_start_pages != 1:
+        raise RuntimeError("Founder self-service research entrance missing")
     # Validate rendered public page structure and all curated internal next-step links.
     # This is a mechanical audit, not a claim of factual/editorial approval.
     related_quality = audit_g2c_release(OUTPUT)
@@ -290,6 +294,7 @@ def build_release() -> dict:
         + ''.join(f'<url><loc>{SITE}/{route}</loc></url>' for route in CONTENT_PAGES)
         + ''.join(f'<url><loc>{SITE}/{route}</loc></url>' for route in DRAFT_PAGES)
         + f'<url><loc>{SITE}/{DISCOVER_ROUTE}</loc></url>'
+        + f'<url><loc>{SITE}/{FOUNDER_START_ROUTE}</loc></url>'
         +         '</urlset>\n'
     )
     (OUTPUT / "sitemap.xml").write_text(sitemap, encoding="utf-8")
@@ -317,6 +322,7 @@ def build_release() -> dict:
         "anonymous_studies": anonymous_studies,
         "public_content_guides": content_guides,
         "discovery_entries": discovery_entries,
+        "founder_start_pages": founder_start_pages,
         "g2c_related_quality": related_quality,
         "local_draft_tools": local_draft_tools,
         "legacy_redirects": len(destinations),
