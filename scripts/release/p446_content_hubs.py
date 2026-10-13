@@ -187,8 +187,9 @@ def block(title: str, lines: tuple[str, ...], caption: str = "") -> str:
 
 def section(title: str, intro: str, body: str, label: str = "使用说明") -> str:
     return ('<section class="section"' + (' id="delivery"' if label == "02 / DELIVERY PROCESS" else "")
-            + '><h2>' + e(title) + '</h2><p class="lead">'
-            + e(intro) + '</p>' + body + '</section>')
+            + '><h2>' + e(title) + '</h2>'
+            + ('<p class="lead">' + e(intro) + '</p>' if intro else '')
+            + body + '</section>')
 
 
 def shell(path: str, title: str, description: str, label: str, body: str,
@@ -196,6 +197,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
     if path not in PAGES:
         raise ValueError("Unregistered public page")
     buttons = ''.join('<a class="btn ' + ("primary" if i == 0 else "") + '" href="' + e(href) + '">' + e(text) + ' ↗</a>' for i, (text, href) in enumerate(actions))
+    buttons_markup = '<div class="hero-links">' + buttons + '</div>' if buttons else ''
     current = "/" + path
     catalogue = path == "solutions/"
     guided = path in ("marketplace/", "talent/", "academy/")
@@ -222,7 +224,7 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
         + kicker
         + '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
-        '<div class="hero-links">' + buttons + '</div></div></div>'
+        + buttons_markup + '</div></div>'
         '<div class="wrap content">'
         '<div class="status">' + status + '</div>'
         + body + render_related(current) + '</div></main>' + site_footer()
