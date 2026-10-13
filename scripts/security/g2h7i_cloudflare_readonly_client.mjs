@@ -107,7 +107,7 @@ export async function inspectCloudflareReadOnly({
   attachedToCandidate=routes.result.filter(r=>r.script===TARGET).length;
  }
  const coverage=zoneId?'ACCOUNT_AND_SUPPLIED_ZONE_ONLY':'ACCOUNT_ONLY_ZONE_UNVERIFIED';
- const status=exists||attachedToCandidate?
+ const status=exists||projects.includes(TARGET)||attachedToCandidate?
   'EXISTING_WORKER_OR_ROUTE_REQUIRES_MANUAL_REVIEW':
   'NO_TARGET_SEEN_IN_LIMITED_READONLY_SCOPE';
  return Object.freeze({
@@ -131,9 +131,12 @@ export async function inspectCloudflareReadOnly({
 }
 // Redacted summary. Never serialize raw API payload, account IDs or tokens.
 export function summarizeReadOnlyOutcome(outcome){
- return Object.freeze({
-  ...outcome,
-  // Explicitly prevent new response properties when changed upstream.
-  safeToDeploy:false,accountAuthEnabled:false,containsCredentials:false
- });
+ const fields=['source','coverage','status','candidateWorkerDetected',
+  'mainPagesProjectDetected','candidatePagesProjectDetected',
+  'workersObserved','pagesProjectsObserved','zoneRoutesObserved',
+  'targetRoutesObserved','requestsMade'];
+ const selected=Object.fromEntries(fields.map(k=>[k,outcome[k]]));
+ return Object.freeze({...selected,cloudflarePreviewDeployedVerified:false,
+  identityPermissionScopeVerified:false,safeToDeploy:false,
+  accountAuthEnabled:false,containsCredentials:false});
 }
