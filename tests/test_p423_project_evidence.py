@@ -31,7 +31,7 @@ class TestP423NamedEvidence(unittest.TestCase):
         self.assertEqual(len(profiles),3)
         for p in profiles:
             s=p.read_text(encoding="utf-8")
-            for marker in ("官方依据","收费方式有公开介绍","实际客户数量还不清楚",
+            for marker in ("官方依据","收费机制：有公开说明","真实交易／客户：待独立核实",
                            "打开项目官方网站",
                            "打开产品／收费核对依据","独立客户需求"):
                 if marker == "官方依据":
