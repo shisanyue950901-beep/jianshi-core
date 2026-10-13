@@ -37,6 +37,7 @@ ROUTES = {
     "/academy/": "academy",
     "/marketplace/brief/": "demand-draft",
     "/talent/portfolio/": "portfolio-draft",
+    "/account/": "registration-preview",
 }
 results: list[dict] = []
 
@@ -204,6 +205,22 @@ def ui_academy(page, base: str):
     require("1 / 3" in agent.inner_text(), "Academy progress count did not update")
 
 
+def ui_account_preview(page, base: str):
+    page.goto(base + "/account/", wait_until="load")
+    require(page.locator(".account-entry-shell").count() == 1,
+            "Registration visual shell missing")
+    require(page.get_by_text("邮箱注册／登录 · 即将开放").is_visible(),
+            "Closed registration preview unavailable")
+    require(page.locator(".account-form-preview button").is_disabled(),
+            "Closed registration must not have an active submit button")
+    require(page.locator("form").count() == 0,
+            "Fail-closed account route rendered a live form")
+    require(page.locator('input[type="email"]').count() == 0,
+            "Account must not collect email before SMTP/auth gates")
+    page.locator(".account-back-link").click()
+    require(page.url.endswith("/discover/"), "Account browse-without-login link failed")
+
+
 def ui_draft(page, base: str, kind: str):
     route = "/marketplace/brief/" if kind == "marketplace" else "/talent/portfolio/"
     page.goto(base + route, wait_until="load")
@@ -283,6 +300,9 @@ def main():
                       viewport=width, page=page)
                 check("portfolio-draft-edit-generate-clear",
                       lambda: ui_draft(page, base, "talent"),
+                      viewport=width, page=page)
+                check("registration-preview-disabled",
+                      lambda: ui_account_preview(page, base),
                       viewport=width, page=page)
                 check("script-runtime-errors",
                       lambda: require(not js_errors, " | ".join(js_errors[:4])),
