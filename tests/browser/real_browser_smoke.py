@@ -32,6 +32,7 @@ ROUTES = {
     "/discover/": "discover",
     "/projects/carrd/": "carrd-detail",
     "/solutions/": "solutions",
+    "/solutions/automation/": "automation-solution",
     "/marketplace/": "marketplace",
     "/talent/": "talent",
     "/academy/": "academy",
@@ -164,6 +165,10 @@ def ui_discover(page, base: str):
 
 def ui_solutions(page, base: str):
     page.goto(base + "/solutions/", wait_until="load")
+    require(page.locator(".solution-journey span").count() == 5,
+            "Solution process overview lost")
+    require(page.locator(".solution-icon").count() == 4,
+            "Four styled solution directions missing")
     cards = page.locator("[data-f21-solution]:visible")
     require(cards.count() == 4, f"Expected four AI directions; got {cards.count()}")
     reset = page.locator("#f21-reset")
@@ -179,6 +184,23 @@ def ui_solutions(page, base: str):
     require(page.locator("#f21-empty").is_visible(), "Solutions no-result helper missing")
     reset.click()
     require(cards.count() == 4 and not reset.is_visible(), "Solutions reset failed")
+
+
+def ui_solution_detail(page, base: str):
+    page.goto(base + "/solutions/automation/", wait_until="load")
+    require(page.locator(".solution-journey span").count() == 5,
+            "Detailed solution visual process missing")
+    require(page.locator(".solution-detail-guide").count() == 1,
+            "Detailed content branding lost")
+    require(page.locator("#delivery").count() == 1,
+            "Evidence-grounded delivery checklist missing")
+    fold = page.locator(".solution-technical")
+    require(not fold.get_attribute("open"), "Technical guidance should be folded by default")
+    fold.locator("summary").click()
+    require(fold.get_attribute("open") is not None,
+            "Solution implementation steps did not expand")
+    require(page.locator('a[href="/marketplace/brief/"]').count() >= 1,
+            "Local-only preparation draft link is missing")
 
 
 def ui_guides(page, base: str, route: str, tool: str):
@@ -243,6 +265,12 @@ def ui_draft(page, base: str, kind: str):
     )
     for selector, value in fields:
         page.locator(selector).fill(value)
+    progress = page.locator("#draft-progress")
+    bar = page.locator("#draft-progress-bar")
+    require("3 / 7" in progress.inner_text(),
+            f"{kind} 3/7 fields did not update immediately")
+    require(bar.evaluate("(el) => el.style.width") == "43%",
+            f"{kind} bar should be 43% at 3/7, got {bar.get_attribute('style')}")
     page.locator("#draft-generate").click()
     require(page.locator("#draft-preview").inner_text().strip(),
             f"{kind} draft generation yielded no preview")
@@ -251,6 +279,9 @@ def ui_draft(page, base: str, kind: str):
     page.locator("#draft-clear").click()
     require(all(page.locator(selector).input_value() == "" for selector, _ in fields),
             f"{kind} draft clear did not erase input")
+    require("0 / 7" in progress.inner_text(), f"{kind} completion did not reset")
+    require(bar.evaluate("(el) => el.style.width") == "0%",
+            f"{kind} bar did not reset")
 
 
 def main():
@@ -294,6 +325,9 @@ def main():
                 check("discover-search-and-folds", lambda: ui_discover(page, base),
                       viewport=width, page=page)
                 check("solutions-filter", lambda: ui_solutions(page, base),
+                      viewport=width, page=page)
+                check("solution-detail-evidence-and-technical-fold",
+                      lambda: ui_solution_detail(page, base),
                       viewport=width, page=page)
                 check("marketplace-checklist-to-local-draft",
                       lambda: ui_guides(page, base, "/marketplace/", "/marketplace/brief/"),
