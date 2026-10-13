@@ -115,7 +115,7 @@ def render_decision_panel(data: dict) -> str:
         f'<li><b>先做需求实验</b><p>{t("first_step")}</p></li>'
         f'<li><b>明确继续投入前缺少的证据</b><p>{t("blocking_evidence")}</p></li>'
         f'<li><b>继续核对原企业经营资料</b><p>{t("company_followup")}</p></li>'
-        '</ol></div>'
+        '</ol><a class="decision-workbook-link" href="#founder-workbook">填写创业验证工作单 ↓</a></div>'
         '<p class="decision-disclaimer">注意：原企业历史营收、收费方案或技术活跃度'
         '均不能证明新进入者能获得付费客户；具体预算、获客成本和可复制性未经独立验证。</p>'
         '</section>'
@@ -129,4 +129,71 @@ def render_decision_listing(data: dict) -> str:
         + escape(data["fit_label"],quote=True)
         + '<br><b>待补验证：</b>' + escape(data["blocking_evidence"],quote=True)
         + '</span>'
+    )
+
+
+def render_founder_workbook(case: dict) -> str:
+    """Editable-by-hand, printable research prompts; never collect user data.
+
+    Each case must pass P4.40 source and fit gates. Buyer/pricing are the
+    existing reviewed editorial descriptions, not verified new sales facts.
+    """
+    data = decision_data(case)
+    for field in ("buyer", "revenue"):
+        if not isinstance(case.get(field), str) or len(case[field].strip()) < 8:
+            raise RuntimeError("B1-A03: incomplete public research workbook: " + field)
+    def e(value: str) -> str:
+        return escape(value, quote=True)
+    # Do not invite a beginner to replicate a mature company merely because
+    # its historical consolidated financial statements were available.
+    if data["fit_status"] == "NOT_SOLO_STARTUP":
+        go_boundary = ("仅研究商业机制，不建议以此大型企业作为一人起步项目；"
+                       "先提出一个不同且更小的独立客户问题，再考虑实验。")
+    elif data["fit_status"] == "SKILL_GATED":
+        go_boundary = ("若没有开发、运维与数据安全能力，不进入产品搭建或付费部署；"
+                       "先寻找可评估的客户问题及技术合作条件。")
+    else:
+        go_boundary = ("仅在真实客户问题、付费意愿与交付能力出现一手证据之后，"
+                       "再决定是否投入开发；没有证据就缩小范围或停止。")
+    return (
+        '<section class="founder-workbook section" id="founder-workbook" '
+        'aria-labelledby="founder-workbook-title">'
+        '<span class="decision-eyebrow">FOUNDER WORKBOOK / 个人验证工作单</span>'
+        '<h2 id="founder-workbook-title">把项目研究，变成四个可核实的问题</h2>'
+        '<p class="workbook-intro">这是一份可直接打印或手动记录的研究工作单。'
+        '平台不采集填写内容，也不保存联系人；'
+        '案例资料属于历史证据，下面的提问不是实际采访或创业成功证明。</p>'
+        '<div class="workbook-steps">'
+        '<article class="workbook-step"><span>01 / 用户问题</span>'
+        '<h3>谁可能需要这类服务？</h3>'
+        f'<p><b>现有编辑研究描述：</b>{e(case["buyer"])}</p>'
+        '<p>请写下你能够合法接触到的细分人群，以及他们正在怎样解决问题。</p>'
+        '<div class="workbook-blank">我准备采访的客户类型／实际困扰：'
+        '<span>________________________________________</span></div></article>'
+        '<article class="workbook-step"><span>02 / 付费验证</span>'
+        '<h3>有人真实愿意付费吗？</h3>'
+        f'<p><b>现有公开收费描述：</b>{e(case["revenue"])}</p>'
+        '<p>公开价格不等于成交。区分口头喜欢、愿意试用、正式报价和真实付款。</p>'
+        '<div class="workbook-blank">我看到的一手付费证据／尚未知晓：'
+        '<span>________________________________________</span></div></article>'
+        '<article class="workbook-step"><span>03 / 资源边界</span>'
+        '<h3>我是否具备必要能力与交付资源？</h3>'
+        f'<p><b>可能需要的技能：</b>{e(data["skills"])}</p>'
+        f'<p><b>成本不确定性：</b>{e(data["capital_uncertainty"])}</p>'
+        '<p>记录真实的时间、工具费用、获客与维护投入；没有依据就填未知。</p>'
+        '<div class="workbook-blank">我能验证的成本／需要补齐的能力：'
+        '<span>________________________________________</span></div></article>'
+        '<article class="workbook-step"><span>04 / 最小实验</span>'
+        '<h3>先验证什么，什么情况下停止？</h3>'
+        f'<p><b>已审核的研究第一步：</b>{e(data["first_step"])}</p>'
+        f'<p><b>仍缺的关键证据：</b>{e(data["blocking_evidence"])}</p>'
+        f'<p><b>继续／暂停边界：</b>{e(go_boundary)}</p>'
+        '<div class="workbook-blank">我定义的可否定实验与截止条件：'
+        '<span>________________________________________</span></div></article>'
+        '</div>'
+        '<p class="workbook-fineprint"><b>研究判断：</b>'
+        f'{e(data["fit_label"])}。这不是投资建议、收益预测、'
+        '平台验证过的市场需求或已完成的客户访谈。'
+        '请勿把个人信息或企业敏感资料发布在公开页面。</p>'
+        '</section>'
     )
