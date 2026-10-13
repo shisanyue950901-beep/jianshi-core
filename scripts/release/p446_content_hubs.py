@@ -274,7 +274,7 @@ def solution_detail(row: dict) -> str:
     )
     body += section(
         "风险与下一步", "这些只是可参考的做法，并不是本站已经完成的客户项目。",
-        '<div class="notice"><h3>使用与责任边界</h3><p>' + e(row["boundary"]) +
+        '<div class="notice"><h3>使用时要注意什么？</h3><p>' + e(row["boundary"]) +
         '</p><p style="margin-top:13px">请避免将未经授权的客户信息、员工个人信息、'
         '商业机密或真实凭证粘贴到公开渠道；需求发布功能启用之前，不在本站采集这些材料。</p>'
         '<a class="btn primary" style="margin-top:22px" href="/marketplace/">查看企业需求模板 ↗</a></div>',
