@@ -31,6 +31,7 @@ CSS = """
   outline:3px solid #a9b8f9;outline-offset:2px}
 .f21-filters button{border:1px solid #bbc6df;border-radius:10px;min-height:44px;background:#f7f8fe;
   color:#344665;font-weight:750;padding:8px 15px;cursor:pointer}
+.f21-filters button[hidden]{display:none}
 .f21-resultline{font-size:12px;color:#677893;margin:10px 0 16px}
 .f21-empty{padding:30px;text-align:center;background:#fff;border:1px dashed #adbdd9;border-radius:15px;color:#576781}
 .f21-catalog-grid [hidden],.f21-empty[hidden]{display:none!important}
@@ -64,8 +65,9 @@ JS = r"""
       card.hidden=!show;
       if(show)visible+=1;
     });
-    feedback.textContent='已找到 '+String(visible)+' / '+String(cards.length)+' 个应用方向';
+    feedback.textContent='找到 '+String(visible)+' 个应用方向';
     empty.hidden=visible!==0;
+    reset.hidden=!q&&category==='all';
   };
   query.addEventListener('input',apply);
   kind.addEventListener('change',apply);
@@ -92,9 +94,9 @@ def filter_panel() -> str:
         ' placeholder="如：电商、短视频、自动化、海外营销"></div>'
         '<div class="f21-filter-field"><label for="f21-category">业务类别</label>'
         '<select id="f21-category">' + options + '</select></div>'
-        '<button type="button" id="f21-reset">清除筛选</button></section>'
+        '<button type="button" id="f21-reset" hidden>清除筛选</button></section>'
         '<p class="f21-resultline" id="f21-results" aria-live="polite">'
-        '当前收录 4 个编辑审核过的应用方向，非真实客户订单。</p>'
+        '找到 4 个应用方向</p>'
     )
 
 

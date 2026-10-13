@@ -131,6 +131,23 @@ h3{font-size:19px;line-height:1.35;margin:0 0 9px;color:#192945}
 .card p,.card li{color:#60708a;font-size:13px;margin:0;line-height:1.85}
 .card strong{display:block;color:#6254bf;font-size:11px;letter-spacing:.08em;margin-bottom:8px}
 .card .go{display:block;margin-top:20px;color:#6357c9;font-weight:800;font-size:13px}
+.solution-hero .wrap{padding:34px 0 41px}
+.solution-hero h1{font-size:clamp(31px,4.4vw,50px);margin:13px 0}
+.solution-problem{font-weight:700;color:#273e60!important;margin:0 0 15px!important}
+.solution-facts{display:grid;gap:8px;padding:12px 0;margin:13px 0 0;border-top:1px solid #e7ebf5}
+.solution-facts div{display:flex;gap:10px;align-items:baseline}
+.solution-facts dt{font-size:12px;color:#64738d;flex:0 0 56px}
+.solution-facts dd{margin:0;font-size:13px;color:#243953;line-height:1.6}
+.solution-warning{font-size:12px!important;color:#705568!important;border-top:1px solid #e7ebf5;padding-top:10px}
+.solution-guide,.solution-technical{margin-top:24px}
+.solution-guide summary,.solution-technical summary{min-height:44px;display:flex;align-items:center}
+.solution-guide summary:focus-visible,.solution-technical summary:focus-visible{outline:3px solid #796ce8;outline-offset:3px}
+.solution-guide li,.solution-technical p{color:#526580;font-size:13px;line-height:1.8}
+.solution-guide a{color:#5548ac;text-decoration:underline;text-underline-offset:3px}
+.solution-technical .cards{margin-top:14px}
+.solution-risk{padding:19px 22px;border:1px solid #d8dfed;background:#f0f3fb;border-radius:17px;margin-top:22px}
+.solution-risk h3{font-size:17px}
+.solution-risk p{font-size:13px;color:#536581;line-height:1.8;margin:7px 0}
 .list{padding-left:19px;margin:0}.list li{margin-bottom:8px}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .step{border-top:2px solid #8572dc;padding:17px 10px 0}
@@ -151,7 +168,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#f0f4fa;border:1px sol
 .footer p{font-size:12px;margin:5px 0;max-width:620px}
 .footer nav{display:flex;gap:16px;flex-wrap:wrap;font-size:12px}.footer nav a{text-decoration:underline;text-underline-offset:4px}
 @media(max-width:1050px){.top .desktop{display:none}.mobile{display:block}.cards.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.wrap{width:calc(100% - 34px)}.hero .wrap{padding:42px 0 62px}.cards,.cards.four,.steps{grid-template-columns:1fr}.section{margin-top:46px}.content{padding-top:32px}.card{padding:20px}.status{padding:12px}.top .row{min-height:62px}th,td{padding:12px;font-size:12px}}
+@media(max-width:650px){.wrap{width:calc(100% - 34px)}.hero .wrap{padding:42px 0 62px}.solution-hero .wrap{padding:24px 0 30px}.cards,.cards.four,.steps{grid-template-columns:1fr}.section{margin-top:46px}.content{padding-top:32px}.card{padding:20px}.status{padding:12px}.top .row{min-height:62px}th,td{padding:12px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card.link{transition:none;transform:none!important}}
 """
 
@@ -170,8 +187,9 @@ def block(title: str, lines: tuple[str, ...], caption: str = "") -> str:
 
 def section(title: str, intro: str, body: str, label: str = "使用说明") -> str:
     return ('<section class="section"' + (' id="delivery"' if label == "02 / DELIVERY PROCESS" else "")
-            + '><h2>' + e(title) + '</h2><p class="lead">'
-            + e(intro) + '</p>' + body + '</section>')
+            + '><h2>' + e(title) + '</h2>'
+            + ('<p class="lead">' + e(intro) + '</p>' if intro else '')
+            + body + '</section>')
 
 
 def shell(path: str, title: str, description: str, label: str, body: str,
@@ -179,10 +197,18 @@ def shell(path: str, title: str, description: str, label: str, body: str,
     if path not in PAGES:
         raise ValueError("Unregistered public page")
     buttons = ''.join('<a class="btn ' + ("primary" if i == 0 else "") + '" href="' + e(href) + '">' + e(text) + ' ↗</a>' for i, (text, href) in enumerate(actions))
+    buttons_markup = '<div class="hero-links">' + buttons + '</div>' if buttons else ''
     current = "/" + path
     catalogue = path == "solutions/"
     guided = path in ("marketplace/", "talent/", "academy/")
     trial_page = path.startswith("solutions/") and not catalogue
+    solution_route = catalogue or trial_page
+    kicker = "" if solution_route else '<span class="kicker">' + e(label) + '</span>'
+    status = (
+        '这里只展示参考方案，暂时不能在网站上购买服务或提交企业需求。'
+        if solution_route else
+        '这里只提供介绍和参考，暂时不能在网站上购买服务、发布订单、接单或观看课程。'
+    )
     return (
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
@@ -194,13 +220,13 @@ def shell(path: str, title: str, description: str, label: str, body: str,
         '<meta property="og:description" content="' + e(description) + '">'
         '<style>' + CSS + render_design_css() + (CATALOG_CSS if catalogue else "") + (GUIDED_CSS if guided or trial_page else "") + RELATED_CSS + '</style></head><body>'
         + site_header(current)
-        + '<main><div class="hero"><div class="wrap">'
+        + '<main><div class="hero' + (' solution-hero' if solution_route else '') + '"><div class="wrap">'
         '<div class="crumb"><a href="/">见势首页</a> / ' + e(label) + '</div>'
-        '<span class="kicker">' + e(label) + '</span>'
-        '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
-        '<div class="hero-links">' + buttons + '</div></div></div>'
+        + kicker
+        + '<h1>' + e(title) + '</h1><p>' + e(description) + '</p>'
+        + buttons_markup + '</div></div>'
         '<div class="wrap content">'
-        '<div class="status">这里只提供介绍和参考，暂时不能在网站上购买服务、发布订单、接单或观看课程。</div>'
+        '<div class="status">' + status + '</div>'
         + body + render_related(current) + '</div></main>' + site_footer()
         + ('<script>' + CATALOG_JS + '</script>' if catalogue else '')
         + ('<script>' + GUIDED_JS + '</script>' if guided else '')
@@ -208,81 +234,134 @@ def shell(path: str, title: str, description: str, label: str, body: str,
     )
 
 
+
+# Public-facing comparisons of existing editorial concepts only. Never clients,
+# signed work, results or pricing. Keep these four records tied to SOLUTIONS.
+CARD_PREVIEWS = {
+    "ecommerce-visual": {
+        "problem": "商品上新频繁，主图和活动图总要重做。",
+        "fit": "需要持续上新、常做活动的电商商家",
+        "result": "主图、详情图和活动海报的样片",
+        "prepare": "商品原图和可使用的素材授权",
+        "risk": "AI 商品图必须核实真实外观",
+    },
+    "brand-video": {
+        "problem": "想做品牌短视频，但脚本和画面难统一。",
+        "fit": "有产品和传播目标的品牌团队",
+        "result": "视频脚本、分镜与概念样片",
+        "prepare": "产品信息和图片、音乐等授权",
+        "risk": "概念视频不能冒充真实拍摄",
+    },
+    "automation": {
+        "problem": "客服、工单和资料整理反复占用人力。",
+        "fit": "流程稳定、能安排人工复核的团队",
+        "result": "可人工接管的工作流测试演示",
+        "prepare": "现有流程、数据授权和负责人员",
+        "risk": "重要决策不能交由 AI 自动执行",
+    },
+    "localization": {
+        "problem": "面向海外市场的内容，直译容易出错。",
+        "fit": "有目标市场和人工审校资源的商家",
+        "result": "多语言文案、术语表与待核实清单",
+        "prepare": "目标语言、真实产品资料和术语",
+        "risk": "必须进行当地语言与合规复核",
+    },
+}
+if set(CARD_PREVIEWS) != {row["slug"] for row in SOLUTIONS}:
+    raise RuntimeError("Solution preview set must match approved solution pages")
+
+
 def solution_link(row: dict) -> str:
     category = category_for_slug(row["slug"])
-    keywords = e(row["name"] + " " + row["tag"] + " " + row["summary"] + " " + row["fit"])
-    return ('<a class="card link" data-f21-solution data-category="' + category
-            + '" data-keywords="' + keywords + '" href="/solutions/' + row["slug"] + '/">'
-            '<strong>' + e(row["tag"]) + '</strong><h3>' + e(row["icon"] + " " + row["name"])
-            + '</h3><p>' + e(row["summary"]) + '</p>'
-            '<span class="go">看看可以怎么用 →</span></a>')
+    preview = CARD_PREVIEWS[row["slug"]]
+    keywords = e(" ".join((row["name"], row["tag"], row["summary"],
+                           row["fit"], *preview.values())))
+    details = "".join(
+        '<div><dt>' + e(title) + '</dt><dd>' + e(preview[key]) + '</dd></div>'
+        for title, key in (("适合谁", "fit"), ("参考成果", "result"), ("先准备", "prepare"))
+    )
+    return (
+        '<a class="card link" data-f21-solution data-category="' + category
+        + '" data-keywords="' + keywords + '" href="/solutions/' + e(row["slug"]) + '/">'
+        '<strong>' + e(row["tag"]) + '</strong>'
+        '<h3>' + e(row["name"]) + '</h3>'
+        '<p class="solution-problem">' + e(preview["problem"]) + '</p>'
+        '<dl class="solution-facts">' + details + '</dl>'
+        '<p class="solution-warning">注意：' + e(preview["risk"]) + '</p>'
+        '<span class="go">查看做法和小测试 →</span></a>'
+    )
 
 
 def solutions_index() -> str:
     body = section(
-        "你想用 AI 解决什么问题？",
-        "先选一个你遇到的问题，看看 AI 有哪些用法。目前只提供介绍，不能在线购买。 ",
-        filter_panel() + '<div class="cards f21-catalog-grid">'
-        + ''.join(solution_link(row) for row in SOLUTIONS) + '</div>'
+        "选一个业务问题",
+        "",
+        filter_panel()
+        + '<div class="cards f21-catalog-grid" id="catalog">'
+        + "".join(solution_link(row) for row in SOLUTIONS) + '</div>'
         + empty_state(),
-        "01 / SOLUTION CATALOG",
     )
-    body += section(
-        "一份有用的企业需求，需要回答什么？",
-        "发布需求前先明确业务目标、可用资料、交付边界和审核人。",
-        '<div class="steps">'
-        '<div class="step"><b>01 · 业务问题</b><h3>描述当前阻碍</h3><p>写清使用场景、实际流程、目标用户和成功判据，不仅写“想用 AI”。</p></div>'
-        '<div class="step"><b>02 · 资源与限制</b><h3>核对可用条件</h3><p>确认输入资料的授权、时间安排、企业系统权限与合规要求。</p></div>'
-        '<div class="step"><b>03 · 试点验收</b><h3>先做最小成果</h3><p>从可复核的样片或沙盒流程开始，再考虑规模化交付。</p></div>'
-        '</div>', "02 / DISCOVERY",
+    body += (
+        '<details class="solution-guide">'
+        '<summary>第一次尝试前，先确认这三件事</summary>'
+        '<ol>'
+        '<li>写清要解决的问题，以及怎样算做成了。</li>'
+        '<li>核实素材使用权、系统权限和负责审核的人。</li>'
+        '<li>先做一份样片或测试流程，人工检查后再考虑扩大。</li>'
+        '</ol>'
+        '<p>需要整理具体要求，可以打开'
+        '<a href="/marketplace/brief/">本地需求草稿</a>。'
+        '它不会提交订单或上传企业资料。</p></details>'
     )
-    body += section("下一步如何准备合作？", "当前是参考指南，不会向平台后台提交数据。",
-                    '<div class="notice"><h3>先整理需求，不必留下敏感信息</h3>'
-                    '<p>需求背景、预期成果、素材授权、交付期限、验收口径和预算约束可先在本地整理。'
-                    '需要的模板在商机大厅指南中；平台正式开放后才会提供经授权的提交与审核入口。</p>'
-                    '<a class="btn primary" style="margin-top:20px" href="/marketplace/">查看需求准备模板 ↗</a></div>',
-                    "03 / NEXT ACTION")
-    return shell("solutions/", "企业能用 AI 做什么？", "从你遇到的业务问题出发，看看 AI 能帮什么忙，需要准备什么，以及要注意什么。", "企业解决方案", body,
-                 (("查看四类 AI 用法", "#catalog"), ("整理业务需求", "/marketplace/"))).replace('<div class="cards f21-catalog-grid">', '<div class="cards f21-catalog-grid" id="catalog">', 1)
+    return shell(
+        "solutions/", "企业能用 AI 做什么？",
+        "看看四种常见业务问题能怎么处理，先比较适合谁、参考成果和需要准备的材料。",
+        "企业解决方案", body,
+    )
 
 
 def solution_detail(row: dict) -> str:
     body = section(
-        "这类 AI 能帮你做什么？", "看看问题和适用条件，再决定要不要尝试。",
+        "这类 AI 能帮你做什么？",
+        "",
         '<div class="cards">'
         '<article class="card"><h3>能解决什么问题？</h3><p>' + e(row["problem"]) + '</p></article>'
         '<article class="card"><h3>什么情况下适合用？</h3><p>' + e(row["fit"]) + '</p></article>'
-        '</div>', "01 / USE CASE",
+        '</div>',
+        "01 / USE CASE",
     )
     body += section(
-        "准备材料与实施步骤", "按具体合同和业务风险调整，不代表平台已经完成任何实际交付。",
+        "先看准备材料和参考成果",
+        "",
         '<div class="cards">'
-        + block("企业需要准备", row["inputs"], "INPUT / REQUIREMENTS")
-        + block("建议实施流程", row["steps"], "PROCESS / PILOT") + '</div>',
+        + block("企业需要准备", row["inputs"])
+        + block("参考交付清单", row["outputs"]) + '</div>',
         "02 / DELIVERY PROCESS",
     )
     body += section(
-        "最终应该拿到什么？", "是否提供源文件、修改次数、使用权、售后或接口文档，均须在实际合作前明确。",
+        "先做一个低风险的小测试",
+        "这是可以自己尝试的步骤，不是已交付的客户案例。",
+        solution_trial(row["slug"]),
+        "03 / SELF PRACTICE",
+    )
+    body += (
+        '<details class="solution-technical">'
+        '<summary>展开实施流程和验收检查</summary>'
         '<div class="cards">'
-        + block("参考交付清单", row["outputs"], "DELIVERABLES")
-        + block("验收与质量检查", row["checks"], "QUALITY GATE") + '</div>',
-        "03 / ACCEPTANCE",
+        + block("建议实施流程", row["steps"])
+        + block("验收与质量检查", row["checks"])
+        + '</div><p>实际交付范围、使用权、修改次数和验收标准，'
+        '应在真实合作前由双方明确。</p></details>'
+        '<aside class="solution-risk" aria-label="使用提醒">'
+        '<h3>使用时要注意什么？</h3><p>' + e(row["boundary"]) + '</p>'
+        '<p>这里只提供参考。不要上传未经授权的客户数据、'
+        '个人信息或商业机密；本站不接收此类需求文件。</p></aside>'
     )
-    body += section(
-        "先做一个低风险的小测试", "先把实践目标与人工复核条件写清，不需要提交客户资料。",
-        solution_trial(row["slug"]), "04 / SELF PRACTICE",
+    return shell(
+        "solutions/" + row["slug"] + "/", row["name"],
+        row["summary"], "解决方案 / " + row["name"], body,
+        (("查看准备材料", "#delivery"), ("返回全部方案", "/solutions/")),
     )
-    body += section(
-        "风险与下一步", "这些只是可参考的做法，并不是本站已经完成的客户项目。",
-        '<div class="notice"><h3>使用时要注意什么？</h3><p>' + e(row["boundary"]) +
-        '</p><p style="margin-top:13px">请避免将未经授权的客户信息、员工个人信息、'
-        '商业机密或真实凭证粘贴到公开渠道；需求发布功能启用之前，不在本站采集这些材料。</p>'
-        '<a class="btn primary" style="margin-top:22px" href="/marketplace/">查看企业需求模板 ↗</a></div>',
-        "04 / SAFETY",
-    )
-    return shell("solutions/" + row["slug"] + "/", row["name"], row["subtitle"] + "。" + row["summary"],
-                 "解决方案 / " + row["name"], body,
-                 (("查看交付与验收", "#delivery"), ("返回方案目录", "/solutions/")))
 
 
 def marketplace_page() -> str:
