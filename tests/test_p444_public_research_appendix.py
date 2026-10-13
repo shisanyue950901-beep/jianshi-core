@@ -56,7 +56,7 @@ class PublicResearchAppendixTests(unittest.TestCase):
             self.assertTrue(path.is_file(),slug)
             html=path.read_text(encoding="utf-8")
             for required in (
-                "先看这门生意怎么做",'id="sample-scope"','id="sample-metrics"',
+                "这门生意怎么赚钱",'id="sample-scope"','id="sample-metrics"',
                 'id="sample-examples"','id="sample-boundary"',
                 "noindex,nofollow","class=\"data-freshness-v2\"",
             ):
