@@ -62,6 +62,16 @@ class PlainBusinessModelTests(unittest.TestCase):
                 self.assertEqual(s.count('id="historical-stats"'),1)
                 self.assertLess(s.index("谁付钱"),s.index('id="historical-stats"'))
                 self.assertIn("不代表新项目的收入、利润或实际工作时间",s)
+                self.assertEqual(s.count("当前分类包含 "),1)
+                self.assertIn("个去重项目案例",s)
+                self.assertLess(s.index('id="historical-stats"'),
+                                s.index("当前分类包含 "))
+                archived=(ROOT/"dist"/"opportunity"/slug/"index.html").read_text(encoding="utf8")
+                original=re.search(r"当前分类包含\s*([\d,]+)\s*个去重项目案例", archived)
+                published=re.search(r"当前分类包含\s*([\d,]+)\s*个去重项目案例", s)
+                self.assertIsNotNone(original)
+                self.assertIsNotNone(published)
+                self.assertEqual(original.group(1),published.group(1))
                 for required in ('id="sample-scope"','id="sample-metrics"',
                                  'id="sample-examples"','id="sample-boundary"',
                                  "data-freshness-v2","匿名案例",
