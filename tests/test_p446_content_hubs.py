@@ -62,7 +62,7 @@ class P446ContentHubs(unittest.TestCase):
 
     def test_solution_directory_all_four_details_and_deliverables(self):
         main = self.pages["solutions/"]
-        self.assertIn("你想用 AI 解决什么问题", main)
+        self.assertIn("选一个业务问题", main)
         self.assertEqual(main.count('class="card link"'), 4)
         self.assertIn('id="catalog"', main)
         for row in hubs.SOLUTIONS:
