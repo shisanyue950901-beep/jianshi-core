@@ -37,7 +37,7 @@ ROUTES = {
     "/academy/": "academy",
     "/marketplace/brief/": "demand-draft",
     "/talent/portfolio/": "portfolio-draft",
-    "/account/": "registration-preview",
+    "/account/preview/": "registration-preview",
 }
 results: list[dict] = []
 
@@ -206,7 +206,7 @@ def ui_academy(page, base: str):
 
 
 def ui_account_preview(page, base: str):
-    page.goto(base + "/account/", wait_until="load")
+    page.goto(base + "/account/preview/", wait_until="load")
     require(page.locator(".account-entry-shell").count() == 1,
             "Registration visual shell missing")
     require(page.get_by_text("邮箱注册／登录 · 即将开放").is_visible(),
