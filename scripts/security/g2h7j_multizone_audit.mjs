@@ -27,7 +27,7 @@ for(const marker of [
  "MAX_ZONES=10",
  "MAX_CALLS=40",
  "'FOREIGN_ZONE_IN_ACCOUNT_LIST'",
- "'ZONES_COVERAGE_UNKNOWN'",
+ "label+'_COVERAGE_UNKNOWN'",
  "'WORKER_DOMAINS_INCOMPLETE'",
  "'ROUTES_COVERAGE_INCOMPLETE'",
  "accountPermissionScopeProven:false",
