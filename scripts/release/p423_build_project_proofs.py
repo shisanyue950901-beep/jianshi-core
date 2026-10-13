@@ -13,7 +13,8 @@ import shutil
 from collections import Counter
 from p425_public_admission import eligible_cases
 from p426_evidence_digest import derive_digest
-from p440_decision_report import decision_data, render_decision_panel, render_decision_listing, render_founder_workbook
+from p440_decision_report import decision_data, render_decision_panel, render_founder_workbook
+from p442_jianshi2_live_home import PROJECT_PREVIEWS
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -155,6 +156,20 @@ footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--mute
 @media(max-width:590px){main{padding-block:26px 60px}h1{font-size:clamp(32px,7vw,45px);margin:10px 0 14px}.lead{font-size:14px;line-height:1.6}.digest{margin:14px 0;padding:15px}.digestgrid{gap:11px}.decision-report{margin:14px 0;padding:15px}.decision-more,.dossier-more,.workbook-fold{padding:0 12px 8px;margin:12px 0}.decision-next p{font-size:14px}.statusgrid{gap:8px}}
 @media print{.dossier-more:not([open]),.workbook-fold:not([open]),.decision-more:not([open]){display:none}}
 
+/* B1-P0: concise project cards using the original blue-violet palette. */
+.directory{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.directory a.case-card{display:flex;flex-direction:column;gap:11px;min-width:0;padding:21px;border-radius:16px}
+.directory a.case-card strong{font-size:20px;line-height:1.4;overflow-wrap:anywhere}
+.directory a.case-card small{margin:0;color:var(--accent);line-height:1.45}
+.directory a .case-facts{display:grid;gap:10px;margin-top:4px}
+.directory a .case-facts p{border-top:1px solid var(--line);padding-top:8px;margin:0;font-size:13px;line-height:1.6;color:var(--ink)}
+.directory a .case-facts b{display:block;margin-bottom:2px;color:var(--accent);font-size:12px}
+.directory a .case-action{margin-top:auto;padding:10px 13px;border-radius:10px;min-height:44px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));color:var(--accent);font-weight:700}
+.case-browse{margin:20px 0 12px;font-size:14px;font-weight:700}
+.case-browse a{display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:900px){.directory{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){header{flex-wrap:wrap;padding-block:14px}header nav{width:100%;flex-wrap:wrap;gap:8px 12px}.directory{grid-template-columns:1fr;margin-top:15px}.directory a.case-card{padding:18px}.case-browse{margin:10px 0}}
+
 """
 
 def txt(value: object) -> str:
@@ -246,7 +261,7 @@ def shell(title: str, desc: str, body: str, canonical: str) -> str:
 <meta name="referrer" content="no-referrer"><meta name="description" content="{txt(desc)}">
 <title>{txt(title)}｜见势 JIANSHI</title><link rel="canonical" href="{txt(SITE+canonical)}">
 <style>{CSS}</style></head><body><header><a class="logo" href="/">见势 JIANSHI</a>
-<nav aria-label="页面导航"><a href="/validation/">方向证据</a><a href="/projects/">具名项目</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
+<nav aria-label="页面导航"><a href="/discover/">找项目</a><a href="/projects/">公司案例</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
 <main>{body}</main><footer>见势 · 商业研究信息，不构成财务审计、投资建议或收益承诺。<a href="/privacy/">隐私说明</a></footer>{THEME_JS}</body></html>"""
 
 def paragraphs(items: list[str]) -> str:
@@ -346,47 +361,43 @@ def project_page(case: dict) -> str:
     return shell(name, str(case["desc"]), body, f"/projects/{slug}/")
 
 def index_page(cases: list[dict]) -> str:
-    cases = sorted(cases,key=lambda x:(-x["evidence_level"],x["id"]))
-    count = Counter(x["model"] for x in cases)
+    # Same founder-first reading order and reviewed short descriptions as home.
+    # Historical evidence depth remains accessible on each dossier.
+    case_by_id = {case["id"]: case for case in cases}
+    order = ("carrd", "plausible", "nerdwallet")
+    if set(case_by_id) != set(order) or set(PROJECT_PREVIEWS) != set(order):
+        raise RuntimeError("Only source-admitted, reviewed cases enter the public directory")
     tiles = []
-    for rank, item in enumerate(cases, 1):
+    for slug in order:
+        item = case_by_id[slug]
+        preview = PROJECT_PREVIEWS[slug]
+        suitability = decision_data(item)
+        if suitability["startup_ready"] is not False:
+            raise RuntimeError("Historical case cannot claim verified startup readiness")
         classification = MODEL_LABELS[item["model"]]
-        level = item["evidence_level"]
-        snippet = f"{classification} · 看卖什么、谁付钱、怎么收钱"
-        summary = derive_digest(item)
-        decision = render_decision_listing(decision_data(item))
-        digestmini = (
-            '<div class="digestmini" aria-label="自动提炼的证据要点">'
-            f'<p><b>做什么：</b>{txt(summary.offer)}</p>'
-            f'<p><b>谁在用：</b>{txt(item["buyer"])}</p>'
-            f'<p><b>谁付钱：</b>{txt(PAYING_PARTIES[item["id"]])}</p>'
-            f'<p><b>怎么赚钱：</b>{txt(summary.revenue)}</p>'
-            '<small>历史经营资料不代表你也能赚到钱；详情里有来源和风险。</small></div>'
+        tiles.append(
+            f'<a href="/projects/{txt(slug)}/" class="case-card" data-id="{txt(slug)}">'
+            f'<small>{txt(classification)} · 历史公司案例</small>'
+            f'<strong>{txt(item["title"])}</strong>'
+            '<div class="case-facts" aria-label="案例生意概况">'
+            f'<p><b>做什么：</b>{txt(preview["sub"])}</p>'
+            f'<p><b>谁在用：</b>{txt(preview["buyer"])}</p>'
+            f'<p><b>谁付钱：</b>{txt(PAYING_PARTIES[slug])}</p>'
+            f'<p><b>怎么赚钱：</b>{txt(preview["revenue"])}</p>'
+            f'<p><b>上手门槛：</b>{txt(preview["difficulty"])}</p>'
+            '</div><span class="case-action">看详情和第一步 →</span></a>'
         )
-        tiles.append(f'<a href="/projects/{txt(item["id"])}/" data-level="{level}" data-id="{txt(item["id"])}">'
-                     f'<small>#{rank:02d} · {txt(classification)}</small>'
-                     f'<strong>{txt(item["title"])}</strong><span>{txt(snippet)}</span>'
-                     f'{digestmini}{decision}<span class="digest-more">查看来源、风险与研究缺口 ↗</span></a>')
-    counts = " · ".join(f"{MODEL_LABELS[k]} {v}" for k,v in sorted(count.items()))
-    body = f"""<span class="kicker">VERIFIABLE RESEARCH / 具名项目档案</span>
-<h1>{len(cases)} 个正式项目，<br>看看它们怎么赚钱。</h1>
-<p class="lead">直接看项目做什么、谁在用、谁付钱、怎么收费。想了解更多，可以点进去看原始资料。过去有人做成，不代表你照着做也能赚钱。</p>
-<details class="notice"><summary>这些案例从哪里来？</summary><p>每个公开案例都有能查到的历史经营资料：有些来自企业财报，有些来自企业过去的公开说法。资料来源越容易核实，展示位置越靠前，但这不是赚钱排名。</p><p>公开定价不等于真实成交；过去的经营结果也不代表现在，更不代表你能复制。</p></details>
-<p class="muted">分类：{txt(counts)}</p><div class="sort-controls" role="group" aria-label="项目证据排序"><button type="button" data-sort="depth" aria-pressed="true">资料更完整</button><button type="button" data-sort="gaps" aria-pressed="false">还需核实较多</button></div><p class="muted" id="sortHelp" aria-live="polite">按资料的可核实程度排列，不是赚钱排名。</p><label for="projectSearch">搜索项目名称或简介</label>
-<p><input type="search" id="projectSearch" aria-label="搜索具名项目" placeholder="例如 Carrd、图书出版、设计服务…" autocomplete="off"></p>
-<p id="resultCount" aria-live="polite">{len(cases)} 个可查看的项目</p>
+    body = f"""<span class="kicker">创业案例</span>
+<h1>{len(cases)} 家公司的生意，<br>看看它们怎么赚钱。</h1>
+<p class="lead">先比较做什么、谁付钱、怎么收费、需要什么能力。这些是历史公司案例，不是已经验证可以照做赚钱的项目。</p>
+<p class="case-browse"><a href="/discover/">想看更多生意方向？去找项目 →</a></p>
 <div class="directory" id="directory">{''.join(tiles)}</div>
-<section class="section"><h2>这些案例能照着做吗？</h2>
-<p>目前只展示有公开历史经营资料的案例。<b>只找到官网或标价，还不足以说明生意做成了。</b>其他公司的收入，也不能算到这个项目头上。</p>
-<a href="/validation/">查看行业商业证据与验证缺口 →</a></section>
-<script>
-(()=>{{const input=document.getElementById('projectSearch'),directory=document.getElementById('directory'),tiles=[...directory.querySelectorAll('a[data-level]')],count=document.getElementById('resultCount');
-const buttons=[...document.querySelectorAll('[data-sort]')],help=document.getElementById('sortHelp');
-function filter(){{const q=input.value.trim().toLocaleLowerCase('zh-CN');let n=0;for(const tile of tiles){{const show=!q||tile.textContent.toLocaleLowerCase('zh-CN').includes(q);tile.hidden=!show;if(show)n++}}count.textContent=n+' 个匹配的具名项目'}}
-buttons.forEach(btn=>btn.addEventListener('click',()=>{{const invert=btn.dataset.sort==='gaps';tiles.sort((a,b)=>(invert?Number(a.dataset.level)-Number(b.dataset.level):Number(b.dataset.level)-Number(a.dataset.level))||a.dataset.id.localeCompare(b.dataset.id));tiles.forEach((tile,i)=>{{tile.querySelector('small').textContent='#'+String(i+1).padStart(2,'0')+' · '+tile.querySelector('small').textContent.split(' · ').at(-1);directory.append(tile)}});buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));help.textContent=invert?'先看仍有不少问题没查清的项目；不是赚钱排名。':'先看资料更容易核实的项目；不是盈利排名。';filter()}}));
-input.addEventListener('input',filter) }})();
-</script>"""
-    return shell(f"{len(cases)} 个有经营证据的项目", "只展示有公开历史经营资料的案例，介绍做什么、谁付钱、怎么收费", body, "/projects/")
+<details class="notice"><summary>资料来源和风险说明</summary>
+<p>公开定价不等于真实成交。公司历史经营结果也不等于新创业者的收入，当前没有已验证可直接盈利的创业项目。</p>
+<p>这三家公司都有可追溯的历史经营资料，有些来自财报，有些来自公司或创始人过去的公开陈述；按此顺序阅读不是赚钱排名。</p>
+<p>只找到官网或标价，还不足以说明生意做成了。每个详情页保留来源、报告时间、成本和未核实的风险。</p>
+<p><a href="/validation/">更多关于资料的限制 →</a></p></details>"""
+    return shell(f"{len(cases)} 个有经营证据的项目", "只展示有公开历史经营资料的公司案例，直观看谁付款、怎么收费、什么门槛", body, "/projects/")
 
 def build() -> dict:
     all_cases = parse_cases()

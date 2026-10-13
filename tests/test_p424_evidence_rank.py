@@ -31,27 +31,21 @@ class TestP424EvidenceRanking(unittest.TestCase):
         self.assertIn("未经",by_id["carrd"]["claim"])
         self.assertIn("2022",by_id["plausible"]["claim"])
 
-    def test_dynamic_rank_and_two_different_views(self):
+    def test_evidence_ranking_in_data_but_public_cards_follow_founder_order(self):
         p=subprocess.run([sys.executable,str(SCRIPT)],cwd=ROOT,text=True,capture_output=True,timeout=35)
         self.assertEqual(p.returncode,0,p.stderr)
         d=json.loads(p.stdout)
         self.assertEqual(d["cases"],3)
         directory=(ROOT/"web/dist/projects/index.html").read_text(encoding="utf-8")
-        links=re.findall(r'<a href="/projects/([a-z0-9-]+)/" data-level="([1-4])"',directory)
-        self.assertEqual(len(links),3)
-        self.assertEqual(links[0],("nerdwallet","4"))
-        self.assertEqual({x[0] for x in links[:3]},{"nerdwallet","carrd","plausible"})
-        self.assertEqual(sum(1 for _,level in links if level=="4"),1)
-        self.assertEqual(sum(1 for _,level in links if level=="3"),2)
-        self.assertEqual(sum(1 for _,level in links if level=="2"),0)
-        self.assertEqual(sum(1 for _,level in links if level=="1"),0)
-        self.assertIn('data-sort="depth"',directory)
-        self.assertIn('data-sort="gaps"',directory)
-        self.assertIn("Number(a.dataset.level)-Number(b.dataset.level)",directory)
-        self.assertIn("Number(b.dataset.level)-Number(a.dataset.level)",directory)
-        self.assertIn("不是盈利排名",directory)
-        self.assertIn('aria-pressed="true"',directory)
-        self.assertIn("data-theme=\"light\"",directory)
+        links=re.findall(r'<a href="/projects/([a-z0-9-]+)/" class="case-card"',directory)
+        self.assertEqual(links,["carrd","plausible","nerdwallet"])
+        # Source evidence tiers remain in the original source and detail
+        # pages. No profit-style ranks or unnecessary sort in this 3-card UI.
+        self.assertNotIn('data-level=',directory)
+        self.assertNotIn('data-sort=',directory)
+        self.assertNotIn('id="projectSearch"',directory)
+        self.assertIn("不是赚钱排名",directory)
+        self.assertIn('data-theme="light"',directory)
 
     def test_true_filing_self_report_and_ordinary_unknowns(self):
         directory=ROOT/"web/dist/projects"

@@ -48,7 +48,7 @@ class TestP426Digests(unittest.TestCase):
         result=build()
         self.assertEqual(result["cases"],3)
         index=(ROOT/"web/dist/projects/index.html").read_text(encoding="utf-8")
-        self.assertEqual(index.count('aria-label="自动提炼的证据要点"'),3)
+        self.assertEqual(index.count('aria-label="案例生意概况"'),3)
         # List views show short buyer/revenue facts first; full historic source
         # evidence remains available on each audited dossier, not hidden.
         self.assertIn("谁在用：",index)

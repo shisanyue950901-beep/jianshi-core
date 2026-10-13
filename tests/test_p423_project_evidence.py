@@ -25,8 +25,9 @@ class TestP423NamedEvidence(unittest.TestCase):
         html=(DIST/"projects/index.html").read_text(encoding="utf-8")
         self.assertEqual(len(re.findall(r'href="/projects/[a-z0-9-]+/"',html)),3)
         self.assertIn("公开定价不等于真实成交",html)
-        self.assertIn("还需核实较多",html)
-        self.assertIn("资料更完整",html)
+        self.assertIn("资料来源和风险说明",html)
+        self.assertNotIn('id="projectSearch"',html)
+        self.assertNotIn('data-sort=',html)
         profiles=list((DIST/"projects").glob("*/index.html"))
         self.assertEqual(len(profiles),3)
         for p in profiles:
