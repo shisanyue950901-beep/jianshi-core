@@ -109,7 +109,7 @@ def _replace_one(markup: str, pattern: str, replacement: str) -> str:
     return markup[:m.start()] + replacement + markup[m.end():]
 
 
-def _fold_between(markup: str, begin: str, end: str) -> str:
+def _fold_between(markup: str, begin: str, end: str, *, sample_count: str | None = None) -> str:
     if markup.count(begin) != 1 or markup.count(end) != 1:
         raise RuntimeError("B1 research statistics boundary changed")
     start, finish = markup.index(begin), markup.index(end)
@@ -117,6 +117,12 @@ def _fold_between(markup: str, begin: str, end: str) -> str:
         raise RuntimeError("B1 research statistics in wrong order")
     opening = ('<details class="model-data-fold" id="historical-stats">'
                '<summary>查看历史样本、统计数字与详细说明（展开）</summary>')
+    # Existing Cloudflare snapshot gate compares public and archival
+    # sample counts. Retain this ORIGINAL count only inside collapsed data.
+    if sample_count is not None:
+        opening += ('<p class="model-sample-count">当前分类包含 '
+                    + _e(sample_count) + ' 个去重项目案例。'
+                    '这些是历史匿名样本，不代表新创业者收益。</p>')
     return markup[:start] + opening + markup[start:finish] + "</details>\n" + markup[finish:]
 
 
@@ -187,10 +193,15 @@ def simplify(markup: str, slug: str | None = None) -> str:
             'id="sample-boundary"' not in markup or
             'noindex,nofollow' not in markup):
         raise RuntimeError("B1 research detail missing approved statistics and privacy")
+    old_count = re.search(r"当前分类包含\s*([\d,]+)\s*个去重项目案例", markup)
+    if old_count is None:
+        raise RuntimeError("B1 archived public sample count unavailable")
     markup = _replace_one(
         markup, r'<section class="research-hero-v2">.*?</section>',
         _detail_intro(slug)
     )
     return _fold_between(
-        markup, '<nav class="research-anchor-nav-v2"', '<section class="detail-section-v2 related-v2">'
+        markup, '<nav class="research-anchor-nav-v2"',
+        '<section class="detail-section-v2 related-v2">',
+        sample_count=old_count.group(1)
     )
