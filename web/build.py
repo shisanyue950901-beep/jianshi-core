@@ -550,10 +550,15 @@ def build_account_page():
 <h2 id="account-entry-title">创建你的<br>研究空间</h2>
 <p class="account-access-lead">账户功能正在完成最后的邮件登录配置。现在你仍然可以免费浏览全部公开研究内容。</p>
 <div class="account-form-preview" aria-label="注册界面预览，尚不能输入或提交邮箱">
+<div class="account-auth-tabs account-preview-tabs" aria-hidden="true"><span class="active">注册</span><span>登录</span></div>
 <span class="account-input-label">邮箱地址</span>
 <div class="account-input-example" aria-hidden="true">name@example.com <span>✉</span></div>
+<span class="account-input-label">设置密码</span>
+<div class="account-input-example" aria-hidden="true">•••••••••• <span>◉</span></div>
+<span class="account-input-label">确认密码</span>
+<div class="account-input-example" aria-hidden="true">•••••••••• <span>◉</span></div>
 <button type="button" disabled>邮箱注册／登录 · 即将开放 <span aria-hidden="true">→</span></button>
-<p class="account-form-help">开放后使用邮箱一次性链接，无需密码；首次使用即可注册。</p>
+<p class="account-form-help">将支持邮箱＋密码注册、邮箱确认、登录和找回密码。目前仅供查看界面，不收集任何输入。</p>
 </div>
 <p class="account-gate-note">当前不收集注册邮箱，不发送验证码，也不会为你创建账户。正式开放前需要完成邮件送达与账户安全验收。</p>
 <a class="account-back-link" href="/discover/">暂不注册，先去发现项目 <span aria-hidden="true">↗</span></a>
@@ -577,7 +582,7 @@ def build_account_page():
 <div class="account-story-main">
 <span class="account-story-kicker">YOUR RESEARCH SPACE / 研究空间</span>
 <h1>好机会，<br><em>值得持续跟踪。</em></h1>
-<p>发现方向、收藏证据、关注变化。首次邮箱登录会创建你的账户。</p>
+<p>发现方向、收藏证据、关注变化。你的研究进展，值得有一个安全、清晰的个人空间。</p>
 <div class="account-story-journey" aria-label="研究的三个步骤">
 <span><b>01</b> 发现方向</span><span><b>02</b> 收藏研究</span><span><b>03</b> 持续观察</span>
 </div></div>
@@ -587,7 +592,8 @@ def build_account_page():
 <div class="account-availability account-availability--ready"><span class="account-availability-dot" aria-hidden="true"></span>账户注册／登录</div>
 <span class="account-access-eyebrow">WELCOME TO JIANSHI</span>
 <h2 id="account-entry-title">开启你的<br>研究空间</h2>
-<p class="account-access-lead">用邮箱和密码注册，验证邮箱后即可登录。已有账户可直接登录。</p>
+<p class="account-access-lead">一分钟创建账户，验证邮箱后就能使用个人收藏与研究清单。</p>
+<div class="account-security-points" aria-label="账户使用说明"><span>✦ 邮箱验证</span><span>◇ 加密密码</span><span>◎ 随时退出</span></div>
 <div class="account-auth-tabs" aria-label="选择账户操作">
 <button type="button" data-auth-switch="register" aria-pressed="true">注册</button>
 <button type="button" data-auth-switch="login" aria-pressed="false">登录</button>
@@ -596,19 +602,29 @@ def build_account_page():
 <label class="account-input-label" for="register-email">邮箱地址</label>
 <input id="register-email" type="email" name="email" maxlength="254" autocomplete="email" placeholder="name@example.com" required>
 <label class="account-input-label" for="register-password">设置密码（至少 8 位）</label>
-<input id="register-password" type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<div class="account-password-row"><input id="register-password" type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" aria-describedby="register-strength" required><button type="button" class="account-password-toggle" data-toggle-password="register-password" aria-controls="register-password" aria-pressed="false">显示</button></div>
+<div class="account-password-meter" aria-hidden="true"><span id="register-meter-bar"></span></div>
+<p id="register-strength" class="account-strength-text" aria-live="polite">至少 8 位，建议使用 12 位以上的独立密码。</p>
 <label class="account-input-label" for="register-confirm">再次输入密码</label>
-<input id="register-confirm" type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required>
-<button type="submit">注册账户 <span aria-hidden="true">→</span></button>
-<p class="auth-hint">注册后请先完成邮箱验证；密码仅用于登录，不会记录在网页中。</p>
+<div class="account-password-row"><input id="register-confirm" type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required><button type="button" class="account-password-toggle" data-toggle-password="register-confirm" aria-controls="register-confirm" aria-pressed="false">显示</button></div>
+<label class="account-consent"><input type="checkbox" name="privacy_consent" required><span>我已阅读并理解<a href="/privacy/" target="_blank" rel="noopener noreferrer">《隐私政策》</a>，同意使用邮箱创建账户及接收必要的账户验证邮件。</span></label>
+<button type="submit">创建我的见势账户 <span aria-hidden="true">→</span></button>
+<p class="auth-hint">注册后需要通过邮件确认身份。见势不会保存你的明文密码。</p>
 <p class="auth-status" data-auth-register-status role="status" aria-live="polite"></p>
+<div class="account-verification" data-auth-verification hidden aria-live="polite">
+<strong>下一步：查收确认邮件</strong>
+<p>打开邮箱里的验证链接，回到见势即可登录。如果没有收到，可在稍后重新发送。</p>
+<button type="button" class="account-resend" data-auth-resend>重新发送验证邮件</button>
+<p class="auth-status" data-auth-resend-status role="status"></p>
+</div>
 </form>
 <form class="auth-email-form account-live-form" data-auth-login-form data-auth-panel="login" hidden>
 <label class="account-input-label" for="login-email">邮箱地址</label>
 <input id="login-email" type="email" name="email" maxlength="254" autocomplete="username" required>
 <label class="account-input-label" for="login-password">密码</label>
-<input id="login-password" type="password" name="password" autocomplete="current-password" required>
+<div class="account-password-row"><input id="login-password" type="password" name="password" autocomplete="current-password" required><button type="button" class="account-password-toggle" data-toggle-password="login-password" aria-controls="login-password" aria-pressed="false">显示</button></div>
 <button type="submit">登录我的见势 <span aria-hidden="true">→</span></button>
+<p class="auth-hint">登录会使用安全会话。共享设备上使用完毕请退出账户。</p>
 <button type="button" class="account-text-button" data-auth-forgot>忘记密码？</button>
 <p class="auth-status" data-auth-login-status role="status" aria-live="polite"></p>
 </form>
@@ -660,9 +676,9 @@ def build_account_page():
 <p class="auth-hint">忘记密码邮件验证完成后，可以在这里设置新密码。</p>
 <form class="auth-email-form account-live-form" data-auth-change-form>
 <label for="change-password">新密码（至少 8 位）</label>
-<input id="change-password" type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<div class="account-password-row"><input id="change-password" type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" required><button type="button" class="account-password-toggle" data-toggle-password="change-password" aria-controls="change-password" aria-pressed="false">显示</button></div>
 <label for="change-confirm">再次输入新密码</label>
-<input id="change-confirm" type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<div class="account-password-row"><input id="change-confirm" type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required><button type="button" class="account-password-toggle" data-toggle-password="change-confirm" aria-controls="change-confirm" aria-pressed="false">显示</button></div>
 <button type="submit">保存新密码</button>
 <p class="auth-status" data-auth-change-status role="status" aria-live="polite"></p>
 </form></section>
