@@ -32,7 +32,9 @@ class B1EntryAccountVisual(unittest.TestCase):
         self.assertEqual(page.count('<script>'),1)
         self.assertEqual(page.count('data:image/webp;base64,'),1)
         self.assertEqual(page.count('<article class="j2-project">'),3)
-        self.assertNotIn('href="/account/"',page)
+        self.assertIn('class="j2-account-cta" href="/account/"',page)
+        self.assertIn('href="/account/"',page)
+        self.assertIn('aria-label="移动导航"',page)
         self.assertNotIn('type="email"',page)
 
     def test_account_closed_preview_is_noninteractive_and_noindex(self):
@@ -74,12 +76,18 @@ class B1EntryAccountVisual(unittest.TestCase):
         self.assertIn('data-auth-email-form',page)
         self.assertNotIn("action=\"http",page)
 
-    def test_public_preview_is_static_separate_and_auth_route_stays_redirect(self):
-        from p412_build_public import safe_redirect
+    def test_public_account_entry_is_reachable_without_activating_auth(self):
         with tempfile.TemporaryDirectory() as temp:
             with patch("p412_build_public.OUTPUT",Path(temp)):
                 publish_account_preview()
+            account=(Path(temp)/"account/index.html").read_text(encoding="utf-8")
             doc=(Path(temp)/"account/preview/index.html").read_text(encoding="utf-8")
+            self.assertIn('href="https://jianshi-bua.pages.dev/account/"',account)
+            self.assertIn("账户注册／登录尚未开放",account)
+            self.assertIn("noindex,nofollow",account)
+            self.assertNotIn("<form",account)
+            self.assertNotIn('type="email"',account)
+            self.assertNotIn('http-equiv=',account)
             self.assertIn('class="account-entry-shell"',doc)
             self.assertIn('href="https://jianshi-bua.pages.dev/account/preview/"',doc)
             self.assertIn("noindex,nofollow",doc)
@@ -87,7 +95,8 @@ class B1EntryAccountVisual(unittest.TestCase):
             self.assertNotIn("data-auth-email-form",doc)
             self.assertNotIn("<form",doc)
         source=(ROOT/"scripts/release/p412_build_public.py").read_text(encoding="utf-8")
-        self.assertIn('"account": "/"',source)
+        self.assertNotIn('"account": "/"',source)
+        self.assertIn('account_dest = OUTPUT / "account" / "index.html"',source)
         self.assertIn("safe_redirect(target)",source)
         self.assertIn('href="/discover/"',doc)
 
