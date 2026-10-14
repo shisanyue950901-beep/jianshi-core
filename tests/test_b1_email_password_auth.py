@@ -86,7 +86,8 @@ class PasswordAccountContract(unittest.TestCase):
         self.assertFalse(b.AUTH_ENABLED)
         source=(ROOT/"scripts/release/p412_build_public.py").read_text(encoding="utf-8")
         self.assertIn('module.AUTH_ENABLED = False',source)
-        self.assertIn('"account": "/"',source)
+        self.assertNotIn('"account": "/"',source)
+        self.assertIn('account_dest = OUTPUT / "account" / "index.html"',source)
         gate=(ROOT/"db/migrations/0037_auth_launch_gate.sql").read_text(encoding="utf-8")
         for token in ("custom_smtp_configured","magic_link_e2e_pass","jwt_ab_isolation_pass",
                       "save_e2e_pass","watch_e2e_pass","alerts_isolation_pass",
