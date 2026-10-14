@@ -35,6 +35,12 @@
         "level": "A",
         "url": "https://indiepa.ge/leaderboard",
         "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 75（TrustMRR展示，非独立付款审计）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/datafast.md",
+        "checked_at": "2026-10-14"
       }
     ],
     "traction": [
@@ -130,6 +136,12 @@
         "level": "A",
         "url": "https://indiepa.ge/leaderboard",
         "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 73（TrustMRR展示，非独立付款审计）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/shipfast.md",
+        "checked_at": "2026-10-14"
       }
     ],
     "traction": [
@@ -213,6 +225,12 @@
         "level": "A",
         "url": "https://trustmrr.com/startup/turbostarter.md",
         "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 54（TrustMRR展示，非独立付款审计）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/turbostarter.md",
+        "checked_at": "2026-10-14"
       }
     ],
     "traction": [
@@ -291,6 +309,12 @@
         "level": "A",
         "url": "https://trustmrr.com/startup/sonar-aso-tool.md",
         "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 19（TrustMRR展示，非独立付款审计）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/sonar-aso-tool.md",
+        "checked_at": "2026-10-14"
       }
     ],
     "traction": [
@@ -367,6 +391,12 @@
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
+        "url": "https://trustmrr.com/startup/search1api.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 46（TrustMRR展示，非独立付款审计）",
+        "level": "T",
         "url": "https://trustmrr.com/startup/search1api.md",
         "checked_at": "2026-10-14"
       }
@@ -452,6 +482,12 @@
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
+        "url": "https://trustmrr.com/startup/claudethings.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 15（TrustMRR展示，非独立付款审计）",
+        "level": "T",
         "url": "https://trustmrr.com/startup/claudethings.md",
         "checked_at": "2026-10-14"
       }
@@ -560,6 +596,18 @@
         "level": "A",
         "url": "https://trustmrr.com/startup/opentweet.md",
         "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 34（TrustMRR展示，非独立付款审计）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/opentweet.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "GA 连接访问量 44844（TrustMRR展示）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/opentweet.md",
+        "checked_at": "2026-10-14"
       }
     ],
     "traction": [
@@ -645,6 +693,12 @@
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
+        "url": "https://trustmrr.com/startup/getebook-ai.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分 DR 14（TrustMRR展示，非独立付款审计）",
+        "level": "T",
         "url": "https://trustmrr.com/startup/getebook-ai.md",
         "checked_at": "2026-10-14"
       }
