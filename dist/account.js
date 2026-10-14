@@ -257,10 +257,52 @@ if(cfg.enabled&&cfg.url&&cfg.key){
 
   // Normal password accounts use Supabase Auth (never store or log passwords).
   // Keep the previous Magic Link alternative behind the same production gate.
-  const authPanels=$("[data-auth-panel]");
-  const authSwitches=$("[data-auth-switch]");
+  const authPanels=document.querySelectorAll("[data-auth-panel]");
+  const authSwitches=document.querySelectorAll("[data-auth-switch]");
+  // Hidden panels must not retain secrets or trap keyboard focus.
+  function clearSensitiveInputs(form){
+    if(!form)return;
+    form.querySelectorAll('input[name="password"],input[name="confirm_password"]').forEach((input)=>{
+      input.value="";
+      input.type="password";
+      const toggle=form.querySelector('[data-toggle-password="'+input.id+'"]');
+      if(toggle){toggle.textContent="显示";toggle.setAttribute("aria-pressed","false");}
+    });
+  }
+  document.querySelectorAll("[data-toggle-password]").forEach((button)=>{
+    button.addEventListener("click",()=>{
+      const input=document.getElementById(button.dataset.togglePassword);
+      if(!input)return;
+      const showing=input.type==="password";
+      input.type=showing?"text":"password";
+      button.textContent=showing?"隐藏":"显示";
+      button.setAttribute("aria-pressed",String(showing));
+      input.focus({preventScroll:true});
+    });
+  });
+  const registerStrength=$("[data-auth-register-form] input[name='password']");
+  if(registerStrength){
+    const label=$("#register-strength");
+    const bar=$("#register-meter-bar");
+    registerStrength.addEventListener("input",()=>{
+      const value=registerStrength.value;
+      const kinds=[/[a-z]/i.test(value),/[0-9]/.test(value),/[^A-Za-z0-9]/.test(value)].filter(Boolean).length;
+      const level=!value?0:value.length<8?1:value.length>=12&&kinds>=2?3:2;
+      bar.dataset.level=String(level);
+      label.textContent=[
+        "至少 8 位，建议使用 12 位以上的独立密码。",
+        "密码太短，还需至少 8 位。",
+        "长度已达标；建议用 12 位以上且不与其他网站重复。",
+        "密码长度及字符组合更好；请确保没有在其他网站使用。"
+      ][level];
+    });
+  }
   function showAuthPanel(mode){
-    authPanels.forEach((panel)=>{panel.hidden=panel.dataset.authPanel!==mode;});
+    authPanels.forEach((panel)=>{
+      const visible=panel.dataset.authPanel===mode;
+      if(!visible)clearSensitiveInputs(panel);
+      panel.hidden=!visible;
+    });
     authSwitches.forEach((button)=>{
       button.setAttribute("aria-pressed",String(button.dataset.authSwitch===mode));
     });
@@ -292,29 +334,60 @@ if(cfg.enabled&&cfg.url&&cfg.key){
       const email=$('input[name="email"]',registerForm).value.trim();
       const pass=passwordPair(registerForm);
       if(pass.error){setStatus(status,pass.error,"error");return;}
+      if(!$('[name="privacy_consent"]',registerForm)?.checked){
+        setStatus(status,"请先阅读并确认隐私政策与必要账户邮件说明。","error");return;
+      }
       if(authCooldownRemaining()>0){
         setStatus(status,"邮件刚刚请求过，请稍后再试。","error");
         return;
       }
       button.disabled=true;
       setStatus(status,"正在创建账户…","loading");
+      $("[data-auth-verification]").hidden=true;
       try{
         const response=await supabase.auth.signUp({
           email,password:pass.password,
           options:{emailRedirectTo:authRedirect()}
         });
         if(response.error)throw response.error;
-        registerForm.querySelectorAll('input[type="password"]').forEach((el)=>{el.value="";});
+        clearSensitiveInputs(registerForm);
         setAuthCooldown();
         if(response.data.session){
           setStatus(status,"账户已创建并登录。","sent");
           await renderAccount(response.data.session);
         }else{
-          setStatus(status,"注册请求已提交。请查收邮箱确认邮件，再返回网站登录。","sent");
+          setStatus(status,"如果该邮箱可以注册，我们已请求发送验证邮件，请检查收件箱和垃圾邮件。","sent");
+          $("[data-auth-verification]").hidden=false;
         }
       }catch(_err){
         setStatus(status,"注册未完成，请核对邮箱或稍后重试。","error");
       }finally{button.disabled=false;}
+    });
+  }
+
+  // Resend does not disclose whether an email already owns an account.
+  const resendButton=$("[data-auth-resend]");
+  if(resendButton){
+    resendButton.addEventListener("click",async()=>{
+      const status=$("[data-auth-resend-status]");
+      const remaining=authCooldownRemaining();
+      if(remaining>0){
+        setStatus(status,"请约 "+Math.ceil(remaining/1000)+" 秒后再发送。","error");return;
+      }
+      const email=$('input[name="email"]',registerForm)?.value.trim();
+      if(!email){setStatus(status,"请先填写注册邮箱。","error");return;}
+      resendButton.disabled=true;
+      setStatus(status,"正在请求验证邮件…","loading");
+      try{
+        const response=await supabase.auth.resend({
+          type:"signup",email,options:{emailRedirectTo:authRedirect()}
+        });
+        if(response.error)throw response.error;
+        setAuthCooldown();
+        setStatus(status,"已请求发送。如果该邮箱有待确认的注册，请查收邮件。","sent");
+      }catch(_err){
+        setStatus(status,"暂时无法发送，请稍后重试。","error");
+      }finally{resendButton.disabled=false;}
     });
   }
 
@@ -331,7 +404,7 @@ if(cfg.enabled&&cfg.url&&cfg.key){
       try{
         const response=await supabase.auth.signInWithPassword({email,password:input.value});
         if(response.error)throw response.error;
-        input.value="";
+        clearSensitiveInputs(loginForm);
         setStatus(status,"登录成功。","sent");
         await renderAccount(response.data.session);
       }catch(_err){
@@ -429,8 +502,15 @@ if(cfg.enabled&&cfg.url&&cfg.key){
   const signout=$("[data-auth-signout]");
   if(signout){
     signout.addEventListener("click",async()=>{
-      await supabase.auth.signOut();
-      location.assign("/");
+      signout.disabled=true;
+      try{
+        const result=await supabase.auth.signOut();
+        if(result.error)throw result.error;
+        location.assign("/");
+      }catch(_err){
+        signout.disabled=false;
+        setStatus($("[data-auth-change-status]"),"退出失败，请刷新页面后重试。","error");
+      }
     });
   }
 

@@ -573,3 +573,89 @@ body:has(.account-entry-shell){background:#f4f7fd;color:#172741}
 .account-change-password{min-width:0}
 .account-change-password .account-live-form{max-width:500px}
 .account-change-password label{font-weight:700;font-size:13px}
+
+
+/* B1 account UX finish: usable field rhythm, privacy controls and responsive polish. */
+.account-page{max-width:1200px}
+.account-entry-shell{box-shadow:0 32px 85px #15294b24,0 1px 1px #39477c17}
+.account-story{background:radial-gradient(ellipse 58% 86% at 90% 78%,#7052b597,transparent 88%),
+ radial-gradient(ellipse 84% 70% at 8% 0%,#285a9987,transparent 82%),
+ linear-gradient(148deg,#071226 5%,#142847 57%,#211d46)}
+.account-story-main h1{max-width:500px}
+.account-story-journey{max-width:370px}
+.account-security-points{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 22px}
+.account-security-points span{display:inline-flex;align-items:center;min-height:30px;border-radius:999px;
+ background:#f2f2ff;color:#6859a9;border:1px solid #e6e4f8;padding:5px 10px;
+ font-size:11px;line-height:1.4;font-weight:760}
+.account-access{padding-top:43px}
+.account-availability{margin-bottom:23px}
+.account-access h2{font-size:clamp(32px,3.4vw,44px);margin-top:11px;margin-bottom:12px}
+.account-access-lead{margin-bottom:18px}
+.account-auth-tabs{margin:0 0 19px}
+.account-preview-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;
+ padding:5px;background:#f0f2fb;border:1px solid #dee4f3;border-radius:13px}
+.account-preview-tabs span{text-align:center;min-height:42px;display:grid;place-items:center;font-size:13px;
+ font-weight:800;color:#8390a7}
+.account-preview-tabs span.active{color:#5144b0;background:#fff;border-radius:9px;box-shadow:0 3px 11px #30397019}
+.account-live-form{gap:9px}
+.account-live-form .account-input-label{margin-top:3px}
+.account-password-row{position:relative;min-width:0;display:flex;align-items:center}
+.account-password-row input{width:100%;padding-right:82px;height:52px}
+.account-password-toggle{position:absolute;top:50%;right:9px;transform:translateY(-50%);border:1px solid #dfe4f0;
+ border-radius:8px;min-width:54px;min-height:35px;padding:7px 10px;
+ background:#fff;color:#6458ac;font-size:12px;font-weight:850;cursor:pointer}
+.account-password-toggle:hover{background:#f1efff}
+.account-password-toggle:focus-visible,.account-resend:focus-visible{outline:3px solid #a99cf2;outline-offset:2px}
+.account-password-meter{height:6px;border-radius:999px;overflow:hidden;background:#e6eaf5;margin:1px 0 -2px}
+.account-password-meter>span{display:block;height:100%;width:0;border-radius:inherit;transition:width .2s,background .2s}
+.account-password-meter>span[data-level="1"]{width:28%;background:#d79f65}
+.account-password-meter>span[data-level="2"]{width:65%;background:#667ed9}
+.account-password-meter>span[data-level="3"]{width:100%;background:#3aa38a}
+.account-strength-text{font-size:11px;line-height:1.65;color:#71809a;margin:1px 0 5px}
+.account-consent{display:flex;align-items:flex-start;gap:10px;padding:10px 0 2px;
+ color:#59677f;font-weight:500;font-size:12px;line-height:1.8}
+.account-consent input{flex:0 0 17px;min-width:17px;width:17px;height:17px;margin:3px 0 0;padding:0;accent-color:#715fe1}
+.account-consent span{min-width:0}
+.account-consent a{color:#5a4bb7;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.account-consent:focus-within{outline:2px solid #ada4fa;outline-offset:2px;border-radius:8px}
+.account-live-form button[type="submit"]{margin-top:5px;box-shadow:0 10px 25px #575fc032}
+.account-live-form button[type="submit"]:disabled{opacity:.6;cursor:wait;filter:none}
+.account-live-form .auth-status:not(:empty){padding:11px 12px;background:#f3f3ff;border-radius:10px;color:#5c5ba0}
+.account-live-form .auth-status[data-state="error"]{background:#fff0ef;color:#9a3d35}
+.account-live-form .auth-status[data-state="sent"]{background:#ecf9f3;color:#226e55}
+.account-live-form .auth-status[data-state="loading"]{background:#edf3ff;color:#365a99}
+.account-verification{padding:17px;border:1px solid #d7e6de;border-radius:14px;background:#f0faf5;
+ display:grid;gap:9px;color:#225844}
+.account-verification[hidden],.account-entry-shell[hidden],.account-dashboard[hidden]{display:none!important}
+.account-verification strong{font-size:14px}
+.account-verification p{font-size:12px;line-height:1.75;color:#496a59;margin:0}
+.account-resend{border:1px solid #b8dccb;background:#fff;color:#24765a;border-radius:10px;
+ font-size:12px;font-weight:800;min-height:42px;padding:9px 13px;cursor:pointer}
+.account-resend:disabled{opacity:.6;cursor:wait}
+.account-magic-alt{margin-top:16px}
+.account-magic-alt summary{list-style-position:inside;padding:4px 0}
+.account-back-link{margin-top:18px}
+.account-form-preview{gap:9px}
+.account-form-preview>.account-input-label{margin-top:4px}
+.account-form-help{line-height:1.75}
+.account-gate-note{border-radius:11px;margin-top:17px}
+.account-change-password .account-live-form{gap:11px}
+@media(max-width:840px){
+ .account-entry-shell{grid-template-columns:1fr}
+ .account-story{min-height:290px}
+ .account-access{padding:29px 27px 35px}
+}
+@media(max-width:480px){
+ .account-page{padding:10px 11px 48px}
+ .account-entry-shell{border-radius:19px}
+ .account-story{min-height:255px;padding:23px 22px 19px}
+ .account-story-main{padding:23px 0 17px}
+ .account-story-main h1{font-size:clamp(32px,8.7vw,38px)}
+ .account-story-journey{margin-top:17px}
+ .account-access{padding:24px 21px 29px}
+ .account-access h2{font-size:34px}
+ .account-security-points span{font-size:10px;padding:4px 8px}
+ .account-password-row input{min-width:0}
+ .account-feature-section{margin-top:25px}
+}
+@media(prefers-reduced-motion:reduce){.account-password-meter>span{transition:none}}
