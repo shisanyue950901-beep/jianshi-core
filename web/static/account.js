@@ -257,14 +257,19 @@ if(cfg.enabled&&cfg.url&&cfg.key){
 
   // Normal password accounts use Supabase Auth (never store or log passwords).
   // Keep the previous Magic Link alternative behind the same production gate.
-  const authPanels=$("[data-auth-panel]");
-  const authSwitches=$("[data-auth-switch]");
+  const authPanels=document.querySelectorAll("[data-auth-panel]");
+  const authSwitches=document.querySelectorAll("[data-auth-switch]");
   // Hidden panels must not retain secrets or trap keyboard focus.
   function clearSensitiveInputs(form){
     if(!form)return;
-    $('input[type="password"]',form).forEach((input)=>{input.value="";});
+    form.querySelectorAll('input[name="password"],input[name="confirm_password"]').forEach((input)=>{
+      input.value="";
+      input.type="password";
+      const toggle=form.querySelector('[data-toggle-password="'+input.id+'"]');
+      if(toggle){toggle.textContent="显示";toggle.setAttribute("aria-pressed","false");}
+    });
   }
-  $("[data-toggle-password]").forEach((button)=>{
+  document.querySelectorAll("[data-toggle-password]").forEach((button)=>{
     button.addEventListener("click",()=>{
       const input=document.getElementById(button.dataset.togglePassword);
       if(!input)return;
