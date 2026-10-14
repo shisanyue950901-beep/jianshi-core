@@ -26,6 +26,12 @@ body{overflow-x:hidden}
 #j2 .j2-nav a{color:#c8d3e5;font-size:13px;white-space:nowrap}
 #j2 .j2-nav a:hover,#j2 .j2-nav a:focus-visible{color:#fff}
 #j2 .j2-nav .j2-nav-secondary{color:#a99eff}
+#j2 .j2-account-cta{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;white-space:nowrap;
+ min-height:40px;padding:0 15px;border:1px solid #8e86e8;border-radius:11px;
+ background:linear-gradient(120deg,#7462da,#547bea);color:#fff;font-size:13px;font-weight:800;letter-spacing:.015em;
+ text-decoration:none;box-shadow:0 6px 22px #6158d540}
+#j2 .j2-account-cta:hover{filter:brightness(1.13);color:#fff}
+#j2 .j2-account-cta:focus-visible{outline:3px solid #c8c1ff;outline-offset:3px}
 #j2 .j2-mobile{display:none;margin-left:auto;position:relative}
 #j2 .j2-mobile summary{list-style:none;cursor:pointer;border:1px solid #566584;border-radius:10px;min-height:44px;padding:9px 14px;font-size:13px}
 #j2 .j2-mobile summary::-webkit-details-marker{display:none}
@@ -37,7 +43,7 @@ body{overflow-x:hidden}
 #j2 .j2-mobile summary:focus-visible,#j2 .j2-mobile-list a:focus-visible{outline:3px solid #a9a0ff;outline-offset:2px}
 #j2 .j2-mobile[open] summary{background:#253857;border-color:#9586e7}
 #j2 .j2-mobile-list{max-height:min(65dvh,460px);overflow-y:auto;overscroll-behavior:contain}
-@media(max-width:400px){#j2 .j2-top-inner{gap:12px}#j2 .j2-brand{font-size:20px;gap:6px}#j2 .j2-brand span{font-size:10px;letter-spacing:0}#j2 .j2-mobile summary{padding:9px 11px}}
+@media(max-width:400px){#j2 .j2-top-inner{gap:8px}#j2 .j2-brand{font-size:18px;gap:5px}#j2 .j2-brand span{font-size:9px;letter-spacing:0}#j2 .j2-mobile summary{padding:9px 8px}#j2 .j2-account-cta{padding:0 9px;min-height:38px;font-size:12px}}
 
 #j2 .j2-footer{padding:38px 0 44px;background:#081120;color:#cad4e6;border-top:1px solid #263753}
 #j2 .j2-footer-inner{display:flex;justify-content:space-between;gap:30px;align-items:start}
@@ -66,7 +72,8 @@ def build_home(cases: list[dict]) -> str:
         '<a href="#j2-talent">人才与服务商</a>'
         '<a href="#j2-academy">AI 学院</a>'
         '<a class="j2-nav-secondary" href="/sources/">证据与来源</a>'
-        '</nav><details class="j2-mobile"><summary aria-label="展开主要导航">☰ 菜单</summary>'
+        '</nav><a class="j2-account-cta" href="/account/" aria-label="进入见势注册与登录">登录 / 注册</a>'
+        '<details class="j2-mobile"><summary aria-label="展开主要导航">☰ 菜单</summary>'
         '<nav class="j2-mobile-list" aria-label="移动导航">'
         '<a href="#j2-opportunities">商业机会</a>'
         '<a href="#j2-solutions">企业解决方案</a>'
@@ -74,6 +81,7 @@ def build_home(cases: list[dict]) -> str:
         '<a href="#j2-talent">人才与服务商</a>'
         '<a href="#j2-academy">AI 学院</a>'
         '<a href="/sources/">证据与来源</a>'
+        '<a href="/account/">登录 / 注册</a>'
         '</nav></details></div></header>'
     )
     footer = (
@@ -86,7 +94,8 @@ def build_home(cases: list[dict]) -> str:
         '<a href="/projects/">具名研究案例</a>'
         '<a href="/research/">匿名研究库</a>'
         '<a href="/validation/">证据边界</a>'
-        '<a href="/privacy/">隐私政策</a></nav>'
+        '<a href="/privacy/">隐私政策</a>'
+        '<a href="/account/">账户入口</a></nav>'
         '</div></footer>'
     )
     portal = portal.replace('<section id="j2" aria-label="见势 2.0 商业机会与解决方案门户">',
