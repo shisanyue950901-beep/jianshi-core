@@ -64,8 +64,14 @@ class B1EntryAccountVisual(unittest.TestCase):
                       'data-auth-signout','data-clear-my-data',
                       "发送登录链接"):
             self.assertIn(token,page)
-        self.assertNotIn('name="password"',page)
-        self.assertNotIn("data-password-form",page)
+        self.assertIn('data-auth-register-form',page)
+        self.assertIn('data-auth-login-form',page)
+        self.assertIn('data-auth-reset-form',page)
+        self.assertIn('data-auth-change-form',page)
+        self.assertIn('name="password"',page)
+        self.assertIn('autocomplete="new-password"',page)
+        self.assertIn('autocomplete="current-password"',page)
+        self.assertIn('data-auth-email-form',page)
         self.assertNotIn("action=\"http",page)
 
     def test_public_preview_is_static_separate_and_auth_route_stays_redirect(self):
