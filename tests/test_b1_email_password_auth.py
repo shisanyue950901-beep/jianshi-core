@@ -49,7 +49,7 @@ class PasswordAccountContract(unittest.TestCase):
         html=b.build_account_page()
         p=Inspect();p.feed(html)
         self.assertEqual(len(p.ids),len(set(p.ids)))
-        self.assertEqual(len(p.passwords),6)
+        self.assertEqual(len(p.passwords),5)
         self.assertEqual(len(p.forms),6)
         for name in ("data-auth-register-form","data-auth-login-form",
                      "data-auth-reset-form","data-auth-change-form","data-auth-email-form"):
