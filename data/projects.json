@@ -1,0 +1,738 @@
+[
+  {
+    "id": "trustmrr",
+    "name": "TrustMRR",
+    "url": "https://trustmrr.com/",
+    "category": "SaaS",
+    "one_liner_cn": "帮独立开发者查找经支付渠道验证的软件收入案例",
+    "target_user": "独立开发者、软件创始人和收购研究者",
+    "revenue": {
+      "mrr": 23234,
+      "last_30d": 48267,
+      "all_time": 375719,
+      "currency": "USD",
+      "as_of": "2026-10-07",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-07"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Stripe 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/trustmrr",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 72,
+        "url": "https://trustmrr.com/startup/trustmrr",
+        "estimated": false
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅",
+    "price_point": "未公开",
+    "acquisition_channels": [
+      "SEO",
+      "口碑",
+      "X / Twitter",
+      "YouTube",
+      "Newsletter",
+      "内容营销",
+      "LinkedIn",
+      "Reddit"
+    ],
+    "tech_stack_guess": "Next.js、React、Tailwind CSS、JavaScript、HTML5、Stripe、MongoDB、Vercel",
+    "scores": {
+      "build_difficulty": 2,
+      "channel_reach_cn": 4,
+      "payment_compliance": 3,
+      "competition": 1,
+      "time_to_mvp": 2
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：支付验证、搜索及数据市场的完整建设超出两周MVP。",
+      "channel_reach_cn": "推测：SEO和开发者社区可在国内团队远程经营。",
+      "payment_compliance": "推测：数字信息订阅具有收费路径，但跨境结算及数据许可仍需核实。",
+      "competition": "推测：已有强势数据库及品牌，竞争空间狭窄。",
+      "time_to_mvp": "推测：必须先解决数据授权与供需网络，30天收款较困难。"
+    },
+    "total_score": 12,
+    "verdict": "不推荐",
+    "cn_angle": "推测：只做特定行业的授权案例中文决策简报，卖给独立开发者",
+    "risks": "平台竞争与公开数据再利用授权风险",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-07",
+    "updated_at": "2026-10-14",
+    "review_notes": "不得依此项目数据复制TrustMRR；仅内部研究。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "datafast",
+    "name": "DataFast",
+    "url": "https://datafa.st/",
+    "category": "SaaS",
+    "one_liner_cn": "帮创业者看清哪些营销渠道真正带来付费客户",
+    "target_user": "SaaS创始人、营销人员",
+    "revenue": {
+      "mrr": 30668,
+      "last_30d": 30113,
+      "all_time": 292400,
+      "currency": "USD",
+      "as_of": "2026-09-28",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-09-28"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Stripe 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/datafast",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 72,
+        "url": "https://trustmrr.com/startup/datafast",
+        "estimated": false
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅",
+    "price_point": "14天免费试用；$9/月起",
+    "acquisition_channels": [
+      "SEO",
+      "口碑",
+      "X / Twitter",
+      "YouTube",
+      "Newsletter",
+      "内容营销",
+      "LinkedIn",
+      "Reddit"
+    ],
+    "tech_stack_guess": "Next.js、HTML5、CSS、React、Tailwind CSS、Vercel、Node.js、Render、MongoDB、Stripe",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 4,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：归因分析与稳定计费需专业开发，MVP可先收窄。",
+      "channel_reach_cn": "推测：SEO和开发者社区可从国内远程触达。",
+      "payment_compliance": "推测：SaaS按月定价明确，但支付主体与税务需确认。",
+      "competition": "推测：网站分析竞争激烈，垂直渠道归因仍可能有空位。",
+      "time_to_mvp": "推测：若收窄到单一渠道，可以在约1–3个月试卖。"
+    },
+    "total_score": 15,
+    "verdict": "可做",
+    "cn_angle": "推测：聚焦小型跨境SaaS的内容获客到付款归因，卖给中文独立开发者",
+    "risks": "第三方统计授权、Cookie隐私与平台竞争",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-09-28",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "shipfast",
+    "name": "ShipFast",
+    "url": "https://shipfa.st/",
+    "category": "开发者工具",
+    "one_liner_cn": "帮独立开发者省去搭建登录、支付和基础代码的时间",
+    "target_user": "独立开发者、SaaS创始人",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 1992,
+      "all_time": 1271198,
+      "currency": "USD",
+      "as_of": "2026-09-29",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-09-29"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Stripe 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/shipfast",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 73,
+        "url": "https://trustmrr.com/startup/shipfast",
+        "estimated": false
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "一次性付费",
+    "price_point": "Starter $199、All-in $249、Bundle $299（页面同时显示划线原价）",
+    "acquisition_channels": [
+      "Meta Ads"
+    ],
+    "tech_stack_guess": "CSS、Next.js、React、HTML5、JavaScript、TypeScript、Tailwind CSS、Stripe、Vercel、MongoDB",
+    "scores": {
+      "build_difficulty": 5,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 1,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：限定技术栈的基础模板可由一人两周实现。",
+      "channel_reach_cn": "推测：开发者社区和搜索可远程传播。",
+      "payment_compliance": "推测：一次性数字产品收费相对简单，实际收款主体仍须核实。",
+      "competition": "推测：启动模板市场高度同质化。",
+      "time_to_mvp": "推测：成熟技术栈的小模板可用30天测试首笔收费。"
+    },
+    "total_score": 18,
+    "verdict": "可做",
+    "cn_angle": "推测：给中文独立开发者销售特定行业的合规网站启动模板",
+    "risks": "模板同质化、代码和商标知识产权风险",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-09-29",
+    "updated_at": "2026-10-14",
+    "review_notes": "MRR页面为“-”，属于一次性支付，不能把近30天收入当MRR。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "turbostarter",
+    "name": "TurboStarter",
+    "url": "https://turbostarter.dev/",
+    "category": "开发者工具",
+    "one_liner_cn": "帮AI开发者一次配齐网站、移动端与扩展的基础工程",
+    "target_user": "AI原生创业者、SaaS开发者",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 4668,
+      "all_time": 79986,
+      "currency": "USD",
+      "as_of": "2026-10-13",
+      "verified_by": "LemonSqueezy",
+      "source_last_synced": "2026-10-13"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — LemonSqueezy 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/turbostarter",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 54,
+        "url": "https://trustmrr.com/startup/turbostarter",
+        "estimated": false
+      }
+    ],
+    "flags": [
+      "平台标题近30天$4,668与页面收入图表$4,319不一致"
+    ],
+    "for_sale": {
+      "listed": true,
+      "asking_price": 100000,
+      "multiple": "1.8x",
+      "url": "https://trustmrr.com/startup/turbostarter"
+    },
+    "business_model": "一次性付费",
+    "price_point": "Core $249终身、Bundle $399终身",
+    "acquisition_channels": "未公开",
+    "tech_stack_guess": "Next.js、React、CSS、Tailwind CSS、Expo、React Native、TypeScript、Docker、PostgreSQL、Anthropic、OpenAI、Stripe、Cloudflare等（平台公开列举）",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：复用现成框架可快速交付精简版，跨端支持较复杂。",
+      "channel_reach_cn": "推测：开发者社区和技术文章能够远程获客。",
+      "payment_compliance": "推测：数字许可证易于设价，但支付渠道应单独审查。",
+      "competition": "推测：多端框架竞争较大，行业集成可能有区别。",
+      "time_to_mvp": "推测：一个垂直场景的可运行模板可在30天售卖。"
+    },
+    "total_score": 18,
+    "verdict": "可做",
+    "cn_angle": "推测：制作专供中文跨境工具团队的单场景多端启动包",
+    "risks": "来源内数字不一致、代码授权、依赖版本更新",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-13",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "sonar-aso-tool",
+    "name": "Sonar - ASO tool",
+    "url": "https://trysonar.app/",
+    "category": "SaaS",
+    "one_liner_cn": "帮独立App开发者选应用商店关键词并跟踪排名",
+    "target_user": "独立移动App开发者",
+    "revenue": {
+      "mrr": 3136,
+      "last_30d": 4292,
+      "all_time": 12179,
+      "currency": "USD",
+      "as_of": "2026-09-30",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-09-30"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Stripe 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/sonar-aso-tool",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 20,
+        "url": "https://trustmrr.com/startup/sonar-aso-tool",
+        "estimated": false
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅",
+    "price_point": "$25/月起",
+    "acquisition_channels": "未公开",
+    "tech_stack_guess": "Stripe（其他技术未公开）",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 3,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：持续抓取和解释商店排名需要稳定的数据渠道。",
+      "channel_reach_cn": "推测：独立App开发者可经开发者社区远程接触。",
+      "payment_compliance": "推测：面向开发者的订阅工具具备明确收费结构。",
+      "competition": "推测：通用ASO竞争较大，但小语种细分可能有空位。",
+      "time_to_mvp": "推测：要稳定提供数据，首笔收费可能需要1–3个月。"
+    },
+    "total_score": 17,
+    "verdict": "可做",
+    "cn_angle": "推测：做面向出海小语种App的低成本关键词与排名监控，卖给独立开发者",
+    "risks": "应用商店数据使用规则与跟踪稳定性",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-09-30",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "homy",
+    "name": "Homy",
+    "url": "https://tryhomy.app/",
+    "category": "小App",
+    "one_liner_cn": "帮Mac用户用缩略图和自然语言更快找到本地文件",
+    "target_user": "macOS日常办公用户",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 1522,
+      "all_time": 1522,
+      "currency": "USD",
+      "as_of": "2026-10-13",
+      "verified_by": "DodoPayment",
+      "source_last_synced": "2026-10-13"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — DodoPayment 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/homy",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 0,
+        "url": "https://trustmrr.com/startup/homy",
+        "estimated": false
+      }
+    ],
+    "flags": [
+      "平台标题近30天$1,522与页面收入图表$1,590不一致",
+      "DR=0仅为测量结果，不构成正向流量证明"
+    ],
+    "for_sale": {
+      "listed": true,
+      "asking_price": 10000,
+      "multiple": "0.5x",
+      "url": "https://trustmrr.com/startup/homy"
+    },
+    "business_model": "一次性付费",
+    "price_point": "早鸟$9；正常$29，一次性",
+    "acquisition_channels": [
+      "Blog",
+      "X / Twitter",
+      "SEO",
+      "Reddit",
+      "内容营销"
+    ],
+    "tech_stack_guess": "Swift、SwiftUI、Dodo Payments",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 3,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：纯本地Mac文件检索的精简版可两周实现，质量优化更久。",
+      "channel_reach_cn": "推测：Mac社群与搜索流量可远程触达。",
+      "payment_compliance": "推测：一次性App定价可测试，但苹果签名和收款要求仍待确认。",
+      "competition": "推测：通用搜索工具多，特定中文文件场景可能有差异。",
+      "time_to_mvp": "推测：基础版可在30天内开放一次性付费验证。"
+    },
+    "total_score": 19,
+    "verdict": "可做",
+    "cn_angle": "推测：为中文设计师做Mac本地素材按图查找工具",
+    "risks": "平台标题与图表金额不一致、DR为零、macOS系统权限",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-13",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "techscreen",
+    "name": "TechScreen",
+    "url": "https://techscreen.app/",
+    "category": "SaaS",
+    "one_liner_cn": "帮技术求职者练习和准备软件工程面试",
+    "target_user": "计算机毕业生、IT求职者",
+    "revenue": {
+      "mrr": 2085,
+      "last_30d": 1939,
+      "all_time": 18065,
+      "currency": "USD",
+      "as_of": "2026-09-28",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-09-28"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Stripe 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/techscreen",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 4,
+        "url": "https://trustmrr.com/startup/techscreen",
+        "estimated": false
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅",
+    "price_point": "$19/月起至$400/3个月",
+    "acquisition_channels": "未公开",
+    "tech_stack_guess": "Electron、Next.js、Stripe、Node.js",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 3,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：小型面试训练工具可快速搭建，但交互质量需验证。",
+      "channel_reach_cn": "推测：技术社区能接触用户，但付费求职者信任需要培养。",
+      "payment_compliance": "推测：面试辅助产品收费可行，使用边界和平台规则需核实。",
+      "competition": "推测：职业教育和AI面试竞争密集。",
+      "time_to_mvp": "推测：针对单一岗位的合规练习产品可30天测试。"
+    },
+    "total_score": 16,
+    "verdict": "可做",
+    "cn_angle": "推测：面向中文初级前端求职者提供模拟面试练习而非实时作弊工具",
+    "risks": "避免违反真实考试/招聘规则、隐私与个人数据",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-09-28",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "search1api",
+    "name": "Search1API",
+    "url": "https://s1.dev/",
+    "category": "开发者工具",
+    "one_liner_cn": "帮AI智能体开发者统一访问搜索、抓取和实时网页",
+    "target_user": "AI智能体及应用开发者",
+    "revenue": {
+      "mrr": 1536,
+      "last_30d": 1739,
+      "all_time": 50085,
+      "currency": "USD",
+      "as_of": "2026-10-07",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-07"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Stripe 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/search1api",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 31,
+        "url": "https://trustmrr.com/startup/search1api",
+        "estimated": false
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": true,
+      "asking_price": 50000,
+      "multiple": "2.4x",
+      "url": "https://trustmrr.com/startup/search1api"
+    },
+    "business_model": "API订阅",
+    "price_point": "$19–$499/月",
+    "acquisition_channels": [
+      "Blog",
+      "Newsletter",
+      "SEO",
+      "X / Twitter"
+    ],
+    "tech_stack_guess": "Next.js、Python、Cloudflare、Node.js、Stripe",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 4,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：可靠检索API需要供应商授权、缓存与限流。",
+      "channel_reach_cn": "推测：AI开发者可通过技术社区和内容远程触达。",
+      "payment_compliance": "推测：API订阅可收费，但外部搜索数据许可证和收款路径需审查。",
+      "competition": "推测：已有强大搜索API竞争者，差异化有限。",
+      "time_to_mvp": "推测：收窄到特定信息源可在1–3个月试卖。"
+    },
+    "total_score": 15,
+    "verdict": "可做",
+    "cn_angle": "推测：为中文海外市场研究工具提供合规来源的结构化搜索接口",
+    "risks": "搜索抓取授权、第三方配额、API滥用防护",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-07",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "agentskit",
+    "name": "AgentsKit",
+    "url": "https://agentskit.co/",
+    "category": "AI工具",
+    "one_liner_cn": "帮Claude Code用户快速配置可复用的工程和营销智能体",
+    "target_user": "Claude Code独立开发者",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 1139,
+      "all_time": 4305,
+      "currency": "USD",
+      "as_of": "2026-10-13",
+      "verified_by": "Polar",
+      "source_last_synced": "2026-10-13"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Polar 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/claudethings",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 15,
+        "url": "https://trustmrr.com/startup/claudethings",
+        "estimated": false
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": true,
+      "asking_price": 12000,
+      "multiple": "0.9x",
+      "url": "https://trustmrr.com/startup/claudethings"
+    },
+    "business_model": "一次性付费",
+    "price_point": "Engineer $49一次性、Marketing $49一次性、Bundle $89一次性",
+    "acquisition_channels": [
+      "Blog",
+      "X / Twitter",
+      "SEO",
+      "Reddit",
+      "内容营销"
+    ],
+    "tech_stack_guess": "Next.js、Polar",
+    "scores": {
+      "build_difficulty": 5,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：针对明确工作流的小型Agent配置工具可两周交付。",
+      "channel_reach_cn": "推测：Claude Code用户集中在可远程运营的开发者社区。",
+      "payment_compliance": "推测：一次性数字工具易测试价格，但结算渠道需核实。",
+      "competition": "推测：免费开源模板和官方能力带来激烈竞争。",
+      "time_to_mvp": "推测：特定职业的任务包能够30天做首批付费实验。"
+    },
+    "total_score": 19,
+    "verdict": "可做",
+    "cn_angle": "推测：为中文电商独立开发者做Claude Code内容运营任务包",
+    "risks": "依赖第三方模型工具更新、功能被内置替代",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-13",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  },
+  {
+    "id": "the-eureka-database",
+    "name": "The Eureka Database",
+    "url": "https://www.theeurekadatabase.com/",
+    "category": "开发者工具",
+    "one_liner_cn": "帮独立开发者从真实抱怨中筛出有依据的软件点子",
+    "target_user": "创业者、软件开发者",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 1975,
+      "all_time": 1975,
+      "currency": "USD",
+      "as_of": "2026-08-08",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-08-08"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR — Stripe 支付平台验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/the-eureka-database",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 9,
+        "url": "https://trustmrr.com/startup/the-eureka-database",
+        "estimated": false
+      }
+    ],
+    "flags": [
+      "支付数据已超过30天，待更新"
+    ],
+    "for_sale": {
+      "listed": true,
+      "asking_price": null,
+      "multiple": null,
+      "url": "https://trustmrr.com/startup/the-eureka-database"
+    },
+    "business_model": "一次性付费",
+    "price_point": "$79终身",
+    "acquisition_channels": [
+      "Product Hunt"
+    ],
+    "tech_stack_guess": "Next.js、Vercel、Stripe",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 3,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "推测：公开问题归纳与基础筛选前端可以很快做出，数据质量不易。",
+      "channel_reach_cn": "推测：Product Hunt可触达开发者，但中文开发者直接转化较难。",
+      "payment_compliance": "推测：数字会员商品可定价，但研究素材权属需审查。",
+      "competition": "推测：商业点子数据库多，难以维持独有数据优势。",
+      "time_to_mvp": "推测：少量人工审核研究产品可在1–3个月完成付费验证。"
+    },
+    "total_score": 15,
+    "verdict": "可做",
+    "cn_angle": "推测：仅研究有授权公开案例的跨境细分需求，卖给中文独立开发者",
+    "risks": "来源授权、过期收入、与原平台数据许可冲突",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-08-08",
+    "updated_at": "2026-10-14",
+    "review_notes": "内部审核草案，非公开许可。",
+    "publication_status": "PRIVATE_REVIEW_ONLY"
+  }
+]
