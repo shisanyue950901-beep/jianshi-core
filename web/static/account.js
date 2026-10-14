@@ -255,6 +255,138 @@ if(cfg.enabled&&cfg.url&&cfg.key){
     }catch(_err){}
   }
 
+  // Normal password accounts use Supabase Auth (never store or log passwords).
+  // Keep the previous Magic Link alternative behind the same production gate.
+  const authPanels=$("[data-auth-panel]");
+  const authSwitches=$("[data-auth-switch]");
+  function showAuthPanel(mode){
+    authPanels.forEach((panel)=>{panel.hidden=panel.dataset.authPanel!==mode;});
+    authSwitches.forEach((button)=>{
+      button.setAttribute("aria-pressed",String(button.dataset.authSwitch===mode));
+    });
+  }
+  authSwitches.forEach((button)=>button.addEventListener("click",()=>showAuthPanel(button.dataset.authSwitch)));
+  const forgot=$("[data-auth-forgot]");
+  if(forgot) forgot.addEventListener("click",()=>showAuthPanel("reset"));
+  const back=$("[data-auth-back]");
+  if(back) back.addEventListener("click",()=>showAuthPanel("login"));
+
+  function authRedirect(){
+    // The dashboard must whitelist this origin as an Auth redirect URL.
+    return new URL("/account/",cfg.site).toString();
+  }
+  function passwordPair(form){
+    const input=$('input[name="password"]',form);
+    const confirmation=$('input[name="confirm_password"]',form);
+    const password=input?.value||"";
+    if(password.length<8||password.length>128) return {error:"密码长度应在 8–128 位之间。"};
+    if(confirmation && password!==confirmation.value)return {error:"两次输入的密码不一致。"};
+    return {password};
+  }
+  const registerForm=$("[data-auth-register-form]");
+  if(registerForm){
+    registerForm.addEventListener("submit",async(event)=>{
+      event.preventDefault();
+      const status=$("[data-auth-register-status]",registerForm);
+      const button=$('button[type="submit"]',registerForm);
+      const email=$('input[name="email"]',registerForm).value.trim();
+      const pass=passwordPair(registerForm);
+      if(pass.error){setStatus(status,pass.error,"error");return;}
+      if(authCooldownRemaining()>0){
+        setStatus(status,"邮件刚刚请求过，请稍后再试。","error");
+        return;
+      }
+      button.disabled=true;
+      setStatus(status,"正在创建账户…","loading");
+      try{
+        const response=await supabase.auth.signUp({
+          email,password:pass.password,
+          options:{emailRedirectTo:authRedirect()}
+        });
+        if(response.error)throw response.error;
+        registerForm.querySelectorAll('input[type="password"]').forEach((el)=>{el.value="";});
+        setAuthCooldown();
+        if(response.data.session){
+          setStatus(status,"账户已创建并登录。","sent");
+          await renderAccount(response.data.session);
+        }else{
+          setStatus(status,"注册请求已提交。请查收邮箱确认邮件，再返回网站登录。","sent");
+        }
+      }catch(_err){
+        setStatus(status,"注册未完成，请核对邮箱或稍后重试。","error");
+      }finally{button.disabled=false;}
+    });
+  }
+
+  const loginForm=$("[data-auth-login-form]");
+  if(loginForm){
+    loginForm.addEventListener("submit",async(event)=>{
+      event.preventDefault();
+      const status=$("[data-auth-login-status]",loginForm);
+      const button=$('button[type="submit"]',loginForm);
+      const email=$('input[name="email"]',loginForm).value.trim();
+      const input=$('input[name="password"]',loginForm);
+      button.disabled=true;
+      setStatus(status,"正在登录…","loading");
+      try{
+        const response=await supabase.auth.signInWithPassword({email,password:input.value});
+        if(response.error)throw response.error;
+        input.value="";
+        setStatus(status,"登录成功。","sent");
+        await renderAccount(response.data.session);
+      }catch(_err){
+        setStatus(status,"邮箱或密码错误，或邮箱尚未验证。","error");
+      }finally{button.disabled=false;}
+    });
+  }
+
+  const resetForm=$("[data-auth-reset-form]");
+  if(resetForm){
+    resetForm.addEventListener("submit",async(event)=>{
+      event.preventDefault();
+      const status=$("[data-auth-reset-status]",resetForm);
+      const button=$('button[type="submit"]',resetForm);
+      if(authCooldownRemaining()>0){
+        setStatus(status,"邮件刚刚请求过，请稍后再试。","error");
+        return;
+      }
+      button.disabled=true;
+      setStatus(status,"正在请求找回密码邮件…","loading");
+      try{
+        const email=$('input[name="email"]',resetForm).value.trim();
+        const response=await supabase.auth.resetPasswordForEmail(email,{
+          redirectTo:authRedirect()
+        });
+        if(response.error)throw response.error;
+        setAuthCooldown();
+        setStatus(status,"如果该邮箱已有账户，请检查密码重置邮件。","sent");
+      }catch(_err){
+        setStatus(status,"重置邮件暂未发送成功，请稍后重试。","error");
+      }finally{button.disabled=false;}
+    });
+  }
+
+  const changeForm=$("[data-auth-change-form]");
+  if(changeForm){
+    changeForm.addEventListener("submit",async(event)=>{
+      event.preventDefault();
+      const status=$("[data-auth-change-status]",changeForm);
+      const button=$('button[type="submit"]',changeForm);
+      const pass=passwordPair(changeForm);
+      if(pass.error){setStatus(status,pass.error,"error");return;}
+      button.disabled=true;
+      setStatus(status,"正在设置新密码…","loading");
+      try{
+        const response=await supabase.auth.updateUser({password:pass.password});
+        if(response.error)throw response.error;
+        changeForm.querySelectorAll('input[type="password"]').forEach((el)=>{el.value="";});
+        setStatus(status,"密码已更新。","sent");
+      }catch(_err){
+        setStatus(status,"密码更新失败，请重新登录后重试。","error");
+      }finally{button.disabled=false;}
+    });
+  }
+
   const form=$("[data-auth-email-form]");
   if(form){
     form.addEventListener("submit",async(event)=>{
@@ -349,8 +481,16 @@ if(cfg.enabled&&cfg.url&&cfg.key){
   bindPreferenceForm();
   bindClearData();
 
-  supabase.auth.onAuthStateChange((_event,session)=>{
-    queueMicrotask(()=>renderAccount(session).catch(()=>{}));
+  supabase.auth.onAuthStateChange((event,session)=>{
+    queueMicrotask(()=>{
+      renderAccount(session).then(()=>{
+        if(event==="PASSWORD_RECOVERY"){
+          const status=$("[data-auth-change-status]");
+          setStatus(status,"邮箱验证成功，请在这里设置新密码。","sent");
+          $("[data-auth-change-form]")?.scrollIntoView({block:"center"});
+        }
+      }).catch(()=>{});
+    });
   });
 
   getSession()

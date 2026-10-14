@@ -528,8 +528,8 @@ def account_action_block(item):
 
 def build_account_page():
     # The visual preview never collects an email or pretends signup is live.
-    # The actual Magic Link form below is emitted only behind the existing
-    # double-gated AUTH_ENABLED flag. No password, fake OAuth or storage added.
+    # Actual email/password and optional Magic Link are emitted ONLY behind
+    # the same double-gated AUTH_ENABLED flag. Production remains closed.
     if not AUTH_ENABLED:
         body="""<main class="wrap account-page">
 <div class="account-entry-shell">
@@ -584,17 +584,53 @@ def build_account_page():
 <p class="account-story-foot">见势 JIANSHI 2.0 · 商业机会发现与决策</p>
 </aside>
 <section class="account-access auth-login" aria-labelledby="account-entry-title">
-<div class="account-availability account-availability--ready"><span class="account-availability-dot" aria-hidden="true"></span>邮箱免密注册／登录</div>
+<div class="account-availability account-availability--ready"><span class="account-availability-dot" aria-hidden="true"></span>账户注册／登录</div>
 <span class="account-access-eyebrow">WELCOME TO JIANSHI</span>
 <h2 id="account-entry-title">开启你的<br>研究空间</h2>
-<p class="account-access-lead">无需设置密码。填写邮箱，接收一次性登录链接；首次使用会创建账户。</p>
+<p class="account-access-lead">用邮箱和密码注册，验证邮箱后即可登录。已有账户可直接登录。</p>
+<div class="account-auth-tabs" aria-label="选择账户操作">
+<button type="button" data-auth-switch="register" aria-pressed="true">注册</button>
+<button type="button" data-auth-switch="login" aria-pressed="false">登录</button>
+</div>
+<form class="auth-email-form account-live-form" data-auth-register-form data-auth-panel="register">
+<label class="account-input-label" for="register-email">邮箱地址</label>
+<input id="register-email" type="email" name="email" maxlength="254" autocomplete="email" placeholder="name@example.com" required>
+<label class="account-input-label" for="register-password">设置密码（至少 8 位）</label>
+<input id="register-password" type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<label class="account-input-label" for="register-confirm">再次输入密码</label>
+<input id="register-confirm" type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<button type="submit">注册账户 <span aria-hidden="true">→</span></button>
+<p class="auth-hint">注册后请先完成邮箱验证；密码仅用于登录，不会记录在网页中。</p>
+<p class="auth-status" data-auth-register-status role="status" aria-live="polite"></p>
+</form>
+<form class="auth-email-form account-live-form" data-auth-login-form data-auth-panel="login" hidden>
+<label class="account-input-label" for="login-email">邮箱地址</label>
+<input id="login-email" type="email" name="email" maxlength="254" autocomplete="username" required>
+<label class="account-input-label" for="login-password">密码</label>
+<input id="login-password" type="password" name="password" autocomplete="current-password" required>
+<button type="submit">登录我的见势 <span aria-hidden="true">→</span></button>
+<button type="button" class="account-text-button" data-auth-forgot>忘记密码？</button>
+<p class="auth-status" data-auth-login-status role="status" aria-live="polite"></p>
+</form>
+<form class="auth-email-form account-live-form" data-auth-reset-form data-auth-panel="reset" hidden>
+<h3>找回密码</h3>
+<p class="auth-hint">输入注册邮箱，收到邮件后可以设置新密码。</p>
+<label class="account-input-label" for="reset-email">邮箱地址</label>
+<input id="reset-email" type="email" name="email" maxlength="254" autocomplete="email" required>
+<button type="submit">发送重置密码邮件 <span aria-hidden="true">→</span></button>
+<button type="button" class="account-text-button" data-auth-back>返回登录</button>
+<p class="auth-status" data-auth-reset-status role="status" aria-live="polite"></p>
+</form>
+<details class="account-magic-alt">
+<summary>也可以使用邮箱免密码登录</summary>
 <form class="auth-email-form account-live-form" data-auth-email-form>
 <label class="account-input-label" for="account-email">邮箱地址</label>
-<input id="account-email" type="email" name="email" maxlength="254" autocomplete="email" inputmode="email" placeholder="name@example.com" required>
+<input id="account-email" type="email" name="email" maxlength="254" autocomplete="email" placeholder="name@example.com" required>
 <button type="submit">发送登录链接 <span aria-hidden="true">→</span></button>
-<p class="auth-hint">仅用于账户注册／登录；请到邮箱查收一次性链接。</p>
+<p class="auth-hint">只发送一次性登录链接；不会要求提供邮箱密码。</p>
 <p class="auth-status" data-auth-status role="status" aria-live="polite"></p>
 </form>
+</details>
 <a class="account-back-link" href="/discover/">先不登录，去发现项目 <span aria-hidden="true">↗</span></a>
 </section>
 </div>
@@ -619,6 +655,17 @@ def build_account_page():
 </form>
 <p class="auth-hint">邮件提醒只有在邮件服务和登录邮箱都完成验证后才会真正发送。</p>
 </section>
+<section class="panel account-change-password">
+<span class="section-kicker">账户安全</span><h2>修改登录密码</h2>
+<p class="auth-hint">忘记密码邮件验证完成后，可以在这里设置新密码。</p>
+<form class="auth-email-form account-live-form" data-auth-change-form>
+<label for="change-password">新密码（至少 8 位）</label>
+<input id="change-password" type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<label for="change-confirm">再次输入新密码</label>
+<input id="change-confirm" type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<button type="submit">保存新密码</button>
+<p class="auth-status" data-auth-change-status role="status" aria-live="polite"></p>
+</form></section>
 <section class="panel danger-zone">
 <span class="section-kicker">隐私与数据</span><h2>清空我的见势数据</h2>
 <p>清空收藏、观察清单和站内提醒，并把提醒偏好恢复为默认值。不会删除你的登录账号。</p>
