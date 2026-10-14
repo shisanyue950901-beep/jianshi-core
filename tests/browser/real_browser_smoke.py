@@ -39,6 +39,7 @@ ROUTES = {
     "/academy/": "academy",
     "/marketplace/brief/": "demand-draft",
     "/talent/portfolio/": "portfolio-draft",
+    "/account/": "registration-entry",
     "/account/preview/": "registration-preview",
 }
 results: list[dict] = []
@@ -199,6 +200,14 @@ def ui_home(page, base: str, mobile: bool):
                 "Mobile menu did not close with Escape")
     else:
         require(page.locator(".j2-nav").is_visible(), "Desktop navigation hidden")
+    entry=page.locator(".j2-top .j2-account-cta[href='/account/']")
+    require(entry.count()==1 and entry.is_visible(),
+            "Visible registration link missing from website header")
+    entry.click()
+    require(page.url.endswith("/account/"), "Header registration link does not open /account/")
+    require(page.locator(".account-entry-shell").count()==1,
+            "Registration entry does not render the account page")
+    page.goto(base + "/", wait_until="load")
     page.locator(".j2-actions a[href='/discover/']").click()
     require(page.url.endswith("/discover/"), "Home to discover navigation failed")
 
@@ -321,11 +330,11 @@ def ui_academy(page, base: str):
 
 
 def ui_account_preview(page, base: str):
-    page.goto(base + "/account/preview/", wait_until="load")
+    page.goto(base + "/account/", wait_until="load")
     require(page.locator(".account-entry-shell").count() == 1,
             "Registration visual shell missing")
     require(page.get_by_text("邮箱注册／登录 · 即将开放").is_visible(),
-            "Closed registration preview unavailable")
+            "Closed registration entry unavailable")
     require(page.locator(".account-form-preview button").is_disabled(),
             "Closed registration must not have an active submit button")
     require(page.locator("form").count() == 0,
@@ -434,7 +443,7 @@ def main():
                 check("portfolio-draft-edit-generate-clear",
                       lambda: ui_draft(page, base, "talent"),
                       viewport=width, page=page)
-                check("registration-preview-disabled",
+                check("registration-entry-visible-auth-gated",
                       lambda: ui_account_preview(page, base),
                       viewport=width, page=page)
                 check("script-runtime-errors",
