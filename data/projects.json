@@ -29,6 +29,12 @@
         "level": "A",
         "url": "https://trustmrr.com/startup/trustmrr.md",
         "checked_at": "2026-10-14"
+      },
+      {
+        "label": "IndiePage公开收入榜（Stripe连接；与TrustMRR存在同创始人关联，非完全独立交叉验证）",
+        "level": "A",
+        "url": "https://indiepa.ge/leaderboard",
+        "checked_at": "2026-10-14"
       }
     ],
     "traction": [
@@ -82,7 +88,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:40:30.742Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。",
+    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:40:30.742Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 IndiePage排行榜公开指称收入来自Stripe且每12小时更新，但其与TrustMRR的共同创始人关联及时间/口径差异需保留。",
     "publication_status": "PRIVATE_REVIEW_ONLY"
   },
   {
@@ -114,6 +120,12 @@
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/datafast.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "IndiePage公开收入榜（Stripe连接；与TrustMRR存在同创始人关联，非完全独立交叉验证）",
+        "level": "A",
+        "url": "https://indiepa.ge/leaderboard",
         "checked_at": "2026-10-14"
       }
     ],
@@ -168,7 +180,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:21:15.116Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。",
+    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:21:15.116Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 IndiePage排行榜公开指称收入来自Stripe且每12小时更新，但其与TrustMRR的共同创始人关联及时间/口径差异需保留。",
     "publication_status": "PRIVATE_REVIEW_ONLY"
   },
   {
@@ -200,6 +212,12 @@
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/shipfast.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "IndiePage公开收入榜（Stripe连接；与TrustMRR存在同创始人关联，非完全独立交叉验证）",
+        "level": "A",
+        "url": "https://indiepa.ge/leaderboard",
         "checked_at": "2026-10-14"
       }
     ],
@@ -248,7 +266,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:00:57.779Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。",
+    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:00:57.779Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 IndiePage排行榜公开指称收入来自Stripe且每12小时更新，但其与TrustMRR的共同创始人关联及时间/口径差异需保留。",
     "publication_status": "PRIVATE_REVIEW_ONLY"
   },
   {
