@@ -55,6 +55,9 @@ jobs:
       - name: Run 390px and 1440px real browser interaction audit
         run: python tests/browser/real_browser_smoke.py
 
+      - name: Exercise ready signup UI with mocked Supabase Auth (never production)
+        run: python tests/browser/auth_ui_smoke.py
+
       - name: Publish browser screenshots and Chinese report
         if: always()
         uses: actions/upload-artifact@v4
