@@ -166,11 +166,11 @@ def publish_public_research_appendix() -> int:
 
 
 def publish_account_preview() -> None:
-    """Render an inert signup DESIGN preview; /account/ stays a safe redirect.
+    """Publish the visible /account/ entry and historical /account/preview/.
 
-    The B1 release intentionally never exposes any active Auth form. Import the
-    existing public builder without invoking web/build.py or any network calls.
-    Force the feature flag off independently from builder environment settings.
+    Until email delivery and authentication security checks pass, both pages
+    are inert. Unlike the previous redirect, the direct account URL opens the
+    actual visual registration entry, not a confusing jump back to home.
     """
     spec = importlib.util.spec_from_file_location(
         "jianshi_b1_account_preview_builder", ROOT / "web" / "build.py"
@@ -189,7 +189,12 @@ def publish_account_preview() -> None:
             or 'type="email"' in page
             or '<button type="button" disabled>' not in page):
         raise RuntimeError("Public account preview must be fail-closed")
-    # A separate noindex design route. Never change the protected /account/.
+    # The canonical public account URL is always reachable from the navbar.
+    # Closed means no fields and no submission, not an invisible entry point.
+    account_dest = OUTPUT / "account" / "index.html"
+    account_dest.parent.mkdir(parents=True, exist_ok=True)
+    account_dest.write_text(page, encoding="utf-8")
+    # Preserve the historical preview link for backward compatibility.
     page = page.replace(
         '<link rel="canonical" href="' + SITE + '/account/">',
         '<link rel="canonical" href="' + SITE + '/account/preview/">', 1
@@ -253,7 +258,7 @@ def build_release() -> dict:
     related_quality = audit_g2c_release(OUTPUT)
     if related_quality["audited_pages"] != 9 or related_quality["related_links"] != 27:
         raise RuntimeError("G2-C related-content quality gate incomplete")
-    # Public-only design preview; /account/ must remain redirected and gated.
+    # Public account entry stays visible. Credential submission remains gated.
     publish_account_preview()
     # Old bookmark paths must not lead users back to an engineering dashboard.
     destinations = {
@@ -262,7 +267,6 @@ def build_release() -> dict:
         "rising": "/",
         "build": "/",
         "content": "/",
-        "account": "/",
     }
     for name, target in destinations.items():
         out = OUTPUT / name / "index.html"
