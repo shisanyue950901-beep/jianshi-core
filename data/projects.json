@@ -1,97 +1,5 @@
 [
   {
-    "id": "trustmrr",
-    "name": "TrustMRR",
-    "url": "https://trustmrr.com/",
-    "category": "SaaS",
-    "one_liner_cn": "帮独立开发者查找经支付渠道验证的软件收入案例",
-    "target_user": "独立开发者、软件创始人和收购研究者",
-    "revenue": {
-      "mrr": 23234,
-      "last_30d": 44772,
-      "all_time": 380508,
-      "currency": "USD",
-      "as_of": "2026-10-14",
-      "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14T02:40:30.742Z"
-    },
-    "team_size": 1,
-    "evidence_level": "A",
-    "sources": [
-      {
-        "label": "TrustMRR（Stripe支付提供方已连接）",
-        "level": "A",
-        "url": "https://trustmrr.com/startup/trustmrr",
-        "checked_at": "2026-10-14"
-      },
-      {
-        "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
-        "level": "A",
-        "url": "https://trustmrr.com/startup/trustmrr.md",
-        "checked_at": "2026-10-14"
-      },
-      {
-        "label": "IndiePage公开收入榜（Stripe连接；与TrustMRR存在同创始人关联，非完全独立交叉验证）",
-        "level": "A",
-        "url": "https://indiepa.ge/leaderboard",
-        "checked_at": "2026-10-14"
-      }
-    ],
-    "traction": [
-      {
-        "type": "ahrefs_domain_rating",
-        "value": 72,
-        "url": "https://trustmrr.com/startup/trustmrr.md",
-        "estimated": false
-      }
-    ],
-    "flags": [
-      "验证平台与被验证项目属于同一品牌，存在利益冲突"
-    ],
-    "for_sale": {
-      "listed": false,
-      "asking_price": null,
-      "multiple": null,
-      "url": null
-    },
-    "business_model": "订阅",
-    "price_point": "未公开",
-    "acquisition_channels": [
-      "SEO",
-      "口碑",
-      "X / Twitter",
-      "YouTube",
-      "Newsletter",
-      "Content marketing",
-      "LinkedIn",
-      "Reddit"
-    ],
-    "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、React、Tailwind CSS、JavaScript、HTML5、Stripe、MongoDB、Vercel",
-    "scores": {
-      "build_difficulty": 2,
-      "channel_reach_cn": 4,
-      "payment_compliance": 3,
-      "competition": 1,
-      "time_to_mvp": 2
-    },
-    "score_reasons": {
-      "build_difficulty": "推测：支付验证、搜索及数据市场的完整建设超出两周MVP。",
-      "channel_reach_cn": "推测：SEO和开发者社区可在国内团队远程经营。",
-      "payment_compliance": "推测：数字信息订阅具有收费路径，但跨境结算及数据许可仍需核实。",
-      "competition": "推测：已有强势数据库及品牌，竞争空间狭窄。",
-      "time_to_mvp": "推测：必须先解决数据授权与供需网络，30天收款较困难。"
-    },
-    "total_score": 12,
-    "verdict": "不推荐",
-    "cn_angle": "推测：只做特定行业的授权案例中文决策简报，卖给独立开发者",
-    "risks": "平台竞争与公开数据再利用授权风险",
-    "reviewed_by_hark": false,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:40:30.742Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 IndiePage排行榜公开指称收入来自Stripe且每12小时更新，但其与TrustMRR的共同创始人关联及时间/口径差异需保留。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
-  },
-  {
     "id": "datafast",
     "name": "DataFast",
     "url": "https://datafa.st/",
@@ -100,7 +8,7 @@
     "target_user": "SaaS创始人、营销人员",
     "revenue": {
       "mrr": 29939,
-      "last_30d": 31458,
+      "last_30d": 31434,
       "all_time": 308009,
       "currency": "USD",
       "as_of": "2026-10-14",
@@ -138,7 +46,7 @@
       }
     ],
     "flags": [
-      "与验证平台创始人存在关联，非独立外部财务审计"
+      "与 TrustMRR 创始人为关联方"
     ],
     "for_sale": {
       "listed": false,
@@ -161,27 +69,30 @@
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、HTML5、CSS、React、Tailwind CSS、Vercel、Node.js、Render、MongoDB、Stripe",
     "scores": {
       "build_difficulty": 3,
-      "channel_reach_cn": 4,
+      "channel_reach_cn": 2,
       "payment_compliance": 3,
       "competition": 2,
       "time_to_mvp": 3
     },
     "score_reasons": {
-      "build_difficulty": "推测：归因分析与稳定计费需专业开发，MVP可先收窄。",
-      "channel_reach_cn": "推测：SEO和开发者社区可从国内远程触达。",
-      "payment_compliance": "推测：SaaS按月定价明确，但支付主体与税务需确认。",
-      "competition": "推测：网站分析竞争激烈，垂直渠道归因仍可能有空位。",
-      "time_to_mvp": "推测：若收窄到单一渠道，可以在约1–3个月试卖。"
+      "build_difficulty": "归因追踪、跨域识别、事件采集需一定工程与隐私处理能力。",
+      "channel_reach_cn": "创始人已有约41万X关注者，强依赖既有个人受众，国内新开发者难复刻首波获客。",
+      "payment_compliance": "Stripe订阅技术成熟，但国内个人跨境收款主体和隐私政策需另核实。",
+      "competition": "竞品：Plausible、PostHog、Fathom；归因分析是拥挤市场，差异化难。",
+      "time_to_mvp": "30天可做单渠道付款归因MVP，但准确性和数据合规需额外验证。"
     },
-    "total_score": 15,
-    "verdict": "可做",
+    "total_score": 13,
+    "verdict": "不推荐",
     "cn_angle": "推测：聚焦小型跨境SaaS的内容获客到付款归因，卖给中文独立开发者",
     "risks": "第三方统计授权、Cookie隐私与平台竞争",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:21:15.116Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 IndiePage排行榜公开指称收入来自Stripe且每12小时更新，但其与TrustMRR的共同创始人关联及时间/口径差异需保留。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T02:21:15.116Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计31434美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "publication_status": "PUBLIC",
+    "founded_date": "2024-07-01",
+    "growth_30d": 18,
+    "customers": null
   },
   {
     "id": "shipfast",
@@ -230,7 +141,7 @@
       }
     ],
     "flags": [
-      "与验证平台创始人存在关联，非独立外部财务审计",
+      "与 TrustMRR 创始人为关联方",
       "近30天收入接近$1,000下限，需每周复核"
     ],
     "for_sale": {
@@ -247,27 +158,30 @@
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：CSS、Next.js、React、HTML5、JavaScript、TypeScript、Tailwind CSS、Stripe、Vercel、MongoDB",
     "scores": {
       "build_difficulty": 5,
-      "channel_reach_cn": 4,
+      "channel_reach_cn": 1,
       "payment_compliance": 4,
-      "competition": 1,
-      "time_to_mvp": 4
+      "competition": 2,
+      "time_to_mvp": 5
     },
     "score_reasons": {
-      "build_difficulty": "推测：限定技术栈的基础模板可由一人两周实现。",
-      "channel_reach_cn": "推测：开发者社区和搜索可远程传播。",
-      "payment_compliance": "推测：一次性数字产品收费相对简单，实际收款主体仍须核实。",
-      "competition": "推测：启动模板市场高度同质化。",
-      "time_to_mvp": "推测：成熟技术栈的小模板可用30天测试首笔收费。"
+      "build_difficulty": "可限定为一个细分场景的模板，复制性强，技术门槛较低（非复制原代码）。",
+      "channel_reach_cn": "创始人X已有约41万关注者，是高信任个人分发模式；普通中文开发者难复制，给1分。",
+      "payment_compliance": "一次性数字产品适用标准跨境收款路径，但仍需合规主体。",
+      "competition": "竞品：SaaS Pegasus、Makerkit、Supastarter；Next.js样板模板市场高度同质。",
+      "time_to_mvp": "缩小认证和支付范围后，30天可完成可售单场景模板。"
     },
-    "total_score": 18,
+    "total_score": 17,
     "verdict": "可做",
     "cn_angle": "推测：给中文独立开发者销售特定行业的合规网站启动模板",
     "risks": "模板同质化、代码和商标知识产权风险",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T02:00:57.779Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 IndiePage排行榜公开指称收入来自Stripe且每12小时更新，但其与TrustMRR的共同创始人关联及时间/口径差异需保留。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T02:00:57.779Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计1146美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "publication_status": "PUBLIC",
+    "founded_date": "2023-07-03",
+    "growth_30d": -54,
+    "customers": null
   },
   {
     "id": "turbostarter",
@@ -322,27 +236,30 @@
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、React、CSS、Tailwind CSS、Expo、React Native、TypeScript、Docker、PostgreSQL、Anthropic、OpenAI、Google Cloud、Fly.io、GitHub Actions、Node.js、Stripe、LangChain、Cloudflare、Polar、RevenueCat、Lemon Squeezy",
     "scores": {
       "build_difficulty": 4,
-      "channel_reach_cn": 4,
-      "payment_compliance": 4,
+      "channel_reach_cn": 3,
+      "payment_compliance": 5,
       "competition": 2,
       "time_to_mvp": 4
     },
     "score_reasons": {
-      "build_difficulty": "推测：复用现成框架可快速交付精简版，跨端支持较复杂。",
-      "channel_reach_cn": "推测：开发者社区和技术文章能够远程获客。",
-      "payment_compliance": "推测：数字许可证易于设价，但支付渠道应单独审查。",
-      "competition": "推测：多端框架竞争较大，行业集成可能有区别。",
-      "time_to_mvp": "推测：一个垂直场景的可运行模板可在30天售卖。"
+      "build_difficulty": "跨Web/App/扩展维护成本偏高，但窄场景模板可收敛。",
+      "channel_reach_cn": "公开X受众约6,432，主要依赖开发者社区和个人社媒推广；国内新进入者可用社区但不应预设SEO自然流量。",
+      "payment_compliance": "Lemon Squeezy作为数字产品Merchant of Record可提供适用的结算路线；账户可用性仍取决于个人所在司法辖区及平台审核。",
+      "competition": "竞品：ShipFast、Makerkit、SaaS Pegasus；多端模板存量竞争激烈。",
+      "time_to_mvp": "单一栈内30天可制作首个模板；全平台版本不应作为首发目标。"
     },
     "total_score": 18,
     "verdict": "可做",
     "cn_angle": "推测：制作专供中文跨境工具团队的单场景多端启动包",
     "risks": "来源内数字不一致、代码授权、依赖版本更新",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：LemonSqueezy API连接，收入取当日last_30d快照，同步于2026-10-14T03:37:39.417Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 原草稿金额不一致按最新同日同步快照修正；历史差异见T04 Hark审计报告。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:37:39.417Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计4668美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "publication_status": "PUBLIC",
+    "founded_date": "2026-02-25",
+    "growth_30d": 54.5,
+    "customers": null
   },
   {
     "id": "sonar-aso-tool",
@@ -396,112 +313,31 @@
     "acquisition_channels": "未公开",
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Stripe",
     "scores": {
-      "build_difficulty": 3,
-      "channel_reach_cn": 4,
-      "payment_compliance": 4,
-      "competition": 3,
-      "time_to_mvp": 3
-    },
-    "score_reasons": {
-      "build_difficulty": "推测：持续抓取和解释商店排名需要稳定的数据渠道。",
-      "channel_reach_cn": "推测：独立App开发者可经开发者社区远程接触。",
-      "payment_compliance": "推测：面向开发者的订阅工具具备明确收费结构。",
-      "competition": "推测：通用ASO竞争较大，但小语种细分可能有空位。",
-      "time_to_mvp": "推测：要稳定提供数据，首笔收费可能需要1–3个月。"
-    },
-    "total_score": 17,
-    "verdict": "可做",
-    "cn_angle": "推测：做面向出海小语种App的低成本关键词与排名监控，卖给独立开发者",
-    "risks": "应用商店数据使用规则与跟踪稳定性",
-    "reviewed_by_hark": false,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T03:55:18.296Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
-  },
-  {
-    "id": "homy",
-    "name": "Homy",
-    "url": "https://tryhomy.app/",
-    "category": "小App",
-    "one_liner_cn": "帮Mac用户用缩略图和自然语言更快找到本地文件",
-    "target_user": "macOS日常办公用户",
-    "revenue": {
-      "mrr": null,
-      "last_30d": 1590,
-      "all_time": 1590,
-      "currency": "USD",
-      "as_of": "2026-10-14",
-      "verified_by": "DodoPayment",
-      "source_last_synced": "2026-10-14T06:49:29.295Z"
-    },
-    "team_size": 1,
-    "evidence_level": "A",
-    "sources": [
-      {
-        "label": "TrustMRR（DodoPayment支付提供方已连接）",
-        "level": "A",
-        "url": "https://trustmrr.com/startup/homy",
-        "checked_at": "2026-10-14"
-      },
-      {
-        "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
-        "level": "A",
-        "url": "https://trustmrr.com/startup/homy.md",
-        "checked_at": "2026-10-14"
-      }
-    ],
-    "traction": [
-      {
-        "type": "datafast_connected_visitors_30d",
-        "value": 6594,
-        "url": "https://trustmrr.com/startup/homy.md",
-        "estimated": false
-      }
-    ],
-    "flags": [
-      "DR=0不是正向牵引，已改用连接DataFast流量",
-      "2026年10月新项目，观察期短，不代表持续收入"
-    ],
-    "for_sale": {
-      "listed": true,
-      "asking_price": 10000,
-      "multiple": "0.5x",
-      "url": "https://trustmrr.com/startup/homy"
-    },
-    "business_model": "一次性付费",
-    "price_point": "Early-bird: $9, normally $29. One-time payment · no subscription",
-    "acquisition_channels": [
-      "Blog",
-      "X / Twitter",
-      "SEO",
-      "Reddit",
-      "Content marketing"
-    ],
-    "tech_stack_guess": "平台公开列举（未经独立技术审计）：Swift、SwiftUI、Dodo Payments",
-    "scores": {
       "build_difficulty": 4,
-      "channel_reach_cn": 4,
+      "channel_reach_cn": 5,
       "payment_compliance": 4,
       "competition": 3,
       "time_to_mvp": 4
     },
     "score_reasons": {
-      "build_difficulty": "推测：纯本地Mac文件检索的精简版可两周实现，质量优化更久。",
-      "channel_reach_cn": "推测：Mac社群与搜索流量可远程触达。",
-      "payment_compliance": "推测：一次性App定价可测试，但苹果签名和收款要求仍待确认。",
-      "competition": "推测：通用搜索工具多，特定中文文件场景可能有差异。",
-      "time_to_mvp": "推测：基础版可在30天内开放一次性付费验证。"
+      "build_difficulty": "聚焦单一应用商店关键词追踪，可降低外部数据整合复杂度。",
+      "channel_reach_cn": "App开发者主动搜索关键词/ASO工具的意图明确，国内可用SEO、应用开发者生态分发；公开未披露实际获客渠道，此处为渠道可行性推测。",
+      "payment_compliance": "订阅式SaaS可经Stripe收款；针对中国经营者仍需核对结算资格。",
+      "competition": "竞品：AppTweak、Sensor Tower、AppFollow；成熟平台强，但小语种单市场定位尚有细分空间。",
+      "time_to_mvp": "30天能制作小语种关键词监控工具原型，官方接口授权另核实。"
     },
-    "total_score": 19,
-    "verdict": "可做",
-    "cn_angle": "推测：为中文设计师做Mac本地素材按图查找工具",
-    "risks": "平台标题与图表金额不一致、DR为零、macOS系统权限",
-    "reviewed_by_hark": false,
+    "total_score": 20,
+    "verdict": "推荐",
+    "cn_angle": "推测：做面向出海小语种App的低成本关键词与排名监控，卖给独立开发者",
+    "risks": "应用商店数据使用规则与跟踪稳定性",
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：DodoPayment API连接，收入取当日last_30d快照，同步于2026-10-14T06:49:29.295Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 原草稿金额不一致按最新同日同步快照修正；历史差异见T04 Hark审计报告。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:55:18.296Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计4012美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "publication_status": "PUBLIC",
+    "founded_date": "2026-03-12",
+    "growth_30d": 10.3,
+    "customers": null
   },
   {
     "id": "search1api",
@@ -512,7 +348,7 @@
     "target_user": "AI智能体及应用开发者",
     "revenue": {
       "mrr": 1040,
-      "last_30d": 6313,
+      "last_30d": 6309,
       "all_time": 55262,
       "currency": "USD",
       "as_of": "2026-10-14",
@@ -563,27 +399,30 @@
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、Python、Cloudflare、Node.js、Stripe",
     "scores": {
       "build_difficulty": 3,
-      "channel_reach_cn": 4,
-      "payment_compliance": 3,
+      "channel_reach_cn": 5,
+      "payment_compliance": 2,
       "competition": 2,
       "time_to_mvp": 3
     },
     "score_reasons": {
-      "build_difficulty": "推测：可靠检索API需要供应商授权、缓存与限流。",
-      "channel_reach_cn": "推测：AI开发者可通过技术社区和内容远程触达。",
-      "payment_compliance": "推测：API订阅可收费，但外部搜索数据许可证和收款路径需审查。",
-      "competition": "推测：已有强大搜索API竞争者，差异化有限。",
-      "time_to_mvp": "推测：收窄到特定信息源可在1–3个月试卖。"
+      "build_difficulty": "搜索聚合涉及多供应商配额、容错、反滥用，工程量较高。",
+      "channel_reach_cn": "已公开SEO、Blog、Newsletter渠道，搜索意图型工具有可复制的文档与长尾关键词入口。",
+      "payment_compliance": "Stripe可收费，但搜索源抓取、平台API条款及配额风险会增加合规复杂度，扣1分。",
+      "competition": "竞品：SerpAPI、Tavily、Exa；API结果质量、覆盖和价格竞争强。",
+      "time_to_mvp": "30天仅可推出受限单源API原型，稳定商用服务需更长时间。"
     },
     "total_score": 15,
     "verdict": "可做",
     "cn_angle": "推测：为中文海外市场研究工具提供合规来源的结构化搜索接口",
     "risks": "搜索抓取授权、第三方配额、API滥用防护",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T06:02:58.745Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 在售倍数以当前公开页为准。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T06:02:58.745Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计6309美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "publication_status": "PUBLIC",
+    "founded_date": "2024-10-11",
+    "growth_30d": 404.5,
+    "customers": null
   },
   {
     "id": "agentskit",
@@ -646,27 +485,30 @@
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、Polar",
     "scores": {
       "build_difficulty": 5,
-      "channel_reach_cn": 4,
-      "payment_compliance": 4,
+      "channel_reach_cn": 3,
+      "payment_compliance": 3,
       "competition": 2,
-      "time_to_mvp": 4
+      "time_to_mvp": 5
     },
     "score_reasons": {
-      "build_difficulty": "推测：针对明确工作流的小型Agent配置工具可两周交付。",
-      "channel_reach_cn": "推测：Claude Code用户集中在可远程运营的开发者社区。",
-      "payment_compliance": "推测：一次性数字工具易测试价格，但结算渠道需核实。",
-      "competition": "推测：免费开源模板和官方能力带来激烈竞争。",
-      "time_to_mvp": "推测：特定职业的任务包能够30天做首批付费实验。"
+      "build_difficulty": "单个可复用技能包的最小版本很容易制作，但真实性和结果需测试。",
+      "channel_reach_cn": "公开Blog、X、SEO、Reddit和内容推广，现阶段更偏个人社交分发，按社群/X推广给3分。",
+      "payment_compliance": "Polar可收数字产品款，但依赖Claude/Anthropic生态和使用条款，按第三方依赖风险扣1分。",
+      "competition": "竞品：Claude Code官方Skills、SkillsMP、Anthropic Agent Skills示例库；免费替代品广泛。",
+      "time_to_mvp": "30天可以制作并销售一套垂直工作流技能包。"
     },
-    "total_score": 19,
+    "total_score": 18,
     "verdict": "可做",
     "cn_angle": "推测：为中文电商独立开发者做Claude Code内容运营任务包",
     "risks": "依赖第三方模型工具更新、功能被内置替代",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Polar API连接，收入取当日last_30d快照，同步于2026-10-14T05:13:48.726Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。",
-    "publication_status": "PRIVATE_REVIEW_ONLY"
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T05:13:48.726Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计1139美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "publication_status": "PUBLIC",
+    "founded_date": "2026-07-01",
+    "growth_30d": -2.7,
+    "customers": null
   },
   {
     "id": "opentweet",
@@ -678,17 +520,17 @@
     "business_model": "订阅",
     "scores": {
       "build_difficulty": 4,
-      "channel_reach_cn": 4,
-      "payment_compliance": 3,
+      "channel_reach_cn": 3,
+      "payment_compliance": 4,
       "competition": 2,
       "time_to_mvp": 4
     },
     "score_reasons": {
-      "build_difficulty": "推测：单平台内容排程MVP可以迅速交付，但接口与任务队列仍需保障。",
-      "channel_reach_cn": "推测：开发者与内容创作者可通过公开社区远程触达。",
-      "payment_compliance": "推测：数字订阅有收款路径，主体和社交平台规则仍待核实。",
-      "competition": "推测：排程工具竞争激烈，AI智能体审批工作流或有细分空间。",
-      "time_to_mvp": "推测：专注单一发帖场景，30天内可测试收费。"
+      "build_difficulty": "排程OAuth、任务队列和重试机制可完成窄范围产品，但涉及外部授权。",
+      "channel_reach_cn": "围绕X使用场景，个人品牌及X社群影响力明显，国内目标群体获取需依赖海外社媒推广。",
+      "payment_compliance": "Paddle可为适用地区卖家处理数字订阅，但X接口许可/封号风险扣1分。",
+      "competition": "竞品：Typefully、Hypefury、Buffer；排程与分析功能替代充分。",
+      "time_to_mvp": "30天可以做有人审阅的发帖排程初版，不能承诺无条件平台授权。"
     },
     "cn_angle": "推测：为中文独立开发者做带人工审批的X自动排程工具",
     "risks": "X官方接口许可、自动化配额、OAuth及账号封禁",
@@ -743,13 +585,16 @@
     "price_point": "Free for 7 days, then from $11.99 a month",
     "acquisition_channels": "未公开",
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、MongoDB、Auth0、Docker、Paddle",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Paddle API连接，收入取当日last_30d快照，同步于2026-10-14T03:49:27.626Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 替代TechScreen：原产品实际上以隐蔽实时面试提示为主要卖点，草稿将其称为模拟练习不准确。",
+    "publication_status": "PUBLIC",
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:49:27.626Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计4339美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
     "total_score": 17,
-    "verdict": "可做"
+    "verdict": "可做",
+    "founded_date": "2025-12-01",
+    "growth_30d": 11.9,
+    "customers": null
   },
   {
     "id": "getebook-ai",
@@ -761,17 +606,17 @@
     "business_model": "订阅与积分",
     "scores": {
       "build_difficulty": 4,
-      "channel_reach_cn": 4,
-      "payment_compliance": 3,
-      "competition": 1,
+      "channel_reach_cn": 5,
+      "payment_compliance": 2,
+      "competition": 2,
       "time_to_mvp": 4
     },
     "score_reasons": {
-      "build_difficulty": "推测：用现成模型能做窄场景MVP，出版级质量与事实审校需要更多投入。",
-      "channel_reach_cn": "推测：创作者与内容营销社群可线上触达。",
-      "payment_compliance": "推测：内容工具订阅收费较直接，但跨境主体和税务需核实。",
-      "competition": "推测：通用AI写作高度竞争，缺乏明显壁垒。",
-      "time_to_mvp": "推测：限制单个文档模板和输出格式可在30天内试卖。"
+      "build_difficulty": "可用现成模型和模板排版组件降低原型开发难度。",
+      "channel_reach_cn": "公开SEO、Blog和广告渠道，搜索/内容驱动获客可复制；广告投入不等于自然收益。",
+      "payment_compliance": "Stripe可作支付通道，但生成内容和第三方模型API合规、版权风险使评分下调。",
+      "competition": "竞品：Designrr、Canva、Jasper；生成电子书同质化高。",
+      "time_to_mvp": "30天可交付特定行业可编辑电子书工具，但内容事实核验需人审。"
     },
     "cn_angle": "推测：制作面向中文独立顾问的可引用来源行业白皮书初稿工具",
     "risks": "生成内容的事实可靠性、版权与竞争风险",
@@ -781,7 +626,7 @@
     ],
     "revenue": {
       "mrr": 8230,
-      "last_30d": 37179,
+      "last_30d": 37081,
       "all_time": 134269,
       "currency": "USD",
       "as_of": "2026-10-14",
@@ -831,12 +676,212 @@
       "Email marketing"
     ],
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：TypeScript、React、Tailwind CSS、Framer、Supabase、Vercel、Stripe",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-14",
     "updated_at": "2026-10-14",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
-    "review_notes": "2026-10-14按TrustMRR公开页面及.md原始摘要复核：Stripe API连接，收入取当日last_30d快照，同步于2026-10-14T03:29:38.171Z。团队、定价、渠道、技术栈由平台公开公示，非独立审核。 替代The Eureka Database：其当日30天收入仅$39.50，未达入选下限。",
+    "publication_status": "PUBLIC",
+    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:29:38.171Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计37081美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "total_score": 17,
+    "verdict": "可做",
+    "founded_date": "2025-07-29",
+    "growth_30d": -34.3,
+    "customers": null
+  },
+  {
+    "id": "mastros",
+    "name": "Mastros.online",
+    "url": "https://www.mastros.online/",
+    "category": "浏览器插件",
+    "one_liner_cn": "将用户有权限查看的社交平台数据本地导出成CSV/Excel",
+    "target_user": "跨境市场人员、社群运营、分析员",
+    "revenue": {
+      "mrr": 1305,
+      "last_30d": 1284,
+      "all_time": 2283,
+      "currency": "USD",
+      "as_of": "2026-10-14",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-14T06:27:35.457Z"
+    },
+    "founded_date": "2026-03-05",
+    "growth_30d": 111.3,
+    "customers": null,
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR（Stripe (API key) 验证）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/mastros",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "TrustMRR原始Markdown数据（同平台非独立第二来源）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/mastros.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "Ahrefs域名评分35（同平台引用的站外SEO指标）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/mastros.md",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 35,
+        "url": "https://trustmrr.com/startup/mastros.md",
+        "estimated": false
+      }
+    ],
+    "flags": [
+      "第三方社交平台接口与数据使用条款限制",
+      "公开活跃订阅数不等于付费客户数"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "浏览器插件订阅",
+    "price_point": "Free、Pro $9、Scale $18",
+    "acquisition_channels": [
+      "App store optimization",
+      "SEO",
+      "Influencers",
+      "YouTube",
+      "Reddit",
+      "Facebook"
+    ],
+    "tech_stack_guess": "TrustMRR公开字段：浏览器扩展、本地数据处理；Stripe支付",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 5,
+      "payment_compliance": 2,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "浏览器扩展本地导出有工程可行性，但跨站维护和反滥用限制较重。",
+      "channel_reach_cn": "公开Chrome应用商店优化与SEO，插件商店意图流量可复用；两类分发实际贡献未披露。",
+      "payment_compliance": "Stripe订阅支付可用，但涉及Telegram/WhatsApp/LinkedIn等平台数据与自动化条款，按风险扣1分。",
+      "competition": "竞品：PhantomBuster、TexAu、Bardeen；社交数据导出领域平台多且权限敏感。",
+      "time_to_mvp": "30天可只做用户授权单平台数据导出，不做大规模跨站抓取。"
+    },
     "total_score": 16,
-    "verdict": "可做"
+    "verdict": "可做",
+    "cn_angle": "推测：为中文独立开发者提供单平台自有数据导出与结构化整理插件",
+    "risks": "社交平台数据权限、隐私与服务条款变化；不应实现未授权抓取",
+    "reviewed_by_hark": true,
+    "last_verified_at": "2026-10-14",
+    "updated_at": "2026-10-14",
+    "review_notes": "Hark 2026-10-14 修改后通过，替换剔除样本；2026-03-05成立/1人团队/Stripe (API key)。付款数据截至2026-10-14T06:27:35.457Z，last_30d采用滚动30日合计；customers因公开未给独立付费客户人数而为null；评分与中国化切入属于推测。",
+    "publication_status": "PUBLIC"
+  },
+  {
+    "id": "readlens",
+    "name": "Readlens",
+    "url": "https://readlens.live/",
+    "category": "小App",
+    "one_liner_cn": "将书页或图片拍照转换为语音朗读，并同步高亮",
+    "target_user": "学生、阅读障碍及内容阅读用户",
+    "revenue": {
+      "mrr": 1048,
+      "last_30d": 2307,
+      "all_time": 3899,
+      "currency": "USD",
+      "as_of": "2026-10-14",
+      "verified_by": "RevenueCat",
+      "source_last_synced": "2026-10-14T06:22:13.141Z"
+    },
+    "founded_date": "2026-05-01",
+    "growth_30d": 89.5,
+    "customers": null,
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR（RevenueCat (API key) 验证）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/readlens",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "TrustMRR原始Markdown数据（同平台非独立第二来源）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/readlens.md",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "苹果App Store公开评分 4.5/5（17个评分，平台周同步）",
+        "level": "T",
+        "url": "https://apps.apple.com/us/app/id6763800958",
+        "checked_at": "2026-10-14"
+      },
+      {
+        "label": "TrustMRR公开App Store API评分详情",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/readlens.md",
+        "checked_at": "2026-10-14"
+      }
+    ],
+    "traction": [
+      {
+        "type": "public_store_signal",
+        "value": "苹果App Store公开评分 4.5/5（17个评分，平台周同步）",
+        "url": "https://apps.apple.com/us/app/id6763800958",
+        "estimated": false
+      },
+      {
+        "type": "public_store_signal",
+        "value": "TrustMRR公开App Store API评分详情",
+        "url": "https://trustmrr.com/startup/readlens.md",
+        "estimated": false
+      }
+    ],
+    "flags": [
+      "RevenueCat读取应用商店交易数据；非独立审计",
+      "语音服务依赖第三方AI供应商"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "移动应用内订阅",
+    "price_point": "$5.99/周、$99.99/年",
+    "acquisition_channels": [
+      "SEO",
+      "App store optimization",
+      "Instagram"
+    ],
+    "tech_stack_guess": "TrustMRR公开字段：React Native、RevenueCat；ElevenLabs/OpenAI语音服务",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 5,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "OCR/TTS底层服务成熟，但同步高亮及跨平台体验存在工程成本。",
+      "channel_reach_cn": "公开SEO及App Store Optimization渠道，应用商店搜索可触达明确意图用户；获客成本仍待验证。",
+      "payment_compliance": "RevenueCat对接应用商店内购；语音生成依赖ElevenLabs和OpenAI，第三方条款及成本风险扣1分。",
+      "competition": "竞品：Speechify、NaturalReader、Microsoft Seeing AI；朗读及OCR竞品成熟。",
+      "time_to_mvp": "30天可实现图片转朗读核心功能，复杂离线处理和高准确率需后续迭代。"
+    },
+    "total_score": 18,
+    "verdict": "可做",
+    "cn_angle": "推测：做中文教育材料拍照朗读和同步高亮工具",
+    "risks": "App Store/Google Play上架、OCR识别、语音API成本和儿童数据保护",
+    "reviewed_by_hark": true,
+    "last_verified_at": "2026-10-14",
+    "updated_at": "2026-10-14",
+    "review_notes": "Hark 2026-10-14 修改后通过，替换剔除样本；2026-05-01成立/1人团队/RevenueCat (API key)。付款数据截至2026-10-14T06:22:13.141Z，last_30d采用滚动30日合计；customers因公开未给独立付费客户人数而为null；评分与中国化切入属于推测。",
+    "publication_status": "PUBLIC"
   }
 ]
