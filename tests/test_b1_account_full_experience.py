@@ -56,7 +56,8 @@ class AccountFullExperienceTests(unittest.TestCase):
         self.assertIn("创建我的见势账户",s)
         self.assertIn("重新发送验证邮件",s)
         self.assertIn("发送重置密码邮件",s)
-        self.assertIn("邮箱和密码",s)
+        self.assertIn("邮箱地址",s)
+        self.assertIn("登录我的见势",s)
         self.assertNotIn('<script src="https://cdn',s)
 
     def test_disabled_preview_is_visible_but_cannot_capture_credentials(self):
