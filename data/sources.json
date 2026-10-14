@@ -1,0 +1,22 @@
+[
+  {
+    "id": "trustmrr",
+    "name": "TrustMRR",
+    "url": "https://trustmrr.com/",
+    "category": "支付 API 公开收入验证数据源",
+    "description_cn": "聚合软件项目在 Stripe、Paddle、Polar、Lemon Squeezy、RevenueCat 等支付/订阅提供方授权 API 返回的公开收入摘要，包含 MRR、近30天收入、累计收入、成立日期及团队公开资料。",
+    "methodology_cn": "TrustMRR 公开页面标示连接支付平台 API；见势只读取公开页面及 .md 快照，不接触付款原始明细，不做独立财务审计。团队人数/产品描述/渠道等可能为创始人自填。",
+    "disclaimer_cn": "收入由 TrustMRR 通过支付平台 API 获取，非见势独立审计。",
+    "source_project_url": "https://trustmrr.com/startup/trustmrr",
+    "source_markdown_url": "https://trustmrr.com/startup/trustmrr.md",
+    "verification_level": "A",
+    "conflicts_of_interest": [
+      "TrustMRR 本身是该数据验证平台，不纳入项目库以避免被验证方和验证方同一主体的利益冲突",
+      "DataFast、ShipFast 与 TrustMRR 创始人为关联方，不能视为独立财务审计"
+    ],
+    "include_in_projects": false,
+    "last_checked_at": "2026-10-14",
+    "reviewed_by_hark": true,
+    "publication_status": "PUBLIC"
+  }
+]
