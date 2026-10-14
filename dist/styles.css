@@ -550,3 +550,26 @@ body:has(.account-entry-shell){background:#f4f7fd;color:#172741}
 @media(prefers-reduced-motion:reduce){
  .account-form-preview button,.account-live-form button{transition:none;animation:none}
 }
+
+
+/* B1 normal registration/login controls, emitted only when Auth gate is open. */
+.account-auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;
+ padding:5px;background:#f0f2fb;border:1px solid #dee4f3;border-radius:13px;margin:-4px 0 19px}
+.account-auth-tabs button{border:0;background:transparent;min-height:42px;border-radius:10px;
+ font:750 14px/1.45 "PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#71809e;cursor:pointer}
+.account-auth-tabs button[aria-pressed="true"]{color:#5144b0;background:#fff;box-shadow:0 3px 11px #30397019}
+.account-auth-tabs button:focus-visible,.account-text-button:focus-visible{outline:3px solid #a69bf1;outline-offset:2px}
+.account-live-form[data-auth-panel][hidden]{display:none!important}
+.account-live-form label{margin-top:3px}
+.account-live-form input[type="password"]{letter-spacing:.055em}
+.account-live-form input[type="password"]::placeholder{letter-spacing:normal}
+.account-text-button{border:none!important;background:transparent!important;color:#5d4db6!important;
+ min-height:40px!important;box-shadow:none!important;padding:5px 0!important;
+ text-align:left;justify-self:start;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.account-magic-alt{border-top:1px solid #dfe5f1;padding:15px 0 0;margin:19px 0 0}
+.account-magic-alt>summary{cursor:pointer;font-size:12px;font-weight:750;color:#6455ae;line-height:1.7}
+.account-magic-alt>summary:focus-visible{outline:3px solid #a99cf1;outline-offset:3px}
+.account-magic-alt .account-live-form{margin-top:13px}
+.account-change-password{min-width:0}
+.account-change-password .account-live-form{max-width:500px}
+.account-change-password label{font-weight:700;font-size:13px}
