@@ -41,7 +41,7 @@ class TestP412ProductionCandidate(unittest.TestCase):
             "rising/index.html":"/",
             "build/index.html":"/",
             "content/index.html":"/",
-            "account/index.html":"/",
+
             "opportunity/amazon-kdp-publishing/index.html":"/research/amazon-kdp-publishing/",
             "opportunity/digital-product-business/index.html":"/research/digital-product-business/",
             "opportunity/vertical-industry-saas/index.html":"/research/vertical-industry-saas/",
@@ -52,6 +52,15 @@ class TestP412ProductionCandidate(unittest.TestCase):
             self.assertIn(dest,content,path)
             self.assertIn("页面已更新",content,path)
             self.assertIn("noindex,follow",content,path)
+
+        account=(DIST/"account/index.html").read_text(encoding="utf-8")
+        self.assertIn('href="https://jianshi-bua.pages.dev/account/"',account)
+        self.assertIn("账户注册／登录尚未开放",account)
+        self.assertIn("noindex,nofollow",account)
+        self.assertNotIn("<form",account)
+        self.assertNotIn("http-equiv=",account)
+        self.assertIn('class="j2-account-cta" href="/account/"',
+                      (DIST/"index.html").read_text(encoding="utf-8"))
 
     def test_public_build_has_no_repository_internal_directories(self):
         for name in [".github","config","db","docs","scripts","src","supabase","tests","fixtures"]:
