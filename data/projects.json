@@ -938,5 +938,879 @@
     "updated_at": "2026-10-15",
     "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:21:45.690Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$2405。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC"
+  },
+  {
+    "id": "1devtool",
+    "name": "1DevTool",
+    "url": "https://1devtool.com/",
+    "category": "开发者工具",
+    "one_liner_cn": "把多个AI编程命令行集中在同一工作台",
+    "target_user": "同时使用Codex、Claude和Gemini的独立开发者",
+    "revenue": {
+      "mrr": 2.41,
+      "last_30d": 1242,
+      "all_time": 8460,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Lemon Squeezy",
+      "source_last_synced": "2026-10-15T10:30:05.745Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Lemon Squeezy (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/1devtool",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/1devtool.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 36（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/1devtool.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 36,
+        "url": "https://trustmrr.com/startup/1devtool.md",
+        "estimated": true
+      }
+    ],
+    "flags": [
+      "临界：近30天接近 $1,000 门槛"
+    ],
+    "for_sale": {
+      "listed": true,
+      "asking_price": 50000,
+      "multiple": "3.4x",
+      "url": "https://trustmrr.com/startup/1devtool?offer=1"
+    },
+    "business_model": "单次买断桌面软件",
+    "price_point": "免费版；专业版$29买断",
+    "acquisition_channels": [
+      "开发者社群（推测）",
+      "内容传播（推测）"
+    ],
+    "tech_stack_guess": "推测：Electron、TypeScript、Node.js和Lemon Squeezy；技术栈由平台资料列示，未经独立审计",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 3,
+      "payment_compliance": 4,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "跨进程PTY、会话持久化和上下文同步复杂，能做单机窄版。",
+      "channel_reach_cn": "网站DR36且创始人X仅142粉；传播可从开发者社区起步，未核实渠道份额。",
+      "payment_compliance": "Lemon Squeezy可承接数字产品结算，仍需核对所在地区资质。",
+      "competition": "竞品：Warp、Cursor、Conductor；多代理终端交互与分发高度拥挤。",
+      "time_to_mvp": "30天可先做本地会话面板，不应承诺完整CLI集成。"
+    },
+    "total_score": 16,
+    "verdict": "可做",
+    "cn_angle": "推测：做跨平台AI编码终端与上下文管理",
+    "risks": "Claude、Codex等CLI更新兼容性高；桌面跨系统测试成本",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:30:05.745Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-11-05",
+    "growth_30d": -23.6,
+    "customers": null
+  },
+  {
+    "id": "1clickwebsite-ai",
+    "name": "1clickwebsite.ai",
+    "url": "https://1clickwebsite.ai/",
+    "category": "无代码工具",
+    "one_liner_cn": "填写需求即生成可编辑的WordPress网站",
+    "target_user": "服务中小企业的独立建站者和工作室",
+    "revenue": {
+      "mrr": 14041,
+      "last_30d": 15608,
+      "all_time": 91875,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T14:23:04.223Z"
+    },
+    "team_size": 1,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/1clickwebsite-ai",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/1clickwebsite-ai.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 35（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/1clickwebsite-ai.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 35,
+        "url": "https://trustmrr.com/startup/1clickwebsite-ai.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅制AI建站工具",
+    "price_point": "Starter $49/月；Professional $97/月；Expert $197/月",
+    "acquisition_channels": [
+      "内容搜索（推测）",
+      "建站服务商合作（推测）"
+    ],
+    "tech_stack_guess": "推测：Next.js、TypeScript、Supabase与Stripe；基于公开技术标签",
+    "scores": {
+      "build_difficulty": 5,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 3,
+      "time_to_mvp": 5
+    },
+    "score_reasons": {
+      "build_difficulty": "利用现成WordPress主题与区块编辑可较快交付限定行业版。",
+      "channel_reach_cn": "DR35与网站生成的长尾需求可支持内容搜索，实际SEO占比未公开。",
+      "payment_compliance": "Stripe提供稳定订阅能力；个人跨境收款需核实主体与地域限制。",
+      "competition": "竞品：10Web、Durable、ZipWP；成熟产品强，但垂直行业模板有空间。",
+      "time_to_mvp": "只支持一个行业、几种模板的30天MVP可行，暂不做全栈托管。"
+    },
+    "total_score": 21,
+    "verdict": "推荐",
+    "cn_angle": "推测：做中文本地行业的WordPress建站助手",
+    "risks": "WordPress更新、生成质量与托管责任需长期维护",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:23:04.223Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-06-14",
+    "growth_30d": 15.3,
+    "customers": null
+  },
+  {
+    "id": "3dplotter",
+    "name": "3dplotter",
+    "url": "https://3dplotter.xyz/",
+    "category": "设计工具",
+    "one_liner_cn": "把3D打印机变成可控绘图机的软件",
+    "target_user": "3D打印爱好者、创客空间及手作设计者",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 2143,
+      "all_time": 14497,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:55:01.197Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/3dplotter",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/3dplotter.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 11（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/3dplotter.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 11,
+        "url": "https://trustmrr.com/startup/3dplotter.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "一次性软件许可",
+    "price_point": "€29.90单品；€39.90套装",
+    "acquisition_channels": [
+      "创客社区（推测）",
+      "小众关键词SEO（推测）"
+    ],
+    "tech_stack_guess": "推测：网页G-code生成器与Stripe；源站未公开完整实现",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 4,
+      "time_to_mvp": 5
+    },
+    "score_reasons": {
+      "build_difficulty": "G-code与校准面板需硬件验证，但可先支持一款热门打印机。",
+      "channel_reach_cn": "DR11和长尾设备使用词支持创客内容路线；渠道实际占比未披露。",
+      "payment_compliance": "Stripe一次性许可收款流程清晰，但退款与所在地审核要处理。",
+      "competition": "竞品：vpype、DrawingBotV3、Inkscape Gcodetools；3D打印机改笔绘的细分相对窄。",
+      "time_to_mvp": "限定一款设备+一套绘图校准参数，30天可形成可用最小版。"
+    },
+    "total_score": 21,
+    "verdict": "推荐",
+    "cn_angle": "推测：为国产3D打印机提供中文绘图预设",
+    "risks": "机型兼容、走纸误差与硬件售后支持成本高",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:55:01.197Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-12-26",
+    "growth_30d": -27.6,
+    "customers": null
+  },
+  {
+    "id": "advanced-gsc-mcp",
+    "name": "Advanced GSC MCP",
+    "url": "https://www.advancedgsc.com/mcp",
+    "category": "开发者工具",
+    "one_liner_cn": "让AI助手读取GSC与GA4并进行SEO分析",
+    "target_user": "技术SEO人员、独立站运营人员",
+    "revenue": {
+      "mrr": 4721,
+      "last_30d": 4696,
+      "all_time": 15631,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T11:09:04.330Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/advanced-gsc-mcp",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/advanced-gsc-mcp.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 12（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/advanced-gsc-mcp.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 12,
+        "url": "https://trustmrr.com/startup/advanced-gsc-mcp.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "MCP服务订阅",
+    "price_point": "Starter $15/月；Pro $40/月；Max $105/月",
+    "acquisition_channels": [
+      "SEO垂直内容（推测）",
+      "开发者MCP生态（推测）"
+    ],
+    "tech_stack_guess": "推测：Next.js、Stripe及Google OAuth；平台展示技术栈不完整",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 3,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "多账户OAuth与搜索数据模型需工程投入，窄化成单站点问答可控。",
+      "channel_reach_cn": "DR12且MCP受众较专门，可从SEO论坛切入，实际渠道未公开。",
+      "payment_compliance": "Stripe订阅可用，但调用Google接口的配额和OAuth合规约束降低评分。",
+      "competition": "竞品：Search Console MCP、GSC CLI、Ahrefs；免费集成与成熟SEO工具双重挤压。",
+      "time_to_mvp": "30天可交付只读单站点报告，完整SERP情报不可作短期承诺。"
+    },
+    "total_score": 15,
+    "verdict": "可做",
+    "cn_angle": "推测：先做中文站长专用GSC问答MCP",
+    "risks": "Google OAuth审核、GSC配额与第三方数据条款限制",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T11:09:04.330Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2026-04-29",
+    "growth_30d": 14.7,
+    "customers": null
+  },
+  {
+    "id": "aeo-checker",
+    "name": "AEO Checker",
+    "url": "https://www.aeochecker.ai/",
+    "category": "营销工具",
+    "one_liner_cn": "检测网站被AI搜索引用的优化问题",
+    "target_user": "企业内容营销和独立站站长",
+    "revenue": {
+      "mrr": 1059,
+      "last_30d": 1302,
+      "all_time": 15650,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T10:04:24.274Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/aeo-checker",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/aeo-checker.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 15（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/aeo-checker.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 15,
+        "url": "https://trustmrr.com/startup/aeo-checker.md",
+        "estimated": true
+      }
+    ],
+    "flags": [
+      "临界：近30天接近 $1,000 门槛"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "AI搜索审计订阅",
+    "price_point": "Reports $8/月；Marketer $22.5/月；Pro $49.4/月",
+    "acquisition_channels": [
+      "搜索引擎长尾词（推测）",
+      "SEO从业者社区（推测）"
+    ],
+    "tech_stack_guess": "推测：网页扫描、规则检测与Stripe；底层技术未披露",
+    "scores": {
+      "build_difficulty": 5,
+      "channel_reach_cn": 4,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "静态网页可见性与结构化数据检查易做，不需重型训练模型。",
+      "channel_reach_cn": "DR15且产品对应明确搜索意图，SEO可复制但平台未披露获客结构。",
+      "payment_compliance": "Stripe订阅可行；若扩展到第三方AI答案抓取需核对服务条款。",
+      "competition": "竞品：Otterly.AI、Profound、Peec AI；AI可见性检测竞争上升。",
+      "time_to_mvp": "30天能做单URL可读性审计和引用建议，不承诺排名改进。"
+    },
+    "total_score": 18,
+    "verdict": "可做",
+    "cn_angle": "推测：推出中文网站AI检索可见性体检",
+    "risks": "AI答案波动大，不能承诺被模型引用或排名提升",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:04:24.274Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-05-16",
+    "growth_30d": 15.3,
+    "customers": null
+  },
+  {
+    "id": "ai-designer",
+    "name": "AI Designer",
+    "url": "https://www.aidesigner.ai/",
+    "category": "AI工具",
+    "one_liner_cn": "一句话生成网站UI、品牌素材和营销图片",
+    "target_user": "创始人、产品设计师和内容创作者",
+    "revenue": {
+      "mrr": 9013,
+      "last_30d": 10578,
+      "all_time": 78738,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:38:22.477Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/ai-designer",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/ai-designer.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 27（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/ai-designer.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 27,
+        "url": "https://trustmrr.com/startup/ai-designer.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "AI设计生成订阅",
+    "price_point": "免费试用；付费档公开页未披露",
+    "acquisition_channels": [
+      "设计师社群（推测）",
+      "内容传播（推测）"
+    ],
+    "tech_stack_guess": "推测：Stripe与第三方生成模型；具体模型栈未公开",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 3,
+      "payment_compliance": 2,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "跨UI、标识、品牌包的统一可编辑输出难度较高。",
+      "channel_reach_cn": "DR27及创始人X约1543粉构成受众信号，但获客渠道占比不公开。",
+      "payment_compliance": "Stripe可收款；图像模型API成本、版权和封禁条款需额外审核。",
+      "competition": "竞品：Canva、Lovable、Framer AI；通用设计空间拥挤。",
+      "time_to_mvp": "30天可做单个营销图生成器，完整品牌设计套件难做稳。"
+    },
+    "total_score": 14,
+    "verdict": "不推荐",
+    "cn_angle": "推测：针对中文电商专题页做可编辑视觉稿",
+    "risks": "生成模型版权、复用一致性和单位成本波动",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:38:22.477Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-11-14",
+    "growth_30d": 28.2,
+    "customers": null
+  },
+  {
+    "id": "adscriptly",
+    "name": "Adscriptly",
+    "url": "https://adscriptly.com/",
+    "category": "SaaS",
+    "one_liner_cn": "整合Google广告和线下转化数据进行优化",
+    "target_user": "广告主、投放运营及营销分析人员",
+    "revenue": {
+      "mrr": 2500,
+      "last_30d": 2500,
+      "all_time": 35481,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:53:54.215Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/adscriptly",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/adscriptly.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 28（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/adscriptly.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 28,
+        "url": "https://trustmrr.com/startup/adscriptly.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "广告优化SaaS订阅",
+    "price_point": "Starter $49/月；Pro $129/月；Agency $349/月",
+    "acquisition_channels": [
+      "广告运营圈层（推测）",
+      "B2B直接拓展（推测）"
+    ],
+    "tech_stack_guess": "推测：Stripe订阅与广告API集成；具体前后端未披露",
+    "scores": {
+      "build_difficulty": 2,
+      "channel_reach_cn": 3,
+      "payment_compliance": 2,
+      "competition": 3,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "广告回传、归因和自动出价需跨平台长期维护。",
+      "channel_reach_cn": "DR28与面向广告主的定向人群明确，但公开页未给渠道份额。",
+      "payment_compliance": "依赖Google/Meta广告接口审批、账户权限；即使Stripe收款也有条款风险。",
+      "competition": "竞品：Optmyzr、Adalysis、WordStream；专业投放工具已有稳定客户。",
+      "time_to_mvp": "30天可做只读投放复盘，不足以验证自动优化的可靠性。"
+    },
+    "total_score": 13,
+    "verdict": "不推荐",
+    "cn_angle": "推测：专注小企业广告线索质量复盘",
+    "risks": "广告账户授权、高权限接口和客户数据合规敏感",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:53:54.215Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2016-02-14",
+    "growth_30d": 0,
+    "customers": null
+  },
+  {
+    "id": "saashunt",
+    "name": "SaasHunt",
+    "url": "https://saashunt.best/",
+    "category": "营销工具",
+    "one_liner_cn": "帮助独立SaaS提交产品并获取曝光",
+    "target_user": "正在推广新工具的独立开发者",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 2000,
+      "all_time": 18303,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T09:03:29.415Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/saashunt",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/saashunt.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 63（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/saashunt.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 63,
+        "url": "https://trustmrr.com/startup/saashunt.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "产品目录与推广位一次性收费",
+    "price_point": "付费提交/曝光；具体标准未公开",
+    "acquisition_channels": [
+      "SEO（推测）",
+      "创始人社媒受众"
+    ],
+    "tech_stack_guess": "推测：Next.js与Stripe；技术标签来自公开平台",
+    "scores": {
+      "build_difficulty": 5,
+      "channel_reach_cn": 2,
+      "payment_compliance": 4,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "产品提交审核、标签和榜单可用静态站点迅速实现。",
+      "channel_reach_cn": "DR63，但创始人X有约2.9万关注者，个人受众优势难被新站复制。",
+      "payment_compliance": "Stripe一次性提交款项简单，但必须披露广告位与付费收录。",
+      "competition": "竞品：Product Hunt、Uneed、Microlaunch；小产品发布平台同质化。",
+      "time_to_mvp": "30天可搭建行业目录并开放人工审核提交，流量积累需更久。"
+    },
+    "total_score": 17,
+    "verdict": "可做",
+    "cn_angle": "推测：做中文独立应用垂直目录与提交工具",
+    "risks": "目录互换链接易失真，收录公正性与SEO质量需把关",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T09:03:29.415Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-05-30",
+    "growth_30d": -15.7,
+    "customers": null
+  },
+  {
+    "id": "3d-agent",
+    "name": "3D-AGENT",
+    "url": "https://www.3d-agent.com/",
+    "category": "AI工具",
+    "one_liner_cn": "在Blender中用文字生成3D模型",
+    "target_user": "Blender创作者、游戏资产制作人员",
+    "revenue": {
+      "mrr": 4952,
+      "last_30d": 5362,
+      "all_time": 26291,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T14:22:05.193Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/3d-agent",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/3d-agent.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 32（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/3d-agent.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 32,
+        "url": "https://trustmrr.com/startup/3d-agent.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "生成式3D模型订阅",
+    "price_point": "Basic $19/月；Pro $29/月；Ultra $89/月",
+    "acquisition_channels": [
+      "3D创作圈层（推测）",
+      "教程SEO（推测）"
+    ],
+    "tech_stack_guess": "推测：Blender扩展与第三方3D生成模型API；未公开完整实现",
+    "scores": {
+      "build_difficulty": 2,
+      "channel_reach_cn": 4,
+      "payment_compliance": 2,
+      "competition": 3,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "生成网格可用性及Blender集成比二维生成复杂得多。",
+      "channel_reach_cn": "DR32，Blender用户的教程搜索需求明确；渠道占比未公开。",
+      "payment_compliance": "Stripe订阅可用，但依赖3D生成模型API计费及内容许可。",
+      "competition": "竞品：Meshy、Tripo AI、Rodin；生成质量和价格持续内卷。",
+      "time_to_mvp": "30天可做简单3D资产调用插件，生产级拓扑很难保证。"
+    },
+    "total_score": 14,
+    "verdict": "不推荐",
+    "cn_angle": "推测：开发中文Blender模型批量辅助插件",
+    "risks": "3D结果拓扑质量不稳定，模型推理成本高",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:22:05.193Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-10-24",
+    "growth_30d": 10,
+    "customers": null
+  },
+  {
+    "id": "5-day-sprint",
+    "name": "5 Day Sprint",
+    "url": "https://5daysprint.com/",
+    "category": "教育工具",
+    "one_liner_cn": "用视频课程和陪练教用户快速制作AI产品",
+    "target_user": "AI创业学习者、非技术创始人",
+    "revenue": {
+      "mrr": 6272,
+      "last_30d": 3409,
+      "all_time": 246404,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:06:50.780Z"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR · Stripe (API key)收款API验证",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/5-day-sprint",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TrustMRR Markdown：30日收入/MRR/成立时间的同源明细",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/5-day-sprint.md",
+        "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Ahrefs DR 5（第三方估算牵引信号，经TrustMRR公开）",
+        "level": "T",
+        "url": "https://trustmrr.com/startup/5-day-sprint.md",
+        "checked_at": "2026-10-15"
+      }
+    ],
+    "traction": [
+      {
+        "type": "ahrefs_domain_rating",
+        "value": 5,
+        "url": "https://trustmrr.com/startup/5-day-sprint.md",
+        "estimated": true
+      }
+    ],
+    "flags": [],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "课程与社区订阅",
+    "price_point": "课程及辅导，平台描述单项目预算低于$500",
+    "acquisition_channels": [
+      "课程口碑（推测）",
+      "创始人X社群"
+    ],
+    "tech_stack_guess": "推测：在线课程/社区后台与Stripe；产品系统未公开",
+    "scores": {
+      "build_difficulty": 5,
+      "channel_reach_cn": 2,
+      "payment_compliance": 4,
+      "competition": 2,
+      "time_to_mvp": 5
+    },
+    "score_reasons": {
+      "build_difficulty": "单一课程+作业反馈流程实现简单，但内容质量需长期维护。",
+      "channel_reach_cn": "DR5，创始人X约4216粉及既有学员基础可带动报名，新人难复刻。",
+      "payment_compliance": "Stripe课程订阅可用，须明确退款政策及营销合规。",
+      "competition": "竞品：Buildspace、100DaysOfNoCode、Udemy；课程内容替代品充足。",
+      "time_to_mvp": "30天可以上线细分挑战营MVP，需人工陪练而非全自动收入。"
+    },
+    "total_score": 18,
+    "verdict": "可做",
+    "cn_angle": "推测：为中文创作者推出5天AI项目挑战营",
+    "risks": "交付依赖讲师与人工辅导，学习效果不可保证",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:06:50.780Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2020-06-01",
+    "growth_30d": 5.4,
+    "customers": null
   }
 ]
