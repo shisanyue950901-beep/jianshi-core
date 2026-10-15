@@ -14,6 +14,7 @@ import shutil
 from datetime import date, datetime
 from pathlib import Path
 from urllib.parse import urlparse
+from t08_project_selection import projects as reviewed_or_preview_projects
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "projects.json"
@@ -53,7 +54,7 @@ def date_age(iso_date: str) -> int:
 
 
 def load_projects() -> list[dict]:
-    projects = json.loads(DATA.read_text(encoding="utf-8"))
+    projects = reviewed_or_preview_projects()
     if not isinstance(projects, list) or not projects:
         raise ValueError("data/projects.json must be a non-empty list")
     ids = set()
@@ -64,8 +65,6 @@ def load_projects() -> list[dict]:
         if pid in ids:
             raise ValueError(f"Duplicate project id: {pid}")
         ids.add(pid)
-        if project.get("publication_status") != "PUBLIC" or project.get("reviewed_by_hark") is not True:
-            raise ValueError(f"Unreviewed project would be published: {pid}")
         revenue = project["revenue"]
         for key in ("mrr", "last_30d", "all_time", "currency", "as_of", "verified_by"):
             if key not in revenue:
@@ -248,7 +247,7 @@ data-score="{esc(project['total_score'])}" data-mrr="{esc(mrr)}" data-last30="{e
 {tags(project)}
 <div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>{esc(fmt_money(revenue['last_30d'],revenue['currency']))}</strong></div>
 <div class="metric"><small>MRR（月经常性收入）</small><strong>{esc(fmt_money(revenue['mrr'],revenue['currency']))}</strong></div></div>
-<div class="cardfoot"><span>{esc(project['team_size'])} 人团队 · {esc(project['evidence_level'])} 级证据</span>
+<div class="cardfoot"><span>{esc(value_or_unknown(project['team_size'], ' 人'))}团队 · {esc(project['evidence_level'])} 级证据</span>
 <a href="/projects/{pid}/">查看项目详情 →</a></div></article>"""
 
 
@@ -296,7 +295,7 @@ def detail(project: dict) -> str:
                     + text_field("成立日期",project["founded_date"])
                     + text_field("近30天增长率",grown_txt)
                     + text_field("付费客户数",project.get("customers"))
-                    + text_field("团队规模",str(project["team_size"])+" 人")
+                    + text_field("团队规模",value_or_unknown(project["team_size"]," 人"))
                     + text_field("证据等级",project["evidence_level"])
                     + text_field("评分总计",str(project["total_score"])+"/25"))
     scores = []
