@@ -2,6 +2,14 @@ name: JianShi Static Snapshot
 
 on:
   workflow_dispatch:
+  # Run the exact build-static verification on code changes BEFORE main merge.
+  # The publication commit/push step is explicitly disabled for PRs.
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-static.yml'
+      - 'tests/verify_t08_home_snapshot.py'
+      - 'tests/test_t08_featured_gate.py'
   schedule:
     - cron: '55 0 * * *'
     - cron: '55 6,12,18 * * *'
@@ -94,9 +102,8 @@ jobs:
           python scripts/security/p411_audit_public_artifacts.py web/dist
           grep -q "见势" index.html
           grep -q "商业机会与解决方案" web/dist/index.html
-          grep -q "Carrd" web/dist/index.html
-          grep -q "NerdWallet" web/dist/index.html
-          grep -q "Plausible" web/dist/index.html
+          # T08 project cards: assert ranked JSON IDs, visible names and exact details links.
+          python tests/verify_t08_home_snapshot.py web/dist/index.html
           ! grep -q "Easlo｜" web/dist/index.html
           ! grep -q "Louise Lennox" web/dist/index.html
           ! test -e web/dist/projects/easlo/index.html
@@ -268,6 +275,9 @@ jobs:
           retention-days: 2
 
       - name: Commit generated snapshot
+        # Never push during PR/feature-branch workflow_dispatch validation.
+        # Existing main push and main schedule behavior is unchanged.
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
           git config user.name "jianshi-bot"
           git config user.email "actions@users.noreply.github.com"
