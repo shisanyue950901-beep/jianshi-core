@@ -90,7 +90,8 @@ class TestT08(unittest.TestCase):
         winners=sorted(self.data,key=lambda p:(-p["total_score"],-p["revenue"]["last_30d"],p["id"]))[:3]
         self.assertEqual([x["id"] for x in winners],[x["id"] for x in featured_projects()])
         index=(WEB/"index.html").read_text(encoding="utf-8")
-        discovery=(WEB/"discover"/"index.html").read_text(encoding="utf-8")
+        from f21_g2_discovery import render as render_discovery
+        discovery=render_discovery()  # deterministic build-time HTML; no I/O ordering dependency
         hp=Links(); hp.feed(index)
         dp=Links(); dp.feed(discovery)
         self.assertEqual(hp.featured,[x["id"] for x in winners])
