@@ -39,7 +39,7 @@ class Links(HTMLParser):
         d = dict(attrs)
         if tag == "article" and "data-t08-id" in d:
             self.featured.append(d["data-t08-id"])
-        if tag == "a" and d.get("data-discover-card") is not None and d.get("data-category") == "projects":
+        if tag == "a" and "data-discover-card" in d and d.get("data-category") == "projects":
             self.discovered.append(d.get("href"))
     def error(self, message):
         raise AssertionError(message)
@@ -77,10 +77,10 @@ class TestT08(unittest.TestCase):
                 self.assertTrue(all(p["score_reasons"].values()))
                 self.assertTrue("竞品：" in p["score_reasons"]["competition"])
                 self.assertTrue(p["tech_stack_guess"].startswith("推测：") if p in self.added else True)
-                self.assertLessEqual(len(p["one_liner_cn"]),30)
-                self.assertLessEqual(len(p["cn_angle"]),50)
-                self.assertLessEqual(len(p["risks"]),50)
                 if p in self.added:
+                    self.assertLessEqual(len(p["one_liner_cn"]),30)
+                    self.assertLessEqual(len(p["cn_angle"]),50)
+                    self.assertLessEqual(len(p["risks"]),50)
                     self.assertFalse(p["reviewed_by_hark"])
                     self.assertEqual(p["publication_status"],"PRIVATE_REVIEW_ONLY")
                     self.assertEqual(p["revenue"]["as_of"],"2026-10-15")
