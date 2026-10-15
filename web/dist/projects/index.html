@@ -1,219 +1,120 @@
-<!doctype html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="referrer" content="no-referrer"><meta name="description" content="只展示有公开历史经营资料的公司案例，直观看谁付款、怎么收费、什么门槛">
-<title>3 个有经营证据的项目｜见势 JIANSHI</title><link rel="canonical" href="https://jianshi-bua.pages.dev/projects/">
-<style>
-:root{color-scheme:light;--bg:#f7f8fc;--ink:#1c2a44;--muted:#566581;--line:#dce3ee;--panel:#ffffff;--accent:#6254b9}
-html[data-theme=dark]{color-scheme:dark;--bg:#0c1222;--ink:#f0f1fd;--muted:#b8bfd4;--line:#424b66;--panel:#161e31;--accent:#b7aaff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.8 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
-a{color:var(--accent);text-underline-offset:4px}a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
-header,main,footer{max-width:1050px;margin:auto;padding-inline:clamp(18px,4vw,52px)}
-header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding-block:23px;border-bottom:1px solid var(--line)}
-.logo{font:500 27px Georgia,"Songti SC",serif;color:var(--ink);text-decoration:none}
-header nav{display:flex;gap:16px;font-size:13px;align-items:center}header button{background:var(--panel);color:var(--ink);border:1px solid var(--line);font:inherit;padding:8px 12px;min-height:42px}main{padding-block:65px 90px}
-.kicker{font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-size:12px}
-h1,h2,h3{font-weight:500}h1{font:500 clamp(39px,5vw,68px)/1.18 Georgia,"Songti SC",serif;letter-spacing:-.03em;margin:16px 0 25px}
-h2{font-size:25px;line-height:1.4}h3{font-size:17px;margin:0 0 7px}
-.lead{font-size:17px;line-height:1.9;color:var(--muted);max-width:760px}
-.notice{border-left:4px solid var(--accent);background:var(--panel);padding:15px 20px;margin:30px 0;font-size:14px}
-.statusgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:35px 0}
-.status{border:1px solid var(--line);background:var(--panel);padding:18px}.status b{display:block;font-size:16px;color:var(--ink)}.status small{display:block;color:var(--muted);margin-top:6px;font-size:12px}
-.status.pending b{color:var(--muted)}
-.section{border-top:1px solid var(--line);margin-top:45px;padding-top:23px}
-.section p,.section li{font-size:15px}.section p{color:var(--muted)}.section ul{padding-left:23px}
-.links{display:flex;flex-wrap:wrap;gap:12px}.links a{border:1px solid var(--line);background:var(--panel);padding:12px 16px;font-weight:600;font-size:13px}
-.directory{display:grid;gap:12px;margin:24px 0}.directory a{display:block;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:18px 20px;text-decoration:none}
-.directory a:hover,.directory a:focus-visible{border-color:var(--accent)}
-.directory a strong{font-size:19px;display:block}.directory a small{color:var(--accent);font-weight:700;font-size:12px;display:block;margin-bottom:5px}.sort-controls{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 8px}.sort-controls button{padding:11px 15px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:13px}.sort-controls button[aria-pressed=true]{border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 11%,var(--bg));font-weight:700}.directory a span{font-size:13px;color:var(--muted);display:block;margin-top:5px}
-input[type=search]{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:14px;font:16px sans-serif;max-width:600px}
-footer{padding-block:26px 45px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
-@media(max-width:590px){.statusgrid{grid-template-columns:1fr}header nav{gap:8px}.lead{font-size:15px}.links{display:grid}}
-.digest{border:1px solid var(--line);background:var(--panel);padding:clamp(18px,3vw,28px);margin:29px 0}
-.digest h2{font:500 clamp(24px,3vw,30px)/1.35 Georgia,"Songti SC",serif;margin:0 0 18px}
-.digestgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 22px}
-.digestgrid p{margin:0;font-size:14px;line-height:1.75;color:var(--ink)}
-.digestgrid b{display:block;font-size:12px;letter-spacing:.05em;color:var(--accent);margin-bottom:6px}
-.digest-meta{margin:17px 0 0;color:var(--muted);font-size:12px}
-.digest-proof{border-left:3px solid var(--accent);padding-left:12px}
-.directory a .digestmini{display:block;margin:12px 0 0;border-top:1px solid var(--line);padding-top:12px}
-.directory a .digestmini p{margin:6px 0;color:var(--ink);font-size:13px;line-height:1.65}
-.directory a .digestmini b{color:var(--accent);font-weight:650}
-.directory a .digestmini small{font-size:12px;color:var(--muted);margin-top:5px}
-@media(max-width:600px){.digestgrid{grid-template-columns:1fr}.digest{padding:18px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-/* P4.40 static decision file: readable, no JS or external dependencies. */
-.decision-report{border-top:3px solid var(--accent);background:var(--panel);border-inline:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(18px,3.6vw,34px);margin:30px 0 37px;scroll-margin-top:90px}
-.decision-eyebrow{font-size:11px;letter-spacing:.16em;color:var(--accent);font-weight:700}
-.decision-report h2{font:500 clamp(24px,3vw,34px)/1.35 Georgia,"Songti SC",serif;margin:9px 0 11px}
-.decision-intro{color:var(--muted);max-width:66ch;font-size:14px;line-height:1.75;margin:0 0 22px}
-.decision-verdict{border-left:4px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--bg));padding:16px 18px;margin:0 0 21px}
-.decision-verdict__label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
-.decision-verdict strong{display:block;font-size:clamp(16px,2vw,21px);line-height:1.45}
-.decision-verdict small{display:block;color:var(--muted);line-height:1.7;margin-top:6px;font-size:12px}
-.decision-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.decision-columns article{min-width:0;border:1px solid var(--line);padding:17px}
-.decision-columns h3,.decision-proof h3,.decision-action h3{margin:0 0 9px;color:var(--ink);font-size:17px}
-.decision-columns article h3:not(:first-child){margin-top:20px}
-.decision-columns p,.decision-proof p,.decision-action p{line-height:1.75;font-size:14px;margin:6px 0;color:var(--ink)}
-.decision-columns small{display:block;color:var(--muted);line-height:1.7;margin-top:9px;font-size:12px}
-.decision-proof,.decision-action{border-top:1px solid var(--line);margin-top:23px;padding-top:20px}
-.decision-proof a{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:650;margin-top:10px}
-.decision-action ol{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style-position:inside;padding:0;margin:12px 0 0}
-.decision-action li{border:1px solid var(--line);padding:14px 15px;min-width:0;color:var(--ink)}
-.decision-action li::marker{font-size:13px;color:var(--accent)}
-.decision-action li b{font-size:14px}
-.decision-action li p{font-size:13px;color:var(--muted)}
-.decision-disclaimer{font-size:12px;line-height:1.75;color:var(--muted);margin:21px 0 0}
-.directory a .decision-mini{display:block;border-top:1px solid var(--line);padding-top:11px;margin-top:11px;font-size:12px;line-height:1.8;color:var(--muted)}
-.directory a .decision-mini b{color:var(--accent)}
-.notice summary{cursor:pointer;font-size:14px;font-weight:700;min-height:38px;padding:6px 0}.notice[open] summary{margin-bottom:14px}.directory a .digestmini p{font-size:13px;color:var(--ink)}.directory a .decision-mini{font-size:12px}
-.decision-report a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-@media(max-width:720px){.decision-action ol{grid-template-columns:1fr}.decision-columns{grid-template-columns:1fr}.decision-action li{padding:13px}}
-@media(max-width:590px){.decision-report{margin:18px 0 28px}.decision-intro{font-size:13px}}
-/* B1-A03: hand-fillable, print-friendly founder validation worksheet.
-   Source reviewed, never captured in browser storage or sent to a server. */
-.decision-workbook-link{display:inline-flex;margin-top:13px;align-items:center;min-height:44px;font-size:14px;font-weight:700}
-.founder-workbook{scroll-margin-top:98px;border:2px solid var(--accent);background:var(--panel);padding:clamp(18px,3.3vw,32px);margin-top:45px}
-.founder-workbook h2{margin:9px 0 14px;font-size:clamp(22px,2.7vw,31px)}
-.workbook-intro,.workbook-fineprint{font-size:13px;line-height:1.8;color:var(--muted)}
-.workbook-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:23px}
-.workbook-step{border:1px solid var(--line);background:var(--bg);padding:19px;min-width:0}
-.workbook-step>span{display:block;color:var(--accent);font-size:11px;font-weight:750;letter-spacing:.08em}
-.workbook-step h3{margin:9px 0 12px;font-size:18px;line-height:1.5}
-.workbook-step p{font-size:13px;line-height:1.8;color:var(--ink)}
-.workbook-blank{font-size:12px;font-weight:650;color:var(--ink);margin-top:15px;border-top:1px dashed var(--line);padding-top:12px}
-.workbook-blank span{display:block;overflow-wrap:anywhere;color:var(--muted);letter-spacing:.08em;line-height:2.2}
-@media(max-width:700px){.workbook-steps{grid-template-columns:1fr}.workbook-step{padding:16px}}
-@media print{.founder-workbook{break-before:page;page-break-before:always;box-shadow:none;color:#111;background:#fff;border-color:#777}.workbook-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.workbook-step{break-inside:avoid;page-break-inside:avoid;background:#fff}.workbook-blank span{line-height:3}.decision-workbook-link{display:none}}
-/* Founder first: deep sources and long worksheets are voluntary reading. */
-.decision-next{background:color-mix(in srgb,var(--accent) 6%,var(--panel));padding:15px 18px;border:1px solid var(--line);margin:0}
-.decision-next strong{display:block;color:var(--accent);font-size:13px;margin-top:9px}
-.decision-next strong:first-child{margin-top:0}
-.decision-next p{margin:4px 0 12px;font-size:15px;line-height:1.65;color:var(--ink)}
-.decision-report{margin:22px 0 28px;padding:clamp(16px,2.7vw,25px)}
-.decision-verdict{margin:0 0 12px}
-.decision-more,.dossier-more,.workbook-fold{border:1px solid var(--line);background:var(--panel);border-radius:12px;margin:18px 0;padding:0 18px 12px}
-.decision-more summary,.dossier-more summary,.workbook-fold summary{cursor:pointer;padding:15px 4px;min-height:48px;font-size:15px;font-weight:700;color:var(--accent)}
-.decision-more summary:focus-visible,.dossier-more summary:focus-visible,.workbook-fold summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.decision-more[open] summary,.dossier-more[open] summary,.workbook-fold[open] summary{border-bottom:1px solid var(--line);margin-bottom:15px}
-.decision-more .decision-columns{margin-top:14px}
-.dossier-more>.section:first-of-type{border-top:0;margin-top:5px}
-.dossier-more .section{margin-top:25px}
-.dossier-more .notice{margin:15px 0}
-.dossier-more .statusgrid{margin:20px 0}
-.workbook-fold .founder-workbook{margin:12px 0 4px;border:0;scroll-margin-top:80px;padding:12px 0}
-.case-back{display:inline-flex;margin:0 0 5px;align-items:center;min-height:38px;text-decoration:none;font-size:13px;font-weight:700}
-@media(max-width:590px){main{padding-block:26px 60px}h1{font-size:clamp(32px,7vw,45px);margin:10px 0 14px}.lead{font-size:14px;line-height:1.6}.digest{margin:14px 0;padding:15px}.digestgrid{gap:11px}.decision-report{margin:14px 0;padding:15px}.decision-more,.dossier-more,.workbook-fold{padding:0 12px 8px;margin:12px 0}.decision-next p{font-size:14px}.statusgrid{gap:8px}}
-@media print{.dossier-more:not([open]),.workbook-fold:not([open]),.decision-more:not([open]){display:none}}
-
-/* B1-P0: concise project cards using the original blue-violet palette. */
-.directory{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.directory a.case-card{display:flex;flex-direction:column;gap:11px;min-width:0;padding:21px;border-radius:16px}
-.directory a.case-card strong{font-size:20px;line-height:1.4;overflow-wrap:anywhere}
-.directory a.case-card small{margin:0;color:var(--accent);line-height:1.45}
-.directory a .case-facts{display:grid;gap:10px;margin-top:4px}
-.directory a .case-facts p{border-top:1px solid var(--line);padding-top:8px;margin:0;font-size:13px;line-height:1.6;color:var(--ink)}
-.directory a .case-facts b{display:block;margin-bottom:2px;color:var(--accent);font-size:12px}
-.directory a .case-action{margin-top:auto;padding:10px 13px;border-radius:10px;min-height:44px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));color:var(--accent);font-weight:700}
-.case-browse{margin:20px 0 12px;font-size:14px;font-weight:700}
-.case-browse a{display:inline-flex;align-items:center;min-height:44px}
-@media(max-width:900px){.directory{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){header{flex-wrap:wrap;padding-block:14px}header nav{width:100%;flex-wrap:wrap;gap:8px 12px}.directory{grid-template-columns:1fr;margin-top:15px}.directory a.case-card{padding:18px}.case-browse{margin:10px 0}}
-
-
-/* B1: company directory and evidence pages retain factual contents, update look. */
-body{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}
-header{max-width:1180px;padding-block:17px;min-height:72px}
-.logo{font:850 22px/1.4 "PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif;letter-spacing:-.04em}
-header nav a{font-weight:700;text-decoration:none;font-size:13px;min-height:44px;display:inline-flex;align-items:center}
-header nav a:hover{color:var(--accent)}header button{border-radius:11px;cursor:pointer}
-main{padding-block:38px 85px}
-h1,h2,h3{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif}
-h1{font-size:clamp(35px,5vw,56px);font-weight:850;letter-spacing:-.048em;line-height:1.22}
-h2{font-weight:800;letter-spacing:-.03em}
-.case-directory-hero{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;
- padding:36px clamp(23px,4vw,46px) 32px;margin:0 0 25px;
- background:radial-gradient(ellipse 50% 130% at 90% 7%,#6156ab65,transparent 72%),
- radial-gradient(ellipse 43% 105% at 4% 100%,#23689a55,transparent 80%),
- linear-gradient(130deg,#0b1528,#182849 70%,#231d49);
- box-shadow:0 19px 42px #1a32622a;color:#f3f6ff}
-.case-directory-hero:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
- background-image:linear-gradient(#abc2ff0c 1px,transparent 1px),linear-gradient(90deg,#abc2ff0c 1px,transparent 1px);
- background-size:42px 42px;mask-image:linear-gradient(90deg,transparent,#000b)}
-.case-directory-hero .kicker{color:#c6c8ff;background:#7e79ef26;border:1px solid #a4a7ff53;
- border-radius:50px;padding:5px 12px;display:inline-flex;font-size:11px}
-.case-directory-hero h1{color:#fff;max-width:760px;font-size:clamp(34px,4.7vw,55px);margin:15px 0 14px}
-.case-directory-hero .lead{color:#c7d3e8;font-size:15px;line-height:1.75;max-width:700px}
-.case-directory-hero .case-browse{margin:13px 0 0}
-.case-directory-hero .case-browse a{color:#fff;text-decoration:none;min-height:44px;border-radius:11px;
- background:linear-gradient(110deg,#8265e9,#5089ee);padding:10px 18px;box-shadow:0 7px 20px #4341ac51}
-.case-directory-hero .case-browse a:hover{filter:brightness(1.09)}
-.case-directory-proof{display:flex;gap:9px;flex-wrap:wrap;margin-top:19px}
-.case-directory-proof span{display:inline-flex;align-items:center;min-height:31px;
- border:1px solid #a6b5e844;background:#f1f2ff11;color:#dce6fa;
- padding:5px 11px;border-radius:25px;font-size:11px}
-.directory{gap:16px}
-.directory a.case-card{border-radius:19px;border:1px solid var(--line);
- padding:23px;box-shadow:0 5px 22px #273f7210;
- background:var(--panel);transition:border-color .18s,transform .18s,box-shadow .18s}
-.directory a.case-card:hover,.directory a.case-card:focus-visible{border-color:var(--accent);
- box-shadow:0 17px 36px #293f8020;transform:translateY(-3px)}
-.directory a.case-card small{align-self:flex-start;border-radius:24px;
- padding:5px 10px;background:color-mix(in srgb,var(--accent) 11%,var(--panel));
- color:var(--accent);font-size:11px;font-weight:750}
-.directory a.case-card strong{font-size:20px;line-height:1.4;letter-spacing:-.025em}
-.directory a .case-facts{margin-top:7px;gap:8px}
-.directory a .case-facts p{padding-top:8px;font-size:12px;line-height:1.6}
-.directory a .case-facts b{font-size:11px}
-.directory a .case-action{display:flex;align-items:center;justify-content:space-between;
- margin-top:auto;padding:11px 14px;border-radius:11px;
- background:color-mix(in srgb,var(--accent) 12%,var(--panel));
- color:var(--accent);font-size:13px;font-weight:800}
-.case-detail-hero{border:1px solid var(--line);padding:27px clamp(20px,3.5vw,34px);
- border-radius:22px;background:linear-gradient(130deg,
- color-mix(in srgb,var(--accent) 9%,var(--panel)),var(--panel) 65%);margin:8px 0 19px}
-.case-detail-hero .kicker{display:inline-block;margin:0;padding:4px 10px;
- border:1px solid color-mix(in srgb,var(--accent) 32%,var(--panel));border-radius:30px}
-.case-detail-hero h1{margin:14px 0 10px;max-width:840px;
- font-size:clamp(32px,4.3vw,48px);font-weight:850}
-.case-detail-hero .lead{font-size:15px;line-height:1.75;margin:0;max-width:750px}
-.case-detail-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-.case-detail-proof span{display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--line);
- border-radius:24px;padding:4px 10px;font-size:11px;color:var(--muted);background:var(--panel)}
-.digest,.decision-report,.decision-more,.dossier-more,.workbook-fold{border-radius:17px}
-.digest{box-shadow:0 6px 24px #2a3d7710}
-.digest h2,.decision-report h2{font-family:"PingFang SC","Microsoft YaHei",Inter,system-ui,sans-serif;font-weight:800}
-.digestgrid{gap:14px}
-.digestgrid p{border:1px solid var(--line);border-radius:12px;padding:13px;min-width:0}
-.digestgrid .digest-proof{border-left:3px solid var(--accent)}
-.decision-report{box-shadow:0 5px 24px #2a3d7710}
-@media(max-width:650px){
- header{min-height:60px}main{padding-block:24px 65px}
- .case-directory-hero{padding:25px 20px;margin-bottom:12px;border-radius:19px}
- .case-directory-hero h1{font-size:clamp(32px,8vw,44px)}
- .case-directory-hero .lead{font-size:13px;line-height:1.7}
- .case-directory-hero:before{background-size:32px 32px}
- .case-directory-proof{margin-top:12px}
- .directory a.case-card{padding:19px}
- .case-detail-hero{padding:20px;border-radius:17px}
- .case-detail-hero h1{font-size:clamp(29px,7.5vw,40px)}
- .case-detail-hero .lead{font-size:13px}
- .digestgrid p{padding:10px}
-}
-@media(prefers-reduced-motion:reduce){.directory a.case-card{transition:none;transform:none!important}}
-
-</style></head><body><header><a class="logo" href="/">见势 JIANSHI</a>
-<nav aria-label="页面导航"><a href="/discover/">找项目</a><a href="/projects/">公司案例</a><a href="/">首页</a><button id="themeToggle" type="button" aria-pressed="false">深色模式</button></nav></header>
-<main><section class="case-directory-hero" aria-label="公司的历史商业案例">
-<span class="kicker">创业案例</span>
-<h1>3 家公司的生意，<br>看看它们怎么赚钱。</h1>
-<p class="lead">先比较做什么、谁付钱、怎么收费、需要什么能力。这些是历史公司案例，不是已经验证可以照做赚钱的项目。</p>
-<p class="case-browse"><a href="/discover/">想看更多生意方向？去找项目 →</a></p>
-<div class="case-directory-proof" aria-label="研究证据边界"><span>3 个有历史经营资料的公司案例</span>
-<span>0 个已确认可以直接复制盈利的项目</span></div></section>
-<div class="directory" id="directory"><a href="/projects/carrd/" class="case-card" data-id="carrd"><small>订阅软件 · 历史公司案例</small><strong>Carrd｜单页网站搭建工具</strong><div class="case-facts" aria-label="案例生意概况"><p><b>做什么：</b>帮个人和小商家快速建立展示页面</p><p><b>谁在用：</b>创作者、自由职业者、小商家</p><p><b>谁付钱：</b>需要专业功能的个人或小商家（按年订阅）</p><p><b>怎么赚钱：</b>基础免费，高级功能按年订阅</p><p><b>上手门槛：</b>可以从小范围建站服务试单；不是复制 Carrd</p></div><span class="case-action">看详情和第一步 →</span></a><a href="/projects/plausible/" class="case-card" data-id="plausible"><small>订阅软件 · 历史公司案例</small><strong>Plausible｜隐私优先的网站统计</strong><div class="case-facts" aria-label="案例生意概况"><p><b>做什么：</b>帮站长看流量、来源和转化</p><p><b>谁在用：</b>站长、网站运营团队</p><p><b>谁付钱：</b>购买网站统计订阅服务的站长或运营团队</p><p><b>怎么赚钱：</b>按网站流量和功能收订阅费</p><p><b>上手门槛：</b>需要开发、运维与隐私保护能力</p></div><span class="case-action">看详情和第一步 →</span></a><a href="/projects/nerdwallet/" class="case-card" data-id="nerdwallet"><small>内容与推荐 · 历史公司案例</small><strong>NerdWallet｜金融内容比较</strong><div class="case-facts" aria-label="案例生意概况"><p><b>做什么：</b>帮消费者理解和比较金融产品</p><p><b>谁在用：</b>用户看内容；广告合作伙伴付费</p><p><b>谁付钱：</b>网站广告合作伙伴；读者不等于广告付款方</p><p><b>怎么赚钱：</b>广告和商业合作，不代表每笔成交都收佣金</p><p><b>上手门槛：</b>大型平台模式，不建议一人直接照搬</p></div><span class="case-action">看详情和第一步 →</span></a></div>
-<details class="notice"><summary>资料来源和风险说明</summary>
-<p>公开定价不等于真实成交。公司历史经营结果也不等于新创业者的收入，当前没有已验证可直接盈利的创业项目。</p>
-<p>这三家公司都有可追溯的历史经营资料，有些来自财报，有些来自公司或创始人过去的公开陈述；按此顺序阅读不是赚钱排名。</p>
-<p>只找到官网或标价，还不足以说明生意做成了。每个详情页保留来源、报告时间、成本和未核实的风险。</p>
-<p><a href="/validation/">更多关于资料的限制 →</a></p></details></main><footer>见势 · 商业研究信息，不构成财务审计、投资建议或收益承诺。<a href="/privacy/">隐私说明</a></footer><script>(()=>{'use strict';const html=document.documentElement,button=document.getElementById('themeToggle');let current='light';try{if(localStorage.getItem('jianshi-theme')==='dark')current='dark'}catch(_){}function apply(next,persist){current=next;html.dataset.theme=next;button.textContent=next==='light'?'深色模式':'浅色模式';button.setAttribute('aria-pressed',String(next==='dark'));if(persist)try{localStorage.setItem('jianshi-theme',next)}catch(_){}}apply(current,false);button.addEventListener('click',()=>apply(current==='light'?'dark':'light',true));})();</script></body></html>
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="10条经过支付平台API公开验证的商业项目记录，含项目收入、评分与来源">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://jianshi-bua.pages.dev/projects/">
+<title>项目库｜见势 JIANSHI</title>
+<link rel="stylesheet" href="/projects/t07.css">
+</head><body>
+<header class="site-head"><div class="wrap"><a class="logo" href="/">见势<small>JIANSHI</small></a><nav aria-label="主导航"><a href="/">首页</a><a aria-current="page" href="/projects/">项目库</a><a href="/sources/">数据来源</a><a href="/#subscribe">加入候选名单</a></nav></div></header>
+<main class="wrap"><section class="hero"><div class="kicker">PROJECT LIBRARY · 真实商业样本</div>
+<h1>项目库 · 看见真实收入，找到可做方向。</h1>
+<p class="lead">收入数据来自支付平台 API 公开验证。所有项目均来自公开记录，点击卡片可查看收入来源、评分依据和风险。</p>
+<p class="meta-line">数据核对日期（as_of）：<time datetime="2026-10-15">2026-10-15</time> · 10 个公开项目 · 评分为研究参考，不是收益承诺</p></section>
+<section aria-label="项目筛选和排序"><div class="controls"><div class="control"><label for="category">类别</label><select id="category" name="category"><option value="">全部</option><option value="AI工具">AI工具</option><option value="SaaS">SaaS</option><option value="小App">小App</option><option value="开发者工具">开发者工具</option><option value="浏览器插件">浏览器插件</option></select></div><div class="control"><label for="verdict">结论</label><select id="verdict" name="verdict"><option value="">全部</option><option value="推荐">推荐</option><option value="可做">可做</option><option value="不推荐">不推荐</option></select></div><div class="control"><label for="evidence_level">证据等级</label><select id="evidence_level" name="evidence_level"><option value="">全部</option><option value="A">A</option></select></div><div class="control"><label for="sort">排序方式</label><select id="sort" name="sort"><option value="total_score">总分优先</option><option value="mrr">MRR 优先</option><option value="last_30d">近30天收入优先</option></select></div></div>
+<p id="result-count" class="resultcount" role="status" aria-live="polite">10 个项目</p></section>
+<section id="project-list" class="cards" aria-label="项目列表"><article class="project" data-project data-name="DataFast" data-category="SaaS"
+data-verdict="不推荐" data-evidence="A"
+data-score="13" data-mrr="29167" data-last30="29990">
+<div class="category">SaaS</div>
+<div class="phead"><h2><a href="/projects/datafast/">DataFast</a></h2><span class="tag ">13/25</span></div>
+<p class="pintro">帮创业者看清哪些营销渠道真正带来付费客户</p>
+<div class="tags"><span class="tag verdict-bad">不推荐</span><span class="tag flag">与 TrustMRR 创始人为关联方</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$29,990</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>$29,167</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/datafast/">查看项目详情 →</a></div></article><article class="project" data-project data-name="ShipFast" data-category="开发者工具"
+data-verdict="可做" data-evidence="A"
+data-score="17" data-mrr="" data-last30="1146">
+<div class="category">开发者工具</div>
+<div class="phead"><h2><a href="/projects/shipfast/">ShipFast</a></h2><span class="tag ">17/25</span></div>
+<p class="pintro">帮独立开发者省去搭建登录、支付和基础代码的时间</p>
+<div class="tags"><span class="tag ">可做</span><span class="tag flag">与 TrustMRR 创始人为关联方</span><span class="tag flag">临界：近30天接近 $1,000 门槛</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$1,146</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>未公开</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/shipfast/">查看项目详情 →</a></div></article><article class="project" data-project data-name="TurboStarter" data-category="开发者工具"
+data-verdict="可做" data-evidence="A"
+data-score="18" data-mrr="" data-last30="4319">
+<div class="category">开发者工具</div>
+<div class="phead"><h2><a href="/projects/turbostarter/">TurboStarter</a></h2><span class="tag ">18/25</span></div>
+<p class="pintro">帮AI开发者一次配齐网站、移动端与扩展的基础工程</p>
+<div class="tags"><span class="tag ">可做</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$4,319</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>未公开</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/turbostarter/">查看项目详情 →</a></div></article><article class="project" data-project data-name="Sonar - ASO tool" data-category="SaaS"
+data-verdict="推荐" data-evidence="A"
+data-score="20" data-mrr="3744" data-last30="4199">
+<div class="category">SaaS</div>
+<div class="phead"><h2><a href="/projects/sonar-aso-tool/">Sonar - ASO tool</a></h2><span class="tag ">20/25</span></div>
+<p class="pintro">帮独立App开发者选应用商店关键词并跟踪排名</p>
+<div class="tags"><span class="tag verdict-good">推荐</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$4,199</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>$3,744</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/sonar-aso-tool/">查看项目详情 →</a></div></article><article class="project" data-project data-name="Search1API" data-category="开发者工具"
+data-verdict="可做" data-evidence="A"
+data-score="15" data-mrr="1105" data-last30="6418">
+<div class="category">开发者工具</div>
+<div class="phead"><h2><a href="/projects/search1api/">Search1API</a></h2><span class="tag ">15/25</span></div>
+<p class="pintro">帮AI智能体开发者统一访问搜索、抓取和实时网页</p>
+<div class="tags"><span class="tag ">可做</span><span class="tag flag">近30天收入明显高于MRR，需区分一次性与经常性收入</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$6,418</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>$1,105</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/search1api/">查看项目详情 →</a></div></article><article class="project" data-project data-name="AgentsKit" data-category="AI工具"
+data-verdict="可做" data-evidence="A"
+data-score="18" data-mrr="" data-last30="1139">
+<div class="category">AI工具</div>
+<div class="phead"><h2><a href="/projects/agentskit/">AgentsKit</a></h2><span class="tag ">18/25</span></div>
+<p class="pintro">帮Claude Code用户快速配置可复用的工程和营销智能体</p>
+<div class="tags"><span class="tag ">可做</span><span class="tag flag">临界：近30天接近 $1,000 门槛</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$1,139</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>未公开</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/agentskit/">查看项目详情 →</a></div></article><article class="project" data-project data-name="OpenTweet" data-category="SaaS"
+data-verdict="可做" data-evidence="A"
+data-score="17" data-mrr="3983" data-last30="4315">
+<div class="category">SaaS</div>
+<div class="phead"><h2><a href="/projects/opentweet/">OpenTweet</a></h2><span class="tag ">17/25</span></div>
+<p class="pintro">帮开发者自动排程X平台帖子，减少重复发布操作</p>
+<div class="tags"><span class="tag ">可做</span><span class="tag flag">社交平台API与自动化许可待查</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$4,315</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>$3,983</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/opentweet/">查看项目详情 →</a></div></article><article class="project" data-project data-name="GETebook.ai" data-category="AI工具"
+data-verdict="可做" data-evidence="A"
+data-score="17" data-mrr="8634" data-last30="37115">
+<div class="category">AI工具</div>
+<div class="phead"><h2><a href="/projects/getebook-ai/">GETebook.ai</a></h2><span class="tag ">17/25</span></div>
+<p class="pintro">帮创作者快速生成可编辑排版的电子书初稿</p>
+<div class="tags"><span class="tag ">可做</span><span class="tag flag">近30天收入显著高于MRR，不能将总收入视为订阅</span><span class="tag flag">近30天收入与MRR差异较大，收入结构未公开</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$37,115</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>$8,634</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/getebook-ai/">查看项目详情 →</a></div></article><article class="project" data-project data-name="Mastros.online" data-category="浏览器插件"
+data-verdict="可做" data-evidence="A"
+data-score="16" data-mrr="1323" data-last30="1311">
+<div class="category">浏览器插件</div>
+<div class="phead"><h2><a href="/projects/mastros/">Mastros.online</a></h2><span class="tag ">16/25</span></div>
+<p class="pintro">将用户有权限查看的社交平台数据本地导出成CSV/Excel</p>
+<div class="tags"><span class="tag ">可做</span><span class="tag flag">第三方社交平台接口与数据使用条款限制</span><span class="tag flag">公开活跃订阅数不等于付费客户数</span><span class="tag flag">临界：近30天接近 $1,000 门槛</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$1,311</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>$1,323</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/mastros/">查看项目详情 →</a></div></article><article class="project" data-project data-name="Readlens" data-category="小App"
+data-verdict="可做" data-evidence="A"
+data-score="18" data-mrr="1059" data-last30="2405">
+<div class="category">小App</div>
+<div class="phead"><h2><a href="/projects/readlens/">Readlens</a></h2><span class="tag ">18/25</span></div>
+<p class="pintro">将书页或图片拍照转换为语音朗读，并同步高亮</p>
+<div class="tags"><span class="tag ">可做</span><span class="tag flag">RevenueCat读取应用商店交易数据；非独立审计</span><span class="tag flag">语音服务依赖第三方AI供应商</span></div>
+<div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>$2,405</strong></div>
+<div class="metric"><small>MRR（月经常性收入）</small><strong>$1,059</strong></div></div>
+<div class="cardfoot"><span>1 人团队 · A 级证据</span>
+<a href="/projects/readlens/">查看项目详情 →</a></div></article></section>
+<p id="empty-message" class="empty" hidden>没有符合筛选条件的项目，请调整筛选项。</p></main>
+<footer class="disclaimer"><div class="wrap"><p>收入由 TrustMRR 通过支付平台 API 获取，非见势独立审计。 数据为第三方公开信息，非财务审计，不构成收入承诺。</p></div></footer>
+<script src="/projects/t07.js" defer></script></body></html>
