@@ -26,7 +26,7 @@ class UnifiedHome(unittest.TestCase):
         self.assertEqual(page.count("<script>"), 1)
         self.assertEqual(page.count('data:image/webp;base64,'), 1)
         self.assertEqual(page.count('id="j2"'), 1)
-        self.assertEqual(page.count('<article class="j2-project">'), 3)
+        self.assertEqual(page.count('<article class="j2-project" data-t08-id="'), 3)
         self.assertLess(len(page.encode("utf-8")), 200_000)
         assert_safe_source(page)
         for old in ('id="ring"', 'id="lb"', 'id="grid"',
@@ -51,7 +51,11 @@ class UnifiedHome(unittest.TestCase):
         self.assertIn("<strong>3</strong><span>有历史经营证据的具名案例", self.home)
         self.assertIn("<strong>0</strong><span>已验证可直接启动的项目", self.home)
         self.assertIn("<strong>6</strong><span>已整理的商业模式", self.home)
-        self.assertEqual(self.home.count('class="j2-project-action" href="/projects/"'), 3)
+        winners=artwork.featured_projects()
+        self.assertEqual(len(winners),3)
+        for p in winners:
+            self.assertIn('data-t08-id="' + p["id"] + '"', self.home)
+            self.assertIn('href="/projects/' + p["id"] + '/"', self.home)
         for slug in ("carrd", "plausible", "nerdwallet"):
             self.assertNotIn('href="/projects/' + slug + '/"', self.home)
         for token in ("Easlo｜", "Louise Lennox", "Tally｜",
