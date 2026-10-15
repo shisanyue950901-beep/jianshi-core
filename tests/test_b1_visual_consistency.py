@@ -51,8 +51,11 @@ class VisualParity(unittest.TestCase):
         parsed = ElementAudit()
         parsed.feed(page)
         self.assertEqual(parsed.h1_count,1)
-        for route,*_ in ENTRIES:
-            self.assertIn(route,parsed.links)
+        for route,kind,*_ in ENTRIES:
+            self.assertIn("/projects/" if kind == "projects" else route,parsed.links)
+        self.assertNotIn("/projects/carrd/",parsed.links)
+        self.assertNotIn("/projects/plausible/",parsed.links)
+        self.assertNotIn("/projects/nerdwallet/",parsed.links)
 
     def test_company_directory_stays_exactly_three_source_admitted_cases(self):
         page = self.directory
