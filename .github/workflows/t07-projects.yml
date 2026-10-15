@@ -2,12 +2,13 @@ name: T07 Projects HTML and Mobile Lighthouse
 
 on:
   push:
-    branches: [feat/t07]
+    branches: [feat/t07, feat/t08]
     paths:
       - 'data/projects.json'
       - 'scripts/release/t07_projects.py'
       - 'scripts/release/p412_build_public.py'
       - 'tests/test_t07_static.py'
+      - 'tests/test_t08_data.py'
       - 'tests/browser/t07_responsive.py'
       - '.github/workflows/t07-projects.yml'
   pull_request:
@@ -16,6 +17,7 @@ on:
       - 'scripts/release/t07_projects.py'
       - 'scripts/release/p412_build_public.py'
       - 'tests/test_t07_static.py'
+      - 'tests/test_t08_data.py'
       - '.github/workflows/t07-projects.yml'
   workflow_dispatch:
 
@@ -45,10 +47,25 @@ jobs:
           python web/build.py
           python scripts/release/p412_build_public.py
           python tests/test_t07_static.py
+          python tests/test_t08_data.py
           test -f web/dist/projects/datafast/index.html
           test -f web/dist/projects/readlens/index.html
           test ! -e web/dist/projects/nerdwallet
           cmp -s _redirects web/dist/_redirects
+      - name: Simulate main/production build without feature-branch preview exemption
+        env:
+          CI: "true"
+          GITHUB_ACTIONS: "true"
+          CF_PAGES_BRANCH: main
+          GITHUB_REF_NAME: main
+          GITHUB_HEAD_REF: ""
+        run: |
+          set -euo pipefail
+          python scripts/release/p412_build_public.py
+          python tests/test_t07_static.py
+          python tests/test_t08_data.py
+          echo "PASS T08 production/main simulated build: 20 PUBLIC reviewed records"
+
       - name: Chromium responsive audit and six screenshots
         run: |
           set -euo pipefail

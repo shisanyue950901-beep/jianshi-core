@@ -15,9 +15,13 @@ from f21_components import site_header, site_footer
 from f21_design_tokens import render_css as design_css
 from p446_content_hubs import CSS as SHARED_CSS
 from f21_g2c_related_quality import CSS as RELATED_CSS, render_related
+from t08_project_selection import featured_projects, usd
 
 SITE = "https://jianshi-bua.pages.dev"
 ROUTE = "discover/"
+
+# Same ranked projects and amounts as homepage and /projects/, resolved at build time.
+FEATURED = featured_projects()
 # path, category, title, description, evidence/status label
 ENTRIES = (
     ("/solutions/ecommerce-visual/", "solutions", "AI 电商做图", "制作商品图、详情页图片和活动海报。", "企业 AI 用法 · 未开放购买"),
@@ -30,9 +34,8 @@ ENTRIES = (
     ("/research/affiliate-content-site/", "research", "内容推荐网站", "通过内容推荐相关产品，收入可能来自推广合作。", "商业模式参考 · 非收益承诺"),
     ("/research/amazon-kdp-publishing/", "research", "电子书与出版", "制作原创图书或电子书，需遵守版权和销售平台规则。", "商业模式参考 · 非收益承诺"),
     ("/research/agency-business/", "research", "为企业提供数字服务", "帮客户完成设计、内容或技术服务，按项目或服务收费。", "商业模式参考 · 非收益承诺"),
-    ("/projects/plausible/", "projects", "Plausible｜网站数据分析", "卖网站统计软件，需要开发和长期运维能力。", "真实公司案例 · 非创业收益"),
-    ("/projects/carrd/", "projects", "Carrd｜单页网站", "提供简洁建站工具，个人可研究小范围建站服务。", "真实公司案例 · 非创业收益"),
-    ("/projects/nerdwallet/", "projects", "NerdWallet｜金融产品比较", "内容与广告合作模式，不适合个人直接照搬大型平台。", "真实公司案例 · 非创业收益"),
+    *((f"/projects/{p['id']}/", "projects", p["name"], p["one_liner_cn"],
+        "支付API公开收入 · 评分仅供研究") for p in FEATURED),
     ("/marketplace/", "guides", "商机大厅（暂未开放）", "先了解如何把客户需求写清楚；目前没有线上订单。", "功能说明 · 未开放接单"),
     ("/talent/", "guides", "人才与服务商（暂未开放）", "看看如何整理作品，暂时无法注册或接单。", "功能说明 · 未开放入驻"),
     ("/academy/", "guides", "AI 技能学习（筹备中）", "了解可以学的 AI 技能；目前还没有可观看的课程。", "学习方向 · 课程未开放"),
@@ -54,9 +57,8 @@ PICK_COUNT = 9
 # Short, human-readable comparisons. These are editorial explanations of
 # how an existing business model operates, not new revenue or customer proof.
 PROJECT_FACTS = {
-    "/projects/carrd/": ("谁付钱", "付费使用高级功能的人", "怎么收费", "高级功能按年订阅"),
-    "/projects/plausible/": ("谁付钱", "使用网站统计服务的站长", "怎么收费", "按订阅方案收费"),
-    "/projects/nerdwallet/": ("谁付钱", "广告及商业合作伙伴", "怎么赚钱", "广告和商业合作"),
+    f"/projects/{p['id']}/": ("近30天收入", usd(p["revenue"]["last_30d"]), "研究结论", p["verdict"])
+    for p in FEATURED
 }
 RESEARCH_FACTS = {
     "/research/vertical-industry-saas/": "收费方式：软件订阅",
@@ -234,11 +236,7 @@ def render() -> str:
     order = {"projects": 0, "research": 1, "solutions": 2, "guides": 3}
     # Editorial viewing order matches the founder-first homepage, not
     # financial return or a newly inferred project success ranking.
-    case_order = {
-        "/projects/carrd/": 0,
-        "/projects/plausible/": 1,
-        "/projects/nerdwallet/": 2,
-    }
+    case_order = {f"/projects/{p['id']}/": i for i, p in enumerate(FEATURED)}
     cards = []
     for route, group, title, description, status in sorted(
         ENTRIES, key=lambda item: (order[item[1]], case_order.get(item[0], 99))
@@ -258,7 +256,7 @@ def render() -> str:
         cards.append(
             '<a class="discover-card" data-discover-card data-category="' + e(group)
             + '" data-search="' + e(searchable) + '"'
-            + ' href="' + e('/projects/' if group == 'projects' else route) + '"><span class="type">' + e(labels[group])
+            + ' href="' + e(route) + '"><span class="type">' + e(labels[group])
             + '</span><h3>' + e(title) + '</h3><p>' + e(description)
             + '</p>' + business_facts + '<span class="source-note">' + e(status)
             + '</span><span class="go">' + (

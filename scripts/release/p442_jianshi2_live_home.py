@@ -12,6 +12,7 @@ from html import escape
 from pathlib import Path
 
 from p438_public_ux_contract import public_metrics
+from t08_project_selection import featured_projects, usd
 
 ROOT = Path(__file__).resolve().parents[2]
 VISUAL_SOURCE = ROOT / "web/prototypes/jianshi2-v1/index.html"
@@ -291,25 +292,27 @@ def render_portal(cases: list[dict]) -> str:
     metrics = public_metrics(cases)
     if {case["id"] for case in cases} != set(PROJECT_PREVIEWS) or len(cases) != 3:
         raise RuntimeError("Only source-admitted cases can enter JIANSHI2 homepage")
-    # Editorial preview remains subordinate to the strict source-admission gate.
-    case_by_id = {case["id"]: case for case in cases}
+    # T08: only these 3 cards change; their content and destination are built
+    # deterministically from the same JSON as /projects/. Other homepage
+    # modules/metrics/editorial copy remain frozen.
     projects = []
-    for slug in ("carrd", "plausible", "nerdwallet"):
-        case = case_by_id[slug]
-        preview = PROJECT_PREVIEWS[slug]
-        def h(k: str) -> str:
-            return escape(preview[k], quote=True)
+    for project in featured_projects():
+        ident = escape(project["id"], quote=True)
+        name = escape(project["name"], quote=True)
+        summary = escape(project["one_liner_cn"], quote=True)
+        amount = escape(usd(project["revenue"]["last_30d"]), quote=True)
+        verdict = escape(project["verdict"], quote=True)
+        score = escape(str(project["total_score"]), quote=True)
         projects.append(
-            '<article class="j2-project">'
-            '<span class="j2-case-type">' + h("label") + ' · 历史案例</span>'
-            '<h3>' + h("headline") + ' <small>｜'
-            + escape(case["title"].split("｜", 1)[0]) + '</small></h3>'
-            '<p>' + h("sub") + '</p>'
+            '<article class="j2-project" data-t08-id="' + ident + '">'
+            '<span class="j2-case-type">' + verdict + ' · 支付API收入样本</span>'
+            '<h3>' + name + '</h3><p>' + summary + '</p>'
             '<dl class="j2-project-facts">'
-            '<div><dt>谁需要</dt><dd>' + h("buyer") + '</dd></div>'
-            '<div><dt>怎么赚钱</dt><dd>' + h("revenue") + '</dd></div>'
-            '<div><dt>上手门槛</dt><dd>' + h("difficulty") + '</dd></div>'
-            '</dl><a class="j2-project-action" href="/projects/">看项目详情 →</a></article>'
+            '<div><dt>近30天收入</dt><dd>' + amount + '</dd></div>'
+            '<div><dt>研究结论</dt><dd>' + verdict + '</dd></div>'
+            '<div><dt>总分</dt><dd>' + score + '/25</dd></div>'
+            '</dl><a class="j2-project-action" href="/projects/'
+            + ident + '/">看项目详情 →</a></article>'
         )
     solution_rows = "".join(
         '<article class="j2-solution"><div class="j2-art" aria-hidden="true">'

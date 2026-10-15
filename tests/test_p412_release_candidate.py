@@ -21,8 +21,9 @@ class TestP412ProductionCandidate(unittest.TestCase):
 
     def test_release_home_is_one_audited_jianshi2_portal(self):
         content=(DIST/"index.html").read_text(encoding="utf-8")
+        from t08_project_selection import featured_projects
         for expected in ("JIANSHI 2.0", "商业机会与解决方案",
-                         "Carrd", "NerdWallet", "Plausible",
+                         *(p["name"] for p in featured_projects()),
                          'id="j2"', 'id="j2-opportunities"',
                          "data:image/webp;base64,"):
             self.assertIn(expected,content)

@@ -78,24 +78,24 @@ class TestB1FounderResearchJourney(unittest.TestCase):
             self.assertNotIn(script_marker,html)
 
     def test_all_named_cases_are_short_revenue_first_cards(self):
-        self.assertEqual(set(portal.PROJECT_PREVIEWS),set(portal.CASES))
+        from t08_project_selection import featured_projects, usd
+        winners=featured_projects()
+        self.assertEqual(len(winners),3)
         self.assertEqual({c["id"] for c in self.cases},set(portal.CASES))
         self.assertEqual(self.rendered.count('class="j2-project-facts"'),3)
         self.assertEqual(self.rendered.count('class="j2-project-action"'),3)
-        self.assertEqual(self.rendered.count('class="j2-project-action" href="/projects/"'),3)
-        for case in self.cases:
-            slug=case["id"]
-            preview=portal.PROJECT_PREVIEWS[slug]
-            for field in ("headline","buyer","revenue","difficulty","label"):
-                self.assertIn(preview[field],self.rendered)
-            self.assertNotIn('href="/projects/'+slug+'/"',self.rendered)
-        for label in ("谁需要","怎么赚钱","上手门槛"):
+        for p in winners:
+            self.assertIn('data-t08-id="'+p["id"]+'"',self.rendered)
+            self.assertIn('href="/projects/'+p["id"]+'/"',self.rendered)
+            self.assertIn(p["name"],self.rendered)
+            self.assertIn(p["one_liner_cn"],self.rendered)
+            self.assertIn(usd(p["revenue"]["last_30d"]),self.rendered)
+            self.assertIn(p["verdict"],self.rendered)
+        for label in ("近30天收入","研究结论","总分"):
             self.assertEqual(self.rendered.count('<dt>'+label+'</dt>'),3)
         self.assertNotIn('class="j2-research-check"',self.rendered)
-        self.assertLess(self.rendered.index('class="j2-projects"'),
-                        self.rendered.index('class="j2-study-paths"'))
-        self.assertLess(self.rendered.index('class="j2-projects"'),
-                        self.rendered.index('class="j2-shortcuts"'))
+        self.assertLess(self.rendered.index('class="j2-projects"'),self.rendered.index('class="j2-study-paths"'))
+        self.assertLess(self.rendered.index('class="j2-projects"'),self.rendered.index('class="j2-shortcuts"'))
 
     def test_research_never_claims_proven_entrepreneurial_return_or_users(self):
         for bad in ("保证赚钱","保证收益","已有 500 家企业",
@@ -119,17 +119,13 @@ class TestB1FounderResearchJourney(unittest.TestCase):
     def test_only_source_admitted_three_cases_can_appear(self):
         with self.assertRaises(RuntimeError):
             home.build_home(self.cases[:2])
-        test=portal.PROJECT_PREVIEWS.copy()
-        try:
-            with patch.dict(portal.PROJECT_PREVIEWS,{"carrd":{
-                    **portal.PROJECT_PREVIEWS["carrd"],
-                    "headline":'<img onerror=alert(1)>'
-                }},clear=False):
-                unsafe=home.build_home(self.cases)
-            self.assertNotIn('<img onerror=alert(1)>',unsafe)
-            self.assertIn('&lt;img onerror=alert(1)&gt;',unsafe)
-        finally:
-            self.assertEqual(portal.PROJECT_PREVIEWS,test)
+        from t08_project_selection import featured_projects
+        winners=[p.copy() for p in featured_projects()]
+        poisoned=[{**winners[0],"name":'<img onerror=alert(1)>'},*winners[1:]]
+        with patch.object(portal,"featured_projects",return_value=poisoned):
+            unsafe=home.build_home(self.cases)
+        self.assertNotIn('<img onerror=alert(1)>',unsafe)
+        self.assertIn('&lt;img onerror=alert(1)&gt;',unsafe)
 
     def test_static_publication_and_p441_schedule_unchanged(self):
         self.assertEqual(self.rendered.count("<main "),1)
