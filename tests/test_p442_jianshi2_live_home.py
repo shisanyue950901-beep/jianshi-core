@@ -51,8 +51,9 @@ class UnifiedHome(unittest.TestCase):
         self.assertIn("<strong>3</strong><span>有历史经营证据的具名案例", self.home)
         self.assertIn("<strong>0</strong><span>已验证可直接启动的项目", self.home)
         self.assertIn("<strong>6</strong><span>已整理的商业模式", self.home)
+        self.assertEqual(self.home.count('class="j2-project-action" href="/projects/"'), 3)
         for slug in ("carrd", "plausible", "nerdwallet"):
-            self.assertIn('href="/projects/' + slug + '/"', self.home)
+            self.assertNotIn('href="/projects/' + slug + '/"', self.home)
         for token in ("Easlo｜", "Louise Lennox", "Tally｜",
                       "Empire Flippers", "listing_number", "source_url"):
             self.assertNotIn(token, self.home)
