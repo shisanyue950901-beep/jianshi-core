@@ -39,20 +39,22 @@ class TestB1A04ProjectFirst(unittest.TestCase):
                         html.index('id="j2-solutions"'))
 
     def test_every_project_previews_revenue_buyer_and_difficulty(self):
-        self.assertEqual(set(portal.PROJECT_PREVIEWS), {"carrd", "plausible", "nerdwallet"})
-        self.assertEqual(self.home.count('class="j2-project-facts"'), 3)
-        for slug, x in portal.PROJECT_PREVIEWS.items():
-            with self.subTest(slug=slug):
-                self.assertIn(x["headline"], self.home)
-                self.assertIn(x["buyer"], self.home)
-                self.assertIn(x["revenue"], self.home)
-                self.assertIn(x["difficulty"], self.home)
-        self.assertEqual(self.home.count('class="j2-project-action" href="/projects/"'), 3)
-        for slug in portal.PROJECT_PREVIEWS:
-            self.assertNotIn('href="/projects/' + slug + '/"', self.home)
-        self.assertIn("大型平台模式，不建议一人直接照搬", self.home)
-        self.assertIn("需要开发、运维与隐私保护能力", self.home)
-        self.assertIn("不是复制 Carrd", self.home)
+        # Build the 3 cards from the reviewed JSON score ranking, not old cases.
+        from t08_project_selection import featured_projects, usd
+        winners=featured_projects()
+        self.assertEqual(len(winners),3)
+        self.assertEqual(self.home.count('class="j2-project-facts"'),3)
+        for project in winners:
+            with self.subTest(project=project["id"]):
+                self.assertIn(project["name"],self.home)
+                self.assertIn(project["one_liner_cn"],self.home)
+                self.assertIn(usd(project["revenue"]["last_30d"]),self.home)
+                self.assertIn(project["verdict"],self.home)
+                self.assertIn('href="/projects/' + project["id"] + '/"',self.home)
+        for label in ("近30天收入","研究结论","总分"):
+            self.assertEqual(self.home.count('<dt>'+label+'</dt>'),3)
+        for stale in ("carrd","plausible","nerdwallet"):
+            self.assertNotIn('href="/projects/'+stale+'/"',self.home)
 
     def test_below_the_fold_keeps_current_risk_not_fake_business(self):
         for fragment in ("有历史经营证据的具名案例",
