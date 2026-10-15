@@ -47,7 +47,9 @@ class TestB1A04ProjectFirst(unittest.TestCase):
                 self.assertIn(x["buyer"], self.home)
                 self.assertIn(x["revenue"], self.home)
                 self.assertIn(x["difficulty"], self.home)
-                self.assertIn('href="/projects/' + slug + '/"', self.home)
+        self.assertEqual(self.home.count('class="j2-project-action" href="/projects/"'), 3)
+        for slug in portal.PROJECT_PREVIEWS:
+            self.assertNotIn('href="/projects/' + slug + '/"', self.home)
         self.assertIn("大型平台模式，不建议一人直接照搬", self.home)
         self.assertIn("需要开发、运维与隐私保护能力", self.home)
         self.assertIn("不是复制 Carrd", self.home)

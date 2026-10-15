@@ -309,8 +309,7 @@ def render_portal(cases: list[dict]) -> str:
             '<div><dt>谁需要</dt><dd>' + h("buyer") + '</dd></div>'
             '<div><dt>怎么赚钱</dt><dd>' + h("revenue") + '</dd></div>'
             '<div><dt>上手门槛</dt><dd>' + h("difficulty") + '</dd></div>'
-            '</dl><a class="j2-project-action" href="/projects/'
-            + escape(slug, quote=True) + '/">看项目详情 →</a></article>'
+            '</dl><a class="j2-project-action" href="/projects/">看项目详情 →</a></article>'
         )
     solution_rows = "".join(
         '<article class="j2-solution"><div class="j2-art" aria-hidden="true">'

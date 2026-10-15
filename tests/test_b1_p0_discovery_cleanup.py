@@ -40,13 +40,12 @@ class B1P0DiscoveryCleanup(unittest.TestCase):
         parser = Links()
         parser.feed(page)
         self.assertEqual(len(parser.routes), 17)
-        self.assertEqual(set(parser.routes), {row[0] for row in ENTRIES})
+        self.assertEqual(set(parser.routes), {"/projects/" if row[1] == "projects" else row[0] for row in ENTRIES})
         self.assertEqual(PICK_COUNT, 9)
         for token in ('id="discover-query"', 'id="discover-reset" hidden',
                       'data-discover-category="founder" aria-pressed="true"',
                       'data-discover-category="solutions"',
-                      'id="discover-empty"', 'href="/projects/carrd/"',
-                      'href="/projects/nerdwallet/"', 'href="/discover/"'):
+                      'id="discover-empty"', 'href="/projects/"', 'href="/discover/"'):
             # Self links do not occur in the discovery cards; discover route
             # is available through the site navigation.
             self.assertIn(token, page)

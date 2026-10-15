@@ -55,7 +55,10 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(dom.ids.count("discover-empty"),1)
         self.assertEqual(len(dom.cards),17)
         self.assertEqual(set(x["href"] for x in dom.cards),
-                         set(x[0] for x in ENTRIES))
+                         {"/projects/" if row[1] == "projects" else row[0] for row in ENTRIES})
+        self.assertEqual(sum(x["href"] == "/projects/" for x in dom.cards), 3)
+        for legacy in ("/projects/carrd/", "/projects/plausible/", "/projects/nerdwallet/"):
+            self.assertNotIn('href="' + legacy + '"', html)
         self.assertEqual(dom.canonicals,["https://jianshi-bua.pages.dev/discover/"])
         self.assertEqual(html.count('<script>'),1)
         self.assertEqual(html.count('<style>'),1)
@@ -79,11 +82,11 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("怎么收费",html)
         self.assertIn("广告及商业合作伙伴",html)
         self.assertIn("不保证照着做能赚钱",html)
-        self.assertLess(html.index('href="/projects/carrd/"'),
-                        html.index('href="/projects/plausible/"'))
-        self.assertLess(html.index('href="/projects/plausible/"'),
-                        html.index('href="/projects/nerdwallet/"'))
-        self.assertLess(html.index('href="/projects/nerdwallet/"'),
+        self.assertLess(html.index("<h3>Carrd｜单页网站</h3>"),
+                        html.index("<h3>Plausible｜网站数据分析</h3>"))
+        self.assertLess(html.index("<h3>Plausible｜网站数据分析</h3>"),
+                        html.index("<h3>NerdWallet｜金融产品比较</h3>"))
+        self.assertLess(html.index("<h3>NerdWallet｜金融产品比较</h3>"),
                         html.index('href="/research/vertical-industry-saas/"'))
         self.assertLess(html.index('href="/research/vertical-industry-saas/"'),
                         html.index('href="/solutions/ecommerce-visual/"'))

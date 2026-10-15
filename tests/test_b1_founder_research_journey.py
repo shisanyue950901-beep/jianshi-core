@@ -82,12 +82,13 @@ class TestB1FounderResearchJourney(unittest.TestCase):
         self.assertEqual({c["id"] for c in self.cases},set(portal.CASES))
         self.assertEqual(self.rendered.count('class="j2-project-facts"'),3)
         self.assertEqual(self.rendered.count('class="j2-project-action"'),3)
+        self.assertEqual(self.rendered.count('class="j2-project-action" href="/projects/"'),3)
         for case in self.cases:
             slug=case["id"]
             preview=portal.PROJECT_PREVIEWS[slug]
             for field in ("headline","buyer","revenue","difficulty","label"):
                 self.assertIn(preview[field],self.rendered)
-            self.assertIn('href="/projects/'+slug+'/"',self.rendered)
+            self.assertNotIn('href="/projects/'+slug+'/"',self.rendered)
         for label in ("谁需要","怎么赚钱","上手门槛"):
             self.assertEqual(self.rendered.count('<dt>'+label+'</dt>'),3)
         self.assertNotIn('class="j2-research-check"',self.rendered)

@@ -1,5 +1,6 @@
 """P4.27: front page recommends research paths before data, without false startup claims."""
 import re
+import json
 import subprocess
 import sys
 import unittest
@@ -88,9 +89,10 @@ class RecommendationFirstTest(unittest.TestCase):
         self.assertEqual(page.count('<article class="j2-project'),3)
         self.assertNotIn('id="recommendations"',page)
         self.assertNotIn('id="ring"',page)
-        self.assertTrue((ROOT/"web/dist/projects/carrd/index.html").exists())
+        for project in json.loads((ROOT/"data/projects.json").read_text(encoding="utf-8")):
+            self.assertTrue((ROOT/"web/dist/projects"/project["id"]/"index.html").exists(),project["id"])
         self.assertFalse((ROOT/"web/dist/projects/easlo/index.html").exists())
-        self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),20)
+        self.assertEqual((ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8").count("<url>"),17+len(json.loads((ROOT/"data/projects.json").read_text(encoding="utf-8"))))
         self.assertIn("https://jianshi-bua.pages.dev/start/", (ROOT/"web/dist/sitemap.xml").read_text(encoding="utf-8"))
         self.assertTrue((ROOT/"web/dist/discover/index.html").is_file())
         self.assertTrue((ROOT/"web/dist/sources/index.html").is_file())

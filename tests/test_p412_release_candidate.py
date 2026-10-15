@@ -1,4 +1,5 @@
 """P4.12 production candidate: rebuild and audit isolated Pages output."""
+import json
 import subprocess
 import sys
 import unittest
@@ -65,17 +66,17 @@ class TestP412ProductionCandidate(unittest.TestCase):
     def test_public_build_has_no_repository_internal_directories(self):
         for name in [".github","config","db","docs","scripts","src","supabase","tests","fixtures"]:
             self.assertFalse((DIST/name).exists(),name)
-        self.assertEqual((DIST/"sitemap.xml").read_text().count("<url>"),20)
+        self.assertEqual((DIST/"sitemap.xml").read_text().count("<url>"),17+len(json.loads((ROOT/"data/projects.json").read_text(encoding="utf-8"))))
         self.assertIn("https://jianshi-bua.pages.dev/start/", (DIST/"sitemap.xml").read_text(encoding="utf-8"))
         self.assertTrue((DIST/"discover"/"index.html").is_file())
         self.assertTrue((DIST/"sources"/"index.html").is_file())
         self.assertIn("商业信息来源",(DIST/"sources"/"index.html").read_text(encoding="utf-8"))
         self.assertTrue((DIST/"projects"/"index.html").is_file())
-        self.assertTrue((DIST/"projects"/"carrd"/"index.html").is_file())
-        self.assertFalse((DIST/"projects"/"easlo"/"index.html").exists())
+        for project in json.loads((ROOT/"data/projects.json").read_text(encoding="utf-8")):
+            self.assertTrue((DIST/"projects"/project["id"]/"index.html").is_file(),project["id"])
+        self.assertFalse((DIST/"projects"/"carrd"/"index.html").exists())
+        self.assertFalse((DIST/"projects"/"nerdwallet"/"index.html").exists())
         self.assertFalse((DIST/"projects"/"tally"/"index.html").exists())
-        self.assertTrue((DIST/"projects"/"nerdwallet"/"index.html").is_file())
-        self.assertTrue((DIST/"projects"/"plausible"/"index.html").is_file())
         self.assertTrue((DIST/"validation"/"index.html").is_file())
         self.assertIn("商业证据研究",(DIST/"validation"/"index.html").read_text(encoding="utf-8"))
         self.assertFalse((DIST/"search-index.json").exists())

@@ -101,9 +101,7 @@ jobs:
           ! grep -q "Louise Lennox" web/dist/index.html
           ! test -e web/dist/projects/easlo/index.html
           ! test -e web/dist/projects/tally/index.html
-          test -f web/dist/projects/nerdwallet/index.html
-          test -f web/dist/projects/carrd/index.html
-          test -f web/dist/projects/plausible/index.html
+          python tests/test_t07_static.py
           ! grep -q "此文件为独立网站预览" web/dist/index.html
           grep -q "页面已更新" web/dist/opportunities/index.html
           grep -q "页面已更新" web/dist/today/index.html

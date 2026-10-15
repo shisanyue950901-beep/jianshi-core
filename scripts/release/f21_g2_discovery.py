@@ -258,7 +258,7 @@ def render() -> str:
         cards.append(
             '<a class="discover-card" data-discover-card data-category="' + e(group)
             + '" data-search="' + e(searchable) + '"'
-            + ' href="' + e(route) + '"><span class="type">' + e(labels[group])
+            + ' href="' + e('/projects/' if group == 'projects' else route) + '"><span class="type">' + e(labels[group])
             + '</span><h3>' + e(title) + '</h3><p>' + e(description)
             + '</p>' + business_facts + '<span class="source-note">' + e(status)
             + '</span><span class="go">' + (

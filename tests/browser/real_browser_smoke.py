@@ -31,7 +31,7 @@ ROUTES = {
     "/start/": "founder-research-start",
     "/projects/": "company-directory",
     "/discover/": "discover",
-    "/projects/carrd/": "carrd-detail",
+    "/projects/datafast/": "datafast-detail",
     "/solutions/": "solutions",
     "/solutions/automation/": "automation-solution",
     "/marketplace/": "marketplace",
@@ -214,21 +214,23 @@ def ui_home(page, base: str, mobile: bool):
 
 def ui_company(page, base: str):
     page.goto(base + "/projects/", wait_until="load")
-    require(page.locator(".case-directory-hero").is_visible(),
-            "Branded company index header missing")
-    require(page.locator(".case-directory-proof span").count() == 2,
-            "Visible case/evidence boundaries absent")
-    require(page.locator("a[href='/projects/carrd/']").count() >= 1, "Carrd link missing")
-    page.locator("a[href='/projects/carrd/']").first.click()
-    require(page.url.endswith("/projects/carrd/"), "Company card navigation failed")
-    require(page.locator(".case-detail-hero").is_visible(),
-            "Consistent project evidence header missing")
-    fold = page.locator("#case-details summary")
-    require(fold.count() == 1, "Detailed company evidence fold missing")
-    fold.click()
-    require(page.locator("#case-details[open]").count() == 1,
-            "Company evidence does not expand")
-
+    require(page.locator(".hero h1").is_visible(),
+            "T07 project directory title missing")
+    expected = json.loads((ROOT/"data"/"projects.json").read_text(encoding="utf-8"))
+    require(page.locator("article[data-project]").count() == len(expected),
+            "T07 visible project-card count must equal reviewed JSON")
+    require(page.locator("a[href='/projects/datafast/']").count() >= 1,
+            "DataFast project link missing")
+    page.locator("a[href='/projects/datafast/']").first.click()
+    require(page.url.endswith("/projects/datafast/"),
+            "T07 project detail navigation failed")
+    require(page.locator(".money-grid").is_visible(),
+            "T07 revenue breakdown missing")
+    require(page.locator(".scoreline").count() == 5,
+            "Five T07 scoring dimensions missing")
+    require(page.locator(".sources .source").count() ==
+            len(next(p for p in expected if p["id"] == "datafast")["sources"]),
+            "Evidence source links do not match reviewed JSON")
 
 def ui_discover(page, base: str):
     page.goto(base + "/discover/", wait_until="load")
