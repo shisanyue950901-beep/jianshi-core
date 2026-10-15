@@ -7,13 +7,13 @@
     "one_liner_cn": "帮创业者看清哪些营销渠道真正带来付费客户",
     "target_user": "SaaS创始人、营销人员",
     "revenue": {
-      "mrr": 29939,
-      "last_30d": 31434,
-      "all_time": 308009,
+      "mrr": 29167,
+      "last_30d": 29990,
+      "all_time": 309390,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14T02:21:15.116Z"
+      "source_last_synced": "2026-10-15T08:21:15.851Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -22,13 +22,13 @@
         "label": "TrustMRR（Stripe支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/datafast",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/datafast.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "IndiePage公开收入榜（Stripe连接；与TrustMRR存在同创始人关联，非完全独立交叉验证）",
@@ -40,7 +40,7 @@
         "label": "Ahrefs域名评分 DR 75（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/datafast.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -92,12 +92,12 @@
     "cn_angle": "推测：聚焦小型跨境SaaS的内容获客到付款归因，卖给中文独立开发者",
     "risks": "第三方统计授权、Cookie隐私与平台竞争",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T02:21:15.116Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计31434美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T08:21:15.851Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$29990。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC",
     "founded_date": "2024-07-01",
-    "growth_30d": 18,
+    "growth_30d": 8.7,
     "customers": null
   },
   {
@@ -112,9 +112,9 @@
       "last_30d": 1146,
       "all_time": 1272045,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14T02:00:57.779Z"
+      "source_last_synced": "2026-10-15T08:00:56.782Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -123,13 +123,13 @@
         "label": "TrustMRR（Stripe支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/shipfast",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/shipfast.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "IndiePage公开收入榜（Stripe连接；与TrustMRR存在同创始人关联，非完全独立交叉验证）",
@@ -141,7 +141,7 @@
         "label": "Ahrefs域名评分 DR 73（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/shipfast.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -154,7 +154,8 @@
     ],
     "flags": [
       "与 TrustMRR 创始人为关联方",
-      "近30天收入接近$1,000下限，需每周复核"
+      "近30天收入接近$1,000下限，需每周复核",
+      "临界：近30天接近 $1,000 门槛"
     ],
     "for_sale": {
       "listed": false,
@@ -187,9 +188,9 @@
     "cn_angle": "推测：给中文独立开发者销售特定行业的合规网站启动模板",
     "risks": "模板同质化、代码和商标知识产权风险",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T02:00:57.779Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计1146美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T08:00:56.782Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1146。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC",
     "founded_date": "2023-07-03",
     "growth_30d": -54,
@@ -204,12 +205,12 @@
     "target_user": "AI原生创业者、SaaS开发者",
     "revenue": {
       "mrr": null,
-      "last_30d": 4668,
+      "last_30d": 4319,
       "all_time": 79986,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "LemonSqueezy",
-      "source_last_synced": "2026-10-14T03:37:39.417Z"
+      "source_last_synced": "2026-10-15T09:37:40.330Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -218,19 +219,19 @@
         "label": "TrustMRR（LemonSqueezy支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/turbostarter",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/turbostarter.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "Ahrefs域名评分 DR 54（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/turbostarter.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -271,12 +272,12 @@
     "cn_angle": "推测：制作专供中文跨境工具团队的单场景多端启动包",
     "risks": "来源内数字不一致、代码授权、依赖版本更新",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:37:39.417Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计4668美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:37:40.330Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4319。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC",
     "founded_date": "2026-02-25",
-    "growth_30d": 54.5,
+    "growth_30d": 43.1,
     "customers": null
   },
   {
@@ -287,13 +288,13 @@
     "one_liner_cn": "帮独立App开发者选应用商店关键词并跟踪排名",
     "target_user": "独立移动App开发者",
     "revenue": {
-      "mrr": 3595,
-      "last_30d": 4012,
-      "all_time": 13937,
+      "mrr": 3744,
+      "last_30d": 4199,
+      "all_time": 14189,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14T03:55:18.296Z"
+      "source_last_synced": "2026-10-15T09:55:18.721Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -302,19 +303,19 @@
         "label": "TrustMRR（Stripe支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/sonar-aso-tool",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/sonar-aso-tool.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "Ahrefs域名评分 DR 19（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/sonar-aso-tool.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -355,12 +356,12 @@
     "cn_angle": "推测：做面向出海小语种App的低成本关键词与排名监控，卖给独立开发者",
     "risks": "应用商店数据使用规则与跟踪稳定性",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:55:18.296Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计4012美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:55:18.721Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4199。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC",
     "founded_date": "2026-03-12",
-    "growth_30d": 10.3,
+    "growth_30d": 15,
     "customers": null
   },
   {
@@ -371,13 +372,13 @@
     "one_liner_cn": "帮AI智能体开发者统一访问搜索、抓取和实时网页",
     "target_user": "AI智能体及应用开发者",
     "revenue": {
-      "mrr": 1040,
-      "last_30d": 6309,
-      "all_time": 55262,
+      "mrr": 1105,
+      "last_30d": 6418,
+      "all_time": 55390,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14T06:02:58.745Z"
+      "source_last_synced": "2026-10-15T12:02:32.887Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -386,19 +387,19 @@
         "label": "TrustMRR（Stripe支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/search1api",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/search1api.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "Ahrefs域名评分 DR 46（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/search1api.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -446,12 +447,12 @@
     "cn_angle": "推测：为中文海外市场研究工具提供合规来源的结构化搜索接口",
     "risks": "搜索抓取授权、第三方配额、API滥用防护",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T06:02:58.745Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计6309美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:02:32.887Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$6418。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC",
     "founded_date": "2024-10-11",
-    "growth_30d": 404.5,
+    "growth_30d": 406.7,
     "customers": null
   },
   {
@@ -466,9 +467,9 @@
       "last_30d": 1139,
       "all_time": 4305,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Polar",
-      "source_last_synced": "2026-10-14T05:13:48.726Z"
+      "source_last_synced": "2026-10-15T11:13:22.135Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -477,19 +478,19 @@
         "label": "TrustMRR（Polar支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/claudethings",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/claudethings.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "Ahrefs域名评分 DR 15（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/claudethings.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -501,7 +502,8 @@
       }
     ],
     "flags": [
-      "近30天收入接近$1,000下限，需每周复核"
+      "近30天收入接近$1,000下限，需每周复核",
+      "临界：近30天接近 $1,000 门槛"
     ],
     "for_sale": {
       "listed": true,
@@ -538,12 +540,12 @@
     "cn_angle": "推测：为中文电商独立开发者做Claude Code内容运营任务包",
     "risks": "依赖第三方模型工具更新、功能被内置替代",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T05:13:48.726Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计1139美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T11:13:22.135Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1139。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC",
     "founded_date": "2026-07-01",
-    "growth_30d": -2.7,
+    "growth_30d": 26.1,
     "customers": null
   },
   {
@@ -574,13 +576,13 @@
       "社交平台API与自动化许可待查"
     ],
     "revenue": {
-      "mrr": 4001,
-      "last_30d": 4339,
-      "all_time": 25185,
+      "mrr": 3983,
+      "last_30d": 4315,
+      "all_time": 25250,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Paddle",
-      "source_last_synced": "2026-10-14T03:49:27.626Z"
+      "source_last_synced": "2026-10-15T09:49:29.228Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -589,25 +591,25 @@
         "label": "TrustMRR（Paddle支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/opentweet",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/opentweet.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "Ahrefs域名评分 DR 34（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/opentweet.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "GA 连接访问量 44844（TrustMRR展示）",
         "level": "T",
         "url": "https://trustmrr.com/startup/opentweet.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -634,14 +636,14 @@
     "acquisition_channels": "未公开",
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、MongoDB、Auth0、Docker、Paddle",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
     "publication_status": "PUBLIC",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:49:27.626Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计4339美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:49:29.228Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4315。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "total_score": 17,
     "verdict": "可做",
     "founded_date": "2025-12-01",
-    "growth_30d": 11.9,
+    "growth_30d": 9.7,
     "customers": null
   },
   {
@@ -673,13 +675,13 @@
       "近30天收入与MRR差异较大，收入结构未公开"
     ],
     "revenue": {
-      "mrr": 8230,
-      "last_30d": 37081,
-      "all_time": 134269,
+      "mrr": 8634,
+      "last_30d": 37115,
+      "all_time": 135815,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14T03:29:38.171Z"
+      "source_last_synced": "2026-10-15T09:29:43.078Z"
     },
     "team_size": 1,
     "evidence_level": "A",
@@ -688,19 +690,19 @@
         "label": "TrustMRR（Stripe支付提供方已连接）",
         "level": "A",
         "url": "https://trustmrr.com/startup/getebook-ai",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR公开Markdown证据详情（同平台，非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/getebook-ai.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "Ahrefs域名评分 DR 14（TrustMRR展示，非独立付款审计）",
         "level": "T",
         "url": "https://trustmrr.com/startup/getebook-ai.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -731,14 +733,14 @@
     ],
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：TypeScript、React、Tailwind CSS、Framer、Supabase、Vercel、Stripe",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
     "publication_status": "PUBLIC",
-    "review_notes": "2026-10-14 Hark 修改后通过；TrustMRR公开.md于 2026-10-14T03:29:38.171Z 同步的支付API数据。本次last_30d取.md中【Last 30 days】最新滚动合计37081美元（不是独立的snapshot字段），MRR单独列示；growth_30d来自同页面。customers=null：仅有活跃订阅数，没有可证明的独立付费客户人数。评分及中国切入点为研究判断，非审计。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:29:43.078Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$37115。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "total_score": 17,
     "verdict": "可做",
     "founded_date": "2025-07-29",
-    "growth_30d": -34.3,
+    "growth_30d": -32.6,
     "customers": null
   },
   {
@@ -749,16 +751,16 @@
     "one_liner_cn": "将用户有权限查看的社交平台数据本地导出成CSV/Excel",
     "target_user": "跨境市场人员、社群运营、分析员",
     "revenue": {
-      "mrr": 1305,
-      "last_30d": 1284,
-      "all_time": 2283,
+      "mrr": 1323,
+      "last_30d": 1311,
+      "all_time": 2337,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14T06:27:35.457Z"
+      "source_last_synced": "2026-10-15T12:27:10.605Z"
     },
     "founded_date": "2026-03-05",
-    "growth_30d": 111.3,
+    "growth_30d": 114.2,
     "customers": null,
     "team_size": 1,
     "evidence_level": "A",
@@ -767,19 +769,19 @@
         "label": "TrustMRR（Stripe (API key) 验证）",
         "level": "A",
         "url": "https://trustmrr.com/startup/mastros",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR原始Markdown数据（同平台非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/mastros.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "Ahrefs域名评分35（同平台引用的站外SEO指标）",
         "level": "T",
         "url": "https://trustmrr.com/startup/mastros.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -792,7 +794,8 @@
     ],
     "flags": [
       "第三方社交平台接口与数据使用条款限制",
-      "公开活跃订阅数不等于付费客户数"
+      "公开活跃订阅数不等于付费客户数",
+      "临界：近30天接近 $1,000 门槛"
     ],
     "for_sale": {
       "listed": false,
@@ -830,9 +833,9 @@
     "cn_angle": "推测：为中文独立开发者提供单平台自有数据导出与结构化整理插件",
     "risks": "社交平台数据权限、隐私与服务条款变化；不应实现未授权抓取",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "Hark 2026-10-14 修改后通过，替换剔除样本；2026-03-05成立/1人团队/Stripe (API key)。付款数据截至2026-10-14T06:27:35.457Z，last_30d采用滚动30日合计；customers因公开未给独立付费客户人数而为null；评分与中国化切入属于推测。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:27:10.605Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1311。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC"
   },
   {
@@ -843,16 +846,16 @@
     "one_liner_cn": "将书页或图片拍照转换为语音朗读，并同步高亮",
     "target_user": "学生、阅读障碍及内容阅读用户",
     "revenue": {
-      "mrr": 1048,
-      "last_30d": 2307,
-      "all_time": 3899,
+      "mrr": 1059,
+      "last_30d": 2405,
+      "all_time": 4128,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-15",
       "verified_by": "RevenueCat",
-      "source_last_synced": "2026-10-14T06:22:13.141Z"
+      "source_last_synced": "2026-10-15T12:21:45.690Z"
     },
     "founded_date": "2026-05-01",
-    "growth_30d": 89.5,
+    "growth_30d": 78.3,
     "customers": null,
     "team_size": 1,
     "evidence_level": "A",
@@ -861,13 +864,13 @@
         "label": "TrustMRR（RevenueCat (API key) 验证）",
         "level": "A",
         "url": "https://trustmrr.com/startup/readlens",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "TrustMRR原始Markdown数据（同平台非独立第二来源）",
         "level": "A",
         "url": "https://trustmrr.com/startup/readlens.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       },
       {
         "label": "苹果App Store公开评分 4.5/5（17个评分，平台周同步）",
@@ -879,7 +882,7 @@
         "label": "TrustMRR公开App Store API评分详情",
         "level": "T",
         "url": "https://trustmrr.com/startup/readlens.md",
-        "checked_at": "2026-10-14"
+        "checked_at": "2026-10-15"
       }
     ],
     "traction": [
@@ -933,9 +936,9 @@
     "cn_angle": "推测：做中文教育材料拍照朗读和同步高亮工具",
     "risks": "App Store/Google Play上架、OCR识别、语音API成本和儿童数据保护",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-14",
-    "updated_at": "2026-10-14",
-    "review_notes": "Hark 2026-10-14 修改后通过，替换剔除样本；2026-05-01成立/1人团队/RevenueCat (API key)。付款数据截至2026-10-14T06:22:13.141Z，last_30d采用滚动30日合计；customers因公开未给独立付费客户人数而为null；评分与中国化切入属于推测。",
+    "last_verified_at": "2026-10-15",
+    "updated_at": "2026-10-15",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:21:45.690Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$2405。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
     "publication_status": "PUBLIC"
   }
 ]
