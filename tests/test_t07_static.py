@@ -5,6 +5,8 @@ import html
 import json
 import re
 from pathlib import Path
+from html.parser import HTMLParser
+from urllib.parse import unquote, urlsplit
 import sys
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -62,6 +64,34 @@ def check():
         assert "数据为第三方公开信息，非财务审计，不构成收入承诺。" in page
         assert "收入由 TrustMRR 通过支付平台 API 获取，非见势独立审计。" in page
         assert "fetch(" not in page and "XMLHttpRequest" not in page
+    # Hark T07 gate: inspect every generated HTML href, including homepage and discover.
+    # Any old or newly introduced /projects/<id>/ link must resolve to one of
+    # the review-approved JSON ids. 301 redirect rules are NOT a substitute.
+    class ProjectHrefAudit(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.links = []
+        def handle_starttag(self, tag, attrs):
+            for name, value in attrs:
+                if name == "href" and value:
+                    self.links.append(value)
+
+    checked_html = 0
+    internal_detail_links = 0
+    for page in (ROOT/"web"/"dist").rglob("*.html"):
+        parser = ProjectHrefAudit()
+        parser.feed(page.read_text(encoding="utf-8"))
+        checked_html += 1
+        for href in parser.links:
+            parsed = urlsplit(href)
+            path = unquote(parsed.path)
+            if not path.startswith("/projects/") or path == "/projects/":
+                continue
+            parts = path.removeprefix("/projects/").strip("/").split("/")
+            if len(parts) == 1 and path.endswith("/"):
+                internal_detail_links += 1
+                assert parts[0] in expected, f"Unregistered project href in {page.relative_to(ROOT)}: {href}"
+    print(f"PASS T07 all-site link audit: {checked_html} HTML files, {internal_detail_links} detail hrefs, only JSON ids")
     print(f"PASS T07 HTML/JSON parity: {len(projects)} projects, {len(projects)+1} static pages, all fields, links and flags, zero runtime fetch")
 
 if __name__=="__main__":
