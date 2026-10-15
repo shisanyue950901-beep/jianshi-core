@@ -69,7 +69,7 @@ jobs:
         run: |
           # Audit includes historical archive fixtures and negative regression tests.
           # Do NOT alter their meaning: only current homepage recommendations use JSON.
-          git grep -n -E 'Carrd|NerdWallet|Plausible|PROJECT_PREVIEWS' -- .github/workflows tests || true
+          git grep -n -i -E 'Carrd|NerdWallet|Plausible|PROJECT_PREVIEWS' -- .github/workflows tests || true
 
       - name: Build live static snapshot
         run: python web/build.py
