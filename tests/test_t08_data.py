@@ -89,7 +89,10 @@ class TestT08(unittest.TestCase):
     def test_home_and_discovery_are_exactly_json_top_three(self):
         winners=sorted(self.data,key=lambda p:(-p["total_score"],-p["revenue"]["last_30d"],p["id"]))[:3]
         self.assertEqual([x["id"] for x in winners],[x["id"] for x in featured_projects()])
-        index=(WEB/"index.html").read_text(encoding="utf-8")
+        from p445_unified_home import build_home
+        from p423_build_project_proofs import parse_cases
+        from p425_public_admission import eligible_cases
+        index=build_home(eligible_cases(parse_cases()))  # deterministic release renderer
         from f21_g2_discovery import render as render_discovery
         discovery=render_discovery()  # deterministic build-time HTML; no I/O ordering dependency
         hp=Links(); hp.feed(index)
