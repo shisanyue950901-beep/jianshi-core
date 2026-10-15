@@ -64,6 +64,13 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Audit legacy project-name assertions across workflows and tests
+        if: github.event_name == 'pull_request'
+        run: |
+          # Audit includes historical archive fixtures and negative regression tests.
+          # Do NOT alter their meaning: only current homepage recommendations use JSON.
+          git grep -n -E 'Carrd|NerdWallet|Plausible|PROJECT_PREVIEWS' -- .github/workflows tests || true
+
       - name: Build live static snapshot
         run: python web/build.py
 
