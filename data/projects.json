@@ -986,7 +986,9 @@
       }
     ],
     "flags": [
-      "临界：近30天接近 $1,000 门槛"
+      "临界：近30天接近 $1,000 门槛",
+      "MRR 仅 $2.41，收入几乎全部为一次性买断",
+      "TrustMRR 在售：$50,000（3.4x）"
     ],
     "for_sale": {
       "listed": true,
@@ -1019,11 +1021,11 @@
     "verdict": "可做",
     "cn_angle": "推测：做跨平台AI编码终端与上下文管理",
     "risks": "Claude、Codex等CLI更新兼容性高；桌面跨系统测试成本",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:30:05.745Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:30:05.745Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2025-11-05",
     "growth_30d": -23.6,
     "customers": null
@@ -1106,13 +1108,13 @@
     "verdict": "推荐",
     "cn_angle": "推测：做中文本地行业的WordPress建站助手",
     "risks": "WordPress更新、生成质量与托管责任需长期维护",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:23:04.223Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:23:04.223Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 Hark 指定 2026-10-15 22:23（北京时间）的增长率为 +15.6%；当次公开 .md 抽取仍返回 +15.3%，此差异待后续公开快照复核；收入及同步时间保持原支付API快照。",
+    "publication_status": "PUBLIC",
     "founded_date": "2025-06-14",
-    "growth_30d": 15.3,
+    "growth_30d": 15.6,
     "customers": null
   },
   {
@@ -1123,7 +1125,7 @@
     "one_liner_cn": "把3D打印机变成可控绘图机的软件",
     "target_user": "3D打印爱好者、创客空间及手作设计者",
     "revenue": {
-      "mrr": null,
+      "mrr": 0,
       "last_30d": 2143,
       "all_time": 14497,
       "currency": "USD",
@@ -1161,7 +1163,10 @@
         "estimated": true
       }
     ],
-    "flags": [],
+    "flags": [
+      "MRR 为 $0，近30天收入为一次性付款，非订阅",
+      "近30天收入 -27.6%"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -1177,27 +1182,27 @@
     "tech_stack_guess": "推测：网页G-code生成器与Stripe；源站未公开完整实现",
     "scores": {
       "build_difficulty": 4,
-      "channel_reach_cn": 4,
+      "channel_reach_cn": 3,
       "payment_compliance": 4,
       "competition": 4,
       "time_to_mvp": 5
     },
     "score_reasons": {
       "build_difficulty": "G-code与校准面板需硬件验证，但可先支持一款热门打印机。",
-      "channel_reach_cn": "DR11和长尾设备使用词支持创客内容路线；渠道实际占比未披露。",
+      "channel_reach_cn": "DR 仅 11，近30天收入下降27.6%；创客长尾内容触达能力有限，尚未证明稳定获客。",
       "payment_compliance": "Stripe一次性许可收款流程清晰，但退款与所在地审核要处理。",
       "competition": "竞品：vpype、DrawingBotV3、Inkscape Gcodetools；3D打印机改笔绘的细分相对窄。",
       "time_to_mvp": "限定一款设备+一套绘图校准参数，30天可形成可用最小版。"
     },
-    "total_score": 21,
+    "total_score": 20,
     "verdict": "推荐",
     "cn_angle": "推测：为国产3D打印机提供中文绘图预设",
     "risks": "机型兼容、走纸误差与硬件售后支持成本高",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:55:01.197Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:55:01.197Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2025-12-26",
     "growth_30d": -27.6,
     "customers": null
@@ -1280,11 +1285,11 @@
     "verdict": "可做",
     "cn_angle": "推测：先做中文站长专用GSC问答MCP",
     "risks": "Google OAuth审核、GSC配额与第三方数据条款限制",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T11:09:04.330Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T11:09:04.330Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2026-04-29",
     "growth_30d": 14.7,
     "customers": null
@@ -1369,11 +1374,11 @@
     "verdict": "可做",
     "cn_angle": "推测：推出中文网站AI检索可见性体检",
     "risks": "AI答案波动大，不能承诺被模型引用或排名提升",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:04:24.274Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:04:24.274Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2025-05-16",
     "growth_30d": 15.3,
     "customers": null
@@ -1456,11 +1461,11 @@
     "verdict": "不推荐",
     "cn_angle": "推测：针对中文电商专题页做可编辑视觉稿",
     "risks": "生成模型版权、复用一致性和单位成本波动",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:38:22.477Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:38:22.477Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 来源同页存在两个近30天口径：Revenue表滚动合计 $10,578，独立 Last 30 days revenue snapshot $10,909；按T07/T08统一滚动收入口径保留 $10,578，不混写。",
+    "publication_status": "PUBLIC",
     "founded_date": "2025-11-14",
     "growth_30d": 28.2,
     "customers": null
@@ -1543,11 +1548,11 @@
     "verdict": "不推荐",
     "cn_angle": "推测：专注小企业广告线索质量复盘",
     "risks": "广告账户授权、高权限接口和客户数据合规敏感",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:53:54.215Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:53:54.215Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2016-02-14",
     "growth_30d": 0,
     "customers": null
@@ -1560,7 +1565,7 @@
     "one_liner_cn": "帮助独立SaaS提交产品并获取曝光",
     "target_user": "正在推广新工具的独立开发者",
     "revenue": {
-      "mrr": null,
+      "mrr": 0,
       "last_30d": 2000,
       "all_time": 18303,
       "currency": "USD",
@@ -1598,7 +1603,9 @@
         "estimated": true
       }
     ],
-    "flags": [],
+    "flags": [
+      "MRR 为 $0，近30天收入为一次性付款，非订阅"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -1630,11 +1637,11 @@
     "verdict": "可做",
     "cn_angle": "推测：做中文独立应用垂直目录与提交工具",
     "risks": "目录互换链接易失真，收录公正性与SEO质量需把关",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T09:03:29.415Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T09:03:29.415Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2025-05-30",
     "growth_30d": -15.7,
     "customers": null
@@ -1717,11 +1724,11 @@
     "verdict": "不推荐",
     "cn_angle": "推测：开发中文Blender模型批量辅助插件",
     "risks": "3D结果拓扑质量不稳定，模型推理成本高",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:22:05.193Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:22:05.193Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2025-10-24",
     "growth_30d": 10,
     "customers": null
@@ -1772,14 +1779,16 @@
         "estimated": true
       }
     ],
-    "flags": [],
+    "flags": [
+      "MRR $6,272 高于近30天实收 $3,409，可能含年付或未收款，收入结构待查"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
       "multiple": null,
       "url": null
     },
-    "business_model": "课程与社区订阅",
+    "business_model": "Skool 社区订阅、线上课程与人工辅导",
     "price_point": "课程及辅导，平台描述单项目预算低于$500",
     "acquisition_channels": [
       "课程口碑（推测）",
@@ -1804,11 +1813,11 @@
     "verdict": "可做",
     "cn_angle": "推测：为中文创作者推出5天AI项目挑战营",
     "risks": "交付依赖讲师与人工辅导，学习效果不可保证",
-    "reviewed_by_hark": false,
+    "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08待Hark全量复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:06:50.780Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
-    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:06:50.780Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "publication_status": "PUBLIC",
     "founded_date": "2020-06-01",
     "growth_30d": 5.4,
     "customers": null

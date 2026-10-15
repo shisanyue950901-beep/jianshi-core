@@ -81,10 +81,49 @@ class TestT08(unittest.TestCase):
                     self.assertLessEqual(len(p["one_liner_cn"]),30)
                     self.assertLessEqual(len(p["cn_angle"]),50)
                     self.assertLessEqual(len(p["risks"]),50)
-                    self.assertFalse(p["reviewed_by_hark"])
-                    self.assertEqual(p["publication_status"],"PRIVATE_REVIEW_ONLY")
+                    self.assertTrue(p["reviewed_by_hark"])
+                    self.assertEqual(p["publication_status"],"PUBLIC")
                     self.assertEqual(p["revenue"]["as_of"],"2026-10-15")
                     self.assertIsNone(p["customers"])
+
+    def test_hark_corrected_revenue_and_approval_contract(self):
+        by_id={p["id"]:p for p in self.data}
+        for pid in ("3dplotter", "saashunt"):
+            self.assertEqual(by_id[pid]["revenue"]["mrr"], 0)
+            self.assertIn("MRR 为 $0，近30天收入为一次性付款，非订阅",by_id[pid]["flags"])
+        tool=by_id["1devtool"]
+        self.assertEqual(tool["revenue"]["mrr"], 2.41)
+        self.assertIn("MRR 仅 $2.41，收入几乎全部为一次性买断",tool["flags"])
+        self.assertIn("TrustMRR 在售：$50,000（3.4x）",tool["flags"])
+        self.assertEqual(tool["for_sale"]["asking_price"],50000)
+        sprint=by_id["5-day-sprint"]
+        self.assertIn("Skool",sprint["business_model"])
+        self.assertIn("人工辅导",sprint["business_model"])
+        self.assertIn("MRR $6,272 高于近30天实收 $3,409，可能含年付或未收款，收入结构待查",sprint["flags"])
+        plot=by_id["3dplotter"]
+        self.assertEqual(plot["scores"]["channel_reach_cn"],3)
+        self.assertEqual(plot["total_score"],20)
+        self.assertIn("近30天收入 -27.6%",plot["flags"])
+        self.assertEqual(by_id["1clickwebsite-ai"]["growth_30d"],15.6)
+        self.assertEqual(by_id["1clickwebsite-ai"]["revenue"]["source_last_synced"],"2026-10-15T14:23:04.223Z")
+        designer=by_id["ai-designer"]
+        self.assertEqual(designer["revenue"]["last_30d"],10578)
+        self.assertIn("$10,909",designer["review_notes"])
+
+    def test_main_environment_does_not_need_preview_exception(self):
+        import os
+        from unittest.mock import patch
+        from t08_project_selection import projects
+        with patch.dict(os.environ,{
+            "CI":"true", "GITHUB_ACTIONS":"true",
+            "CF_PAGES_BRANCH":"main", "GITHUB_HEAD_REF":"",
+            "GITHUB_REF_NAME":"main",
+        }):
+            data=projects()
+            self.assertEqual(len(data),20)
+            self.assertTrue(all(p["reviewed_by_hark"] and p["publication_status"]=="PUBLIC" for p in data))
+            self.assertEqual([p["id"] for p in featured_projects()],
+                [p["id"] for p in sorted(data,key=lambda p:(-p["total_score"],-p["revenue"]["last_30d"],p["id"]))[:3]])
 
     def test_home_and_discovery_are_exactly_json_top_three(self):
         winners=sorted(self.data,key=lambda p:(-p["total_score"],-p["revenue"]["last_30d"],p["id"]))[:3]

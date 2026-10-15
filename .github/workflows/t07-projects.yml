@@ -52,6 +52,20 @@ jobs:
           test -f web/dist/projects/readlens/index.html
           test ! -e web/dist/projects/nerdwallet
           cmp -s _redirects web/dist/_redirects
+      - name: Simulate main/production build without feature-branch preview exemption
+        env:
+          CI: "true"
+          GITHUB_ACTIONS: "true"
+          CF_PAGES_BRANCH: main
+          GITHUB_REF_NAME: main
+          GITHUB_HEAD_REF: ""
+        run: |
+          set -euo pipefail
+          python scripts/release/p412_build_public.py
+          python tests/test_t07_static.py
+          python tests/test_t08_data.py
+          echo "PASS T08 production/main simulated build: 20 PUBLIC reviewed records"
+
       - name: Chromium responsive audit and six screenshots
         run: |
           set -euo pipefail
