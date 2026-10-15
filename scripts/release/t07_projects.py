@@ -276,7 +276,7 @@ def build_list(projects: list[dict]) -> str:
 <p id="result-count" class="resultcount" role="status" aria-live="polite">{len(projects)} 个项目</p></section>
 <section id="project-list" class="cards" aria-label="项目列表">{"".join(project_card(p) for p in projects)}</section>
 <p id="empty-message" class="empty" hidden>没有符合筛选条件的项目，请调整筛选项。</p>"""
-    return shell("项目库", "10条经过支付平台API公开验证的商业项目记录，含项目收入、评分与来源", "/projects/", body, listing=True)
+    return shell("项目库", f"{len(projects)}条经过支付平台API公开验证的商业项目记录，含项目收入、评分与来源", "/projects/", body, listing=True)
 
 
 def text_field(label: str, value: object) -> str:
