@@ -9,6 +9,7 @@ on:
       - 'scripts/release/p412_build_public.py'
       - 'tests/test_t07_static.py'
       - 'tests/test_t08_data.py'
+      - 'tests/verify_t08_home_snapshot.py'
       - 'tests/browser/t07_responsive.py'
       - '.github/workflows/t07-projects.yml'
   pull_request:
@@ -50,7 +51,9 @@ jobs:
           python tests/test_t08_data.py
           test -f web/dist/projects/datafast/index.html
           test -f web/dist/projects/readlens/index.html
-          test ! -e web/dist/projects/nerdwallet
+          # Replace obsolete named-case fixture with the reviewed JSON ranking gate.
+          # test_t07_static.py above separately rejects all extra project IDs.
+          python tests/verify_t08_home_snapshot.py web/dist/index.html
           cmp -s _redirects web/dist/_redirects
       - name: Simulate main/production build without feature-branch preview exemption
         env:
