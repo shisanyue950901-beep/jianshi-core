@@ -55,8 +55,8 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(dom.ids.count("discover-empty"),1)
         self.assertEqual(len(dom.cards),17)
         self.assertEqual(set(x["href"] for x in dom.cards),
-                         {"/projects/" if row[1] == "projects" else row[0] for row in ENTRIES})
-        self.assertEqual(sum(x["href"] == "/projects/" for x in dom.cards), 3)
+                         {row[0] for row in ENTRIES})
+        self.assertEqual(sum(x["href"].startswith("/projects/") for x in dom.cards), 3)
         for legacy in ("/projects/carrd/", "/projects/plausible/", "/projects/nerdwallet/"):
             self.assertNotIn('href="' + legacy + '"', html)
         self.assertEqual(dom.canonicals,["https://jianshi-bua.pages.dev/discover/"])
@@ -78,15 +78,16 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(len(RESEARCH_FACTS),6)
         self.assertIn('data-discover-category="founder" aria-pressed="true"',html)
         self.assertIn("找创业项目，先看怎么赚钱",html)
-        self.assertIn("谁付钱",html)
-        self.assertIn("怎么收费",html)
-        self.assertIn("广告及商业合作伙伴",html)
+        self.assertIn("近30天收入",html)
+        self.assertIn("研究结论",html)
         self.assertIn("不保证照着做能赚钱",html)
-        self.assertLess(html.index("<h3>Carrd｜单页网站</h3>"),
-                        html.index("<h3>Plausible｜网站数据分析</h3>"))
-        self.assertLess(html.index("<h3>Plausible｜网站数据分析</h3>"),
-                        html.index("<h3>NerdWallet｜金融产品比较</h3>"))
-        self.assertLess(html.index("<h3>NerdWallet｜金融产品比较</h3>"),
+        featured=[r for r in ENTRIES if r[1]=="projects"]
+        self.assertEqual(len(featured),3)
+        for row in featured:
+            self.assertIn('href="'+row[0]+'"',html)
+        for before,after in zip(featured,featured[1:]):
+            self.assertLess(html.index('href="'+before[0]+'"'),html.index('href="'+after[0]+'"'))
+        self.assertLess(html.index('href="'+featured[-1][0]+'"'),
                         html.index('href="/research/vertical-industry-saas/"'))
         self.assertLess(html.index('href="/research/vertical-industry-saas/"'),
                         html.index('href="/solutions/ecommerce-visual/"'))
