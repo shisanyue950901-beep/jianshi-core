@@ -13,6 +13,7 @@ import json
 import re
 from pathlib import Path
 from p423_build_project_proofs import build as build_project_proofs, parse_cases
+from t07_projects import build as build_t07_projects
 from p425_public_admission import eligible_cases
 from p429_build_source_atlas import build as build_source_atlas
 from p445_unified_home import build_home as build_jianshi2_home
@@ -285,6 +286,12 @@ def build_release() -> dict:
     stale = OUTPUT / "search-index.json"
     if stale.exists():
         stale.unlink()
+
+    # T07: replace legacy three-case /projects output with reviewed JSON-only pages.
+    # Homepage, source atlas, redirect security policy and other routes stay unchanged.
+    t07_result = build_t07_projects(OUTPUT)
+    if t07_result["pages"] != t07_result["projects"] + 1:
+        raise RuntimeError("T07 static project generation incomplete")
 
     sitemap = (
         '<?xml version="1.0" encoding="UTF-8"?>'
