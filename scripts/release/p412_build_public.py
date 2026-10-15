@@ -248,6 +248,13 @@ def build_release() -> dict:
     local_draft_tools=publish_v2_drafts(OUTPUT)
     if local_draft_tools != len(DRAFT_PAGES) or local_draft_tools != 2:
         raise RuntimeError('Private-local V2 draft tool contract incomplete')
+    # T08: the JSON-backed project routes must exist before discover checks links.
+    # T07: replace legacy three-case /projects output with reviewed JSON-only pages.
+    # Homepage, source atlas, redirect security policy and other routes stay unchanged.
+    t07_result = build_t07_projects(OUTPUT)
+    if t07_result["pages"] != t07_result["projects"] + 1:
+        raise RuntimeError("T07 static project generation incomplete")
+
     discovery_entries = publish_discovery(OUTPUT)
     if discovery_entries != 17:
         raise RuntimeError("G2-A public discovery catalogue incomplete")
@@ -286,12 +293,6 @@ def build_release() -> dict:
     stale = OUTPUT / "search-index.json"
     if stale.exists():
         stale.unlink()
-
-    # T07: replace legacy three-case /projects output with reviewed JSON-only pages.
-    # Homepage, source atlas, redirect security policy and other routes stay unchanged.
-    t07_result = build_t07_projects(OUTPUT)
-    if t07_result["pages"] != t07_result["projects"] + 1:
-        raise RuntimeError("T07 static project generation incomplete")
 
     sitemap = (
         '<?xml version="1.0" encoding="UTF-8"?>'
