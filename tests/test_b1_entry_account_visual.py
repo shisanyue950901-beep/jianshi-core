@@ -31,7 +31,7 @@ class B1EntryAccountVisual(unittest.TestCase):
             self.assertIn(text,page)
         self.assertEqual(page.count('<script>'),1)
         self.assertEqual(page.count('data:image/webp;base64,'),1)
-        self.assertEqual(page.count('<article class="j2-project">'),3)
+        self.assertEqual(page.count('<article class="j2-project" data-t08-id="'),3)
         self.assertIn('class="j2-account-cta" href="/account/"',page)
         self.assertIn('href="/account/"',page)
         self.assertIn('aria-label="移动导航"',page)
