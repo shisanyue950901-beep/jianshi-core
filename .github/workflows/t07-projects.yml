@@ -1,0 +1,80 @@
+name: T07 Projects HTML and Mobile Lighthouse
+
+on:
+  push:
+    branches: [feat/t07]
+    paths:
+      - 'data/projects.json'
+      - 'scripts/release/t07_projects.py'
+      - 'scripts/release/p412_build_public.py'
+      - 'tests/test_t07_static.py'
+      - '.github/workflows/t07-projects.yml'
+  pull_request:
+    paths:
+      - 'data/projects.json'
+      - 'scripts/release/t07_projects.py'
+      - 'scripts/release/p412_build_public.py'
+      - 'tests/test_t07_static.py'
+      - '.github/workflows/t07-projects.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  t07-static-lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      JIANSHI_API_URL: ""
+      JIANSHI_AUTH_ENABLED: "0"
+      JIANSHI_ANALYTICS_URL: ""
+      JIANSHI_NEWSLETTER_URL: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build using the existing static publication chain
+        run: |
+          set -euo pipefail
+          python web/build.py
+          python scripts/release/p412_build_public.py
+          python tests/test_t07_static.py
+          test -f web/dist/projects/datafast/index.html
+          test -f web/dist/projects/readlens/index.html
+          test ! -e web/dist/projects/nerdwallet
+          cmp -s _redirects web/dist/_redirects
+      - name: Lighthouse mobile performance
+        run: |
+          set -euo pipefail
+          mkdir -p t07-evidence
+          python -m http.server 8099 --bind 127.0.0.1 --directory web/dist > t07-evidence/server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          sleep 2
+          curl -fsS http://127.0.0.1:8099/projects/ >/dev/null
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:8099/projects/ --quiet --only-categories=performance --chrome-flags="--headless=new --no-sandbox --disable-dev-shm-usage" --output=json --output-path=t07-evidence/lighthouse-mobile.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path("t07-evidence/lighthouse-mobile.json").read_text())
+          score=round(data["categories"]["performance"]["score"]*100)
+          text=f"T07 /projects/ Lighthouse 移动端 Performance: {score}/100"
+          print(text)
+          Path("t07-evidence/lighthouse-score.txt").write_text(text+"\n")
+          with open(__import__("os").environ["GITHUB_STEP_SUMMARY"],"a") as f:
+              f.write("## T07 移动端性能\n\n"+text+"\n")
+          if score < 85: raise SystemExit("FAIL: mobile performance below required 85")
+          PY
+      - name: Upload T07 mobile performance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: t07-mobile-lighthouse
+          path: t07-evidence/
+          if-no-files-found: warn
+          retention-days: 14
