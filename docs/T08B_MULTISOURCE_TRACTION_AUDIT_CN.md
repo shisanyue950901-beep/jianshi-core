@@ -19,16 +19,16 @@
 | turbostarter | 团队关联开源仓库 Loading UI：470 stars | https://github.com/turbostarter/loading-ui | 第三方平台；**仅团队开源作品，不代表商业 SaaS 用户** |
 | sonar-aso-tool | 官网称 227 indie developers | https://trysonar.app/ | 第一方营销自述 |
 | agentskit | 官网称 35 builders | https://agentskit.co/ | 第一方营销自述 |
-| opentweet | 官网客户案例声称个别客户月发 400–1000 篇 | https://opentweet.io/ | 第一方案例；非平台总量 |
+| opentweet | 官网自述 14,000+ users（至少 14000，未独立验证） | https://opentweet.io/ | 第一方营销自述；非独立注册用户审计 |
 | getebook-ai | 官网称 12,000+ creators | https://getebook.ai/ | 第一方营销自述 |
 | mastros | 官网博客称 2026-09-02 扩展有 71 条评价 | https://www.mastros.online/blog/is-mastros-safe | 第一方转引；**未直接核对商店** |
-| readlens | Google Play 显示 500+ 下载档位 | https://play.google.com/store/apps/details?id=com.snapvoiceai.app | 第三方平台；下限而非精确数量 |
+| readlens | Google Play 显示 1K+ 下载档位（至少 1000） | https://play.google.com/store/apps/details?id=com.snapvoiceai.app | 第三方平台；Hark 复核，下限而非精确数量 |
 | 1devtool | GitHub 发布仓库 11 stars | https://github.com/stoicsoft/1devtool-releases | 第三方平台；动态值 |
 | 1clickwebsite-ai | 官网称累计生成 5,000+ 网站 | https://www.1clickwebsite.ai/ | 第一方营销自述；非真实付费用户数 |
 | 3dplotter | Trustpilot 4 条评价 | https://www.trustpilot.com/review/3dplotter.xyz | 第三方平台 |
 | aeo-checker | 官网称 56,500+ 网站完成分析 | https://www.aeochecker.ai/ | 第一方自述；检测次数不等于付费用户 |
 | ai-designer | Product Hunt 116 位 followers | https://www.producthunt.com/products/aidesigner | 第三方平台；关注人数不等于付费 |
-| 3d-agent | Trustpilot 12 条评价 | https://www.trustpilot.com/review/3d-agent.com | 第三方平台 |
+| 3d-agent | Trustpilot 11 条评价 | https://www.trustpilot.com/review/3d-agent.com | 第三方平台；Hark 复核 |
 | search1api | 未获本次可信站外计数 | — | 缺口已在 flags 留痕 |
 | advanced-gsc-mcp | 未获本次可信站外计数 | — | 缺口已在 flags 留痕 |
 | adscriptly | 未获本次可信站外计数 | — | 缺口已在 flags 留痕 |
@@ -41,9 +41,9 @@
 
 1. DataFast：收入来源 https://trustmrr.com/startup/datafast ；第三方 T：https://www.producthunt.com/products/datafast （3 条评论）。
 2. ShipFast：收入来源 https://trustmrr.com/startup/shipfast ；第三方 T：https://www.producthunt.com/products/shipfast/reviews （52 条评论）。
-3. ReadLens：收入来源 https://trustmrr.com/startup/readlens ；第三方 T：https://play.google.com/store/apps/details?id=com.snapvoiceai.app （500+ 下载）。
+3. ReadLens：收入来源 https://trustmrr.com/startup/readlens ；第三方 T：https://play.google.com/store/apps/details?id=com.snapvoiceai.app （1K+ 下载，至少 1000）。
 4. 3DPlotter：收入来源 https://trustmrr.com/startup/3dplotter ；第三方 T：https://www.trustpilot.com/review/3dplotter.xyz （4 条评论）。
-5. 3D-Agent：收入来源 https://trustmrr.com/startup/3d-agent ；第三方 T：https://www.trustpilot.com/review/3d-agent.com （12 条评论）。
+5. 3D-Agent：收入来源 https://trustmrr.com/startup/3d-agent ；第三方 T：https://www.trustpilot.com/review/3d-agent.com （11 条评论）。
 
 核对内容：页面可打开、产品主体确为该项目、数值及类别一致；A 级收入仍需区分支付提供方、更新时间和上游独立性。若五条中任意一条数字已变化，保留时间信息并按真实页面修订后再通过 Hark 验收。
 
