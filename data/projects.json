@@ -704,7 +704,7 @@
         "checked_at": "2026-10-15"
       },
       {
-        "label": "官网客户案例展示每月发布 400–1000 条帖文，为个别案例非全平台量",
+        "label": "OpenTweet 官网自述 14,000+ users（至少 14000，第一方宣传数据，未经独立核验）",
         "level": "T",
         "url": "https://opentweet.io/",
         "checked_at": "2026-10-16"
@@ -724,8 +724,8 @@
         "estimated": false
       },
       {
-        "type": "customer_case_posts_monthly",
-        "value": "400–1000",
+        "type": "self_reported_users_lower_bound",
+        "value": 14000,
         "url": "https://opentweet.io/",
         "estimated": true,
         "checked_at": "2026-10-16",
@@ -1026,7 +1026,7 @@
         "checked_at": "2026-10-15"
       },
       {
-        "label": "Google Play 公开 ReadLens 下载量档位 500+（下限，非精确值）",
+        "label": "Google Play 公开 ReadLens 下载量档位 1K+（至少 1000 次，非精确值；Hark 抽查复核）",
         "level": "T",
         "url": "https://play.google.com/store/apps/details?id=com.snapvoiceai.app",
         "checked_at": "2026-10-16"
@@ -1047,7 +1047,7 @@
       },
       {
         "type": "google_play_downloads_lower_bound",
-        "value": 500,
+        "value": 1000,
         "url": "https://play.google.com/store/apps/details?id=com.snapvoiceai.app",
         "estimated": true,
         "checked_at": "2026-10-16",
@@ -1060,7 +1060,7 @@
       "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
       "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
       "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。",
-      "T08b：Google Play 500+ 下载为 Google 档位下限，不得当作精确 500 次；Apple 商店评分因不同来源/观察时间不一致，待复核。"
+      "T08b：Google Play 1K+ 下载为 Google 档位下限，不得当作精确 1000 次；Apple 商店评分因不同来源/观察时间不一致，待复核。"
     ],
     "for_sale": {
       "listed": false,
@@ -1943,7 +1943,7 @@
         "checked_at": "2026-10-15"
       },
       {
-        "label": "Trustpilot 公开产品评价 12 条（与收入无关）",
+        "label": "Trustpilot 公开产品评价 11 条（Hark 抽查复核；与收入无关）",
         "level": "T",
         "url": "https://www.trustpilot.com/review/3d-agent.com",
         "checked_at": "2026-10-16"
@@ -1958,7 +1958,7 @@
       },
       {
         "type": "trustpilot_review_count",
-        "value": 12,
+        "value": 11,
         "url": "https://www.trustpilot.com/review/3d-agent.com",
         "estimated": true,
         "checked_at": "2026-10-16",
