@@ -10,6 +10,8 @@ on:
       - '.github/workflows/publish-static.yml'
       - 'tests/verify_t08_home_snapshot.py'
       - 'tests/test_t08_featured_gate.py'
+      - 'data/projects.json'  # T08b: gate source/traction edits before main merge
+      - 'tests/test_t08b_sources.py'
   schedule:
     - cron: '55 0 * * *'
     - cron: '55 6,12,18 * * *'
