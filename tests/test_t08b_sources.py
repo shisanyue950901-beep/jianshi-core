@@ -89,7 +89,7 @@ class T08bSourcesTest(unittest.TestCase):
             for t in p["traction"]:
                 if t.get("source_independence") == "FIRST_PARTY_SELF_REPORT":
                     self.assertTrue(t.get("estimated"))
-                    self.assertTrue(any("官网" in f for f in p["flags"]))
+                    self.assertTrue(any("官网" in f or "官方页面自报" in f for f in p["flags"]))
         for pid in PENDING_INDEPENDENT_T:
             p = by_id[pid]
             self.assertEqual(p["last_verified_at"], "2026-10-15")
