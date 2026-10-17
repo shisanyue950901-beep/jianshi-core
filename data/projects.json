@@ -41,6 +41,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/datafast.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Product Hunt 产品评价 3 条（站外公开页面）",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/datafast",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -49,10 +55,21 @@
         "value": 75,
         "url": "https://trustmrr.com/startup/datafast.md",
         "estimated": false
+      },
+      {
+        "type": "product_hunt_review_count",
+        "value": 3,
+        "url": "https://www.producthunt.com/products/datafast",
+        "estimated": false,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
     "flags": [
-      "与 TrustMRR 创始人为关联方"
+      "与 TrustMRR 创始人为关联方",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。"
     ],
     "for_sale": {
       "listed": false,
@@ -92,9 +109,9 @@
     "cn_angle": "推测：聚焦小型跨境SaaS的内容获客到付款归因，卖给中文独立开发者",
     "risks": "第三方统计授权、Cookie隐私与平台竞争",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T08:21:15.851Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$29990。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T08:21:15.851Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$29990。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.producthunt.com/products/datafast，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2024-07-01",
     "growth_30d": 8.7,
@@ -142,6 +159,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/shipfast.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Product Hunt 产品评价 52 条（站外公开页面）",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/shipfast/reviews",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -150,11 +173,22 @@
         "value": 73,
         "url": "https://trustmrr.com/startup/shipfast.md",
         "estimated": false
+      },
+      {
+        "type": "product_hunt_review_count",
+        "value": 52,
+        "url": "https://www.producthunt.com/products/shipfast/reviews",
+        "estimated": false,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
     "flags": [
       "与 TrustMRR 创始人为关联方",
-      "临界：近30天接近 $1,000 门槛"
+      "临界：近30天接近 $1,000 门槛",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。"
     ],
     "for_sale": {
       "listed": false,
@@ -187,9 +221,9 @@
     "cn_angle": "推测：给中文独立开发者销售特定行业的合规网站启动模板",
     "risks": "模板同质化、代码和商标知识产权风险",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T08:00:56.782Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1146。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T08:00:56.782Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1146。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.producthunt.com/products/shipfast/reviews，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2023-07-03",
     "growth_30d": -54,
@@ -231,6 +265,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/turbostarter.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "TurboStarter 关联组织的 GitHub Loading UI 仓库显示 470 stars（共享团队作品，非 TurboStarter 付费使用量）",
+        "level": "T",
+        "url": "https://github.com/turbostarter/loading-ui",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -239,9 +279,22 @@
         "value": 54,
         "url": "https://trustmrr.com/startup/turbostarter.md",
         "estimated": false
+      },
+      {
+        "type": "github_related_repo_stars",
+        "value": 470,
+        "url": "https://github.com/turbostarter/loading-ui",
+        "estimated": false,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
-    "flags": [],
+    "flags": [
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。",
+      "T08b：GitHub Loading UI 属 TurboStarter 团队关联的开源项目，其 stars 不等同 TurboStarter 商业产品使用人数。"
+    ],
     "for_sale": {
       "listed": true,
       "asking_price": 100000,
@@ -271,9 +324,9 @@
     "cn_angle": "推测：制作专供中文跨境工具团队的单场景多端启动包",
     "risks": "来源内数字不一致、代码授权、依赖版本更新",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:37:40.330Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4319。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:37:40.330Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4319。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://github.com/turbostarter/loading-ui，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2026-02-25",
     "growth_30d": 43.1,
@@ -315,6 +368,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/sonar-aso-tool.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "官网自述获 227 名独立应用开发者信任（未独立审计）",
+        "level": "T",
+        "url": "https://trysonar.app/",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -323,9 +382,21 @@
         "value": 19,
         "url": "https://trustmrr.com/startup/sonar-aso-tool.md",
         "estimated": false
+      },
+      {
+        "type": "self_reported_developers",
+        "value": 227,
+        "url": "https://trysonar.app/",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "FIRST_PARTY_SELF_REPORT"
       }
     ],
-    "flags": [],
+    "flags": [
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新牵引力数据为官方页面自报/转引，未获独立审计，不能据此确认付费用户规模。"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -355,9 +426,9 @@
     "cn_angle": "推测：做面向出海小语种App的低成本关键词与排名监控，卖给独立开发者",
     "risks": "应用商店数据使用规则与跟踪稳定性",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:55:18.721Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4199。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:55:18.721Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4199。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://trysonar.app/，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2026-03-12",
     "growth_30d": 15,
@@ -410,7 +481,10 @@
       }
     ],
     "flags": [
-      "近30天收入明显高于MRR，需区分一次性与经常性收入"
+      "近30天收入明显高于MRR，需区分一次性与经常性收入",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b 2026-10-16：暂未找到可可靠核实的独立站外 T 指标；现存 DR 由 TrustMRR 转引 Ahrefs，属于估算，待补独立证据；不得冒充双源交叉验证。"
     ],
     "for_sale": {
       "listed": true,
@@ -448,7 +522,7 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:02:32.887Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$6418。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:02:32.887Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$6418。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：检查独立牵引力缺口，仍保留 2026-10-15 上次实际核对日期；未重新核验收入数字。",
     "publication_status": "PUBLIC",
     "founded_date": "2024-10-11",
     "growth_30d": 406.7,
@@ -490,6 +564,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/claudethings.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "AgentsKit 官网自述 35 名 builders（未独立审计）",
+        "level": "T",
+        "url": "https://agentskit.co/",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -498,10 +578,21 @@
         "value": 15,
         "url": "https://trustmrr.com/startup/claudethings.md",
         "estimated": false
+      },
+      {
+        "type": "self_reported_builders",
+        "value": 35,
+        "url": "https://agentskit.co/",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "FIRST_PARTY_SELF_REPORT"
       }
     ],
     "flags": [
-      "临界：近30天接近 $1,000 门槛"
+      "临界：近30天接近 $1,000 门槛",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新牵引力数据为官方页面自报/转引，未获独立审计，不能据此确认付费用户规模。"
     ],
     "for_sale": {
       "listed": true,
@@ -538,9 +629,9 @@
     "cn_angle": "推测：为中文电商独立开发者做Claude Code内容运营任务包",
     "risks": "依赖第三方模型工具更新、功能被内置替代",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T11:13:22.135Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1139。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T11:13:22.135Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1139。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://agentskit.co/，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2026-07-01",
     "growth_30d": 26.1,
@@ -571,7 +662,10 @@
     "cn_angle": "推测：为中文独立开发者做带人工审批的X自动排程工具",
     "risks": "X官方接口许可、自动化配额、OAuth及账号封禁",
     "flags": [
-      "社交平台API与自动化许可待查"
+      "社交平台API与自动化许可待查",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新牵引力数据为官方页面自报/转引，未获独立审计，不能据此确认付费用户规模。"
     ],
     "revenue": {
       "mrr": 3983,
@@ -608,6 +702,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/opentweet.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "OpenTweet 官网自述 14,000+ users（至少 14000，第一方宣传数据，未经独立核验）",
+        "level": "T",
+        "url": "https://opentweet.io/",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -622,6 +722,14 @@
         "value": 44844,
         "url": "https://trustmrr.com/startup/opentweet.md",
         "estimated": false
+      },
+      {
+        "type": "self_reported_users_lower_bound",
+        "value": 14000,
+        "url": "https://opentweet.io/",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "FIRST_PARTY_SELF_REPORT"
       }
     ],
     "for_sale": {
@@ -634,10 +742,10 @@
     "acquisition_channels": "未公开",
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：Next.js、MongoDB、Auth0、Docker、Paddle",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
     "publication_status": "PUBLIC",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:49:29.228Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4315。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:49:29.228Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$4315。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://opentweet.io/，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "total_score": 17,
     "verdict": "可做",
     "founded_date": "2025-12-01",
@@ -670,7 +778,10 @@
     "risks": "生成内容的事实可靠性、版权与竞争风险",
     "flags": [
       "近30天收入显著高于MRR，不能将总收入视为订阅",
-      "近30天收入与MRR差异较大，收入结构未公开"
+      "近30天收入与MRR差异较大，收入结构未公开",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新牵引力数据为官方页面自报/转引，未获独立审计，不能据此确认付费用户规模。"
     ],
     "revenue": {
       "mrr": 8634,
@@ -701,6 +812,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/getebook-ai.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "官网自述 12,000+ 位 creators（未独立审计）",
+        "level": "T",
+        "url": "https://getebook.ai/",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -709,6 +826,14 @@
         "value": 14,
         "url": "https://trustmrr.com/startup/getebook-ai.md",
         "estimated": false
+      },
+      {
+        "type": "self_reported_creators_lower_bound",
+        "value": 12000,
+        "url": "https://getebook.ai/",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "FIRST_PARTY_SELF_REPORT"
       }
     ],
     "for_sale": {
@@ -731,10 +856,10 @@
     ],
     "tech_stack_guess": "平台公开列举（未经独立技术审计）：TypeScript、React、Tailwind CSS、Framer、Supabase、Vercel、Stripe",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
     "publication_status": "PUBLIC",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:29:43.078Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$37115。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T09:29:43.078Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$37115。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://getebook.ai/，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "total_score": 17,
     "verdict": "可做",
     "founded_date": "2025-07-29",
@@ -780,6 +905,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/mastros.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "官网博客称 2026-09-02 Chrome Web Store Telegram 扩展 71 条评价；尚未直接核对商店",
+        "level": "T",
+        "url": "https://www.mastros.online/blog/is-mastros-safe",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -788,12 +919,24 @@
         "value": 35,
         "url": "https://trustmrr.com/startup/mastros.md",
         "estimated": false
+      },
+      {
+        "type": "self_reported_chrome_store_reviews",
+        "value": 71,
+        "url": "https://www.mastros.online/blog/is-mastros-safe",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "FIRST_PARTY_SELF_REPORT"
       }
     ],
     "flags": [
       "第三方社交平台接口与数据使用条款限制",
       "公开活跃订阅数不等于付费客户数",
-      "临界：近30天接近 $1,000 门槛"
+      "临界：近30天接近 $1,000 门槛",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新牵引力数据为官方页面自报/转引，未获独立审计，不能据此确认付费用户规模。",
+      "T08b：71 条 Chrome Web Store 评论来自官方博客对 2026-09-02 的转述，不是 Chrome 商店页面直接核验；待复核。"
     ],
     "for_sale": {
       "listed": false,
@@ -831,9 +974,9 @@
     "cn_angle": "推测：为中文独立开发者提供单平台自有数据导出与结构化整理插件",
     "risks": "社交平台数据权限、隐私与服务条款变化；不应实现未授权抓取",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:27:10.605Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1311。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:27:10.605Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1311。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.mastros.online/blog/is-mastros-safe，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC"
   },
   {
@@ -881,6 +1024,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/readlens.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Google Play 公开 ReadLens 下载量档位 1K+（至少 1000 次，非精确值；Hark 抽查复核）",
+        "level": "T",
+        "url": "https://play.google.com/store/apps/details?id=com.snapvoiceai.app",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -895,11 +1044,23 @@
         "value": "TrustMRR公开App Store API评分详情",
         "url": "https://trustmrr.com/startup/readlens.md",
         "estimated": false
+      },
+      {
+        "type": "google_play_downloads_lower_bound",
+        "value": 1000,
+        "url": "https://play.google.com/store/apps/details?id=com.snapvoiceai.app",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
     "flags": [
       "RevenueCat读取应用商店交易数据；非独立审计",
-      "语音服务依赖第三方AI供应商"
+      "语音服务依赖第三方AI供应商",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。",
+      "T08b：Google Play 1K+ 下载为 Google 档位下限，不得当作精确 1000 次；Apple 商店评分因不同来源/观察时间不一致，待复核。"
     ],
     "for_sale": {
       "listed": false,
@@ -934,9 +1095,9 @@
     "cn_angle": "推测：做中文教育材料拍照朗读和同步高亮工具",
     "risks": "App Store/Google Play上架、OCR识别、语音API成本和儿童数据保护",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:21:45.690Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$2405。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。",
+    "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:21:45.690Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$2405。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://play.google.com/store/apps/details?id=com.snapvoiceai.app，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC"
   },
   {
@@ -975,6 +1136,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/1devtool.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "GitHub 官方发布仓库显示 11 stars（动态值）",
+        "level": "T",
+        "url": "https://github.com/stoicsoft/1devtool-releases",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -983,12 +1150,23 @@
         "value": 36,
         "url": "https://trustmrr.com/startup/1devtool.md",
         "estimated": true
+      },
+      {
+        "type": "github_stars",
+        "value": 11,
+        "url": "https://github.com/stoicsoft/1devtool-releases",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
     "flags": [
       "临界：近30天接近 $1,000 门槛",
       "MRR 仅 $2.41，收入几乎全部为一次性买断",
-      "TrustMRR 在售：$50,000（3.4x）"
+      "TrustMRR 在售：$50,000（3.4x）",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。"
     ],
     "for_sale": {
       "listed": true,
@@ -1022,9 +1200,9 @@
     "cn_angle": "推测：做跨平台AI编码终端与上下文管理",
     "risks": "Claude、Codex等CLI更新兼容性高；桌面跨系统测试成本",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:30:05.745Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:30:05.745Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://github.com/stoicsoft/1devtool-releases，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2025-11-05",
     "growth_30d": -23.6,
@@ -1066,6 +1244,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/1clickwebsite-ai.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "官网自述 5,000+ sites generated（未独立审计）",
+        "level": "T",
+        "url": "https://www.1clickwebsite.ai/",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -1074,9 +1258,21 @@
         "value": 35,
         "url": "https://trustmrr.com/startup/1clickwebsite-ai.md",
         "estimated": true
+      },
+      {
+        "type": "self_reported_sites_generated_lower_bound",
+        "value": 5000,
+        "url": "https://www.1clickwebsite.ai/",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "FIRST_PARTY_SELF_REPORT"
       }
     ],
-    "flags": [],
+    "flags": [
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新牵引力数据为官方页面自报/转引，未获独立审计，不能据此确认付费用户规模。"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -1109,9 +1305,9 @@
     "cn_angle": "推测：做中文本地行业的WordPress建站助手",
     "risks": "WordPress更新、生成质量与托管责任需长期维护",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:23:04.223Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 Hark 指定 2026-10-15 22:23（北京时间）的增长率为 +15.6%；当次公开 .md 抽取仍返回 +15.3%，此差异待后续公开快照复核；收入及同步时间保持原支付API快照。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:23:04.223Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 Hark 指定 2026-10-15 22:23（北京时间）的增长率为 +15.6%；当次公开 .md 抽取仍返回 +15.3%，此差异待后续公开快照复核；收入及同步时间保持原支付API快照。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.1clickwebsite.ai/，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2025-06-14",
     "growth_30d": 15.6,
@@ -1153,6 +1349,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/3dplotter.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Trustpilot 公开产品评价 4 条（与收入无关）",
+        "level": "T",
+        "url": "https://www.trustpilot.com/review/3dplotter.xyz",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -1161,11 +1363,22 @@
         "value": 11,
         "url": "https://trustmrr.com/startup/3dplotter.md",
         "estimated": true
+      },
+      {
+        "type": "trustpilot_review_count",
+        "value": 4,
+        "url": "https://www.trustpilot.com/review/3dplotter.xyz",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
     "flags": [
       "MRR 为 $0，近30天收入为一次性付款，非订阅",
-      "近30天收入 -27.6%"
+      "近30天收入 -27.6%",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。"
     ],
     "for_sale": {
       "listed": false,
@@ -1199,9 +1412,9 @@
     "cn_angle": "推测：为国产3D打印机提供中文绘图预设",
     "risks": "机型兼容、走纸误差与硬件售后支持成本高",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:55:01.197Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:55:01.197Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.trustpilot.com/review/3dplotter.xyz，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2025-12-26",
     "growth_30d": -27.6,
@@ -1253,7 +1466,11 @@
         "estimated": true
       }
     ],
-    "flags": [],
+    "flags": [
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b 2026-10-16：暂未找到可可靠核实的独立站外 T 指标；现存 DR 由 TrustMRR 转引 Ahrefs，属于估算，待补独立证据；不得冒充双源交叉验证。"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -1288,7 +1505,7 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T11:09:04.330Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T11:09:04.330Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：检查独立牵引力缺口，仍保留 2026-10-15 上次实际核对日期；未重新核验收入数字。",
     "publication_status": "PUBLIC",
     "founded_date": "2026-04-29",
     "growth_30d": 14.7,
@@ -1330,6 +1547,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/aeo-checker.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "官网显示 56,500+ websites analysed（累计操作量，未独立审计）",
+        "level": "T",
+        "url": "https://www.aeochecker.ai/",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -1338,10 +1561,21 @@
         "value": 15,
         "url": "https://trustmrr.com/startup/aeo-checker.md",
         "estimated": true
+      },
+      {
+        "type": "self_reported_analyses_lower_bound",
+        "value": 56500,
+        "url": "https://www.aeochecker.ai/",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "FIRST_PARTY_SELF_REPORT"
       }
     ],
     "flags": [
-      "临界：近30天接近 $1,000 门槛"
+      "临界：近30天接近 $1,000 门槛",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新牵引力数据为官方页面自报/转引，未获独立审计，不能据此确认付费用户规模。"
     ],
     "for_sale": {
       "listed": false,
@@ -1375,9 +1609,9 @@
     "cn_angle": "推测：推出中文网站AI检索可见性体检",
     "risks": "AI答案波动大，不能承诺被模型引用或排名提升",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:04:24.274Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T10:04:24.274Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.aeochecker.ai/，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2025-05-16",
     "growth_30d": 15.3,
@@ -1419,6 +1653,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/ai-designer.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Product Hunt 显示 116 followers（平台牵引，不代表付费用户）",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/aidesigner",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -1427,9 +1667,21 @@
         "value": 27,
         "url": "https://trustmrr.com/startup/ai-designer.md",
         "estimated": true
+      },
+      {
+        "type": "product_hunt_followers",
+        "value": 116,
+        "url": "https://www.producthunt.com/products/aidesigner",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
-    "flags": [],
+    "flags": [
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -1462,9 +1714,9 @@
     "cn_angle": "推测：针对中文电商专题页做可编辑视觉稿",
     "risks": "生成模型版权、复用一致性和单位成本波动",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:38:22.477Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 来源同页存在两个近30天口径：Revenue表滚动合计 $10,578，独立 Last 30 days revenue snapshot $10,909；按T07/T08统一滚动收入口径保留 $10,578，不混写。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:38:22.477Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 来源同页存在两个近30天口径：Revenue表滚动合计 $10,578，独立 Last 30 days revenue snapshot $10,909；按T07/T08统一滚动收入口径保留 $10,578，不混写。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.producthunt.com/products/aidesigner，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2025-11-14",
     "growth_30d": 28.2,
@@ -1516,7 +1768,11 @@
         "estimated": true
       }
     ],
-    "flags": [],
+    "flags": [
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b 2026-10-16：暂未找到可可靠核实的独立站外 T 指标；现存 DR 由 TrustMRR 转引 Ahrefs，属于估算，待补独立证据；不得冒充双源交叉验证。"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -1551,7 +1807,7 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:53:54.215Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:53:54.215Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：检查独立牵引力缺口，仍保留 2026-10-15 上次实际核对日期；未重新核验收入数字。",
     "publication_status": "PUBLIC",
     "founded_date": "2016-02-14",
     "growth_30d": 0,
@@ -1604,7 +1860,10 @@
       }
     ],
     "flags": [
-      "MRR 为 $0，近30天收入为一次性付款，非订阅"
+      "MRR 为 $0，近30天收入为一次性付款，非订阅",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b 2026-10-16：暂未找到可可靠核实的独立站外 T 指标；现存 DR 由 TrustMRR 转引 Ahrefs，属于估算，待补独立证据；不得冒充双源交叉验证。"
     ],
     "for_sale": {
       "listed": false,
@@ -1640,7 +1899,7 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T09:03:29.415Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T09:03:29.415Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：检查独立牵引力缺口，仍保留 2026-10-15 上次实际核对日期；未重新核验收入数字。",
     "publication_status": "PUBLIC",
     "founded_date": "2025-05-30",
     "growth_30d": -15.7,
@@ -1682,6 +1941,12 @@
         "level": "T",
         "url": "https://trustmrr.com/startup/3d-agent.md",
         "checked_at": "2026-10-15"
+      },
+      {
+        "label": "Trustpilot 公开产品评价 11 条（Hark 抽查复核；与收入无关）",
+        "level": "T",
+        "url": "https://www.trustpilot.com/review/3d-agent.com",
+        "checked_at": "2026-10-16"
       }
     ],
     "traction": [
@@ -1690,9 +1955,21 @@
         "value": 32,
         "url": "https://trustmrr.com/startup/3d-agent.md",
         "estimated": true
+      },
+      {
+        "type": "trustpilot_review_count",
+        "value": 11,
+        "url": "https://www.trustpilot.com/review/3d-agent.com",
+        "estimated": true,
+        "checked_at": "2026-10-16",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
-    "flags": [],
+    "flags": [
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b：新增站外平台 T 指标仅提供使用/评价/关注度线索，不能作为独立收入证明；计数可能随时间变化。"
+    ],
     "for_sale": {
       "listed": false,
       "asking_price": null,
@@ -1725,9 +2002,9 @@
     "cn_angle": "推测：开发中文Blender模型批量辅助插件",
     "risks": "3D结果拓扑质量不稳定，模型推理成本高",
     "reviewed_by_hark": true,
-    "last_verified_at": "2026-10-15",
+    "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:22:05.193Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T14:22:05.193Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.trustpilot.com/review/3d-agent.com，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
     "publication_status": "PUBLIC",
     "founded_date": "2025-10-24",
     "growth_30d": 10,
@@ -1780,7 +2057,10 @@
       }
     ],
     "flags": [
-      "MRR $6,272 高于近30天实收 $3,409，可能含年付或未收款，收入结构待查"
+      "MRR $6,272 高于近30天实收 $3,409，可能含年付或未收款，收入结构待查",
+      "T08b：TrustMRR 同平台详情与 .md 不构成独立双 A/A- 财务核验；收入数据仍按 2026-10-15 历史公开快照保留，本轮未重新验证实时财务。",
+      "T08b：公开资料不足以排除仅 1–2 个付费客户、单一大客户或多个产品共用支付账户等风险；需人工继续核验。",
+      "T08b 2026-10-16：暂未找到可可靠核实的独立站外 T 指标；现存 DR 由 TrustMRR 转引 Ahrefs，属于估算，待补独立证据；不得冒充双源交叉验证。"
     ],
     "for_sale": {
       "listed": false,
@@ -1816,7 +2096,7 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-15",
     "updated_at": "2026-10-15",
-    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:06:50.780Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。",
+    "review_notes": "T08 Hark 2026-10-15 有条件通过，按6项修改完成后进入最终PR复核。2026-10-15按TrustMRR .md最近30天滚动收入和MRR等支付API快照人工核对，数据同步2026-10-15T08:06:50.780Z。团队规模及客户数未公开不猜测；DR系第三方估算信号，不等于独立客群审计。获客渠道、技术栈及评分推断不代表已验证实际贡献。 T08b 2026-10-16：检查独立牵引力缺口，仍保留 2026-10-15 上次实际核对日期；未重新核验收入数字。",
     "publication_status": "PUBLIC",
     "founded_date": "2020-06-01",
     "growth_30d": 5.4,
