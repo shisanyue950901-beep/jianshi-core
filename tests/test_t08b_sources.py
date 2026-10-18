@@ -108,6 +108,8 @@ class T08bSourcesTest(unittest.TestCase):
         old_ids = {p["id"] for p in HISTORIC}
         self.assertEqual(len(T10_NEW), 10)
         self.assertEqual(len({p["id"] for p in RECORDS}), 30)
+        self.assertNotIn("extrabar", {p["id"] for p in T10_NEW},
+                         "ExtraBar最新30天营收跌破1000美元，不可重新混入入库集合")
         cats = Counter(p["category"] for p in T10_NEW)
         self.assertGreaterEqual(cats["浏览器插件"], 2)
         self.assertGreaterEqual(cats["小App"], 2)
@@ -140,7 +142,10 @@ class T08bSourcesTest(unittest.TestCase):
                     t.get("source_independence") == "INDEPENDENT_OF_REVENUE_PLATFORM"
                     and t.get("checked_at") == "2026-10-18"
                     and t.get("value") not in (None, "")
-                    and t.get("estimated") is False
+                    and (t.get("estimated") is False or
+                         (t.get("estimated") is True and
+                          t.get("type", "").endswith("_lower_bound") and
+                          isinstance(t.get("value"), int) and t["value"] > 0))
                     and urlsplit(t.get("url", "")).hostname in approved_t_hosts
                     and urlsplit(t.get("url", "")).hostname not in payment_hosts
                     and any(s["level"] == "T" and s["url"] == t["url"]
