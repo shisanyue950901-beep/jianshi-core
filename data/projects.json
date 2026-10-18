@@ -2101,5 +2101,902 @@
     "founded_date": "2020-06-01",
     "growth_30d": 5.4,
     "customers": null
+  },
+  {
+    "id": "myfeedin",
+    "name": "MyFeedIn",
+    "url": "https://myfeedin.co",
+    "category": "浏览器插件",
+    "one_liner_cn": "为领英创作者过滤信息流并分析互动",
+    "target_user": "LinkedIn创作者与独立创始人",
+    "revenue": {
+      "mrr": 1319,
+      "last_30d": 2733,
+      "all_time": 30732,
+      "currency": "USD",
+      "as_of": "2026-10-14",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-14"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/myfeedin",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Chrome Web Store原始产品页：Chrome商店2,000用户（展示档位）",
+        "level": "T",
+        "url": "https://chromewebstore.google.com/detail/myfeedin-linkedin-analyti/enliacdgianieomegijopbecafnapnha",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "chrome_users",
+        "value": 2000,
+        "url": "https://chromewebstore.google.com/detail/myfeedin-linkedin-analyti/enliacdgianieomegijopbecafnapnha",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "收入页面标题$2,793与30日图表$2,733不一致；保留图表口径待Hark裁定。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅+买断",
+    "price_point": "Starter $10/月；Growth $19/月；另有买断",
+    "acquisition_channels": [
+      "LinkedIn",
+      "Chrome Web Store"
+    ],
+    "tech_stack_guess": "推测：浏览器扩展前端+支付服务",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 3,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "浏览器扩展加简单互动报表可分阶段完成，LinkedIn权限与风控有额外成本。",
+      "channel_reach_cn": "LinkedIn和Chrome商店允许远程触达内容创作者，但中文开发者经营英文圈层需要积累。",
+      "payment_compliance": "订阅与买断通常可借第三方销售平台收款，仍需核查中国主体资格和隐私条款。",
+      "competition": "竞品：Shield Analytics与Taplio；已有成熟领英分析工具，纯复制竞争空间低。",
+      "time_to_mvp": "推测：先只做领英内容过滤可在约一个月内销售，精确归因需要更多时间。"
+    },
+    "total_score": 16,
+    "verdict": "可做",
+    "cn_angle": "推测：为B2B出海创作者做细分垂直LinkedIn内容管理",
+    "risks": "LinkedIn平台反自动化、权限和隐私风险",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2024-06-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "superx",
+    "name": "SuperX",
+    "url": "https://superx.so",
+    "category": "浏览器插件",
+    "one_liner_cn": "为X创作者提供数据分析与定时发帖",
+    "target_user": "X内容创作者与创业者",
+    "revenue": {
+      "mrr": 22062,
+      "last_30d": 20632,
+      "all_time": 248109,
+      "currency": "USD",
+      "as_of": "2026-10-08",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-08"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/superx",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Chrome Web Store原始产品页：Chrome商店10,000用户（展示档位）",
+        "level": "T",
+        "url": "https://chromewebstore.google.com/detail/superx-twitter-analytics/bjobgelaoehgbnklgcaaehdpckmhkplk",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "chrome_users",
+        "value": 10000,
+        "url": "https://chromewebstore.google.com/detail/superx-twitter-analytics/bjobgelaoehgbnklgcaaehdpckmhkplk",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "收入页标题$21,053与图表$20,632不一致；采用图表值，须Hark复核。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅",
+    "price_point": "Pro $49/月、Advanced $49/月促销、Ultra $199/月",
+    "acquisition_channels": [
+      "Chrome Web Store",
+      "X"
+    ],
+    "tech_stack_guess": "推测：Chrome扩展+排程服务",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 3,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "实时X分析加发帖排程涉及账号接口和队列系统，较单功能插件更复杂。",
+      "channel_reach_cn": "Chrome商店和X可远程分发，但强依赖既有创作者关系与平台曝光。",
+      "payment_compliance": "订阅收费可行但第三方账号授权、内容接口及跨境结算有持续限制。",
+      "competition": "竞品：Typefully与Hypefury；社交排程拥挤，必须缩窄受众。",
+      "time_to_mvp": "推测：做基础排程至少数周，稳定分析和自动化销售可能超过一月。"
+    },
+    "total_score": 14,
+    "verdict": "不推荐",
+    "cn_angle": "推测：聚焦跨境微型SaaS创始人的X互动复盘",
+    "risks": "X接口政策变化、账号封禁和内容授权",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-08-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "compresto",
+    "name": "Compresto",
+    "url": "https://compresto.app",
+    "category": "小App",
+    "one_liner_cn": "让Mac用户离线压缩视频图片与PDF",
+    "target_user": "Mac内容创作者与设计师",
+    "revenue": {
+      "mrr": 205,
+      "last_30d": 1880,
+      "all_time": 62323,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Polar",
+      "source_last_synced": "2026-10-15"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Polar付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/compresto",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Product Hunt原始产品页：Product Hunt 10条评价，页面沿用旧slug CompressX",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/compressx",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "product_hunt_review_count",
+        "value": 10,
+        "url": "https://www.producthunt.com/products/compressx",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "Product Hunt原slug为CompressX，但该页面现标题Compresto且域名同为compresto.app。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "买断为主及部分订阅",
+    "price_point": "Personal $49买断；Standard $69买断",
+    "acquisition_channels": [
+      "Product Hunt",
+      "Mac应用社区"
+    ],
+    "tech_stack_guess": "平台公开列举Swift、SwiftUI、Next.js、Polar",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 3,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "SwiftUI与本地媒体编解码可复用系统工具，但多格式压缩质量需要适配测试。",
+      "channel_reach_cn": "Mac应用圈与Product Hunt可远程发布，用户需求可由具体文件格式触达。",
+      "payment_compliance": "一次性软件授权与第三方结算相对清晰，仍需处理退款及税务责任。",
+      "competition": "竞品：HandBrake、ImageOptim；免费的压缩工具多，细分工作流仍有空位。",
+      "time_to_mvp": "推测：一个媒体格式的付费小工具约一个月可做，完整多格式软件需更久。"
+    },
+    "total_score": 17,
+    "verdict": "可做",
+    "cn_angle": "推测：为短视频剪辑团队提供本地批量压缩工作流",
+    "risks": "免费替代品强，文件元数据和编码专利需核查",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2023-12-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "extrabar",
+    "name": "ExtraBar",
+    "url": "https://extrabar.app",
+    "category": "小App",
+    "one_liner_cn": "让Mac用户一键启动深链和自动化操作",
+    "target_user": "Mac开发者与高频办公用户",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 1538,
+      "all_time": 12677,
+      "currency": "USD",
+      "as_of": "2026-09-05",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-09-05"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/extrabar",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Product Hunt原始产品页：Product Hunt 203关注者",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/extrabar",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "product_hunt_followers",
+        "value": 203,
+        "url": "https://www.producthunt.com/products/extrabar",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "近30天财务同步于2026-09-05，超过30天，待更新。",
+      "MRR原页显示横线且无活跃订阅，不将未知值擅写成0。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "一次性许可",
+    "price_point": "单机$28.99一次性许可",
+    "acquisition_channels": [
+      "Product Hunt",
+      "Reddit",
+      "SEO"
+    ],
+    "tech_stack_guess": "平台公开列举Swift、SwiftUI、Stripe",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 4,
+      "payment_compliance": 4,
+      "competition": 3,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "原生菜单栏与脚本快捷入口使用SwiftUI和系统API可做简化版。",
+      "channel_reach_cn": "Product Hunt、Reddit与Mac开发者社区能够远程触达高频用户。",
+      "payment_compliance": "桌面软件一次性许可收款不需应用内购，但要合规处理授权和售后。",
+      "competition": "竞品：Raycast、Alfred；需选择团队深链或会议快捷场景避开综合工具。",
+      "time_to_mvp": "推测：菜单快捷入口MVP在30天内可交付并测试收费。"
+    },
+    "total_score": 19,
+    "verdict": "可做",
+    "cn_angle": "推测：专做远程会议与研发团队项目深链菜单工具",
+    "risks": "macOS系统接口兼容性及免费竞品替代",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-12-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "truesearch",
+    "name": "TrueSearch",
+    "url": "https://truesearch.app",
+    "category": "小App",
+    "one_liner_cn": "帮用户汇总公开网络资料与账号信息",
+    "target_user": "需要核对公开线上账号的消费者",
+    "revenue": {
+      "mrr": 2285,
+      "last_30d": 2956,
+      "all_time": 22254,
+      "currency": "USD",
+      "as_of": "2026-10-08",
+      "verified_by": "RevenueCat",
+      "source_last_synced": "2026-10-08"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（RevenueCat付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/truesearch",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "App Store原始产品页：美国App Store独立页108个评分",
+        "level": "T",
+        "url": "https://apps.apple.com/us/app/truesearch-ai-people-search/id6756086598?platform=iphone&see-all=reviews",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "app_store_rating_count",
+        "value": 108,
+        "url": "https://apps.apple.com/us/app/truesearch-ai-people-search/id6756086598?platform=iphone&see-all=reviews",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "TrustMRR同期转引App评分124条，App Store独立原页显示108条，不同日期/地区口径需核查。",
+      "App Store出现订阅取消困难投诉，属于用户评论未经裁定。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "App订阅",
+    "price_point": "$14.99/周或$79.99/年",
+    "acquisition_channels": [
+      "App Store ASO"
+    ],
+    "tech_stack_guess": "平台公开列举React Native、Expo、RevenueCat",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 4,
+      "payment_compliance": 2,
+      "competition": 1,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "公开资料搜索与实体合并会涉及多源授权和消歧，难度超过普通工具App。",
+      "channel_reach_cn": "iOS关键词搜索可远程获客，但应用商店竞争和评论会影响转化。",
+      "payment_compliance": "个人信息收集及按周订阅争议需要额外合法性与消费保护设计。",
+      "competition": "竞品：BeenVerified、Whitepages；信息查询红海且存在隐私合规壁垒。",
+      "time_to_mvp": "推测：只聚合用户自有社交链接或许可数据的MVP需1至3个月。"
+    },
+    "total_score": 13,
+    "verdict": "不推荐",
+    "cn_angle": "推测：改做用户授权的个人线上账号体检而非人肉搜索",
+    "risks": "个人信息保护、误识别与订阅投诉",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-12-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "rapidnative",
+    "name": "RapidNative",
+    "url": "https://rapidnative.com",
+    "category": "开发者工具",
+    "one_liner_cn": "把文字需求转为React Native移动应用",
+    "target_user": "移动App创业者、设计师与工程师",
+    "revenue": {
+      "mrr": 5281,
+      "last_30d": 6014,
+      "all_time": 74745,
+      "currency": "USD",
+      "as_of": "2026-10-17",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-17"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/shaper-studio-inc",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Product Hunt原始产品页：Product Hunt 222关注者",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/rapidnative",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "product_hunt_followers",
+        "value": 222,
+        "url": "https://www.producthunt.com/products/rapidnative",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "收入页slug是shaper-studio-inc，公开页面显示名称RapidNative且链接rapidnative.com。",
+      "收入页标题$6,054与30日图表$6,014存在小幅不一致，使用图表值。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅",
+    "price_point": "Starter $20/月；Pro $49/月",
+    "acquisition_channels": [
+      "Product Hunt",
+      "开发者社区"
+    ],
+    "tech_stack_guess": "平台公开功能React Native、Expo；其余技术栈未独立审计",
+    "scores": {
+      "build_difficulty": 2,
+      "channel_reach_cn": 4,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 2
+    },
+    "score_reasons": {
+      "build_difficulty": "真正可发布的移动应用生成器涉及代码生成、调试、后端与权限体系。",
+      "channel_reach_cn": "Product Hunt及React Native社区可远程获得技术用户的反馈和试用。",
+      "payment_compliance": "代码托管及AI服务消耗需清晰计费，海外订阅和用户源码归属待核。",
+      "competition": "竞品：FlutterFlow、Bolt及Lovable；市场高度集中且平台体验要求高。",
+      "time_to_mvp": "推测：做模板生成可在数周内完成，但端到端交付通常超过三个月。"
+    },
+    "total_score": 13,
+    "verdict": "不推荐",
+    "cn_angle": "推测：只做Expo离线表单App模板生成器",
+    "risks": "AI成本、生成代码安全与应用商店审核",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-03-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "rooftops-ai",
+    "name": "Rooftops AI",
+    "url": "https://rooftops.ai",
+    "category": "SaaS",
+    "one_liner_cn": "帮屋顶承包商快速测量报价和追踪线索",
+    "target_user": "美国屋顶维修承包商和估价员",
+    "revenue": {
+      "mrr": 1153,
+      "last_30d": 1940,
+      "all_time": 25077,
+      "currency": "USD",
+      "as_of": "2026-10-07",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-07"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/rooftops-ai",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Product Hunt原始产品页：Product Hunt 1条评价（弱牵引力）",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/rooftops-ai",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "product_hunt_review_count",
+        "value": 1,
+        "url": "https://www.producthunt.com/products/rooftops-ai",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "Product Hunt仅1条评价，证据虽独立但不能说明大量活跃客户。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "B2B席位订阅",
+    "price_point": "$29–$99/月/席",
+    "acquisition_channels": [
+      "SEO",
+      "Product Hunt",
+      "口碑"
+    ],
+    "tech_stack_guess": "平台公开列举Next.js、Supabase、Stripe",
+    "scores": {
+      "build_difficulty": 2,
+      "channel_reach_cn": 2,
+      "payment_compliance": 3,
+      "competition": 3,
+      "time_to_mvp": 2
+    },
+    "score_reasons": {
+      "build_difficulty": "屋顶测量涉及地图航片、地理计算与保险报价，不是简单通用AI套壳。",
+      "channel_reach_cn": "美国区域承包商偏好本地信任与行业线索，境内远程冷启动较难。",
+      "payment_compliance": "SaaS按席订阅可结算，但屋顶估价免责声明与地图数据许可需核查。",
+      "competition": "竞品：Roofr、EagleView；成熟专业工具强，但微型承包商有细分空间。",
+      "time_to_mvp": "推测：轻量报价单生成可较快实现，可靠地图测量可能需数月。"
+    },
+    "total_score": 12,
+    "verdict": "不推荐",
+    "cn_angle": "推测：聚焦独立屋顶承包商的图文报价单",
+    "risks": "测量精度、保险责任、航拍地理数据授权",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2024-01-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "blipix",
+    "name": "Blipix",
+    "url": "https://blipix.pro",
+    "category": "AI工具",
+    "one_liner_cn": "帮短视频创作者生成无真人出镜的视频",
+    "target_user": "TikTok、Shorts和Reels创作者",
+    "revenue": {
+      "mrr": 1517,
+      "last_30d": 1739,
+      "all_time": 38277,
+      "currency": "USD",
+      "as_of": "2026-10-16",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-16"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/blipix",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Trustpilot原始产品页：Trustpilot 7条用户评价、4.2分",
+        "level": "T",
+        "url": "https://uk.trustpilot.com/review/blipix.pro",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "trustpilot_review_count",
+        "value": 7,
+        "url": "https://uk.trustpilot.com/review/blipix.pro",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "Trustpilot评价是使用线索，存在样本偏差，不等于7个付费用户。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅+生成额度",
+    "price_point": "Creator $39/月、Pro $69/月",
+    "acquisition_channels": [
+      "SEO",
+      "TikTok",
+      "Google Ads"
+    ],
+    "tech_stack_guess": "平台公开列举Next.js、Firebase、AWS、Stripe",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 4,
+      "payment_compliance": 3,
+      "competition": 1,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "脚本、配音与字幕可以借现有模型API组合，但批量稳定渲染仍有工程成本。",
+      "channel_reach_cn": "TikTok与Google搜索可远程分发创作者工具，获客质量依赖作品展示。",
+      "payment_compliance": "AI视频API与跨境月费易按使用量计费，但版权和滥用审核影响合规。",
+      "competition": "竞品：CapCut、InVideo和HeyGen；生成类视频极度拥挤，难以泛化竞争。",
+      "time_to_mvp": "推测：单一短视频模板加配音的收费MVP约一月内可做。"
+    },
+    "total_score": 16,
+    "verdict": "可做",
+    "cn_angle": "推测：做跨境电商产品讲解以外的B2B教程剪辑工具",
+    "risks": "生成内容版权、音视频模型成本和平台滥用",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-02-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "rezi",
+    "name": "Rezi",
+    "url": "https://rezi.ai",
+    "category": "AI工具",
+    "one_liner_cn": "为求职者生成面向招聘系统的简历",
+    "target_user": "海外求职者与职业中心",
+    "revenue": {
+      "mrr": 248155,
+      "last_30d": 217419,
+      "all_time": 10350333,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/rezi",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "Product Hunt原始产品页：Product Hunt 5条评价，318关注者",
+        "level": "T",
+        "url": "https://www.producthunt.com/products/rezi",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "product_hunt_review_count",
+        "value": 5,
+        "url": "https://www.producthunt.com/products/rezi",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "近30天$217,419超过历史T04初筛$50k上限，但当前T10任务卡只规定下限，保留作低复刻性参考。",
+      "已披露VC-backed、用户和收入量级巨大，不代表个人可复制。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "订阅+买断+企业产品",
+    "price_point": "免费；Pro $29/月；终身$149",
+    "acquisition_channels": [
+      "SEO",
+      "Product Hunt"
+    ],
+    "tech_stack_guess": "推测：文档排版引擎+AI文本生成+订阅",
+    "scores": {
+      "build_difficulty": 3,
+      "channel_reach_cn": 3,
+      "payment_compliance": 3,
+      "competition": 1,
+      "time_to_mvp": 3
+    },
+    "score_reasons": {
+      "build_difficulty": "简历排版与AI编辑可实现，但ATS兼容性和行业模板调优持续复杂。",
+      "channel_reach_cn": "求职流量可由SEO与高校合作取得，但国外市场获取成本高。",
+      "payment_compliance": "普通订阅可合规收款，企业招聘功能与求职者资料隐私门槛更高。",
+      "competition": "竞品：Canva、Teal、Kickresume；已有大规模品牌和资本参与者。",
+      "time_to_mvp": "推测：一个细分职业简历生成器需1至3个月完成可付费验证。"
+    },
+    "total_score": 13,
+    "verdict": "不推荐",
+    "cn_angle": "推测：聚焦海外中文工程师的ATS简历专项优化",
+    "risks": "体量已超小型独立项目，VC支持与成本结构不具可复制性",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2015-05-01",
+    "growth_30d": null,
+    "customers": null
+  },
+  {
+    "id": "practiceme",
+    "name": "Practiceme",
+    "url": "https://apps.apple.com/us/app/ai-speak-english-practice-me/id6751178289",
+    "category": "教育工具",
+    "one_liner_cn": "帮助英语学习者与AI口语教师练习",
+    "target_user": "英语学习者和备考人群",
+    "revenue": {
+      "mrr": 2957,
+      "last_30d": 4165,
+      "all_time": null,
+      "currency": "USD",
+      "as_of": "2026-10-16",
+      "verified_by": "RevenueCat",
+      "source_last_synced": "2026-10-16"
+    },
+    "team_size": null,
+    "evidence_level": "A",
+    "sources": [
+      {
+        "label": "TrustMRR公开详情（RevenueCat付款连接标记；非见势独立审计）",
+        "level": "A",
+        "url": "https://trustmrr.com/startup/practiceme",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "App Store原始产品页：App Store 1个评分（独立但样本很小）",
+        "level": "T",
+        "url": "https://apps.apple.com/us/app/ai-speak-english-practice-me/id6751178289",
+        "checked_at": "2026-10-18"
+      }
+    ],
+    "traction": [
+      {
+        "type": "app_store_rating_count",
+        "value": 1,
+        "url": "https://apps.apple.com/us/app/ai-speak-english-practice-me/id6751178289",
+        "estimated": false,
+        "checked_at": "2026-10-18",
+        "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
+      }
+    ],
+    "flags": [
+      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
+      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
+      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
+      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
+      "公开来源未显示可精确摘录的历史累计收入，置null。",
+      "App Store仅1条评价，属于弱但真实独立牵引力。"
+    ],
+    "for_sale": {
+      "listed": false,
+      "asking_price": null,
+      "multiple": null,
+      "url": null
+    },
+    "business_model": "App订阅内购",
+    "price_point": "免费+内购；Pro $9.99/周、$59.99/年",
+    "acquisition_channels": [
+      "App Store ASO",
+      "SEO"
+    ],
+    "tech_stack_guess": "平台公开列举Swift、Firebase、RevenueCat",
+    "scores": {
+      "build_difficulty": 4,
+      "channel_reach_cn": 4,
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 4
+    },
+    "score_reasons": {
+      "build_difficulty": "口语会话可用现有语音模型构建，但口音反馈准确度需测试。",
+      "channel_reach_cn": "英语学习是明确App搜索需求，可远程进行ASO与内容展示。",
+      "payment_compliance": "iOS内购与RevenueCat可处理订阅，但商店抽成及个人账号审核仍存在。",
+      "competition": "竞品：ELSA Speak、Duolingo；差异化只能靠职业场景细分。",
+      "time_to_mvp": "推测：做面试英语对话MVP在30天内可能收费，持续留存更困难。"
+    },
+    "total_score": 17,
+    "verdict": "可做",
+    "cn_angle": "推测：为出海岗位面试提供行业英语口语演练",
+    "risks": "语音API成本、应用商店抽成与误导学习效果",
+    "reviewed_by_hark": false,
+    "last_verified_at": "2026-10-18",
+    "updated_at": "2026-10-18",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "publication_status": "PRIVATE_REVIEW_ONLY",
+    "founded_date": "2025-09-01",
+    "growth_30d": null,
+    "customers": null
   }
 ]
