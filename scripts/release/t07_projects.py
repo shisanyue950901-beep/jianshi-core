@@ -27,7 +27,7 @@ SCORE_LABELS = {
     "time_to_mvp": "30天最小产品可行性",
 }
 DISCLAIMER = "数据为第三方公开信息，非财务审计，不构成收入承诺。"
-AUDIT_NOTE = "收入来自海外收入公示网站 TrustMRR 的支付记录，见势未逐笔核对；安装量和评价数不能证明付费人数。"
+AUDIT_NOTE = "收入来自海外收入公示网站 TrustMRR，见势未逐笔核对。可能只有一两名付费客户，或多个产品共用收款账户；关注、安装和评价不等于付款证明。"
 
 
 def esc(value: object) -> str:
@@ -389,7 +389,7 @@ def detail(project: dict) -> str:
                      for key,name in (("mrr","每月订阅收入"),("last_30d","近30天收入"),("all_time","历史累计收入")))
     grown = project["growth_30d"]
     grown_txt = "未公开" if grown is None else f"{grown:+g}%"
-    income_facts = (text_field("币种",currency) + text_field("数据日期",chinese_date(rev["as_of"]))
+    income_facts = (text_field("币种","美元" if currency == "USD" else currency) + text_field("数据日期",chinese_date(rev["as_of"]))
                     + text_field("支付平台验证方",rev["verified_by"])
                     + text_field("成立日期",chinese_date(project["founded_date"]))
                     + text_field("近30天增长率",grown_txt)
