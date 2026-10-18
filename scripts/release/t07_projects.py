@@ -386,7 +386,7 @@ def detail(project: dict) -> str:
     body = f"""<section class="hero"><a class="back" href="/projects/">← 返回项目库</a>
 <div class="kicker" style="margin-top:18px">{esc(public_copy(project["category"]))} · 公开项目档案</div>
 <h1>{esc(project["name"])}</h1>
-<p class="lead detail-lead">{esc(project["one_liner_cn"])}</p>
+<p class="lead detail-lead">{esc(public_copy(project["one_liner_cn"]))}</p>
 {tags(project)}<p><a class="hero-cta" href="{esc(project["url"])}" rel="noopener noreferrer" target="_blank">打开官网 ↗</a></p></section>
 <section class="panel" aria-labelledby="income-heading"><h2 id="income-heading">收入数据</h2>
 <div class="money-grid">{income}</div><div class="facts">{income_facts}</div>
