@@ -8,6 +8,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import unquote, urlsplit
 import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "release"))
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"/"projects.json"
@@ -26,7 +27,7 @@ def check():
     expected={p["id"] for p in projects}
     assert actual==expected, f"Project HTML directories mismatch missing={expected-actual} extra={actual-expected}"
     list_html=(TARGET/"index.html").read_text(encoding="utf-8")
-    assert "收入数据来自支付平台 API 公开验证" in list_html
+    assert "收入信息来自海外收入公示网站 TrustMRR" in list_html
     assert "id=\"category\"" in list_html and "id=\"verdict\"" in list_html and "id=\"evidence_level\"" in list_html and "id=\"sort\"" in list_html
     assert "https://jianshi-bua.pages.dev/projects/" in list_html
     assert "nerdwallet" not in list_html.lower() and "plausible" not in list_html.lower()
@@ -46,23 +47,27 @@ def check():
             assert html.escape(money(rev[key],rev["currency"])) in list_html, f"{rid} listing {key}"
         for key in ("mrr","last_30d","all_time"):
             assert html.escape(money(rev[key],rev["currency"])) in page, f"{rid} detail {key}"
-        for field in ("name","category","one_liner_cn","founded_date","business_model","price_point","risks","cn_angle","verdict","evidence_level"):
+        for field in ("name","category","one_liner_cn","business_model","price_point","risks","cn_angle","verdict","risk_public"):
             assert html.escape(str(p[field]),quote=True) in page, f"{rid} {field}"
-        assert html.escape(str(rev["verified_by"])) in page and rev["as_of"] in page
+        from t07_projects import chinese_date, source_display
+        assert html.escape(str(rev["verified_by"])) in page
+        assert chinese_date(rev["as_of"]) in page and chinese_date(p["founded_date"]) in page
         assert (("未公开" if p["customers"] is None else str(p["customers"])) in page)
         for dim, score in p["scores"].items():
             assert f">{score}/5<" in page, f"{rid} {dim}"
             assert html.escape(str(p["score_reasons"][dim]),quote=True) in page, f"{rid} missing score reason {dim}"
+        assert html.escape(p["risk_public"],quote=True) in page
+        assert html.escape(p["risk_public"],quote=True) in list_html
         for flag in p.get("flags") or []:
-            text=html.escape(flag,quote=True)
-            assert text in page and text in list_html, f"{rid} missing flag {flag}"
+            assert html.escape(flag,quote=True) not in page, f"{rid} leaked internal flag"
+            assert html.escape(flag,quote=True) not in list_html, f"{rid} leaked internal flag"
         for source in p.get("sources") or []:
             assert html.escape(source["url"],quote=True) in page
-            assert html.escape(source["label"],quote=True) in page
-            assert html.escape(str(source["level"]),quote=True) in page
-            assert source["checked_at"] in page
+            assert html.escape(source_display(source),quote=True) in page
+            assert chinese_date(source["checked_at"]) in page
+            assert html.escape(source["label"],quote=True) not in page or source["label"]==source_display(source)
         assert "数据为第三方公开信息，非财务审计，不构成收入承诺。" in page
-        assert "收入由 TrustMRR 通过支付平台 API 获取，非见势独立审计。" in page
+        assert "见势未逐笔核对" in page
         assert "fetch(" not in page and "XMLHttpRequest" not in page
     # Hark T07 gate: inspect every generated HTML href, including homepage and discover.
     # Any old or newly introduced /projects/<id>/ link must resolve to one of
@@ -92,7 +97,7 @@ def check():
                 internal_detail_links += 1
                 assert parts[0] in expected, f"Unregistered project href in {page.relative_to(ROOT)}: {href}"
     print(f"PASS T07 all-site link audit: {checked_html} HTML files, {internal_detail_links} detail hrefs, only JSON ids")
-    print(f"PASS T07 HTML/JSON parity: {len(projects)} projects, {len(projects)+1} static pages, all fields, links and flags, zero runtime fetch")
+    print(f"PASS T07 HTML/JSON parity: {len(projects)} projects, {len(projects)+1} static pages, all public fields, links and risks, zero runtime fetch")
 
 if __name__=="__main__":
     try:
