@@ -101,6 +101,7 @@ class TestT11Sprint(unittest.TestCase):
             self.assertIn('id="'+ident+'"',self.markup)
         for phrase in ("私信","50 人","20 次真实对话","≥ $9","≥ $29","/log","第 0 步","服务条款","隐私政策"):
             self.assertIn(phrase,self.markup)
+        self.assertNotIn('href="/log/"',self.markup)
     def test_built_sitemap_and_navigation_when_present(self):
         dist=ROOT/"web"/"dist"
         if not (dist/"index.html").exists() or not (dist/"sprint"/"index.html").exists():

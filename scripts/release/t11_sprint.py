@@ -282,7 +282,7 @@ body{background:#f7f9fc} .t11{color:var(--s-ink)}
 {''.join(checklist)}
 </section>
 <section class="t11-panel" id="case0"><span class="t11-step">CASE 00 · 创始人观察日志</span><h2>真实执行，持续记录</h2>
-<p>见势创始人正在用这套方法推自己的项目，进度见 <a href="/log/">/log</a>。</p><p>这里不提前展示尚未核验的业绩、天数或销售结果。</p></section>
+<p>见势创始人正在用这套方法推自己的项目，进度日志 /log 即将上线。</p><p>这里不提前展示尚未核验的业绩、天数或销售结果。</p></section>
 </div><aside class="t11-side"><nav class="t11-toc" aria-label="页面章节"><b>冲刺路线</b>
 <a href="#step0">00　项目分诊</a><a href="#week1">01　能收钱</a><a href="#week23">02–03　找真人</a><a href="#week4">04　收入可验证</a>
 <a href="#fallback">失败预案</a><a href="#payments">收款平台比较</a><a href="#checklist">每周检查清单</a><a href="#case0">创始人案例</a>
