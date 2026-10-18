@@ -120,7 +120,6 @@ class TestT08(unittest.TestCase):
             "CF_PAGES_BRANCH":"main", "GITHUB_HEAD_REF":"",
             "GITHUB_REF_NAME":"main",
         }):
-            data=projects()
             with self.assertRaisesRegex(ValueError, "Unapproved project records"):
                 from t08_project_selection import projects
                 projects()
