@@ -20,6 +20,12 @@ on:
       - 'tests/test_t07_static.py'
       - 'tests/test_t08_data.py'
       - '.github/workflows/t07-projects.yml'
+      - 'scripts/release/t11_sprint.py'
+      - 'tests/test_t11_sprint.py'
+      - 'tests/browser/t11_sprint_mobile.py'
+      - 'web/build.py'
+      - 'web/static/sprint.js'
+      - 'config/site.json'
   workflow_dispatch:
 
 permissions:
@@ -49,6 +55,8 @@ jobs:
           python scripts/release/p412_build_public.py
           python tests/test_t07_static.py
           python tests/test_t08_data.py
+          python tests/test_t08b_sources.py
+          python tests/test_t11_sprint.py
           test -f web/dist/projects/datafast/index.html
           test -f web/dist/projects/readlens/index.html
           # Replace obsolete named-case fixture with the reviewed JSON ranking gate.
@@ -99,6 +107,7 @@ jobs:
           python -m pip install --disable-pip-version-check playwright==1.55.0
           python -m playwright install chromium
           python tests/browser/t07_responsive.py
+          python tests/browser/t11_sprint_mobile.py
       - name: Lighthouse mobile performance
         run: |
           set -euo pipefail
@@ -108,10 +117,16 @@ jobs:
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           sleep 2
           curl -fsS http://127.0.0.1:8099/projects/ >/dev/null
+          curl -fsS http://127.0.0.1:8099/sprint/ >/dev/null
           npx --yes lighthouse@12.8.2 http://127.0.0.1:8099/projects/ --quiet --only-categories=performance --chrome-flags="--headless=new --no-sandbox --disable-dev-shm-usage" --output=json --output-path=t07-evidence/lighthouse-mobile.json
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:8099/sprint/ --quiet --only-categories=performance --chrome-flags="--headless=new --no-sandbox --disable-dev-shm-usage" --output=json --output-path=t07-evidence/t11-lighthouse-mobile.json
           python - <<'PY'
           import json
           from pathlib import Path
+          sprint=json.loads(Path("t07-evidence/t11-lighthouse-mobile.json").read_text())
+          sprint_score=round(sprint["categories"]["performance"]["score"]*100)
+          print(f"T11 /sprint/ Lighthouse 移动端 Performance: {sprint_score}/100")
+          if sprint_score < 98: raise SystemExit("FAIL: T11 mobile below last-verified 98 baseline")
           data=json.loads(Path("t07-evidence/lighthouse-mobile.json").read_text())
           score=round(data["categories"]["performance"]["score"]*100)
           text=f"T07 /projects/ Lighthouse 移动端 Performance: {score}/100"

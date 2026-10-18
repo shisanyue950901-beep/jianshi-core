@@ -1536,6 +1536,7 @@ def main():
     shutil.copy2(STATIC/"search.js",DIST/"search.js")
     shutil.copy2(STATIC/"account.js",DIST/"account.js")
     shutil.copy2(STATIC/"analytics.js",DIST/"analytics.js")
+    shutil.copy2(STATIC/"sprint.js",DIST/"sprint.js")
     shutil.copy2(STATIC/"_headers",DIST/"_headers")
     shutil.copy2(STATIC/"_redirects",DIST/"_redirects")
     prototype_data={}
@@ -1597,7 +1598,10 @@ def main():
     (DIST/"search-index.json").write_text(json.dumps(search,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
     (DIST/"404.html").write_text(shell("未找到｜见势",'<main class="wrap"><section class="hero"><h1>这里还没有信号。</h1><p><a href="/">返回见势首页 →</a></p></section></main>',canonical_path="/404"),encoding="utf-8")
 
-    urls=["/","/opportunities/","/today/","/rising/","/build/","/content/","/privacy/"]+[f"/opportunity/{x['slug']}/" for x in search]
+    import runpy
+    runpy.run_path(str(REPO_ROOT/"scripts"/"release"/"t11_sprint.py"))["publish"](DIST)
+
+    urls=["/","/opportunities/","/today/","/rising/","/build/","/content/","/privacy/","/sprint/"]+[f"/opportunity/{x['slug']}/" for x in search]
     sitemap='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(
         f'<url><loc>{esc(SITE+u)}</loc></url>' for u in urls
     )+'</urlset>'
@@ -1616,9 +1620,9 @@ def main():
     # If a Pages project is configured to publish the repository root, emit
     # only the generated public entrypoints there at build time. These files
     # are not committed; they exist only in the ephemeral build workspace.
-    for name in ("index.html","404.html","styles.css","search.js","account.js","analytics.js","search-index.json","sitemap.xml","robots.txt","_headers","_redirects"):
+    for name in ("index.html","404.html","styles.css","search.js","account.js","analytics.js","sprint.js","search-index.json","sitemap.xml","robots.txt","_headers","_redirects"):
         shutil.copy2(DIST/name, REPO_ROOT/name)
-    for dirname in ("opportunity","opportunities","today","rising","build","content","privacy","account"):
+    for dirname in ("opportunity","opportunities","today","rising","build","content","privacy","account","sprint"):
         target=REPO_ROOT/dirname
         if target.exists():
             shutil.rmtree(target)

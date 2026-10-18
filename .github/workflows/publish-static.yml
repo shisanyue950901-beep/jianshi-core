@@ -12,6 +12,12 @@ on:
       - 'tests/test_t08_featured_gate.py'
       - 'data/projects.json'  # T08b: gate source/traction edits before main merge
       - 'tests/test_t08b_sources.py'
+      - 'tests/test_t11_sprint.py'
+      - 'scripts/release/t11_sprint.py'
+      - 'scripts/release/p412_build_public.py'
+      - 'web/build.py'
+      - 'web/static/sprint.js'
+      - 'config/site.json'
   schedule:
     - cron: '55 0 * * *'
     - cron: '55 6,12,18 * * *'
@@ -102,6 +108,10 @@ jobs:
           test -f web/dist/_redirects
           grep -q "Cache-Control: no-store" _headers
           test -f web/dist/privacy/index.html
+          test -f web/dist/sprint/index.html
+          test -f web/dist/sprint.js
+          grep -q "https://jianshi-bua.pages.dev/sprint/" web/dist/sitemap.xml
+          python tests/test_t11_sprint.py
           test ! -e web/dist/config
           test ! -e web/dist/docs
           test ! -e web/dist/scripts
