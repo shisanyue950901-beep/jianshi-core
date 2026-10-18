@@ -11,18 +11,18 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "projects.json"
-REVIEW_PREVIEW_BRANCH = "feat/t08"
+REVIEW_PREVIEW_BRANCHES = {"feat/t08", "feat/t10-new-projects"}
 
 
 def review_preview() -> bool:
     names = (os.getenv("CF_PAGES_BRANCH", ""), os.getenv("GITHUB_HEAD_REF", ""),
              os.getenv("GITHUB_REF_NAME", ""))
-    if REVIEW_PREVIEW_BRANCH in names:
+    if any(name in REVIEW_PREVIEW_BRANCHES for name in names):
         return True
     # Offline developer tests on the checked-out feature branch, not CI or production.
     if not os.getenv("CI") and not os.getenv("CF_PAGES") and not os.getenv("GITHUB_ACTIONS"):
         head = ROOT / ".git" / "HEAD"
-        if head.is_file() and head.read_text(encoding="utf-8").strip() == "ref: refs/heads/" + REVIEW_PREVIEW_BRANCH:
+        if head.is_file() and head.read_text(encoding="utf-8").strip() in {"ref: refs/heads/" + branch for branch in REVIEW_PREVIEW_BRANCHES}:
             return True
     return False
 

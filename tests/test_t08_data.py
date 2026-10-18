@@ -48,12 +48,13 @@ class TestT08(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = json.loads(DATA.read_text(encoding="utf-8"))
-        cls.added = [p for p in cls.data if p["id"] not in OLD]
+        cls.historic = cls.data[:20]
+        cls.added = [p for p in cls.historic if p["id"] not in OLD]
 
     def test_exact_counts_unique_and_categories(self):
-        self.assertEqual(len(self.data),20)
+        self.assertEqual(len(self.data),30)
         self.assertEqual(len(self.added),10)
-        self.assertEqual(len({p["id"] for p in self.data}),20)
+        self.assertEqual(len({p["id"] for p in self.data}),30)
         self.assertGreaterEqual(len({p["category"] for p in self.data}),5)
         self.assertLessEqual(max(Counter(p["category"] for p in self.added).values()),4)
         self.assertGreaterEqual(sum(p["total_score"] >= 20 for p in self.added),2)
@@ -114,16 +115,29 @@ class TestT08(unittest.TestCase):
         import os
         from unittest.mock import patch
         from t08_project_selection import projects
+        import tempfile
+        from unittest.mock import patch
+        import t08_project_selection as selector
         with patch.dict(os.environ,{
             "CI":"true", "GITHUB_ACTIONS":"true",
             "CF_PAGES_BRANCH":"main", "GITHUB_HEAD_REF":"",
             "GITHUB_REF_NAME":"main",
         }):
-            data=projects()
-            self.assertEqual(len(data),20)
-            self.assertTrue(all(p["reviewed_by_hark"] and p["publication_status"]=="PUBLIC" for p in data))
-            self.assertEqual([p["id"] for p in featured_projects()],
-                [p["id"] for p in sorted(data,key=lambda p:(-p["total_score"],-p["revenue"]["last_30d"],p["id"]))[:3]])
+            self.assertFalse(selector.review_preview())
+            public = projects()
+            self.assertEqual(len(public), 30)
+            self.assertTrue(all(p["reviewed_by_hark"] and p["publication_status"] == "PUBLIC" for p in public))
+            self.assertEqual(len(self.historic), 20)
+            # Negative mutation: a single reverted Hark approval must still fail closed in main.
+            modified = json.loads(DATA.read_text(encoding="utf-8"))
+            modified[-1]["reviewed_by_hark"] = False
+            modified[-1]["publication_status"] = "PRIVATE_REVIEW_ONLY"
+            with tempfile.TemporaryDirectory() as workdir:
+                pending_path = Path(workdir) / "pending.json"
+                pending_path.write_text(json.dumps(modified, ensure_ascii=False), encoding="utf-8")
+                with patch.object(selector, "DATA", pending_path):
+                    with self.assertRaisesRegex(ValueError, "Unapproved project records"):
+                        projects()
 
     def test_home_and_discovery_are_exactly_json_top_three(self):
         winners=sorted(self.data,key=lambda p:(-p["total_score"],-p["revenue"]["last_30d"],p["id"]))[:3]
@@ -155,7 +169,7 @@ class TestT08(unittest.TestCase):
             self.skipTest("Build the release artifact before testing HTML")
         dirs={x.name for x in (WEB/"projects").iterdir() if x.is_dir()}
         self.assertEqual(dirs,{p["id"] for p in self.data})
-        self.assertEqual(len(dirs)+1,21)
+        self.assertEqual(len(dirs)+1,31)
 
 if __name__=="__main__":
     unittest.main()
