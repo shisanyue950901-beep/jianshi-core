@@ -48,14 +48,14 @@ def check():
         for key in ("mrr","last_30d","all_time"):
             assert html.escape(money(rev[key],rev["currency"])) in page, f"{rid} detail {key}"
         for field in ("name","category","one_liner_cn","business_model","price_point","risks","cn_angle","verdict","risk_public"):
-            assert html.escape(str(p[field]),quote=True) in page, f"{rid} {field}"
-        from t07_projects import chinese_date, source_display
+            assert html.escape(public_copy(p[field]),quote=True) in page, f"{rid} {field}"
+        from t07_projects import chinese_date, source_display, public_copy
         assert html.escape(str(rev["verified_by"])) in page
         assert chinese_date(rev["as_of"]) in page and chinese_date(p["founded_date"]) in page
         assert (("未公开" if p["customers"] is None else str(p["customers"])) in page)
         for dim, score in p["scores"].items():
             assert f">{score}/5<" in page, f"{rid} {dim}"
-            assert html.escape(str(p["score_reasons"][dim]),quote=True) in page, f"{rid} missing score reason {dim}"
+            assert html.escape(public_copy(p["score_reasons"][dim]),quote=True) in page, f"{rid} missing score reason {dim}"
         assert html.escape(p["risk_public"],quote=True) in page
         assert html.escape(p["risk_public"],quote=True) in list_html
         for flag in p.get("flags") or []:

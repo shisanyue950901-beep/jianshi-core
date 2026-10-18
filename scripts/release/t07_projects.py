@@ -96,6 +96,21 @@ def signal_display(value: object) -> str:
     return SIGNALS.get(str(value), "公开用户增长信号（不等于付费人数）")
 
 
+def public_copy(value: object) -> str:
+    """Show readable Chinese without changing stored product/source facts."""
+    output = "" if value is None else str(value)
+    for old,new in (
+        ("Codex","编程助手"),("MRR","每月订阅收入"),
+        ("KYC","实名或企业认证"),("API","接口"),
+        ("OAuth","授权登录"),("OCR","图片文字识别"),
+        ("TTS","文字转语音"),("CLI","命令行工具"),
+        ("SEO","搜索排名"),("MVP","最简可用产品"),
+        ("demo","演示版"),("SaaS","在线订阅软件"),
+    ):
+        output = re.sub(r"(?<![a-zA-Z])" + re.escape(old) + r"(?![a-zA-Z])",new,output)
+    return output
+
+
 def load_projects() -> list[dict]:
     projects = reviewed_or_preview_projects()
     if not isinstance(projects, list) or not projects:
@@ -286,12 +301,12 @@ def project_card(project: dict) -> str:
     revenue = project["revenue"]
     pid = esc(project["id"])
     mrr = "" if revenue["mrr"] is None else str(revenue["mrr"])
-    return f"""<article class="project" data-project data-name="{esc(project['name'])}" data-category="{esc(project['category'])}"
+    return f"""<article class="project" data-project data-name="{esc(project['name'])}" data-category="{esc(public_copy(project['category']))}"
 data-verdict="{esc(project['verdict'])}" data-evidence="{esc(project['evidence_level'])}"
 data-score="{esc(project['total_score'])}" data-mrr="{esc(mrr)}" data-last30="{esc(revenue['last_30d'])}">
-<div class="category">{esc(project['category'])}</div>
+<div class="category">{esc(public_copy(project['category']))}</div>
 <div class="phead"><h2><a href="/projects/{pid}/">{esc(project['name'])}</a></h2>{badge(str(project['total_score'])+'/25')}</div>
-<p class="pintro">{esc(project['one_liner_cn'])}</p>
+<p class="pintro">{esc(public_copy(project['one_liner_cn']))}</p>
 <p class="p-risk">要留意：{esc(project["risk_public"])}</p>
 <div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>{esc(fmt_money(revenue['last_30d'],revenue['currency']))}</strong></div>
 <div class="metric"><small>每月订阅收入</small><strong>{esc(fmt_money(revenue['mrr'],revenue['currency']))}</strong></div></div>
@@ -306,7 +321,7 @@ def build_list(projects: list[dict]) -> str:
     def sel(key, label, options):
         return (f'<div class="control"><label for="{key}">{esc(label)}</label><select id="{key}" name="{key}">'
                 + '<option value="">全部</option>'
-                + "".join(f'<option value="{esc(v)}">{esc({"A":"高","A-":"中高","B":"中","T":"参考"}.get(v,v) if key=="evidence_level" else v)}</option>' for v in options)
+                + "".join(f'<option value="{esc(v)}">{esc({"A":"高","A-":"中高","B":"中","T":"参考"}.get(v,v) if key=="evidence_level" else public_copy(v))}</option>' for v in options)
                 + "</select></div>")
     controls = (sel("category", "类别", categories)
                 + sel("verdict", "结论", verdicts)
@@ -352,7 +367,7 @@ def detail(project: dict) -> str:
         reason = project["score_reasons"][key]
         scores.append(f'<div class="scoreline"><div class="scorehead"><b>{esc(name)}</b><strong>{esc(value)}/5</strong></div>'
                       f'<div class="bar" aria-hidden="true"><i style="width:{int(value)*20}%"></i></div>'
-                      f'<p class="reason">{esc(value_or_unknown(reason))}</p></div>')
+                      f'<p class="reason">{esc(public_copy(value_or_unknown(reason)))}</p></div>')
     ch = project.get("acquisition_channels")
     channels = "、".join(map(str,ch)) if isinstance(ch,list) else value_or_unknown(ch)
     signals = project.get("traction") or []
@@ -369,7 +384,7 @@ def detail(project: dict) -> str:
     sale_text = ("是 · 要价："+fmt_money(sale.get("asking_price"),currency)
                  +" · 倍数："+value_or_unknown(sale.get("multiple"))) if sale.get("listed") else "未公开在售"
     body = f"""<section class="hero"><a class="back" href="/projects/">← 返回项目库</a>
-<div class="kicker" style="margin-top:18px">{esc(project["category"])} · 公开项目档案</div>
+<div class="kicker" style="margin-top:18px">{esc(public_copy(project["category"]))} · 公开项目档案</div>
 <h1>{esc(project["name"])}</h1>
 <p class="lead detail-lead">{esc(project["one_liner_cn"])}</p>
 {tags(project)}<p><a class="hero-cta" href="{esc(project["url"])}" rel="noopener noreferrer" target="_blank">打开官网 ↗</a></p></section>
@@ -380,15 +395,15 @@ def detail(project: dict) -> str:
 <div class="body-grid"><div>
 <section class="panel" aria-labelledby="score-heading"><h2 id="score-heading">五维评分 · {esc(project["total_score"])}/25</h2>
 <div class="scores">{"".join(scores)}</div></section>
-<section class="panel"><h2>面向中国开发者的切入建议</h2><p>{badge("推测")} {esc(project["cn_angle"])}</p>
-<h3>已知风险与注意事项</h3><p>{esc(value_or_unknown(project.get("risks")))}</p>
+<section class="panel"><h2>面向中国开发者的切入建议</h2><p>{badge("推测")} {esc(public_copy(project["cn_angle"]))}</p>
+<h3>已知风险与注意事项</h3><p>{esc(public_copy(value_or_unknown(project.get("risks"))))}</p>
 <p class="p-risk">{esc(project["risk_public"])}</p></section>
 <section class="panel"><h2>全部公开来源与证据等级</h2>{source_list}</section>
 </div><aside>
 <section class="panel"><h2>商业模式</h2>
-<div class="facts" style="grid-template-columns:1fr">{text_field("收费模式",project.get("business_model"))}
-{text_field("价格与套餐",project.get("price_point"))}
-{text_field("营销与获客渠道",channels)}
+<div class="facts" style="grid-template-columns:1fr">{text_field("收费模式",public_copy(project.get("business_model")))}
+{text_field("价格与套餐",public_copy(project.get("price_point")))}
+{text_field("营销与获客渠道",public_copy(channels))}
 {text_field("是否在售、要价、倍数",sale_text)}</div></section>
 <section class="panel"><h2>公开用户增长信号</h2>{traction}
 <p class="meta-line">用户增长数据不等于付费人数，也不能单独证明收入。</p></section>

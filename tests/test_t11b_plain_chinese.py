@@ -50,18 +50,18 @@ def visible(raw):
 
 PATTERNS = (
     r"T\d+[a-z]?\s*：",
-    r"\bHark\b",r"\bGPT\b",r"\bCodex\b",
-    r"\bslug\b",r"\.md\b",r"\bMarkdown\b",r"API\s*key",
-    r"\blocalStorage\b",r"PROJECT LIBRARY",r"FIELD GUIDE",
+    r"(?<![A-Za-z])Hark(?![A-Za-z])",r"(?<![A-Za-z])GPT(?![A-Za-z])",r"(?<![A-Za-z])Codex(?![A-Za-z])",
+    r"(?<![A-Za-z])slug(?![A-Za-z])",r"\.md(?![A-Za-z])",r"(?<![A-Za-z])Markdown(?![A-Za-z])",r"API\s*key",
+    r"(?<![A-Za-z])localStorage(?![A-Za-z])",r"PROJECT LIBRARY",r"FIELD GUIDE",
     r"\bSTEP\s+\d+",r"\bWEEK\s+\d+",r"\bPLAN B\b",
     r"\bCHECKLIST\b",r"\bCASE\s+\d+",r"Last updated",
-    r"UTC\+",r"\bCST\b",r"\sPM\s",r"\sAM\s",r"A/A-",
+    r"UTC\+",r"(?<![A-Za-z])CST(?![A-Za-z])",r"\sPM\s",r"\sAM\s",r"A/A-",
     r"同源",r"上游",r"JIANSHI\s*/\s*RESEARCH",
     r"Discover\s*·\s*Verify\s*·\s*Decide",
 )
 BAD=[re.compile(p,re.I if p in (r"\bslug\b",r"\.md\b",r"\bMarkdown\b") else 0) for p in PATTERNS]
 def has_unexplained_kyc(text):
-    for found in re.finditer(r"\bKYC\b",text):
+    for found in re.finditer(r"(?<![A-Za-z])KYC(?![A-Za-z])",text):
         next_text=text[found.end():found.end()+18]
         prev=text[max(0,found.start()-18):found.start()]
         if not re.search("实名|企业认证|身份",next_text+prev):
