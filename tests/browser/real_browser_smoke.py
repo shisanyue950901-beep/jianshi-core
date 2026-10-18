@@ -208,8 +208,8 @@ def ui_home(page, base: str, mobile: bool):
     require(page.locator(".account-entry-shell").count()==1,
             "Registration entry does not render the account page")
     page.goto(base + "/", wait_until="load")
-    page.locator(".j2-actions a[href='/discover/']").click()
-    require(page.url.endswith("/discover/"), "Home to discover navigation failed")
+    page.locator(".j2-actions a[href='/projects/']").click()
+    require(page.url.endswith("/projects/"), "Primary home CTA must open the project library")
 
 
 def ui_company(page, base: str):

@@ -99,6 +99,25 @@ def signal_display(value: object) -> str:
 def public_copy(value: object) -> str:
     """Show readable Chinese without changing stored product/source facts."""
     output = "" if value is None else str(value)
+    # Price descriptions are published in English upstream; keep exact amount
+    # and product tiers but present the terms in Chinese.
+    exact = {
+        "14-day free trial. No card required. Then starts at $9/month":
+            "免费试用14天，无须信用卡；之后每月9美元起。",
+        "Starter: $199 USD, All-in: $249 USD, BUNDLE ShipFast + CodeFast: $299 USD":
+            "入门版199美元；完整套装249美元；ShipFast 与 CodeFast组合包299美元。",
+        "Core Kit: $249 Lifetime license, Bundle: $399 Lifetime license":
+            "基础工具包永久许可249美元；组合包永久许可399美元。",
+        "From $25/mo Up to 10 apps, both stores, full history.":
+            "每月25美元起，最多支持10款应用、两家应用商店和完整历史记录。",
+        "$19/month-$499/month":"每月19至499美元。",
+        "Engineer Kit: $49 one-time, Marketing Kit: $49 one-time, Complete Bundle: $89 one-time (launch price)":
+            "开发工具包49美元一次性付款；营销工具包49美元；完整组合包发布优惠价89美元。",
+        "Free for 7 days, then from $11.99 a month":
+            "免费试用7天，之后每月11.99美元起。",
+        "Plans from $29/mo":"套餐每月29美元起。",
+    }
+    output = exact.get(output, output)
     for old,new in (
         ("Codex","编程助手"),("MRR","每月订阅收入"),
         ("KYC","实名或企业认证"),("API","接口"),
@@ -106,6 +125,23 @@ def public_copy(value: object) -> str:
         ("TTS","文字转语音"),("CLI","命令行工具"),
         ("SEO","搜索排名"),("MVP","最简可用产品"),
         ("demo","演示版"),("SaaS","在线订阅软件"),
+        ("Newsletter","邮件订阅内容"),("Content marketing","内容推广"),
+        ("Email marketing","邮件推广"),("Meta Ads","Meta 广告"),
+        ("TikTok Ads","TikTok 广告"),("Google Ads","Google 广告"),
+        ("App store optimization","应用商店搜索优化"),
+        ("Influencers","达人合作"),("Blog","博客"),
+        ("MCP","模型接入工具"),("ATS","招聘筛选系统"),
+        ("CLI","命令行工具"),("DR","网站搜索评分"),
+        ("UI","界面"),("UX","使用体验"),
+        ("Starter","入门版"),("Professional","专业版"),
+        ("Growth","成长版"),("Personal","个人版"),
+        ("Standard","标准版"),("Agency","团队版"),
+        ("Ultra","高级版"),("Scale","进阶版"),
+        ("Basic","基础版"),("Pro","专业版"),
+        ("Expert","专家版"),("Marketer","营销版"),
+        ("Reports","报告版"),("Free","免费"),
+        ("Lifetime license","永久使用许可"),("one-time","一次性付款"),
+        ("USD","美元"),
     ):
         output = re.sub(r"(?<![a-zA-Z0-9])" + re.escape(old) + r"(?![a-zA-Z0-9])",new,output)
     return output
