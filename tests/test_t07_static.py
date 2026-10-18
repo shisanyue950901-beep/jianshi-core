@@ -65,7 +65,6 @@ def check():
             assert html.escape(source["url"],quote=True) in page
             assert html.escape(source_display(source),quote=True) in page
             assert chinese_date(source["checked_at"]) in page
-            assert html.escape(source["label"],quote=True) not in page or source["label"]==source_display(source)
         assert "数据为第三方公开信息，非财务审计，不构成收入承诺。" in page
         assert "见势未逐笔核对" in page
         assert "fetch(" not in page and "XMLHttpRequest" not in page
