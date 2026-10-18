@@ -132,14 +132,17 @@ class T08bSourcesTest(unittest.TestCase):
                 self.assertTrue(any(s["level"] in {"A", "A-"}
                     and urlsplit(s["url"]).scheme == "https" and s["checked_at"] == "2026-10-18"
                     for s in p["sources"]))
-                site = urlsplit(p["url"]).hostname
+                # The App Store may be the product homepage for app-only products.
+                # The independent platform must differ from the PAYMENT proof host,
+                # not necessarily the vendor-supplied landing URL.
+                payment_hosts = {urlsplit(s["url"]).hostname for s in p["sources"] if s["level"] in {"A", "A-"}}
                 good = [t for t in p["traction"] if
                     t.get("source_independence") == "INDEPENDENT_OF_REVENUE_PLATFORM"
                     and t.get("checked_at") == "2026-10-18"
                     and t.get("value") not in (None, "")
                     and t.get("estimated") is False
                     and urlsplit(t.get("url", "")).hostname in approved_t_hosts
-                    and urlsplit(t.get("url", "")).hostname != site
+                    and urlsplit(t.get("url", "")).hostname not in payment_hosts
                     and any(s["level"] == "T" and s["url"] == t["url"]
                             for s in p["sources"])]
                 self.assertTrue(good, "缺独立第三方平台原页T证据")
