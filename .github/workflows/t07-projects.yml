@@ -65,7 +65,15 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          from scripts.release.t08_project_selection import projects
+          import json
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, "scripts/release")
+          from t08_project_selection import projects, review_preview
+          raw = json.loads(Path("data/projects.json").read_text(encoding="utf-8"))
+          assert len(raw) == 30
+          assert sum(p["reviewed_by_hark"] is False for p in raw) == 10
+          assert not review_preview(), "production unexpectedly has feature preview privilege"
           try:
               projects()
           except ValueError as error:
