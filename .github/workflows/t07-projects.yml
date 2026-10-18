@@ -55,7 +55,7 @@ jobs:
           # test_t07_static.py above separately rejects all extra project IDs.
           python tests/verify_t08_home_snapshot.py web/dist/index.html
           cmp -s _redirects web/dist/_redirects
-      - name: Simulate main/production build without feature-branch preview exemption
+      - name: Simulate main/production gate rejects ten Hark-pending records
         env:
           CI: "true"
           GITHUB_ACTIONS: "true"
@@ -64,10 +64,16 @@ jobs:
           GITHUB_HEAD_REF: ""
         run: |
           set -euo pipefail
-          python scripts/release/p412_build_public.py
-          python tests/test_t07_static.py
-          python tests/test_t08_data.py
-          echo "PASS T08 production/main simulated build: 20 PUBLIC reviewed records"
+          python - <<'PY'
+          from scripts.release.t08_project_selection import projects
+          try:
+              projects()
+          except ValueError as error:
+              assert "Unapproved project records cannot publish to main" in str(error)
+              print("PASS T10 production/main fail-closed: pending records rejected")
+          else:
+              raise SystemExit("FAIL: main published Hark-pending T10 records")
+          PY
 
       - name: Chromium responsive audit and six screenshots
         run: |
