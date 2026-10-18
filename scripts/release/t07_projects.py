@@ -301,7 +301,7 @@ def project_card(project: dict) -> str:
     revenue = project["revenue"]
     pid = esc(project["id"])
     mrr = "" if revenue["mrr"] is None else str(revenue["mrr"])
-    return f"""<article class="project" data-project data-name="{esc(project['name'])}" data-category="{esc(public_copy(project['category']))}"
+    return f"""<article class="project" data-project data-name="{esc(project['name'])}" data-category="{esc(project['category'])}"
 data-verdict="{esc(project['verdict'])}" data-evidence="{esc(project['evidence_level'])}"
 data-score="{esc(project['total_score'])}" data-mrr="{esc(mrr)}" data-last30="{esc(revenue['last_30d'])}">
 <div class="category">{esc(public_copy(project['category']))}</div>
