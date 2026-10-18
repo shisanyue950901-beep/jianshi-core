@@ -73,6 +73,11 @@ jobs:
           raw = json.loads(Path("data/projects.json").read_text(encoding="utf-8"))
           assert len(raw) == 30
           assert sum(p["reviewed_by_hark"] is False for p in raw) == 10
+          import os
+          print("GATE DEBUG:", {name: os.getenv(name) for name in
+              ("CI", "GITHUB_ACTIONS", "GITHUB_HEAD_REF", "GITHUB_REF_NAME", "CF_PAGES_BRANCH", "CF_PAGES")})
+          print("GATE MODULE:", str(__import__("t08_project_selection").__file__))
+          print("GATE RESULT:", review_preview())
           assert not review_preview(), "production unexpectedly has feature preview privilege"
           try:
               projects()
