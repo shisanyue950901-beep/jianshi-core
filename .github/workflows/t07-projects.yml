@@ -62,6 +62,8 @@ jobs:
           # Replace obsolete named-case fixture with the reviewed JSON ranking gate.
           # test_t07_static.py above separately rejects all extra project IDs.
           python tests/verify_t08_home_snapshot.py web/dist/index.html
+          grep -q 'href="/sprint/"' web/dist/index.html
+          test -f web/dist/sprint/index.html
           cmp -s _redirects web/dist/_redirects
       - name: Simulate main/production build with Hark-approved records
         env:
