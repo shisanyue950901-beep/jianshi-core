@@ -162,13 +162,56 @@ class T08bSourcesTest(unittest.TestCase):
                 self.assertLessEqual(len(p["one_liner_cn"]), 30)
                 self.assertLessEqual(len(p["cn_angle"]), 50)
                 self.assertLessEqual(len(p["risks"]), 50)
-                self.assertFalse(p["reviewed_by_hark"])
-                self.assertEqual(p["publication_status"], "PRIVATE_REVIEW_ONLY")
+                self.assertTrue(p["reviewed_by_hark"])
+                self.assertEqual(p["publication_status"], "PUBLIC")
                 self.assertIsNone(p["customers"])
-                self.assertIsNone(p["growth_30d"])
+                self.assertTrue(p["growth_30d"] is None or
+                                isinstance(p["growth_30d"], (int, float)))
                 self.assertEqual(p["last_verified_at"], "2026-10-18")
                 self.assertTrue(p["flags"])
                 self.assertTrue(p["tech_stack_guess"])
+
+    def test_t10_hark_corrected_financial_provenance(self) -> None:
+        by_id = {p["id"]: p for p in T10_NEW}
+        totals = {
+            "myfeedin": 30843, "superx": 254578, "ai-toolbox": 113519,
+            "rapidnative": 74805, "rooftops-ai": 25851, "rezi": 10365680,
+        }
+        growth = {"myfeedin": 55, "superx": 25, "compresto": 46,
+                  "rooftops-ai": 389, "blipix": 29}
+        sale = {"ai-toolbox": 800000, "truesearch": 85000,
+                "rooftops-ai": 48000, "blipix": 100000}
+        self.assertEqual(set(totals) | {"practiceme", "compresto", "truesearch", "blipix"},
+                         set(by_id))
+        for pid, p in by_id.items():
+            with self.subTest(project=pid):
+                self.assertEqual(p["revenue"]["all_time"], totals.get(pid, None) if
+                                 pid not in {"compresto","truesearch","blipix"} else
+                                 {"compresto":62497,"truesearch":23318,"blipix":38277}[pid])
+                self.assertEqual(p["growth_30d"], growth.get(pid))
+                self.assertNotIn("页面文本未可复核累计值均留空", p["review_notes"])
+                if pid in totals:
+                    self.assertFalse(any("累计收入" in flag and
+                                         ("null" in flag or "未展示" in flag)
+                                         for flag in p["flags"]))
+        self.assertEqual(by_id["rooftops-ai"]["traction"][0]["value"], 79)
+        self.assertTrue(any("79" in s["label"] for s in by_id["rooftops-ai"]["sources"]
+                            if s["level"] == "T"))
+        self.assertEqual(by_id["blipix"]["traction"][0]["value"], 5)
+        self.assertTrue(any("5条" in s["label"] and "4.0" in s["label"]
+                            for s in by_id["blipix"]["sources"] if s["level"] == "T"))
+        self.assertIn("MRR 仅 $215，近30天收入主要为一次性买断",
+                      by_id["compresto"]["flags"])
+        self.assertIn("MRR $1,334 远低于近30天 $21,001，收入主要来自终身买断，非订阅",
+                      by_id["ai-toolbox"]["flags"])
+        self.assertIn("近30天环比 +389%，基数小，波动大",
+                      by_id["rooftops-ai"]["flags"])
+        for pid, amount in sale.items():
+            self.assertEqual(by_id[pid]["for_sale"]["asking_price"], amount)
+            self.assertIn(f"TrustMRR 在售：${amount:,}".replace("\$","$"), by_id[pid]["flags"])
+        for pid in ("truesearch","rezi"):
+            self.assertNotIn("108条" if pid=="truesearch" else "$217,419",
+                             json.dumps(by_id[pid]["flags"],ensure_ascii=False))
 
     def test_no_private_collection_or_api_endpoint_leaks(self) -> None:
         serialized = json.dumps(RECORDS, ensure_ascii=False).lower()

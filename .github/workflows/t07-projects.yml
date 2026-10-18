@@ -55,7 +55,7 @@ jobs:
           # test_t07_static.py above separately rejects all extra project IDs.
           python tests/verify_t08_home_snapshot.py web/dist/index.html
           cmp -s _redirects web/dist/_redirects
-      - name: Simulate main/production gate rejects ten Hark-pending records
+      - name: Simulate main/production build with Hark-approved records
         env:
           CI: "true"
           GITHUB_ACTIONS: "true"
@@ -67,6 +67,7 @@ jobs:
           python - <<'PY'
           import json
           import os
+          import subprocess
           import sys
           from pathlib import Path
           from unittest.mock import patch
@@ -74,23 +75,23 @@ jobs:
           from t08_project_selection import projects, review_preview
           raw = json.loads(Path("data/projects.json").read_text(encoding="utf-8"))
           assert len(raw) == 30
-          assert sum(p["reviewed_by_hark"] is False for p in raw) == 10
-          # GitHub GITHUB_HEAD_REF and GITHUB_REF_NAME are protected.
-          # Job-level env overrides cannot remove PR context, so mock inside Python.
+          assert all(p["reviewed_by_hark"] is True and p["publication_status"] == "PUBLIC" for p in raw)
+          # GitHub PR refs are protected; override within subprocess context to model main.
           with patch.dict(os.environ, {
               "CI": "true", "GITHUB_ACTIONS": "true",
               "CF_PAGES_BRANCH": "main", "GITHUB_REF_NAME": "main",
               "GITHUB_HEAD_REF": "",
           }):
               assert not review_preview(), "production unexpectedly has feature preview privilege"
-              try:
-                  projects()
-              except ValueError as error:
-                  assert "Unapproved project records cannot publish to main" in str(error)
-                  print("PASS T10 production/main fail-closed: pending records rejected")
-              else:
-                  raise SystemExit("FAIL: main published Hark-pending T10 records")
+              loaded = projects()
+              assert len(loaded) == 30
+              subprocess.run([sys.executable, "scripts/release/p412_build_public.py"], check=True)
+              assert len([p for p in (Path("web/dist")/"projects").iterdir() if p.is_dir()]) == 30
+              assert (Path("web/dist")/"projects"/"ai-toolbox"/"index.html").exists()
+              print("PASS T10 simulated main build: 30 reviewed PUBLIC records; 31 project pages")
           PY
+          python tests/test_t07_static.py
+          python tests/verify_t08_home_snapshot.py web/dist/index.html
 
       - name: Chromium responsive audit and six screenshots
         run: |

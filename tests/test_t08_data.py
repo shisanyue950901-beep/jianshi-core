@@ -115,16 +115,29 @@ class TestT08(unittest.TestCase):
         import os
         from unittest.mock import patch
         from t08_project_selection import projects
+        import tempfile
+        from unittest.mock import patch
+        import t08_project_selection as selector
         with patch.dict(os.environ,{
             "CI":"true", "GITHUB_ACTIONS":"true",
             "CF_PAGES_BRANCH":"main", "GITHUB_HEAD_REF":"",
             "GITHUB_REF_NAME":"main",
         }):
-            with self.assertRaisesRegex(ValueError, "Unapproved project records"):
-                from t08_project_selection import projects
-                projects()
+            self.assertFalse(selector.review_preview())
+            public = projects()
+            self.assertEqual(len(public), 30)
+            self.assertTrue(all(p["reviewed_by_hark"] and p["publication_status"] == "PUBLIC" for p in public))
             self.assertEqual(len(self.historic), 20)
-            self.assertTrue(all(p["reviewed_by_hark"] and p["publication_status"] == "PUBLIC" for p in self.historic))
+            # Negative mutation: a single reverted Hark approval must still fail closed in main.
+            modified = json.loads(DATA.read_text(encoding="utf-8"))
+            modified[-1]["reviewed_by_hark"] = False
+            modified[-1]["publication_status"] = "PRIVATE_REVIEW_ONLY"
+            with tempfile.TemporaryDirectory() as workdir:
+                pending_path = Path(workdir) / "pending.json"
+                pending_path.write_text(json.dumps(modified, ensure_ascii=False), encoding="utf-8")
+                with patch.object(selector, "DATA", pending_path):
+                    with self.assertRaisesRegex(ValueError, "Unapproved project records"):
+                        projects()
 
     def test_home_and_discovery_are_exactly_json_top_three(self):
         winners=sorted(self.data,key=lambda p:(-p["total_score"],-p["revenue"]["last_30d"],p["id"]))[:3]
