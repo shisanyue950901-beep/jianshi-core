@@ -28,3 +28,12 @@
 - 支付平台API连接/收入由TrustMRR公开页面声称，**不代表见势独立财务审计**；Chrome安装档位、Product Hunt关注数、App Store评分和Trustpilot评价不等于付费人数。
 - 本轮只使用已公开的有限事实并标注出处，不调用TrustMRR API、不使用密钥；保留适用平台条款风险说明，不另外把书面许可申请设为此PR的技术CI闸门。
 - PR的`PUBLIC`编辑状态不是对`main`的合并授权。必须以本次修正后的**真实PR HEAD**对应GitHub CI为准，Hark复查后另行决定是否squash。未经明确「Hark 已批准，请 squash 合并 #189」不得合并main。
+
+## Hark站外牵引力原页最终复核（2026-10-18）
+- Compresto：Product Hunt 原页 10 条评价。
+- RapidNative：Product Hunt 原页 222 关注者。
+- Rooftops AI：Product Hunt 原页 79 关注者。
+- Blipix：Trustpilot 原页 5 条评价、4.0 分。
+- Rezi：Product Hunt 原页 5 条评价。
+
+上述五项经Hark于2026-10-18人工核对，已替换项目详情页中误称“尚未完成站外原页复核”的过期flags。指标为第三方牵引力，不代表收入或付费人数。原有10条项目数据、五维评分和PUBLIC审核状态不变。

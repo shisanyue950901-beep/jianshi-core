@@ -233,6 +233,25 @@ class T08bSourcesTest(unittest.TestCase):
             self.assertNotIn("108条" if pid=="truesearch" else "$217,419",
                              json.dumps(by_id[pid]["flags"],ensure_ascii=False))
 
+    def test_t10_hark_verified_traction_flags_are_fresh(self) -> None:
+        """Hark's 2026-10-18 independent T review replaces five stale site-block notices."""
+        expected = {
+            "compresto": "Hark 已于 2026-10-18 复核 Product Hunt 原页：10 条评价",
+            "rapidnative": "Hark 已于 2026-10-18 复核 Product Hunt 原页：222 关注者",
+            "rooftops-ai": "Hark 已于 2026-10-18 复核 Product Hunt 原页：79 关注者",
+            "blipix": "Hark 已于 2026-10-18 复核 Trustpilot 原页：5 条评价、4.0 分",
+            "rezi": "Hark 已于 2026-10-18 复核 Product Hunt 原页：5 条评价",
+        }
+        current = {p["id"]: p for p in T10_NEW}
+        for pid, note in expected.items():
+            with self.subTest(project=pid):
+                self.assertIn(note, current[pid]["flags"])
+                self.assertTrue(current[pid]["reviewed_by_hark"])
+                self.assertEqual(current[pid]["publication_status"], "PUBLIC")
+        for p in T10_NEW:
+            self.assertFalse(any("T10站外T原页现场复核受平台自动访问限制" in note
+                                 for note in p["flags"]), p["id"])
+
     def test_no_private_collection_or_api_endpoint_leaks(self) -> None:
         serialized = json.dumps(RECORDS, ensure_ascii=False).lower()
         self.assertNotIn("trustmrr_api_key", serialized)
