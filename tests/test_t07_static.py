@@ -49,7 +49,7 @@ def check():
         for key in ("mrr","last_30d","all_time"):
             assert html.escape(money(rev[key],rev["currency"])) in page, f"{rid} detail {key}"
         for field in ("name","category","one_liner_cn","business_model","price_point","risks","cn_angle","verdict","risk_public"):
-            assert html.escape(public_copy(p[field]),quote=True) in page, f"{rid} {field}"
+            assert html.escape(p[field] if field=="name" else public_copy(p[field]),quote=True) in page, f"{rid} {field}"
         assert html.escape(str(rev["verified_by"])) in page
         assert chinese_date(rev["as_of"]) in page and chinese_date(p["founded_date"]) in page
         assert (("未公开" if p["customers"] is None else str(p["customers"])) in page)

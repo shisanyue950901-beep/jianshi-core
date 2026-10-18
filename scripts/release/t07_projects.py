@@ -107,7 +107,7 @@ def public_copy(value: object) -> str:
         ("SEO","搜索排名"),("MVP","最简可用产品"),
         ("demo","演示版"),("SaaS","在线订阅软件"),
     ):
-        output = re.sub(r"(?<![a-zA-Z])" + re.escape(old) + r"(?![a-zA-Z])",new,output)
+        output = re.sub(r"(?<![a-zA-Z0-9])" + re.escape(old) + r"(?![a-zA-Z0-9])",new,output)
     return output
 
 
