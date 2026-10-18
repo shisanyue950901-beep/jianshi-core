@@ -52,6 +52,10 @@ body{overflow-x:hidden}
 #j2 .j2-footer-links{display:flex;flex-wrap:wrap;gap:19px}
 #j2 .j2-footer-links a{font-size:13px;color:#b2c6e8;text-decoration:underline;text-underline-offset:4px}
 #j2 :target{scroll-margin-top:90px}
+#j2 .j2-roadmap{display:flex;gap:12px;align-items:center;justify-content:center;padding:11px 20px;background:#13243c;border-bottom:1px solid #304262;color:#cbd7eb;flex-wrap:wrap;font-size:12px}
+#j2 .j2-roadmap a{color:#dad5ff;text-decoration:underline;text-underline-offset:3px;font-weight:800}
+#j2 .j2-roadmap span{white-space:nowrap}
+@media(max-width:600px){#j2 .j2-roadmap{font-size:11px;gap:7px;padding:10px 6px}}
 @media(max-width:1080px){#j2 .j2-nav{display:none}#j2 .j2-mobile{display:block}}
 @media(max-width:760px){#j2 .j2-footer-inner{flex-direction:column;gap:15px}#j2 .j2-top-inner{min-height:64px}#j2 .j2-brand{font-size:22px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#j2 .j2-shortcut,#j2 .j2-button{animation:none;transition:none}}
@@ -71,6 +75,7 @@ def build_home(cases: list[dict]) -> str:
         '<a href="#j2-marketplace">商机大厅</a>'
         '<a href="#j2-talent">人才与服务商</a>'
         '<a href="#j2-academy">AI 学院</a>'
+        '<a class="j2-nav-secondary" href="/sprint/">30 天冲刺</a>'
         '<a class="j2-nav-secondary" href="/sources/">证据与来源</a>'
         '</nav><a class="j2-account-cta" href="/account/" aria-label="进入见势注册与登录">登录 / 注册</a>'
         '<details class="j2-mobile"><summary aria-label="展开主要导航">☰ 菜单</summary>'
@@ -80,6 +85,7 @@ def build_home(cases: list[dict]) -> str:
         '<a href="#j2-marketplace">商机大厅</a>'
         '<a href="#j2-talent">人才与服务商</a>'
         '<a href="#j2-academy">AI 学院</a>'
+        '<a href="/sprint/">30 天冲刺</a>'
         '<a href="/sources/">证据与来源</a>'
         '<a href="/account/">登录 / 注册</a>'
         '</nav></details></div></header>'
@@ -92,12 +98,19 @@ def build_home(cases: list[dict]) -> str:
         '<nav class="j2-footer-links" aria-label="其他信息">'
         '<a href="/discover/">内容发现与筛选</a>'
         '<a href="/projects/">具名研究案例</a>'
+        '<a href="/sprint/">30 天冲刺手册</a>'
         '<a href="/research/">匿名研究库</a>'
         '<a href="/validation/">证据边界</a>'
         '<a href="/privacy/">隐私政策</a>'
         '<a href="/account/">账户入口</a></nav>'
         '</div></footer>'
     )
+    nav += ('<div class="j2-roadmap" aria-label="第一笔收入四步路线">'
+            '<span>01　<a href="/projects/">对标</a></span><span>→</span>'
+            '<span>02　<a href="/sprint/#step0">诊断</a></span><span>→</span>'
+            '<span>03　<a href="/sprint/">冲刺</a></span><span>→</span>'
+            '<span>04　<a href="/sprint/#week4">验证</a></span>'
+            '</div>')
     portal = portal.replace('<section id="j2" aria-label="见势 2.0 商业机会与解决方案门户">',
                             '<section id="j2" aria-label="见势 2.0 商业机会与解决方案门户">' + nav, 1)
     portal = portal[:-len("</section>")] + footer + "</section>"

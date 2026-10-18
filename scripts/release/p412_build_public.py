@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 from p423_build_project_proofs import build as build_project_proofs, parse_cases
 from t07_projects import build as build_t07_projects
+from t11_sprint import publish as publish_t11_sprint
 from p425_public_admission import eligible_cases
 from p429_build_source_atlas import build as build_source_atlas
 from p445_unified_home import build_home as build_jianshi2_home
@@ -255,6 +256,9 @@ def build_release() -> dict:
     if t07_result["pages"] != t07_result["projects"] + 1:
         raise RuntimeError("T07 static project generation incomplete")
 
+    sprint_page = publish_t11_sprint(OUTPUT)
+    if not sprint_page.is_file():
+        raise RuntimeError("T11 sprint static page missing")
     discovery_entries = publish_discovery(OUTPUT)
     if discovery_entries != 17:
         raise RuntimeError("G2-A public discovery catalogue incomplete")
@@ -302,6 +306,7 @@ def build_release() -> dict:
         f"<url><loc>{SITE}/validation/</loc></url>"
         f"<url><loc>{SITE}/sources/</loc></url>"
         f"<url><loc>{SITE}/projects/</loc></url>"
+        f"<url><loc>{SITE}/sprint/</loc></url>"
         + "".join(f"<url><loc>{SITE}/projects/{p.name}/</loc></url>" for p in sorted((OUTPUT/"projects").iterdir()) if p.is_dir())
         + ''.join(f'<url><loc>{SITE}/{route}</loc></url>' for route in CONTENT_PAGES)
         + ''.join(f'<url><loc>{SITE}/{route}</loc></url>' for route in DRAFT_PAGES)
@@ -334,6 +339,7 @@ def build_release() -> dict:
         "anonymous_studies": anonymous_studies,
         "public_content_guides": content_guides,
         "discovery_entries": discovery_entries,
+        "t11_sprint": "sprint/index.html",
         "founder_start_pages": founder_start_pages,
         "g2c_related_quality": related_quality,
         "local_draft_tools": local_draft_tools,
