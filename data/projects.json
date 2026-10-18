@@ -2665,7 +2665,7 @@
         "checked_at": "2026-10-18"
       },
       {
-        "label": "Product Hunt原始产品页：Product Hunt 1条评价（弱牵引力）",
+        "label": "Product Hunt原始产品页：74关注者（不等于付费客户）",
         "level": "T",
         "url": "https://www.producthunt.com/products/rooftops-ai",
         "checked_at": "2026-10-18"
@@ -2673,8 +2673,8 @@
     ],
     "traction": [
       {
-        "type": "product_hunt_review_count",
-        "value": 1,
+        "type": "product_hunt_followers",
+        "value": 74,
         "url": "https://www.producthunt.com/products/rooftops-ai",
         "estimated": false,
         "checked_at": "2026-10-18",
@@ -2686,7 +2686,7 @@
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "Product Hunt仅1条评价，证据虽独立但不能说明大量活跃客户。"
+      "Product Hunt 74关注者系独立平台关注信号，不能证明付费、活跃或产品实用性；另有1条评价为创始人发表。"
     ],
     "for_sale": {
       "listed": false,
