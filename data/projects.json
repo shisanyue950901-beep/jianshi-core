@@ -2148,7 +2148,6 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "T10原页重核：收入页上游Last updated Oct 18 02:14 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。"
     ],
     "for_sale": {
@@ -2185,10 +2184,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$2586、meta MRR=$1350，Last updated Oct 18 02:14 AM 2026；Hark已复核公开页累计收入为$30,843。 Hark复核All-time revenue $30,843，已回填revenue.all_time。 Hark核对公开页月环比+55%，已回填growth_30d。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$2586、meta MRR=$1350，Last updated Oct 18 02:14 AM 2026；Hark已复核公开页累计收入为$30,843。 Hark复核All-time revenue $30,843，已回填revenue.all_time。 Hark复核TrustMRR公开.md：Founded 2024-06-11；Last 30 days revenue growth +54.5%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2024-06-01",
-    "growth_30d": 55,
+    "founded_date": "2024-06-11",
+    "growth_30d": 54.5,
     "customers": null
   },
   {
@@ -2237,7 +2236,6 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "T10原页重核：收入页上游Last updated Oct 18 02:04 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。"
     ],
     "for_sale": {
@@ -2274,10 +2272,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$21824、meta MRR=$22420，Last updated Oct 18 02:04 AM 2026；Hark已复核公开页累计收入为$254,578。 Hark复核All-time revenue $254,578，已回填revenue.all_time。 Hark核对公开页月环比+25%，已回填growth_30d。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$21824、meta MRR=$22420，Last updated Oct 18 02:04 AM 2026；Hark已复核公开页累计收入为$254,578。 Hark复核All-time revenue $254,578，已回填revenue.all_time。 Hark复核TrustMRR公开.md：Founded 2025-08-14；Last 30 days revenue growth +25.5%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2025-08-01",
-    "growth_30d": 25,
+    "founded_date": "2025-08-14",
+    "growth_30d": 25.5,
     "customers": null
   },
   {
@@ -2326,7 +2324,6 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "Product Hunt原slug为CompressX，但该页面现标题Compresto且域名同为compresto.app。",
       "T10原页重核：收入页上游Last updated Oct 18 03:38 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
       "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。",
@@ -2366,10 +2363,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$1935、meta MRR=$215，Last updated Oct 18 03:38 AM 2026；公开页累计收入为$62,497，Hark已复核。 Hark核对公开页月环比+46%，已回填growth_30d。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$1935、meta MRR=$215，Last updated Oct 18 03:38 AM 2026；公开页累计收入为$62,497，Hark已复核。 Hark复核TrustMRR公开.md：Founded 2023-12-18；Last 30 days revenue growth +46.4%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2023-12-01",
-    "growth_30d": 46,
+    "founded_date": "2023-12-18",
+    "growth_30d": 46.4,
     "customers": null
   },
   {
@@ -2388,7 +2385,7 @@
       "verified_by": "LemonSqueezy",
       "source_last_synced": "2026-10-18"
     },
-    "team_size": 2,
+    "team_size": null,
     "evidence_level": "A",
     "sources": [
       {
@@ -2424,10 +2421,10 @@
       "TrustMRR产品原页与其.md同属同一财务平台，不可冒充双A。",
       "付费客户集中度、支付账号共用状况未知，未独立审计。",
       "Chrome商店40,000 users是显示档位下限，非精确用户数、更非付费人数。",
-      "成立日期来自公司第一方自述2024年9月，按月初录入，已成立满90天。",
       "公开页2026-10-18显示Last updated: Oct 18 02:56 AM（时区未标）；title 30d=$21,001、meta MRR=$1,334。",
       "MRR $1,334 远低于近30天 $21,001，收入主要来自终身买断，非订阅",
-      "TrustMRR 在售：$800,000"
+      "TrustMRR 在售：$800,000",
+      "来源团队规模 2–5 人"
     ],
     "for_sale": {
       "listed": true,
@@ -2464,10 +2461,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10 2026-10-18公开HTML重核：A页LemonSqueezy付款API连接、最新30天收入$21,001、MRR$1,334，上游页面显示2026-10-18 02:56 AM；Chrome Web Store直接展示40,000用户档位；开发商自报2024年9月创立。公开收入非见势独立财务审计；Hark已审核数据，PR仍待最终授权合并。 Hark复核All-time revenue $113,519，已回填revenue.all_time。",
+    "review_notes": "T10 2026-10-18公开HTML重核：A页LemonSqueezy付款API连接、最新30天收入$21,001、MRR$1,334，上游页面显示2026-10-18 02:56 AM；Chrome Web Store直接展示40,000用户档位；成立日期已按TrustMRR公开.md精确到日。公开收入非见势独立财务审计；Hark已审核数据，PR仍待最终授权合并。 Hark复核All-time revenue $113,519，已回填revenue.all_time。 Hark复核TrustMRR公开.md：Founded 2024-09-08；Last 30 days revenue growth -2.7%（保留一位小数）。 团队规模来源显示2–5人，非精确值，team_size设为null。",
     "publication_status": "PUBLIC",
-    "founded_date": "2024-09-01",
-    "growth_30d": null,
+    "founded_date": "2024-09-08",
+    "growth_30d": -2.7,
     "customers": null
   },
   {
@@ -2516,11 +2513,11 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "App Store出现订阅取消困难投诉，属于用户评论未经裁定。",
       "T10原页重核：收入页上游Last updated Oct 18 04:08 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
       "Apple App Store当天显示134个评分，与收入平台转引124个不同，优先独立平台指标。",
-      "TrustMRR 在售：$85,000"
+      "TrustMRR 在售：$85,000",
+      "近30天收入 -19.2%"
     ],
     "for_sale": {
       "listed": true,
@@ -2555,10 +2552,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$2934、meta MRR=$3107，Last updated Oct 18 04:08 AM 2026；公开页累计收入为$23,318，Hark已复核。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$2934、meta MRR=$3107，Last updated Oct 18 04:08 AM 2026；公开页累计收入为$23,318，Hark已复核。 Hark复核TrustMRR公开.md：Founded 2025-12-10；Last 30 days revenue growth -19.2%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2025-12-01",
-    "growth_30d": null,
+    "founded_date": "2025-12-10",
+    "growth_30d": -19.2,
     "customers": null
   },
   {
@@ -2607,7 +2604,6 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "收入页slug是shaper-studio-inc，公开页面显示名称RapidNative且链接rapidnative.com。",
       "T10原页重核：收入页上游Last updated Oct 18 02:05 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
       "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。"
@@ -2646,10 +2642,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$6074、meta MRR=$5301，Last updated Oct 18 02:05 AM 2026；Hark已复核公开页累计收入为$74,805。 Hark复核All-time revenue $74,805，已回填revenue.all_time。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$6074、meta MRR=$5301，Last updated Oct 18 02:05 AM 2026；Hark已复核公开页累计收入为$74,805。 Hark复核All-time revenue $74,805，已回填revenue.all_time。 Hark复核TrustMRR公开.md：Founded 2025-03-06；Last 30 days revenue growth -7.1%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2025-03-01",
-    "growth_30d": null,
+    "founded_date": "2025-03-06",
+    "growth_30d": -7.1,
     "customers": null
   },
   {
@@ -2698,11 +2694,10 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "Product Hunt 79关注者系独立平台关注信号，不能证明付费、活跃或产品实用性；另有1条评价为创始人发表。",
       "T10原页重核：收入页上游Last updated Oct 17 11:17 PM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
       "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。",
-      "近30天环比 +389%，基数小，波动大",
+      "近30天环比 +388.5%，基数小，波动大",
       "TrustMRR 在售：$48,000"
     ],
     "for_sale": {
@@ -2740,10 +2735,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$2379、meta MRR=$1124，Last updated Oct 17 11:17 PM 2026；Hark已复核公开页累计收入为$25,851。 Hark复核All-time revenue $25,851，已回填revenue.all_time。 Hark核对公开页月环比+389%，已回填growth_30d。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$2379、meta MRR=$1124，Last updated Oct 17 11:17 PM 2026；Hark已复核公开页累计收入为$25,851。 Hark复核All-time revenue $25,851，已回填revenue.all_time。 Hark复核TrustMRR公开.md：Founded 2024-01-01；Last 30 days revenue growth +388.5%（保留一位小数）。",
     "publication_status": "PUBLIC",
     "founded_date": "2024-01-01",
-    "growth_30d": 389,
+    "growth_30d": 388.5,
     "customers": null
   },
   {
@@ -2792,7 +2787,6 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "Trustpilot评价是使用线索，存在样本偏差，不等于5个付费用户。",
       "T10原页重核：收入页上游Last updated Oct 18 02:19 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
       "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。",
@@ -2834,10 +2828,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$1722、meta MRR=$1517，Last updated Oct 18 02:19 AM 2026；公开页累计收入为$38,277，Hark已复核。 Hark核对公开页月环比+29%，已回填growth_30d。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$1722、meta MRR=$1517，Last updated Oct 18 02:19 AM 2026；公开页累计收入为$38,277，Hark已复核。 Hark复核TrustMRR公开.md：Founded 2025-02-08；Last 30 days revenue growth +28.8%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2025-02-01",
-    "growth_30d": 29,
+    "founded_date": "2025-02-08",
+    "growth_30d": 28.8,
     "customers": null
   },
   {
@@ -2886,7 +2880,6 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "近30天$214,250超过历史T04初筛$50k上限，但当前T10任务卡只规定下限，保留作低复刻性参考。",
       "已披露VC-backed、用户和收入量级巨大，不代表个人可复制。",
       "T10原页重核：收入页上游Last updated Oct 18 02:14 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
@@ -2926,10 +2919,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$214250、meta MRR=$246345，Last updated Oct 18 02:14 AM 2026；Hark已复核公开页累计收入为$10,365,680。 Hark复核All-time revenue $10,365,680，已回填revenue.all_time。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$214250、meta MRR=$246345，Last updated Oct 18 02:14 AM 2026；Hark已复核公开页累计收入为$10,365,680。 Hark复核All-time revenue $10,365,680，已回填revenue.all_time。 Hark复核TrustMRR公开.md：Founded 2015-05-22；Last 30 days revenue growth -6.0%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2015-05-01",
-    "growth_30d": null,
+    "founded_date": "2015-05-22",
+    "growth_30d": -6,
     "customers": null
   },
   {
@@ -2942,7 +2935,7 @@
     "revenue": {
       "mrr": 2956,
       "last_30d": 3922,
-      "all_time": null,
+      "all_time": 24717,
       "currency": "USD",
       "as_of": "2026-10-18",
       "verified_by": "RevenueCat",
@@ -2978,10 +2971,9 @@
       "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "公开来源未显示可精确摘录的历史累计收入，置null。",
       "App Store仅1条评价，属于弱但真实独立牵引力。",
-      "T10原页重核：收入页上游Last updated Oct 18 04:30 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。"
+      "T10原页重核：收入页上游Last updated Oct 18 04:30 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "近30天收入 -23.8%"
     ],
     "for_sale": {
       "listed": false,
@@ -3017,10 +3009,10 @@
     "reviewed_by_hark": true,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$3922、meta MRR=$2956，Last updated Oct 18 04:30 AM 2026；公开页累计收入未提供可确认数字，保留null。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。Hark已完成T10有条件内容复核，记录标记PUBLIC；PR仍待最终验收及独立合并授权。 T10 2026-10-18公开HTML再核，原页Title 30d=$3922、meta MRR=$2956，Last updated Oct 18 04:30 AM 2026；Hark从TrustMRR公开.md确认累计收入$24,717，已填充all_time。 Hark复核TrustMRR公开.md：Founded 2025-09-03；Last 30 days revenue growth -23.8%（保留一位小数）。",
     "publication_status": "PUBLIC",
-    "founded_date": "2025-09-01",
-    "growth_30d": null,
+    "founded_date": "2025-09-03",
+    "growth_30d": -23.8,
     "customers": null
   }
 ]

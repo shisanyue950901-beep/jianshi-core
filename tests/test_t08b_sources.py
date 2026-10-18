@@ -175,10 +175,21 @@ class T08bSourcesTest(unittest.TestCase):
         by_id = {p["id"]: p for p in T10_NEW}
         totals = {
             "myfeedin": 30843, "superx": 254578, "ai-toolbox": 113519,
-            "rapidnative": 74805, "rooftops-ai": 25851, "rezi": 10365680,
+            "rapidnative": 74805, "rooftops-ai": 25851, "rezi": 10365680, "practiceme": 24717,
         }
-        growth = {"myfeedin": 55, "superx": 25, "compresto": 46,
-                  "rooftops-ai": 389, "blipix": 29}
+        growth = {
+            "myfeedin": 54.5, "superx": 25.5, "compresto": 46.4,
+            "rooftops-ai": 388.5, "blipix": 28.8, "ai-toolbox": -2.7,
+            "truesearch": -19.2, "rapidnative": -7.1, "rezi": -6.0,
+            "practiceme": -23.8,
+        }
+        founded = {
+            "myfeedin": "2024-06-11", "superx": "2025-08-14",
+            "compresto": "2023-12-18", "ai-toolbox": "2024-09-08",
+            "truesearch": "2025-12-10", "rapidnative": "2025-03-06",
+            "rooftops-ai": "2024-01-01", "blipix": "2025-02-08",
+            "rezi": "2015-05-22", "practiceme": "2025-09-03",
+        }
         sale = {"ai-toolbox": 800000, "truesearch": 85000,
                 "rooftops-ai": 48000, "blipix": 100000}
         self.assertEqual(set(totals) | {"practiceme", "compresto", "truesearch", "blipix"},
@@ -188,12 +199,21 @@ class T08bSourcesTest(unittest.TestCase):
                 self.assertEqual(p["revenue"]["all_time"], totals.get(pid, None) if
                                  pid not in {"compresto","truesearch","blipix"} else
                                  {"compresto":62497,"truesearch":23318,"blipix":38277}[pid])
-                self.assertEqual(p["growth_30d"], growth.get(pid))
+                self.assertEqual(p["growth_30d"], growth[pid])
+                self.assertEqual(p["founded_date"], founded[pid])
                 self.assertNotIn("页面文本未可复核累计值均留空", p["review_notes"])
+                self.assertFalse(any("成立日期仅公开到月份" in flag for flag in p["flags"]))
                 if pid in totals:
                     self.assertFalse(any("累计收入" in flag and
                                          ("null" in flag or "未展示" in flag)
                                          for flag in p["flags"]))
+        self.assertEqual(by_id["practiceme"]["revenue"]["all_time"], 24717)
+        self.assertIsNone(by_id["ai-toolbox"]["team_size"])
+        self.assertIn("来源团队规模 2–5 人", by_id["ai-toolbox"]["flags"])
+        self.assertIn("近30天收入 -19.2%", by_id["truesearch"]["flags"])
+        self.assertIn("近30天收入 -23.8%", by_id["practiceme"]["flags"])
+        self.assertIn("近30天环比 +388.5%，基数小，波动大",
+                      by_id["rooftops-ai"]["flags"])
         self.assertEqual(by_id["rooftops-ai"]["traction"][0]["value"], 79)
         self.assertTrue(any("79" in s["label"] for s in by_id["rooftops-ai"]["sources"]
                             if s["level"] == "T"))
@@ -204,7 +224,7 @@ class T08bSourcesTest(unittest.TestCase):
                       by_id["compresto"]["flags"])
         self.assertIn("MRR $1,334 远低于近30天 $21,001，收入主要来自终身买断，非订阅",
                       by_id["ai-toolbox"]["flags"])
-        self.assertIn("近30天环比 +389%，基数小，波动大",
+        self.assertIn("近30天环比 +388.5%，基数小，波动大",
                       by_id["rooftops-ai"]["flags"])
         for pid, amount in sale.items():
             self.assertEqual(by_id[pid]["for_sale"]["asking_price"], amount)
