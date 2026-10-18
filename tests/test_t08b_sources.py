@@ -18,6 +18,8 @@ sys.path.insert(0, str(ROOT / "scripts" / "release"))
 from t08_project_selection import featured_projects
 
 RECORDS = json.loads((ROOT / "data" / "projects.json").read_text(encoding="utf-8"))
+HISTORIC = RECORDS[:20]
+T10_NEW = RECORDS[20:]
 EXPECTED_TOP = ["1clickwebsite-ai", "sonar-aso-tool", "3dplotter"]
 CHECKED_ON = date(2026, 10, 16)
 NEW_INDEPENDENT_T = {
@@ -32,9 +34,11 @@ PENDING_INDEPENDENT_T = {
 
 class T08bSourcesTest(unittest.TestCase):
     def test_all_twenty_have_source_traction_flag_and_real_check_date(self) -> None:
-        self.assertEqual(len(RECORDS), 20)
-        self.assertEqual(len({p["id"] for p in RECORDS}), 20)
-        for p in RECORDS:
+        self.assertEqual(len(RECORDS), 30)
+        self.assertEqual(len(HISTORIC), 20)
+        self.assertEqual(len(T10_NEW), 10)
+        self.assertEqual(len({p["id"] for p in RECORDS}), 30)
+        for p in HISTORIC:
             with self.subTest(project=p["id"]):
                 sources = p.get("sources") or []
                 traction = p.get("traction") or []
