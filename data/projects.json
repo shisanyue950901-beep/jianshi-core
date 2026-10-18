@@ -2110,13 +2110,13 @@
     "one_liner_cn": "为领英创作者过滤信息流并分析互动",
     "target_user": "LinkedIn创作者与独立创始人",
     "revenue": {
-      "mrr": 1319,
-      "last_30d": 2733,
-      "all_time": 30732,
+      "mrr": 1350,
+      "last_30d": 2586,
+      "all_time": null,
       "currency": "USD",
-      "as_of": "2026-10-14",
+      "as_of": "2026-10-18",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-14"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2149,7 +2149,8 @@
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "收入页面标题$2,793与30日图表$2,733不一致；保留图表口径待Hark裁定。"
+      "T10原页重核：收入页上游Last updated Oct 18 02:14 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "累计收入当前原页文本未展示可核对的精确值，暂存null而非旧数字或0。"
     ],
     "for_sale": {
       "listed": false,
@@ -2185,7 +2186,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$2586、meta MRR=$1350，Last updated Oct 18 02:14 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2024-06-01",
     "growth_30d": null,
@@ -2199,13 +2200,13 @@
     "one_liner_cn": "为X创作者提供数据分析与定时发帖",
     "target_user": "X内容创作者与创业者",
     "revenue": {
-      "mrr": 22062,
-      "last_30d": 20632,
-      "all_time": 248109,
+      "mrr": 22420,
+      "last_30d": 21824,
+      "all_time": null,
       "currency": "USD",
-      "as_of": "2026-10-08",
+      "as_of": "2026-10-18",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-08"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2238,7 +2239,8 @@
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "收入页标题$21,053与图表$20,632不一致；采用图表值，须Hark复核。"
+      "T10原页重核：收入页上游Last updated Oct 18 02:04 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "累计收入当前原页文本未展示可核对的精确值，暂存null而非旧数字或0。"
     ],
     "for_sale": {
       "listed": false,
@@ -2274,7 +2276,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$21824、meta MRR=$22420，Last updated Oct 18 02:04 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2025-08-01",
     "growth_30d": null,
@@ -2288,13 +2290,13 @@
     "one_liner_cn": "让Mac用户离线压缩视频图片与PDF",
     "target_user": "Mac内容创作者与设计师",
     "revenue": {
-      "mrr": 205,
-      "last_30d": 1880,
-      "all_time": 62323,
+      "mrr": 215,
+      "last_30d": 1935,
+      "all_time": 62497,
       "currency": "USD",
-      "as_of": "2026-10-15",
+      "as_of": "2026-10-18",
       "verified_by": "Polar",
-      "source_last_synced": "2026-10-15"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2327,7 +2329,9 @@
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "Product Hunt原slug为CompressX，但该页面现标题Compresto且域名同为compresto.app。"
+      "Product Hunt原slug为CompressX，但该页面现标题Compresto且域名同为compresto.app。",
+      "T10原页重核：收入页上游Last updated Oct 18 03:38 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。"
     ],
     "for_sale": {
       "listed": false,
@@ -2363,100 +2367,107 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$1935、meta MRR=$215，Last updated Oct 18 03:38 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2023-12-01",
     "growth_30d": null,
     "customers": null
   },
   {
-    "id": "extrabar",
-    "name": "ExtraBar",
-    "url": "https://extrabar.app",
-    "category": "小App",
-    "one_liner_cn": "让Mac用户一键启动深链和自动化操作",
-    "target_user": "Mac开发者与高频办公用户",
+    "id": "ai-toolbox",
+    "name": "AI Toolbox",
+    "url": "https://www.ai-toolbox.co/",
+    "category": "浏览器插件",
+    "one_liner_cn": "为AI聊天添加文件夹、全文检索和导出",
+    "target_user": "ChatGPT、Claude、Gemini、Grok重度用户",
     "revenue": {
-      "mrr": null,
-      "last_30d": 1538,
-      "all_time": 12677,
+      "mrr": 1334,
+      "last_30d": 21001,
+      "all_time": null,
       "currency": "USD",
-      "as_of": "2026-09-05",
-      "verified_by": "Stripe",
-      "source_last_synced": "2026-09-05"
+      "as_of": "2026-10-18",
+      "verified_by": "LemonSqueezy",
+      "source_last_synced": "2026-10-18"
     },
-    "team_size": null,
+    "team_size": 2,
     "evidence_level": "A",
     "sources": [
       {
-        "label": "TrustMRR公开详情（Stripe付款连接标记；非见势独立审计）",
+        "label": "TrustMRR公开产品页：LemonSqueezy连接验证声明",
         "level": "A",
-        "url": "https://trustmrr.com/startup/extrabar",
+        "url": "https://trustmrr.com/startup/ai-toolbox",
         "checked_at": "2026-10-18"
       },
       {
-        "label": "Product Hunt原始产品页：Product Hunt 203关注者",
+        "label": "Chrome Web Store原始扩展页，40,000用户档位",
         "level": "T",
-        "url": "https://www.producthunt.com/products/extrabar",
+        "url": "https://chromewebstore.google.com/detail/ai-toolbox-folders-prompt/jlalnhjkfiogoeonamcnngdndjbneina",
+        "checked_at": "2026-10-18"
+      },
+      {
+        "label": "开发者公司简介，自述2024年9月成立",
+        "level": "B",
+        "url": "https://www.ai-toolbox.co/about",
         "checked_at": "2026-10-18"
       }
     ],
     "traction": [
       {
-        "type": "product_hunt_followers",
-        "value": 203,
-        "url": "https://www.producthunt.com/products/extrabar",
-        "estimated": false,
+        "type": "chrome_users_lower_bound",
+        "value": 40000,
+        "url": "https://chromewebstore.google.com/detail/ai-toolbox-folders-prompt/jlalnhjkfiogoeonamcnngdndjbneina",
+        "estimated": true,
         "checked_at": "2026-10-18",
         "source_independence": "INDEPENDENT_OF_REVENUE_PLATFORM"
       }
     ],
     "flags": [
-      "T10：TrustMRR公开详情与同站.md不可视为独立双A收入来源。",
-      "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
-      "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
-      "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "近30天财务同步于2026-09-05，超过30天，待更新。",
-      "MRR原页显示横线且无活跃订阅，不将未知值擅写成0。"
+      "TrustMRR产品原页与其.md同属同一财务平台，不可冒充双A。",
+      "付费客户集中度、支付账号共用状况未知，未独立审计。",
+      "Chrome商店40,000 users是显示档位下限，非精确用户数、更非付费人数。",
+      "成立日期来自公司第一方自述2024年9月，按月初录入，已成立满90天。",
+      "累计收入未在本次可读的公开页展示可核验数字，置null而非0。",
+      "TrustMRR在来源注册表为YELLOW，书面再展示许可未获确认，只允许Hark审稿。",
+      "公开页2026-10-18显示Last updated: Oct 18 02:56 AM（时区未标）；title 30d=$21,001、meta MRR=$1,334。"
     ],
     "for_sale": {
-      "listed": false,
-      "asking_price": null,
+      "listed": true,
+      "asking_price": 800000,
       "multiple": null,
-      "url": null
+      "url": "https://trustmrr.com/startup/ai-toolbox"
     },
-    "business_model": "一次性许可",
-    "price_point": "单机$28.99一次性许可",
+    "business_model": "订阅加终身买断",
+    "price_point": "$9.99/月、$99终身、四平台$199终身",
     "acquisition_channels": [
-      "Product Hunt",
-      "Reddit",
-      "SEO"
+      "Chrome Web Store",
+      "SEO",
+      "Product Hunt"
     ],
-    "tech_stack_guess": "平台公开列举Swift、SwiftUI、Stripe",
+    "tech_stack_guess": "推测：浏览器扩展注入、本地IndexedDB全文索引、订阅后端",
     "scores": {
-      "build_difficulty": 4,
+      "build_difficulty": 3,
       "channel_reach_cn": 4,
-      "payment_compliance": 4,
-      "competition": 3,
-      "time_to_mvp": 4
+      "payment_compliance": 3,
+      "competition": 2,
+      "time_to_mvp": 3
     },
     "score_reasons": {
-      "build_difficulty": "原生菜单栏与脚本快捷入口使用SwiftUI和系统API可做简化版。",
-      "channel_reach_cn": "Product Hunt、Reddit与Mac开发者社区能够远程触达高频用户。",
-      "payment_compliance": "桌面软件一次性许可收款不需应用内购，但要合规处理授权和售后。",
-      "competition": "竞品：Raycast、Alfred；需选择团队深链或会议快捷场景避开综合工具。",
-      "time_to_mvp": "推测：菜单快捷入口MVP在30天内可交付并测试收费。"
+      "build_difficulty": "需跟随AI聊天站点DOM变化并实现全文索引；单平台简版可以先完成。",
+      "channel_reach_cn": "Chrome商店有40,000安装档位，全球分发渠道明确，但英语SEO竞争激烈。",
+      "payment_compliance": "订阅和终身授权容易设计，但跨境结算及聊天内容敏感权限需审查。",
+      "competition": "竞品：原生ChatGPT搜索及Superpower ChatGPT；免费替代品抬高获客难度。",
+      "time_to_mvp": "推测：一个站点的本地全文搜索与文件夹功能约一月能收费测试。"
     },
-    "total_score": 19,
+    "total_score": 15,
     "verdict": "可做",
-    "cn_angle": "推测：专做远程会议与研发团队项目深链菜单工具",
-    "risks": "macOS系统接口兼容性及免费竞品替代",
+    "cn_angle": "推测：为中文开发者的AI对话提供隐私优先的全文检索与归档",
+    "risks": "聊天数据权限、第三方站点更新和平台审核风险",
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10 2026-10-18公开HTML重核：A页LemonSqueezy付款API连接、最新30天收入$21,001、MRR$1,334，上游页面显示2026-10-18 02:56 AM；Chrome Web Store直接展示40,000用户档位；开发商自报2024年9月创立。未审计财务、未获Hark和平台转载许可。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
-    "founded_date": "2025-12-01",
+    "founded_date": "2024-09-01",
     "growth_30d": null,
     "customers": null
   },
@@ -2468,13 +2479,13 @@
     "one_liner_cn": "帮用户汇总公开网络资料与账号信息",
     "target_user": "需要核对公开线上账号的消费者",
     "revenue": {
-      "mrr": 2285,
-      "last_30d": 2956,
-      "all_time": 22254,
+      "mrr": 3107,
+      "last_30d": 2934,
+      "all_time": 23318,
       "currency": "USD",
-      "as_of": "2026-10-08",
+      "as_of": "2026-10-18",
       "verified_by": "RevenueCat",
-      "source_last_synced": "2026-10-08"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2486,7 +2497,7 @@
         "checked_at": "2026-10-18"
       },
       {
-        "label": "App Store原始产品页：美国App Store独立页108个评分",
+        "label": "美国App Store产品原页：134个评分（2026-10-18直接核对）",
         "level": "T",
         "url": "https://apps.apple.com/us/app/truesearch-ai-people-search/id6756086598?platform=iphone&see-all=reviews",
         "checked_at": "2026-10-18"
@@ -2495,7 +2506,7 @@
     "traction": [
       {
         "type": "app_store_rating_count",
-        "value": 108,
+        "value": 134,
         "url": "https://apps.apple.com/us/app/truesearch-ai-people-search/id6756086598?platform=iphone&see-all=reviews",
         "estimated": false,
         "checked_at": "2026-10-18",
@@ -2508,13 +2519,15 @@
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "TrustMRR同期转引App评分124条，App Store独立原页显示108条，不同日期/地区口径需核查。",
-      "App Store出现订阅取消困难投诉，属于用户评论未经裁定。"
+      "App Store出现订阅取消困难投诉，属于用户评论未经裁定。",
+      "T10原页重核：收入页上游Last updated Oct 18 04:08 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "Apple App Store当天显示134个评分，与收入平台转引124个不同，优先独立平台指标。"
     ],
     "for_sale": {
-      "listed": false,
-      "asking_price": null,
+      "listed": true,
+      "asking_price": 85000,
       "multiple": null,
-      "url": null
+      "url": "https://trustmrr.com/startup/truesearch"
     },
     "business_model": "App订阅",
     "price_point": "$14.99/周或$79.99/年",
@@ -2543,7 +2556,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$2934、meta MRR=$3107，Last updated Oct 18 04:08 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2025-12-01",
     "growth_30d": null,
@@ -2557,13 +2570,13 @@
     "one_liner_cn": "把文字需求转为React Native移动应用",
     "target_user": "移动App创业者、设计师与工程师",
     "revenue": {
-      "mrr": 5281,
-      "last_30d": 6014,
-      "all_time": 74745,
+      "mrr": 5301,
+      "last_30d": 6074,
+      "all_time": null,
       "currency": "USD",
-      "as_of": "2026-10-17",
+      "as_of": "2026-10-18",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-17"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2597,7 +2610,9 @@
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "收入页slug是shaper-studio-inc，公开页面显示名称RapidNative且链接rapidnative.com。",
-      "收入页标题$6,054与30日图表$6,014存在小幅不一致，使用图表值。"
+      "T10原页重核：收入页上游Last updated Oct 18 02:05 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "累计收入当前原页文本未展示可核对的精确值，暂存null而非旧数字或0。",
+      "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。"
     ],
     "for_sale": {
       "listed": false,
@@ -2633,7 +2648,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$6074、meta MRR=$5301，Last updated Oct 18 02:05 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2025-03-01",
     "growth_30d": null,
@@ -2647,13 +2662,13 @@
     "one_liner_cn": "帮屋顶承包商快速测量报价和追踪线索",
     "target_user": "美国屋顶维修承包商和估价员",
     "revenue": {
-      "mrr": 1153,
-      "last_30d": 1940,
-      "all_time": 25077,
+      "mrr": 1124,
+      "last_30d": 2379,
+      "all_time": null,
       "currency": "USD",
-      "as_of": "2026-10-07",
+      "as_of": "2026-10-17",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-07"
+      "source_last_synced": "2026-10-17"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2686,13 +2701,16 @@
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "Product Hunt 74关注者系独立平台关注信号，不能证明付费、活跃或产品实用性；另有1条评价为创始人发表。"
+      "Product Hunt 74关注者系独立平台关注信号，不能证明付费、活跃或产品实用性；另有1条评价为创始人发表。",
+      "T10原页重核：收入页上游Last updated Oct 17 11:17 PM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "累计收入当前原页文本未展示可核对的精确值，暂存null而非旧数字或0。",
+      "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。"
     ],
     "for_sale": {
-      "listed": false,
-      "asking_price": null,
+      "listed": true,
+      "asking_price": 48000,
       "multiple": null,
-      "url": null
+      "url": "https://trustmrr.com/startup/rooftops-ai"
     },
     "business_model": "B2B席位订阅",
     "price_point": "$29–$99/月/席",
@@ -2723,7 +2741,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$2379、meta MRR=$1124，Last updated Oct 17 11:17 PM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2024-01-01",
     "growth_30d": null,
@@ -2738,12 +2756,12 @@
     "target_user": "TikTok、Shorts和Reels创作者",
     "revenue": {
       "mrr": 1517,
-      "last_30d": 1739,
+      "last_30d": 1722,
       "all_time": 38277,
       "currency": "USD",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-18",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-16"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2776,13 +2794,15 @@
       "T10：公开资料不能排除少数付费客户、单一大客户或同一支付账号挂多个产品等风险，实际集中度未知。",
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
-      "Trustpilot评价是使用线索，存在样本偏差，不等于7个付费用户。"
+      "Trustpilot评价是使用线索，存在样本偏差，不等于7个付费用户。",
+      "T10原页重核：收入页上游Last updated Oct 18 02:19 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。"
     ],
     "for_sale": {
-      "listed": false,
-      "asking_price": null,
+      "listed": true,
+      "asking_price": 100000,
       "multiple": null,
-      "url": null
+      "url": "https://trustmrr.com/startup/blipix"
     },
     "business_model": "订阅+生成额度",
     "price_point": "Creator $39/月、Pro $69/月",
@@ -2813,7 +2833,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$1722、meta MRR=$1517，Last updated Oct 18 02:19 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2025-02-01",
     "growth_30d": null,
@@ -2827,13 +2847,13 @@
     "one_liner_cn": "为求职者生成面向招聘系统的简历",
     "target_user": "海外求职者与职业中心",
     "revenue": {
-      "mrr": 248155,
-      "last_30d": 217419,
-      "all_time": 10350333,
+      "mrr": 246345,
+      "last_30d": 214250,
+      "all_time": null,
       "currency": "USD",
-      "as_of": "2026-10-15",
+      "as_of": "2026-10-18",
       "verified_by": "Stripe",
-      "source_last_synced": "2026-10-15"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2867,7 +2887,10 @@
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "近30天$217,419超过历史T04初筛$50k上限，但当前T10任务卡只规定下限，保留作低复刻性参考。",
-      "已披露VC-backed、用户和收入量级巨大，不代表个人可复制。"
+      "已披露VC-backed、用户和收入量级巨大，不代表个人可复制。",
+      "T10原页重核：收入页上游Last updated Oct 18 02:14 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "累计收入当前原页文本未展示可核对的精确值，暂存null而非旧数字或0。",
+      "T10站外T原页现场复核受平台自动访问限制；保留先前记录但不能当作当日重新直接核验，Hark必须手工复核。"
     ],
     "for_sale": {
       "listed": false,
@@ -2903,7 +2926,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$214250、meta MRR=$246345，Last updated Oct 18 02:14 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2015-05-01",
     "growth_30d": null,
@@ -2917,13 +2940,13 @@
     "one_liner_cn": "帮助英语学习者与AI口语教师练习",
     "target_user": "英语学习者和备考人群",
     "revenue": {
-      "mrr": 2957,
-      "last_30d": 4165,
+      "mrr": 2956,
+      "last_30d": 3922,
       "all_time": null,
       "currency": "USD",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-18",
       "verified_by": "RevenueCat",
-      "source_last_synced": "2026-10-16"
+      "source_last_synced": "2026-10-18"
     },
     "team_size": null,
     "evidence_level": "A",
@@ -2957,7 +2980,9 @@
       "T10：独立T平台指标仅供牵引力交叉观察，并非付款审计。",
       "成立日期仅公开到月份，founded_date规范化为当月1日；按当月最晚一天计算也已超过90天。",
       "公开来源未显示可精确摘录的历史累计收入，置null。",
-      "App Store仅1条评价，属于弱但真实独立牵引力。"
+      "App Store仅1条评价，属于弱但真实独立牵引力。",
+      "T10原页重核：收入页上游Last updated Oct 18 04:30 AM 2026（未注明时区），当前30日收入采用公开页标题、MRR采用公开页面元数据；跨时区仅存日期。",
+      "累计收入当前原页文本未展示可核对的精确值，暂存null而非旧数字或0。"
     ],
     "for_sale": {
       "listed": false,
@@ -2993,7 +3018,7 @@
     "reviewed_by_hark": false,
     "last_verified_at": "2026-10-18",
     "updated_at": "2026-10-18",
-    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。",
+    "review_notes": "T10公开网页资料核验于2026-10-18；仅摘录支付验证页面和独立第三方页面的有限公开字段。上游日期是来源同步日，非今日同步。候选等待Hark审核及来源许可确认，尚未批准生产发布。 T10 2026-10-18公开HTML再核，原页Title 30d=$3922、meta MRR=$2956，Last updated Oct 18 04:30 AM 2026；页面文本未可复核累计值均留空。",
     "publication_status": "PRIVATE_REVIEW_ONLY",
     "founded_date": "2025-09-01",
     "growth_30d": null,
