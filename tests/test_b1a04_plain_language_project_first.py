@@ -25,7 +25,7 @@ class TestB1A04ProjectFirst(unittest.TestCase):
     def test_first_screen_starts_with_workable_business_intent(self):
         html = self.home
         self.assertIn("想找个项目做？", html)
-        self.assertIn("直接看项目 ↓", html)
+        self.assertIn("先看项目 →", html)
         self.assertIn("现在可以看的创业案例", html)
         self.assertIn("先看模式，再看风险", html)
         self.assertIn("<title>见势｜找创业项目，看懂怎么赚钱</title>", html)

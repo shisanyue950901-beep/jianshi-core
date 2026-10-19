@@ -11,7 +11,7 @@ import html
 import json
 import re
 import shutil
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 from t08_project_selection import projects as reviewed_or_preview_projects
@@ -27,7 +27,7 @@ SCORE_LABELS = {
     "time_to_mvp": "30天最小产品可行性",
 }
 DISCLAIMER = "数据为第三方公开信息，非财务审计，不构成收入承诺。"
-AUDIT_NOTE = "收入由 TrustMRR 通过支付平台 API 获取，非见势独立审计。"
+AUDIT_NOTE = "收入来自海外收入公示网站 TrustMRR，见势未逐笔核对。可能只有一两名付费客户，或多个产品共用收款账户；关注、安装和评价不等于付款证明。"
 
 
 def esc(value: object) -> str:
@@ -53,6 +53,100 @@ def date_age(iso_date: str) -> int:
     return (date.today() - date.fromisoformat(iso_date)).days
 
 
+def chinese_date(value: object) -> str:
+    try:
+        raw = str(value)
+        if "T" in raw:
+            dt = datetime.fromisoformat(raw.replace("Z","+00:00"))
+            if dt.tzinfo:
+                dt = dt.astimezone(timezone(timedelta(hours=8)))
+                return f"{dt.year}年{dt.month}月{dt.day}日 {dt:%H:%M}（北京时间）"
+            return f"{dt.year}年{dt.month}月{dt.day}日"
+        d = date.fromisoformat(raw)
+        return f"{d.year}年{d.month}月{d.day}日"
+    except (ValueError,TypeError):
+        return "未公开"
+
+
+def source_display(source: dict) -> str:
+    """Labels are public; never display private audit or source-review notes."""
+    u = urlparse(str(source.get("url","")))
+    host = u.hostname or ""
+    if "trustmrr.com" in host:
+        return ("海外收入公示网站 TrustMRR：同一网站的收入明细（不是独立第二份证明）"
+                if u.path.endswith(".md") else "海外收入公示网站 TrustMRR：收入资料")
+    if "indiepage" in host:
+        return "IndiePage：收入资料（经营有关联，不是独立付款证明）"
+    if "producthunt.com" in host: return "Product Hunt：产品评价和关注"
+    if "trustpilot.com" in host: return "Trustpilot：用户评价（不等于付费人数）"
+    if "chromewebstore.google.com" in host: return "Chrome 应用商店：安装量（不等于付费人数）"
+    if "apps.apple.com" in host: return "苹果应用商店：用户评分（不等于付费人数）"
+    if "play.google.com" in host: return "Google Play：下载量区间（不等于付费人数）"
+    if "github.com" in host: return "GitHub：代码仓库关注数（不等于付费人数）"
+    return "查看公开资料（可能来自项目方自述，未独立确认）"
+
+SIGNALS={"ahrefs_domain_rating":"网站搜索评分估算",
+"product_hunt_review_count":"产品评价条数","product_hunt_followers":"关注者人数",
+"trustpilot_review_count":"用户评价条数","github_stars":"代码仓库关注数",
+"github_related_repo_stars":"关联代码库关注数（不是付费人数）",
+"app_store_rating_count":"应用商店评分数","chrome_users":"商店显示用户数",
+"chrome_users_lower_bound":"商店用户数下限",
+"google_play_downloads_lower_bound":"应用下载量下限"}
+def signal_display(value: object) -> str:
+    return SIGNALS.get(str(value), "公开用户增长信号（不等于付费人数）")
+
+
+def public_copy(value: object) -> str:
+    """Show readable Chinese without changing stored product/source facts."""
+    output = "" if value is None else str(value)
+    # Price descriptions are published in English upstream; keep exact amount
+    # and product tiers but present the terms in Chinese.
+    exact = {
+        "14-day free trial. No card required. Then starts at $9/month":
+            "免费试用14天，无须信用卡；之后每月9美元起。",
+        "Starter: $199 USD, All-in: $249 USD, BUNDLE ShipFast + CodeFast: $299 USD":
+            "入门版199美元；完整套装249美元；ShipFast 与 CodeFast组合包299美元。",
+        "Core Kit: $249 Lifetime license, Bundle: $399 Lifetime license":
+            "基础工具包永久许可249美元；组合包永久许可399美元。",
+        "From $25/mo Up to 10 apps, both stores, full history.":
+            "每月25美元起，最多支持10款应用、两家应用商店和完整历史记录。",
+        "$19/month-$499/month":"每月19至499美元。",
+        "Engineer Kit: $49 one-time, Marketing Kit: $49 one-time, Complete Bundle: $89 one-time (launch price)":
+            "开发工具包49美元一次性付款；营销工具包49美元；完整组合包发布优惠价89美元。",
+        "Free for 7 days, then from $11.99 a month":
+            "免费试用7天，之后每月11.99美元起。",
+        "Plans from $29/mo":"套餐每月29美元起。",
+    }
+    output = exact.get(output, output)
+    for old,new in (
+        ("Codex","编程助手"),("MRR","每月订阅收入"),
+        ("KYC","实名或企业认证"),("API","接口"),
+        ("OAuth","授权登录"),("OCR","图片文字识别"),
+        ("TTS","文字转语音"),("CLI","命令行工具"),
+        ("SEO","搜索排名"),("MVP","最简可用产品"),
+        ("demo","演示版"),("SaaS","在线订阅软件"),
+        ("Newsletter","邮件订阅内容"),("Content marketing","内容推广"),
+        ("Email marketing","邮件推广"),("Meta Ads","Meta 广告"),
+        ("TikTok Ads","TikTok 广告"),("Google Ads","Google 广告"),
+        ("App store optimization","应用商店搜索优化"),
+        ("Influencers","达人合作"),("Blog","博客"),
+        ("MCP","模型接入工具"),("ATS","招聘筛选系统"),
+        ("CLI","命令行工具"),("DR","网站搜索评分"),
+        ("UI","界面"),("UX","使用体验"),
+        ("Starter","入门版"),("Professional","专业版"),
+        ("Growth","成长版"),("Personal","个人版"),
+        ("Standard","标准版"),("Agency","团队版"),
+        ("Ultra","高级版"),("Scale","进阶版"),
+        ("Basic","基础版"),("Pro","专业版"),
+        ("Expert","专家版"),("Marketer","营销版"),
+        ("Reports","报告版"),("Free","免费"),
+        ("Lifetime license","永久使用许可"),("one-time","一次性付款"),
+        ("USD","美元"),
+    ):
+        output = re.sub(r"(?<![a-zA-Z0-9])" + re.escape(old) + r"(?![a-zA-Z0-9])",new,output)
+    return output
+
+
 def load_projects() -> list[dict]:
     projects = reviewed_or_preview_projects()
     if not isinstance(projects, list) or not projects:
@@ -71,9 +165,12 @@ def load_projects() -> list[dict]:
                 raise ValueError(f"Missing revenue.{key}: {pid}")
         for key in ("founded_date", "growth_30d", "customers", "flags", "one_liner_cn", "category",
                     "team_size", "evidence_level", "total_score", "verdict", "sources",
-                    "business_model", "price_point", "acquisition_channels", "cn_angle", "risks"):
+                    "business_model", "price_point", "acquisition_channels", "cn_angle", "risks", "risk_public"):
             if key not in project:
                 raise ValueError(f"Missing {key}: {pid}")
+        public_risk = project["risk_public"]
+        if not isinstance(public_risk,str) or not public_risk.strip() or len(public_risk)>40:
+            raise ValueError(f"Invalid public risk for {pid}")
         if set(project.get("scores", {})) != set(SCORE_LABELS) or set(project.get("score_reasons", {})) != set(SCORE_LABELS):
             raise ValueError(f"Invalid five score dimensions: {pid}")
         if sum(project["scores"].values()) != project["total_score"]:
@@ -151,6 +248,9 @@ select{appearance:auto;width:100%;padding:10px 11px;min-height:43px;background:#
 .traction b{font-variant-numeric:tabular-nums}
 .disclaimer{background:#eef1f8;padding:16px 0;color:#52617a;font-size:12px;line-height:1.75;margin-top:30px}
 .disclaimer p{margin:0}
+.hero-cta{display:inline-flex;align-items:center;min-height:44px;margin:7px 0 14px;padding:10px 19px;border-radius:11px;background:#3153a1;color:white;text-decoration:none;font-size:14px;font-weight:800}
+.hero-cta:hover{background:#273c7c;color:white}
+.p-risk{color:#805122;font-size:13px;line-height:1.6;margin:10px 0}
 .empty{padding:28px;background:#fff;border-radius:12px;color:var(--muted)}
 [hidden]{display:none!important}
 @media(max-width:800px){.controls{grid-template-columns:repeat(2,minmax(0,1fr))}.body-grid{grid-template-columns:1fr}.money-grid{grid-template-columns:1fr 1fr}}
@@ -213,10 +313,10 @@ def shell(title: str, description: str, path: str, body: str, *, listing=False) 
 <meta name="description" content="{esc(description)}">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="{SITE}{esc(path)}">
-<title>{esc(title)}｜见势 JIANSHI</title>
+<title>{esc(title)}｜见势</title>
 <link rel="stylesheet" href="/projects/t07.css">
 </head><body>
-<header class="site-head"><div class="wrap"><a class="logo" href="/">见势<small>JIANSHI</small></a><nav aria-label="主导航">{nav}</nav></div></header>
+<header class="site-head"><div class="wrap"><a class="logo" href="/">见势</a><nav aria-label="主导航">{nav}</nav></div></header>
 <main class="wrap">{body}</main>
 <footer class="disclaimer"><div class="wrap"><p>{AUDIT_NOTE} {DISCLAIMER}</p></div></footer>
 {js}</body></html>
@@ -229,8 +329,7 @@ def badge(text: object, extra: str = "") -> str:
 
 def tags(project: dict) -> str:
     parts = [badge(project["verdict"], "verdict-good" if project["verdict"] == "推荐" else "verdict-bad" if project["verdict"] == "不推荐" else "")]
-    for flag in project.get("flags") or []:
-        parts.append(badge(flag, "flag"))
+    parts.append(badge("提醒："+project["risk_public"], "flag"))
     return '<div class="tags">' + "".join(parts) + "</div>"
 
 
@@ -241,13 +340,13 @@ def project_card(project: dict) -> str:
     return f"""<article class="project" data-project data-name="{esc(project['name'])}" data-category="{esc(project['category'])}"
 data-verdict="{esc(project['verdict'])}" data-evidence="{esc(project['evidence_level'])}"
 data-score="{esc(project['total_score'])}" data-mrr="{esc(mrr)}" data-last30="{esc(revenue['last_30d'])}">
-<div class="category">{esc(project['category'])}</div>
+<div class="category">{esc(public_copy(project['category']))}</div>
 <div class="phead"><h2><a href="/projects/{pid}/">{esc(project['name'])}</a></h2>{badge(str(project['total_score'])+'/25')}</div>
-<p class="pintro">{esc(project['one_liner_cn'])}</p>
-{tags(project)}
+<p class="pintro">{esc(public_copy(project['one_liner_cn']))}</p>
+<p class="p-risk">要留意：{esc(project["risk_public"])}</p>
 <div class="metrics"><div class="metric"><small>近 30 天收入</small><strong>{esc(fmt_money(revenue['last_30d'],revenue['currency']))}</strong></div>
-<div class="metric"><small>MRR（月经常性收入）</small><strong>{esc(fmt_money(revenue['mrr'],revenue['currency']))}</strong></div></div>
-<div class="cardfoot"><span>{esc(value_or_unknown(project['team_size'], ' 人'))}团队 · {esc(project['evidence_level'])} 级证据</span>
+<div class="metric"><small>每月订阅收入</small><strong>{esc(fmt_money(revenue['mrr'],revenue['currency']))}</strong></div></div>
+<div class="cardfoot"><span>{esc(value_or_unknown(project['team_size'], ' 人'))}团队 · 收入有公开资料</span>
 <a href="/projects/{pid}/">查看项目详情 →</a></div></article>"""
 
 
@@ -258,24 +357,24 @@ def build_list(projects: list[dict]) -> str:
     def sel(key, label, options):
         return (f'<div class="control"><label for="{key}">{esc(label)}</label><select id="{key}" name="{key}">'
                 + '<option value="">全部</option>'
-                + "".join(f'<option value="{esc(v)}">{esc(v)}</option>' for v in options)
+                + "".join(f'<option value="{esc(v)}">{esc({"A":"高","A-":"中高","B":"中","T":"参考"}.get(v,v) if key=="evidence_level" else public_copy(v))}</option>' for v in options)
                 + "</select></div>")
     controls = (sel("category", "类别", categories)
                 + sel("verdict", "结论", verdicts)
                 + sel("evidence_level", "证据等级", levels)
                 + '<div class="control"><label for="sort">排序方式</label><select id="sort" name="sort">'
-                + '<option value="total_score">总分优先</option><option value="mrr">MRR 优先</option>'
+                + '<option value="total_score">总分优先</option><option value="mrr">每月订阅收入优先</option>'
                 + '<option value="last_30d">近30天收入优先</option></select></div>')
     as_of = max(p["revenue"]["as_of"] for p in projects)
-    body = f"""<section class="hero"><div class="kicker">PROJECT LIBRARY · 真实商业样本</div>
+    body = f"""<section class="hero"><div class="kicker">项目库 · 真实商业案例</div>
 <h1>项目库 · 看见真实收入，找到可做方向。</h1>
-<p class="lead">收入数据来自支付平台 API 公开验证。所有项目均来自公开记录，点击卡片可查看收入来源、评分依据和风险。</p>
-<p class="meta-line">数据核对日期（as_of）：<time datetime="{esc(as_of)}">{esc(as_of)}</time> · {len(projects)} 个公开项目 · 评分为研究参考，不是收益承诺</p></section>
+<p class="lead">收入信息来自海外收入公示网站 TrustMRR，见势没有逐笔核对，也无法确认独立付费客户数。点开项目能查看来源、打分理由与风险。</p>
+<a class="hero-cta" href="#project-list">看推荐项目 →</a><p class="meta-line">数据核对日期：<time datetime="{esc(as_of)}">{esc(chinese_date(as_of))}</time> · {len(projects)} 个公开项目 · 评分为研究参考，不是收益承诺</p></section>
 <section aria-label="项目筛选和排序"><div class="controls">{controls}</div>
 <p id="result-count" class="resultcount" role="status" aria-live="polite">{len(projects)} 个项目</p></section>
 <section id="project-list" class="cards" aria-label="项目列表">{"".join(project_card(p) for p in projects)}</section>
 <p id="empty-message" class="empty" hidden>没有符合筛选条件的项目，请调整筛选项。</p>"""
-    return shell("项目库", f"{len(projects)}条经过支付平台API公开验证的商业项目记录，含项目收入、评分与来源", "/projects/", body, listing=True)
+    return shell("项目库", f"{len(projects)}条个公开商业项目，含项目收入、评分与来源", "/projects/", body, listing=True)
 
 
 def text_field(label: str, value: object) -> str:
@@ -287,16 +386,16 @@ def detail(project: dict) -> str:
     currency = rev["currency"]
     money = lambda key: fmt_money(rev.get(key), currency)
     income = "".join(f'<div class="money-box"><small>{name}</small><strong>{esc(money(key))}</strong></div>'
-                     for key,name in (("mrr","MRR · 月经常性收入"),("last_30d","近30天收入"),("all_time","历史累计收入")))
+                     for key,name in (("mrr","每月订阅收入"),("last_30d","近30天收入"),("all_time","历史累计收入")))
     grown = project["growth_30d"]
     grown_txt = "未公开" if grown is None else f"{grown:+g}%"
-    income_facts = (text_field("币种",currency) + text_field("数据日期（as_of）",rev["as_of"])
+    income_facts = (text_field("币种","美元" if currency == "USD" else currency) + text_field("数据日期",chinese_date(rev["as_of"]))
                     + text_field("支付平台验证方",rev["verified_by"])
-                    + text_field("成立日期",project["founded_date"])
+                    + text_field("成立日期",chinese_date(project["founded_date"]))
                     + text_field("近30天增长率",grown_txt)
                     + text_field("付费客户数",project.get("customers"))
                     + text_field("团队规模",value_or_unknown(project["team_size"]," 人"))
-                    + text_field("证据等级",project["evidence_level"])
+                    + text_field("来源可信度",{"A":"高","A-":"中高","B":"中","T":"参考"}.get(project["evidence_level"],"未公开"))
                     + text_field("评分总计",str(project["total_score"])+"/25"))
     scores = []
     for key, name in SCORE_LABELS.items():
@@ -304,46 +403,46 @@ def detail(project: dict) -> str:
         reason = project["score_reasons"][key]
         scores.append(f'<div class="scoreline"><div class="scorehead"><b>{esc(name)}</b><strong>{esc(value)}/5</strong></div>'
                       f'<div class="bar" aria-hidden="true"><i style="width:{int(value)*20}%"></i></div>'
-                      f'<p class="reason">{esc(value_or_unknown(reason))}</p></div>')
+                      f'<p class="reason">{esc(public_copy(value_or_unknown(reason)))}</p></div>')
     ch = project.get("acquisition_channels")
     channels = "、".join(map(str,ch)) if isinstance(ch,list) else value_or_unknown(ch)
     signals = project.get("traction") or []
     traction = '<ul class="traction">' + "".join(
-        f'<li>{esc(t.get("type","公开牵引"))}：<b>{esc(value_or_unknown(t.get("value")))}</b>'
+        f'<li>{esc(signal_display(t.get("type")))}：<b>{esc(value_or_unknown(t.get("value")))}</b>'
         + (f' · <a rel="noopener noreferrer" href="{esc(t["url"])}" target="_blank">查看来源 ↗</a>' if t.get("url") else "")+"</li>"
         for t in signals) + "</ul>" if signals else "<p>未公开</p>"
     source_list = '<div class="sources">' + "".join(
-        f'<div class="source">{badge(s.get("level","未分级"))} '
-        f'<a href="{esc(s["url"])}" target="_blank" rel="noopener noreferrer">{esc(s.get("label","查看来源"))} ↗</a>'
-        f'<small>核对日期：{esc(value_or_unknown(s.get("checked_at")))}</small></div>'
+        f'<div class="source">{badge("收入来源" if s.get("level") in ("A","A-") else "其他线索")} '
+        f'<a href="{esc(s["url"])}" target="_blank" rel="noopener noreferrer">{esc(source_display(s))} ↗</a>'
+        f'<small>核对日期：{esc(chinese_date(s.get("checked_at")))}</small></div>'
         for s in project["sources"]) + "</div>"
     sale = project.get("for_sale") or {}
     sale_text = ("是 · 要价："+fmt_money(sale.get("asking_price"),currency)
                  +" · 倍数："+value_or_unknown(sale.get("multiple"))) if sale.get("listed") else "未公开在售"
     body = f"""<section class="hero"><a class="back" href="/projects/">← 返回项目库</a>
-<div class="kicker" style="margin-top:18px">{esc(project["category"])} · 公开项目档案</div>
+<div class="kicker" style="margin-top:18px">{esc(public_copy(project["category"]))} · 公开项目档案</div>
 <h1>{esc(project["name"])}</h1>
-<p class="lead detail-lead">{esc(project["one_liner_cn"])}</p>
-{tags(project)}<p class="meta-line">原始网站：<a href="{esc(project['url'])}" rel="noopener noreferrer" target="_blank">{esc(project['url'])} ↗</a></p></section>
+<p class="lead detail-lead">{esc(public_copy(project["one_liner_cn"]))}</p>
+{tags(project)}<p><a class="hero-cta" href="{esc(project["url"])}" rel="noopener noreferrer" target="_blank">打开官网 ↗</a></p></section>
 <section class="panel" aria-labelledby="income-heading"><h2 id="income-heading">收入数据</h2>
 <div class="money-grid">{income}</div><div class="facts">{income_facts}</div>
-<p class="meta-line" style="margin-top:16px">付款数据最后同步：{esc(value_or_unknown(rev.get("source_last_synced")))}</p>
+<p class="meta-line" style="margin-top:16px">收入记录日期：{esc(chinese_date(rev.get("source_last_synced")))}</p>
 <p class="meta-line">{AUDIT_NOTE}</p></section>
 <div class="body-grid"><div>
 <section class="panel" aria-labelledby="score-heading"><h2 id="score-heading">五维评分 · {esc(project["total_score"])}/25</h2>
 <div class="scores">{"".join(scores)}</div></section>
-<section class="panel"><h2>面向中国开发者的切入建议</h2><p>{badge("推测")} {esc(project["cn_angle"])}</p>
-<h3>已知风险与注意事项</h3><p>{esc(value_or_unknown(project.get("risks")))}</p>
-{tags(project)}</section>
+<section class="panel"><h2>面向中国开发者的切入建议</h2><p>{badge("推测")} {esc(public_copy(project["cn_angle"]))}</p>
+<h3>已知风险与注意事项</h3><p>{esc(public_copy(value_or_unknown(project.get("risks"))))}</p>
+<p class="p-risk">{esc(project["risk_public"])}</p></section>
 <section class="panel"><h2>全部公开来源与证据等级</h2>{source_list}</section>
 </div><aside>
 <section class="panel"><h2>商业模式</h2>
-<div class="facts" style="grid-template-columns:1fr">{text_field("收费模式",project.get("business_model"))}
-{text_field("价格与套餐",project.get("price_point"))}
-{text_field("营销与获客渠道",channels)}
+<div class="facts" style="grid-template-columns:1fr">{text_field("收费模式",public_copy(project.get("business_model")))}
+{text_field("价格与套餐",public_copy(project.get("price_point")))}
+{text_field("营销与获客渠道",public_copy(channels))}
 {text_field("是否在售、要价、倍数",sale_text)}</div></section>
-<section class="panel"><h2>公开牵引信号</h2>{traction}
-<p class="meta-line">牵引信号不能证明收入与用户之间的因果关系。</p></section>
+<section class="panel"><h2>公开用户增长信号</h2>{traction}
+<p class="meta-line">用户增长数据不等于付费人数，也不能单独证明收入。</p></section>
 </aside></div>"""
     return shell(str(project["name"]),"公开收入、评分理由及来源："+str(project["one_liner_cn"]),f"/projects/{project['id']}/",body)
 

@@ -115,7 +115,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2024-07-01",
     "growth_30d": 8.7,
-    "customers": null
+    "customers": null,
+    "risk_public": "与收入公示网站创始人有关联；收入未独立审计，客户可能集中。"
   },
   {
     "id": "shipfast",
@@ -227,7 +228,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2023-07-03",
     "growth_30d": -54,
-    "customers": null
+    "customers": null,
+    "risk_public": "收入平台有关联关系；可能只有少数付费客户，模板还涉及版权风险。"
   },
   {
     "id": "turbostarter",
@@ -330,7 +332,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2026-02-25",
     "growth_30d": 43.1,
-    "customers": null
+    "customers": null,
+    "risk_public": "收入未独立审计；开源仓库热度不等于付费客户，维护成本较高。"
   },
   {
     "id": "sonar-aso-tool",
@@ -432,7 +435,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2026-03-12",
     "growth_30d": 15,
-    "customers": null
+    "customers": null,
+    "risk_public": "官网自报用户数未经独立核对；商店数据权限可能变化。"
   },
   {
     "id": "search1api",
@@ -526,7 +530,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2024-10-11",
     "growth_30d": 406.7,
-    "customers": null
+    "customers": null,
+    "risk_public": "缺少独立的站外付款证明；客户可能集中，搜索数据有授权风险。"
   },
   {
     "id": "agentskit",
@@ -635,7 +640,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2026-07-01",
     "growth_30d": 26.1,
-    "customers": null
+    "customers": null,
+    "risk_public": "网站自报用户数未经独立核对；第三方模型更新可能影响功能。"
   },
   {
     "id": "opentweet",
@@ -750,7 +756,8 @@
     "verdict": "可做",
     "founded_date": "2025-12-01",
     "growth_30d": 9.7,
-    "customers": null
+    "customers": null,
+    "risk_public": "官网自报用户数不能证明付费；社交平台可能限制接口或封号。"
   },
   {
     "id": "getebook-ai",
@@ -864,7 +871,8 @@
     "verdict": "可做",
     "founded_date": "2025-07-29",
     "growth_30d": -32.6,
-    "customers": null
+    "customers": null,
+    "risk_public": "总收入不等于订阅收入；官网用户数据未经独立核对，内容有版权风险。"
   },
   {
     "id": "mastros",
@@ -977,7 +985,8 @@
     "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
     "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:27:10.605Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$1311。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://www.mastros.online/blog/is-mastros-safe，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
-    "publication_status": "PUBLIC"
+    "publication_status": "PUBLIC",
+    "risk_public": "下载和评论数并非直接核对的付费人数；平台规则与数据权限可能变化。"
   },
   {
     "id": "readlens",
@@ -1098,7 +1107,8 @@
     "last_verified_at": "2026-10-16",
     "updated_at": "2026-10-15",
     "review_notes": "T07 2026-10-15 抓取TrustMRR公开.md，支付平台API同步于 2026-10-15T12:21:45.690Z，MRR与历史累计分别读取公开快照，last_30d读取公开Revenue表中的30天滚动合计$2405。来源平台声称API验证，非见势独立财务审计；customers未公开，不能把活跃订阅数等同独立付费客户数。 T08b 2026-10-16：仅复核新增公开 T 级线索 https://play.google.com/store/apps/details?id=com.snapvoiceai.app，没有使用 TrustMRR API，没有再次核验 2026-10-15 的财务数据。",
-    "publication_status": "PUBLIC"
+    "publication_status": "PUBLIC",
+    "risk_public": "下载量只有区间，商店评分有差异；儿童数据保护和语音成本需核查。"
   },
   {
     "id": "1devtool",
@@ -1206,7 +1216,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-11-05",
     "growth_30d": -23.6,
-    "customers": null
+    "customers": null,
+    "risk_public": "收入几乎来自一次性付款；接近最低收入门槛，跨系统维护难。"
   },
   {
     "id": "1clickwebsite-ai",
@@ -1311,7 +1322,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-06-14",
     "growth_30d": 15.6,
-    "customers": null
+    "customers": null,
+    "risk_public": "官网自报生成数量未经独立核对；网站托管和版权责任不能忽视。"
   },
   {
     "id": "3dplotter",
@@ -1418,7 +1430,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-12-26",
     "growth_30d": -27.6,
-    "customers": null
+    "customers": null,
+    "risk_public": "每月订阅收入为零，收入靠单次付款；还要承担硬件适配与售后。"
   },
   {
     "id": "advanced-gsc-mcp",
@@ -1509,7 +1522,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2026-04-29",
     "growth_30d": 14.7,
-    "customers": null
+    "customers": null,
+    "risk_public": "缺少独立的站外付款证明；多账户授权和搜索数据规则复杂。"
   },
   {
     "id": "aeo-checker",
@@ -1615,7 +1629,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-05-16",
     "growth_30d": 15.3,
-    "customers": null
+    "customers": null,
+    "risk_public": "官网自报使用量未经独立核对；人工智能答案排名可能反复波动。"
   },
   {
     "id": "ai-designer",
@@ -1720,7 +1735,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-11-14",
     "growth_30d": 28.2,
-    "customers": null
+    "customers": null,
+    "risk_public": "平台关注度不等于付费人数；生成图片涉及版权与成本波动。"
   },
   {
     "id": "adscriptly",
@@ -1811,7 +1827,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2016-02-14",
     "growth_30d": 0,
-    "customers": null
+    "customers": null,
+    "risk_public": "缺少独立的站外付款证明；广告账户权限及客户数据敏感。"
   },
   {
     "id": "saashunt",
@@ -1903,7 +1920,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-05-30",
     "growth_30d": -15.7,
-    "customers": null
+    "customers": null,
+    "risk_public": "每月订阅收入为零，主要靠单次付款；缺少独立站外付款证明。"
   },
   {
     "id": "3d-agent",
@@ -2008,7 +2026,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-10-24",
     "growth_30d": 10,
-    "customers": null
+    "customers": null,
+    "risk_public": "站外评价数不等于付费人数；三维效果不稳定，生成成本高。"
   },
   {
     "id": "5-day-sprint",
@@ -2100,7 +2119,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2020-06-01",
     "growth_30d": 5.4,
-    "customers": null
+    "customers": null,
+    "risk_public": "每月订阅额高于近30天实收，收入结构待查；缺少独立站外证明。"
   },
   {
     "id": "myfeedin",
@@ -2188,7 +2208,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2024-06-11",
     "growth_30d": 54.5,
-    "customers": null
+    "customers": null,
+    "risk_public": "收入未经独立审计，付费客户可能集中；还受社交平台权限限制。"
   },
   {
     "id": "superx",
@@ -2276,7 +2297,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-08-14",
     "growth_30d": 25.5,
-    "customers": null
+    "customers": null,
+    "risk_public": "收入未经独立审计，付费客户可能集中；社交账号存在封禁风险。"
   },
   {
     "id": "compresto",
@@ -2367,7 +2389,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2023-12-18",
     "growth_30d": 46.4,
-    "customers": null
+    "customers": null,
+    "risk_public": "收入以一次性买断为主，订阅很少；评价数不等于付费人数。"
   },
   {
     "id": "ai-toolbox",
@@ -2465,7 +2488,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2024-09-08",
     "growth_30d": -2.7,
-    "customers": null
+    "customers": null,
+    "risk_public": "收入以终身买断为主；用户数只是商店显示档位，非付费人数。"
   },
   {
     "id": "truesearch",
@@ -2556,7 +2580,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-12-10",
     "growth_30d": -19.2,
-    "customers": null
+    "customers": null,
+    "risk_public": "近30天收入下降19.2%；有订阅取消投诉，个人信息风险较高。"
   },
   {
     "id": "rapidnative",
@@ -2646,7 +2671,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-03-06",
     "growth_30d": -7.1,
-    "customers": null
+    "customers": null,
+    "risk_public": "近30天收入下降7.1%；关注数不等于付费人数，生成代码需安全检查。"
   },
   {
     "id": "rooftops-ai",
@@ -2739,7 +2765,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2024-01-01",
     "growth_30d": 388.5,
-    "customers": null
+    "customers": null,
+    "risk_public": "近30天增长388.5%，基数小波动大；关注数不等于付费客户。"
   },
   {
     "id": "blipix",
@@ -2832,7 +2859,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-02-08",
     "growth_30d": 28.8,
-    "customers": null
+    "customers": null,
+    "risk_public": "网站评价样本很小，不等于付费人数；音视频版权与使用成本较高。"
   },
   {
     "id": "rezi",
@@ -2923,7 +2951,8 @@
     "publication_status": "PUBLIC",
     "founded_date": "2015-05-22",
     "growth_30d": -6,
-    "customers": null
+    "customers": null,
+    "risk_public": "近30天收入下降6.0%；有外部资本支持，个人难以照搬其规模。"
   },
   {
     "id": "practiceme",
@@ -3013,6 +3042,7 @@
     "publication_status": "PUBLIC",
     "founded_date": "2025-09-03",
     "growth_30d": -23.8,
-    "customers": null
+    "customers": null,
+    "risk_public": "近30天收入下降23.8%；商店评价仅1条，收入未独立审计。"
   }
 ]

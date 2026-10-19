@@ -114,6 +114,19 @@ jobs:
           sudo apt-get install -y fonts-noto-cjk
           python tests/browser/t07_responsive.py
           python tests/browser/t11_sprint_mobile.py
+      - name: Checkout frozen T11b before baseline
+        uses: actions/checkout@v4
+        with:
+          ref: 0e3ae836e50cc5b4be15fc8f5fbfca4c90142888
+          path: t11b-before
+      - name: Build original main for screenshot comparison
+        run: |
+          set -euo pipefail
+          cd t11b-before
+          python web/build.py
+          python scripts/release/p412_build_public.py
+      - name: T11b 375px before and after screenshots
+        run: python tests/browser/t11b_before_after.py
       - name: Lighthouse mobile performance
         run: |
           set -euo pipefail
