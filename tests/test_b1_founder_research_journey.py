@@ -51,7 +51,7 @@ class TestB1FounderResearchJourney(unittest.TestCase):
         self.assertIn("发现值得研究的",self.rendered)
         self.assertIn("商业机会。</em>",self.rendered)
         self.assertIn("不仅研究 AI",self.rendered)
-        self.assertIn("直接看项目 ↓",self.rendered)
+        self.assertIn("先看项目 →",self.rendered)
         self.assertLess(
             self.rendered.index('href="#j2-opportunities"'),
             self.rendered.index('href="#j2-solutions"')

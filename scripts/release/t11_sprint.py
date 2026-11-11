@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 SITE = "https://jianshi-bua.pages.dev"
-CHECKED = "2026-10-18"
+CHECKED = "2026年10月18日"
 OLD_PROMISE_WORDS = ("保证", "月入", "躺赚")
 
 PROVIDERS = (
@@ -19,7 +19,7 @@ PROVIDERS = (
         "individual": "支持个人注册；所在地须符合平台准入",
         "payout": "银行账户 / USDC 钱包（视账户及地区资格）",
         "fee": "标准 3.9% + $0.40 / 笔",
-        "review": "身份或企业 KYC；产品及网站审核后方可正式收款",
+        "review": "实名或企业认证；产品及网站审核后方可正式收款",
         "sources": (
             ("官网费率", "https://www.creem.io/pricing"),
             ("个人注册和审核", "https://www.creem.io/"),
@@ -41,16 +41,16 @@ PROVIDERS = (
     },
     {
         "name": "Waffo Pancake",
-        "individual": "支持个人开发者申请（No LLC Required）；国家/地区及产品须审查",
+        "individual": "支持个人开发者申请；国家/地区及产品须审查",
         "payout": "银行转账 / 支付宝（依地区及审核资格）",
         "fee": "标准 3.9% + $0.50 / 笔",
-        "review": "商店信息、邮箱与 KYC、收款方式分步核验；本番使用另须获批",
+        "review": "商店信息、邮箱、实名或企业认证和收款方式需逐项审核；正式使用还要通过审核",
         "sources": (
             ("官网费率", "https://www.waffo.ai/pricing"),
             ("提现与核验", "https://www.waffo.ai/en/features/finance"),
             ("日本审核声明", "https://www.waffo.jp/developers"),
         ),
-        "detail": "官网可见 Bank / Alipay 及个人开发者路径；是否可在您的所在地启用及结算周期需个别审核。",
+        "detail": "官网可见银行及支付宝 及个人开发者路径；是否可在您的所在地启用及结算周期需个别审核。",
     },
 )
 
@@ -63,17 +63,17 @@ WEEKS = (
     ("week1", "第 1 周 · 能收钱", (
         "落地页六要素齐全：价值、功能、价格、条款、隐私、邮箱",
         "配置一条收款路径和备用申请，确认地区与审核资格",
-        "沙盒测试支付成功一笔；正式收款须通过平台审核",
+        "测试模式下成功模拟一笔支付；正式收款须通过平台审核",
     )),
     ("week23", "第 2–3 周 · 找 20 个真人", (
         "记录目标用户社区、具体子版块或群名",
         "写并发布不硬推销、先给方法的价值帖",
         "联系 50 位匹配用户，目标取得 20 次真实对话",
         "每次直接给出产品购买链接或创始价",
-        "对话记录去标识化，仅保留必要研究要点",
+        "对话记录隐去姓名和联系方式，仅保留必要研究要点",
     )),
     ("week4", "第 4 周 · 收入可验证", (
-        "在收款平台和 TrustMRR 官方后台完成只读/限权连接",
+        "在收款平台与收入公示网站申请只能查看、不能动钱的授权码",
         "核对公开收入验证页是否真的可访问；未通过不得声称已验证",
         "完成选题、定价、渠道、转化与踩坑复盘",
     )),
@@ -140,7 +140,7 @@ def render_sprint(form_url: str, analytics_endpoint: str = "") -> str:
             f'<td>{_escape(item["fee"])}</td>'
             f'<td>{_escape(item["review"])}</td>'
             f'<td>{anchors}<small>{_escape(item["detail"])}</small></td>'
-            f'<td><time datetime="{CHECKED}">{CHECKED}</time></td></tr>'
+            f'<td><time datetime="2026-10-18">{CHECKED}</time></td></tr>'
         )
     analytics_url = str(analytics_endpoint or "").strip()
     if analytics_url and (urlsplit(analytics_url).scheme != "https" or "<" in analytics_url):
@@ -216,31 +216,31 @@ body{background:#f7f9fc} .t11{color:var(--s-ink)}
 <link rel="canonical" href="{SITE}/sprint/"><meta name="robots" content="index,follow">
 <link rel="stylesheet" href="/styles.css"><style>{style}</style></head><body>
 <div class="t11"><header class="t11-top"><div class="t11-wrap t11-bar">
-<a class="t11-brand" href="/">见势<span>JIANSHI</span></a>
+<a class="t11-brand" href="/">见势</a>
 <nav class="t11-nav" aria-label="站点导航"><a href="/projects/">项目库</a><a href="/sprint/" aria-current="page">30 天冲刺</a><a href="/#j2-opportunities">回到首页</a></nav>
 </div></header>
 <main><section class="t11-hero"><div class="t11-wrap">
-<div class="t11-kicker">FIELD GUIDE / 30 DAYS / 免费公开版</div>
+<div class="t11-kicker">30 天行动手册 · 免费公开版</div>
 <h1>别再收藏方法。<br><em>用 30 天推进第一笔收入。</em></h1>
 <p class="t11-goal"><strong>冲刺目标 = 30 天内拿到第一笔可被第三方验证的收入。</strong> 这是行动目标，不是收入预测，也不代表每个人都能在规定时间内完成。</p>
-<div class="t11-actions">{cta}<a class="t11-btn t11-btn-secondary" href="#step0">阅读完整冲刺步骤 ↓</a></div>
+<div class="t11-actions"><a class="t11-btn t11-btn-primary" href="#step0">从第 0 步开始 ↓</a></div>
 <p class="t11-note">诊断仅通过外部飞书表单接收；见势本页不采集项目资料或联系方式。</p>
 </div></section>
 <div class="t11-wrap t11-layout"><div class="t11-main">
-<section class="t11-panel" id="step0"><span class="t11-step">STEP 00 · 选题先于开发</span><h2>项目分诊：先淘汰，再投入</h2>
+<section class="t11-panel" id="step0"><span class="t11-step">第 0 步 · 选题先于开发</span><h2>项目分诊：先淘汰，再投入</h2>
 <p>把手头全部项目放进同一张表；空白不是评分，填不出来就先找证据。表格是填写模板，不会在见势网站保存输入。</p>
 <div class="t11-scroll"><table class="t11-table t11-diagnosis" aria-label="五列项目分诊表"><thead><tr>
 <th>项目名</th><th>给谁省什么</th><th>进度</th><th>海外同类付费证据链接</th><th>第一批用户在哪</th>
-</tr></thead><tbody><tr><td>待填写</td><td>目标人群 / 可验证节省</td><td>想法 / demo / 可用 / 已上线</td><td>优先 A/B 级公开原始证据</td><td>具体社群、话题、论坛</td></tr></tbody></table></div>
+</tr></thead><tbody><tr><td>待填写</td><td>目标人群 / 可验证节省</td><td>想法 / 演示版 / 可用 / 已上线</td><td>优先可信度高或中的付费资料</td><td>具体社群、话题、论坛</td></tr></tbody></table></div>
 <h3>按顺序执行的五条淘汰规则</h3><ol>
 <li>说不清“给谁省什么” → <strong>冻结</strong>。</li>
 <li>核心功能无法在两周内跑通 → <strong>冻结</strong>。</li>
-<li>找不到海外同类 A/B 级付费证据 → <strong>降级</strong>，继续核查。</li>
+<li>找不到海外同类可信度高或中的付费资料 → <strong>降级</strong>，继续核查。</li>
 <li>找不到能接触的第一批 20 个真人 → <strong>降级</strong>。</li>
 <li>对剩余项目按五维可执行性评分取第一名；第二名作为备选，其余冻结，不删除。</li>
-</ol><div class="t11-callout">产出：一份选题决策记录，解释为什么选它，以及为什么暂时不做其他项目。</div></section>
+</ol><div class="t11-callout">产出：一份选题决策记录，解释为什么选它，以及为什么暂时不做其他项目。</div><div class="t11-actions">{cta}</div></section>
 
-<section class="t11-panel" id="week1"><span class="t11-step">WEEK 01 · 把支付路径做通</span><h2>先做到能收钱</h2>
+<section class="t11-panel" id="week1"><span class="t11-step">第 1 周 · 把支付路径做通</span><h2>先做到能收钱</h2>
 <p>落地页只需六要素：<strong>一句话价值、三个核心功能点、价格、服务条款、隐私政策、联系邮箱</strong>。把产品谁来买、买后会得到什么写清楚。</p>
 <div class="t11-cards"><div class="t11-mini"><strong>订阅定价</strong><p>标准参考下限 ≥ $9 / 月，可另设透明、限量的创始用户价格。</p></div>
 <div class="t11-mini"><strong>一次性定价</strong><p>标准参考下限 ≥ $29，写明交付内容、售后及退款条件。</p></div></div>
@@ -248,45 +248,45 @@ body{background:#f7f9fc} .t11{color:var(--s-ink)}
 <div class="t11-callout">本周验收：落地页可访问，测试环境完成一笔模拟支付且状态正确。测试单不是收入，不可计入真实营业额。</div>
 </section>
 
-<section class="t11-panel" id="week23"><span class="t11-step">WEEK 02–03 · 去用户出现的地方</span><h2>找到 20 个真人，而不是 20 个点赞</h2>
+<section class="t11-panel" id="week23"><span class="t11-step">第 2–3 周 · 去用户出现的地方</span><h2>找到 20 个真人，而不是 20 个点赞</h2>
 <p>先列聚集地：<strong>即刻具体话题、小红书搜索词及评论区、V2EX 对应节点、独立开发者社区、目标行业微信群、Product Hunt 同类讨论区</strong>。每处至少写出一个具体频道或关键词。</p>
 <ol><li>发布非广告式价值帖：先说遇到的问题、做过的尝试、可免费用的方法，再邀请目标用户讨论。</li>
 <li>礼貌且有针对性地私信 <strong>50 人</strong>，不群发骚扰，不收集无关私人信息。</li>
 <li>目标完成 <strong>20 次真实对话</strong>，询问最近一次怎么处理问题、花了什么成本。</li>
 <li>若痛点吻合，直接给出清晰付费链接或创始用户价，而不是只问“你觉得这个想法如何”。</li>
-<li>每天公开可验证的工作进展；用户对话只记录去标识化的共性与拒绝理由。</li></ol>
-<div class="t11-callout">验收：至少 20 条去标识化的真实对话记录。数量是执行指标，不代表购买转化。</div>
+<li>每天公开可验证的工作进展；用户对话只记隐去姓名和联系方式的共性与拒绝理由。</li></ol>
+<div class="t11-callout">验收：至少 20 条隐去姓名和联系方式的真实对话记录。数量是执行指标，不代表购买转化。</div>
 </section>
 
-<section class="t11-panel" id="week4"><span class="t11-step">WEEK 04 · 让来源说话</span><h2>收入可验证，然后写复盘</h2>
-<p>如有真实支付，在收款平台的官方后台申请只读或限定读取权限的凭证，并仅在 <a href="https://trustmrr.com/faq" target="_blank" rel="noopener noreferrer">TrustMRR 官方页面 ↗</a> 按指引连接支持的 Creem / Dodo Payments。密钥不填入见势页面、不提交到 GitHub，不提供给陌生第三方。</p>
-<p>完成验证后，检查公开页面确实显示对应产品与验证方；尚未生成公开页、仍在审核或只有测试支付时，只标“未完成验证”。不要把真实收入、MRR、累计收入混为一谈。</p>
+<section class="t11-panel" id="week4"><span class="t11-step">第 4 周 · 让来源说话</span><h2>收入可验证，然后写复盘</h2>
+<p>如有真实支付，在收款平台后台申请只能查看、不能动钱的授权码，并仅在 <a href="https://trustmrr.com/faq" target="_blank" rel="noopener noreferrer">海外收入公示网站 TrustMRR 官网 ↗</a> 按指引连接支持的 Creem / Dodo Payments。密钥不填入见势页面、不提交到 GitHub，不提供给陌生第三方。</p>
+<p>完成验证后，检查公开页面确实显示对应产品与验证方；尚未生成公开页、仍在审核或只有测试支付时，只标“未完成验证”。不要把近30天收入、每月订阅收入和累计收入混为一谈。</p>
 <div class="t11-callout">复盘五件事：选题为什么留下、价格如何定、用户从哪来、真实转化是什么、哪里失败以及下轮做什么。</div>
 </section>
 
-<section class="t11-panel" id="fallback"><span class="t11-step">PLAN B · 允许失败，留下证据</span><h2>冲刺结束，怎么决策</h2>
+<section class="t11-panel" id="fallback"><span class="t11-step">没做成怎么办 · 留下证据</span><h2>冲刺结束，怎么决策</h2>
 <ul><li>第 30 天收入仍为 0：公开匿名化的失败复盘，从分诊第二名项目重新进行下一轮冲刺。</li>
 <li>收款平台注册或正式收款审核被拒：先弄清具体原因，改用已确认符合当地要求的备用平台（Dodo / Waffo Pancake），不绕过平台风控。</li>
 <li>只产生测试支付、退款或不可核对的转账：不得写成已验证收入。</li></ul></section>
 
-<section class="t11-panel" id="payments"><span class="t11-step">PAYMENT OPTIONS · 官网事实核对</span><h2>收款平台对照表</h2>
-<p>仅记录 2026-10-18 查阅的官方公开资料；费率为标示条件下的基础收费，具体地区、币种、订阅、提现和风险审核可能不同。请在注册前核对链接的最新版本。</p>
+<section class="t11-panel" id="payments"><span class="t11-step">收款工具怎么选 · 官网资料</span><h2>收款平台对照表</h2>
+<p>仅记录 2026年10月18日查阅的官方公开资料；费率为标示条件下的基础收费，具体地区、币种、订阅、提现和风险审核可能不同。请在注册前核对链接的最新版本。</p>
 <div class="t11-scroll"><table class="t11-table t11-payment" aria-label="三家收款平台核对表"><thead><tr>
 <th>平台</th><th>个人可否注册</th><th>提现方式</th><th>费率</th><th>审核要求</th><th>来源链接</th><th>核对日期</th>
 </tr></thead><tbody>{''.join(providers)}</tbody></table></div>
-<p>公开价格不能推导净收益。平台是否可用于中国大陆、日本或其他地区，请按官方最新资格和 KYC 规则逐案核实，不要使用虚假地区或主体资料。</p></section>
+<p>公开价格不能推导净收益。平台是否可用于中国大陆、日本或其他地区，请按官方最新资格和 实名或企业认证要求逐案核实，不要使用虚假地区或主体资料。</p></section>
 
-<section class="t11-panel" id="checklist"><span class="t11-step">CHECKLIST · 本地保存</span><h2>一周一组，勾掉做过的事</h2>
-<p>勾选状态只储存在当前浏览器的 <code>localStorage</code>，刷新后保留；见势不上传你的勾选记录。换设备、清理站点数据或关闭浏览器存储后可能丢失。</p>
+<section class="t11-panel" id="checklist"><span class="t11-step">每周打勾清单 · 本地保存</span><h2>一周一组，勾掉做过的事</h2>
+<p>勾选状态只储存在你这台手机或电脑的浏览器里，刷新后保留；见势不上传你的勾选记录。换设备、清理站点数据或关闭浏览器存储后可能丢失。</p>
 <output class="t11-progress" data-t11-progress role="status" aria-live="polite">已完成 0 项</output>
 {''.join(checklist)}
 </section>
-<section class="t11-panel" id="case0"><span class="t11-step">CASE 00 · 创始人观察日志</span><h2>真实执行，持续记录</h2>
+<section class="t11-panel" id="case0"><span class="t11-step">创始人实战 · 执行记录</span><h2>真实执行，持续记录</h2>
 <p>见势创始人正在用这套方法推自己的项目，进度日志 /log 即将上线。</p><p>这里不提前展示尚未核验的业绩、天数或销售结果。</p></section>
 </div><aside class="t11-side"><nav class="t11-toc" aria-label="页面章节"><b>冲刺路线</b>
 <a href="#step0">00　项目分诊</a><a href="#week1">01　能收钱</a><a href="#week23">02–03　找真人</a><a href="#week4">04　收入可验证</a>
 <a href="#fallback">失败预案</a><a href="#payments">收款平台比较</a><a href="#checklist">每周检查清单</a><a href="#case0">创始人案例</a>
-</nav></aside></div></main><footer class="t11-footer"><div class="t11-wrap">见势 JIANSHI · 方法手册仅供独立项目研究与执行，不构成经营或收益承诺。 <a href="/">首页</a> · <a href="/privacy/">隐私说明</a></div></footer></div>
+</nav></aside></div></main><footer class="t11-footer"><div class="t11-wrap">见势 · 方法手册仅供独立项目研究与执行，不构成经营或收益承诺。 <a href="/">首页</a> · <a href="/privacy/">隐私说明</a></div></footer></div>
 <script>window.JIANSHI_ANALYTICS_CONFIG={analytics_json};</script><script src="/analytics.js" defer></script>
 <script src="/sprint.js" defer></script></body></html>"""
     if any(word in markup for word in OLD_PROMISE_WORDS):

@@ -1,0 +1,512 @@
+[
+  {
+    "id": "datafast",
+    "revenue": {
+      "mrr": 29167,
+      "last_30d": 29990,
+      "all_time": 309390,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:21:15.851Z"
+    },
+    "founded_date": "2024-07-01",
+    "growth_30d": 8.7,
+    "updated_at": "2026-10-15",
+    "total_score": 13,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "shipfast",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 1146,
+      "all_time": 1272045,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:00:56.782Z"
+    },
+    "founded_date": "2023-07-03",
+    "growth_30d": -54,
+    "updated_at": "2026-10-15",
+    "total_score": 17,
+    "verdict": "可做"
+  },
+  {
+    "id": "turbostarter",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 4319,
+      "all_time": 79986,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "LemonSqueezy",
+      "source_last_synced": "2026-10-15T09:37:40.330Z"
+    },
+    "founded_date": "2026-02-25",
+    "growth_30d": 43.1,
+    "updated_at": "2026-10-15",
+    "total_score": 18,
+    "verdict": "可做"
+  },
+  {
+    "id": "sonar-aso-tool",
+    "revenue": {
+      "mrr": 3744,
+      "last_30d": 4199,
+      "all_time": 14189,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T09:55:18.721Z"
+    },
+    "founded_date": "2026-03-12",
+    "growth_30d": 15,
+    "updated_at": "2026-10-15",
+    "total_score": 20,
+    "verdict": "推荐"
+  },
+  {
+    "id": "search1api",
+    "revenue": {
+      "mrr": 1105,
+      "last_30d": 6418,
+      "all_time": 55390,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T12:02:32.887Z"
+    },
+    "founded_date": "2024-10-11",
+    "growth_30d": 406.7,
+    "updated_at": "2026-10-15",
+    "total_score": 15,
+    "verdict": "可做"
+  },
+  {
+    "id": "agentskit",
+    "revenue": {
+      "mrr": null,
+      "last_30d": 1139,
+      "all_time": 4305,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Polar",
+      "source_last_synced": "2026-10-15T11:13:22.135Z"
+    },
+    "founded_date": "2026-07-01",
+    "growth_30d": 26.1,
+    "updated_at": "2026-10-15",
+    "total_score": 18,
+    "verdict": "可做"
+  },
+  {
+    "id": "opentweet",
+    "revenue": {
+      "mrr": 3983,
+      "last_30d": 4315,
+      "all_time": 25250,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Paddle",
+      "source_last_synced": "2026-10-15T09:49:29.228Z"
+    },
+    "founded_date": "2025-12-01",
+    "growth_30d": 9.7,
+    "updated_at": "2026-10-15",
+    "total_score": 17,
+    "verdict": "可做"
+  },
+  {
+    "id": "getebook-ai",
+    "revenue": {
+      "mrr": 8634,
+      "last_30d": 37115,
+      "all_time": 135815,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T09:29:43.078Z"
+    },
+    "founded_date": "2025-07-29",
+    "growth_30d": -32.6,
+    "updated_at": "2026-10-15",
+    "total_score": 17,
+    "verdict": "可做"
+  },
+  {
+    "id": "mastros",
+    "revenue": {
+      "mrr": 1323,
+      "last_30d": 1311,
+      "all_time": 2337,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T12:27:10.605Z"
+    },
+    "founded_date": "2026-03-05",
+    "growth_30d": 114.2,
+    "updated_at": "2026-10-15",
+    "total_score": 16,
+    "verdict": "可做"
+  },
+  {
+    "id": "readlens",
+    "revenue": {
+      "mrr": 1059,
+      "last_30d": 2405,
+      "all_time": 4128,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "RevenueCat",
+      "source_last_synced": "2026-10-15T12:21:45.690Z"
+    },
+    "founded_date": "2026-05-01",
+    "growth_30d": 78.3,
+    "updated_at": "2026-10-15",
+    "total_score": 18,
+    "verdict": "可做"
+  },
+  {
+    "id": "1devtool",
+    "revenue": {
+      "mrr": 2.41,
+      "last_30d": 1242,
+      "all_time": 8460,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Lemon Squeezy",
+      "source_last_synced": "2026-10-15T10:30:05.745Z"
+    },
+    "founded_date": "2025-11-05",
+    "growth_30d": -23.6,
+    "updated_at": "2026-10-15",
+    "total_score": 16,
+    "verdict": "可做"
+  },
+  {
+    "id": "1clickwebsite-ai",
+    "revenue": {
+      "mrr": 14041,
+      "last_30d": 15608,
+      "all_time": 91875,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T14:23:04.223Z"
+    },
+    "founded_date": "2025-06-14",
+    "growth_30d": 15.6,
+    "updated_at": "2026-10-15",
+    "total_score": 21,
+    "verdict": "推荐"
+  },
+  {
+    "id": "3dplotter",
+    "revenue": {
+      "mrr": 0,
+      "last_30d": 2143,
+      "all_time": 14497,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:55:01.197Z"
+    },
+    "founded_date": "2025-12-26",
+    "growth_30d": -27.6,
+    "updated_at": "2026-10-15",
+    "total_score": 20,
+    "verdict": "推荐"
+  },
+  {
+    "id": "advanced-gsc-mcp",
+    "revenue": {
+      "mrr": 4721,
+      "last_30d": 4696,
+      "all_time": 15631,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T11:09:04.330Z"
+    },
+    "founded_date": "2026-04-29",
+    "growth_30d": 14.7,
+    "updated_at": "2026-10-15",
+    "total_score": 15,
+    "verdict": "可做"
+  },
+  {
+    "id": "aeo-checker",
+    "revenue": {
+      "mrr": 1059,
+      "last_30d": 1302,
+      "all_time": 15650,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T10:04:24.274Z"
+    },
+    "founded_date": "2025-05-16",
+    "growth_30d": 15.3,
+    "updated_at": "2026-10-15",
+    "total_score": 18,
+    "verdict": "可做"
+  },
+  {
+    "id": "ai-designer",
+    "revenue": {
+      "mrr": 9013,
+      "last_30d": 10578,
+      "all_time": 78738,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:38:22.477Z"
+    },
+    "founded_date": "2025-11-14",
+    "growth_30d": 28.2,
+    "updated_at": "2026-10-15",
+    "total_score": 14,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "adscriptly",
+    "revenue": {
+      "mrr": 2500,
+      "last_30d": 2500,
+      "all_time": 35481,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:53:54.215Z"
+    },
+    "founded_date": "2016-02-14",
+    "growth_30d": 0,
+    "updated_at": "2026-10-15",
+    "total_score": 13,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "saashunt",
+    "revenue": {
+      "mrr": 0,
+      "last_30d": 2000,
+      "all_time": 18303,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T09:03:29.415Z"
+    },
+    "founded_date": "2025-05-30",
+    "growth_30d": -15.7,
+    "updated_at": "2026-10-15",
+    "total_score": 17,
+    "verdict": "可做"
+  },
+  {
+    "id": "3d-agent",
+    "revenue": {
+      "mrr": 4952,
+      "last_30d": 5362,
+      "all_time": 26291,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T14:22:05.193Z"
+    },
+    "founded_date": "2025-10-24",
+    "growth_30d": 10,
+    "updated_at": "2026-10-15",
+    "total_score": 14,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "5-day-sprint",
+    "revenue": {
+      "mrr": 6272,
+      "last_30d": 3409,
+      "all_time": 246404,
+      "currency": "USD",
+      "as_of": "2026-10-15",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-15T08:06:50.780Z"
+    },
+    "founded_date": "2020-06-01",
+    "growth_30d": 5.4,
+    "updated_at": "2026-10-15",
+    "total_score": 18,
+    "verdict": "可做"
+  },
+  {
+    "id": "myfeedin",
+    "revenue": {
+      "mrr": 1350,
+      "last_30d": 2586,
+      "all_time": 30843,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2024-06-11",
+    "growth_30d": 54.5,
+    "updated_at": "2026-10-18",
+    "total_score": 16,
+    "verdict": "可做"
+  },
+  {
+    "id": "superx",
+    "revenue": {
+      "mrr": 22420,
+      "last_30d": 21824,
+      "all_time": 254578,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2025-08-14",
+    "growth_30d": 25.5,
+    "updated_at": "2026-10-18",
+    "total_score": 14,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "compresto",
+    "revenue": {
+      "mrr": 215,
+      "last_30d": 1935,
+      "all_time": 62497,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "Polar",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2023-12-18",
+    "growth_30d": 46.4,
+    "updated_at": "2026-10-18",
+    "total_score": 17,
+    "verdict": "可做"
+  },
+  {
+    "id": "ai-toolbox",
+    "revenue": {
+      "mrr": 1334,
+      "last_30d": 21001,
+      "all_time": 113519,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "LemonSqueezy",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2024-09-08",
+    "growth_30d": -2.7,
+    "updated_at": "2026-10-18",
+    "total_score": 15,
+    "verdict": "可做"
+  },
+  {
+    "id": "truesearch",
+    "revenue": {
+      "mrr": 3107,
+      "last_30d": 2934,
+      "all_time": 23318,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "RevenueCat",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2025-12-10",
+    "growth_30d": -19.2,
+    "updated_at": "2026-10-18",
+    "total_score": 13,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "rapidnative",
+    "revenue": {
+      "mrr": 5301,
+      "last_30d": 6074,
+      "all_time": 74805,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2025-03-06",
+    "growth_30d": -7.1,
+    "updated_at": "2026-10-18",
+    "total_score": 13,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "rooftops-ai",
+    "revenue": {
+      "mrr": 1124,
+      "last_30d": 2379,
+      "all_time": 25851,
+      "currency": "USD",
+      "as_of": "2026-10-17",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-17"
+    },
+    "founded_date": "2024-01-01",
+    "growth_30d": 388.5,
+    "updated_at": "2026-10-18",
+    "total_score": 12,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "blipix",
+    "revenue": {
+      "mrr": 1517,
+      "last_30d": 1722,
+      "all_time": 38277,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2025-02-08",
+    "growth_30d": 28.8,
+    "updated_at": "2026-10-18",
+    "total_score": 16,
+    "verdict": "可做"
+  },
+  {
+    "id": "rezi",
+    "revenue": {
+      "mrr": 246345,
+      "last_30d": 214250,
+      "all_time": 10365680,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "Stripe",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2015-05-22",
+    "growth_30d": -6,
+    "updated_at": "2026-10-18",
+    "total_score": 13,
+    "verdict": "不推荐"
+  },
+  {
+    "id": "practiceme",
+    "revenue": {
+      "mrr": 2956,
+      "last_30d": 3922,
+      "all_time": 24717,
+      "currency": "USD",
+      "as_of": "2026-10-18",
+      "verified_by": "RevenueCat",
+      "source_last_synced": "2026-10-18"
+    },
+    "founded_date": "2025-09-03",
+    "growth_30d": -23.8,
+    "updated_at": "2026-10-18",
+    "total_score": 17,
+    "verdict": "可做"
+  }
+]

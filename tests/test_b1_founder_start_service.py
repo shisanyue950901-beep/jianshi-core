@@ -89,8 +89,7 @@ class FounderStartTests(unittest.TestCase):
     def test_home_entry_leads_to_real_service_without_replacing_projects(self):
         html=build_home(eligible_cases(parse_cases()))
         self.assertIn('class="j2-first-service" href="/start/"',html)
-        self.assertIn('href="#j2-opportunities">直接看项目 ↓',html)
-        self.assertIn('href="/discover/">按方向找项目 →',html)
+        self.assertIn('href="/projects/">先看项目 →',html)
         self.assertEqual(html.count("<main "),1)
         self.assertEqual(html.count("<script>"),1)
         self.assertNotIn('type="email"',html)

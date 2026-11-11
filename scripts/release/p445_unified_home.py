@@ -68,7 +68,7 @@ def build_home(cases: list[dict]) -> str:
         raise RuntimeError("Unexpected JIANSHI2 portal wrapper")
     nav = (
         '<header class="j2-top"><div class="j2-wrap j2-top-inner">'
-        '<a class="j2-brand" href="/" aria-label="见势首页">见势 <span>JIANSHI 2.0</span></a>'
+        '<a class="j2-brand" href="/" aria-label="见势首页">见势 <span>项目研究</span></a>'
         '<nav class="j2-nav" aria-label="主要导航">'
         '<a href="#j2-opportunities">商业机会</a>'
         '<a href="#j2-solutions">企业解决方案</a>'
@@ -157,7 +157,7 @@ def build_home(cases: list[dict]) -> str:
     head = (
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-        '<meta name="color-scheme" content="light">'
+        '<meta name="color-scheme" content="light"><meta name="generator" content="JIANSHI 2.0">'
         '<meta name="robots" content="index,follow">'
         '<title>' + escape(TITLE) + '</title>'
         '<meta name="description" content="' + escape(DESCRIPTION, quote=True) + '">'
