@@ -142,6 +142,7 @@ Deno.serve(async (req: Request) => {
   let totalPages = 0;
   let requestCount = 0;
   let soldWarning: string | null = null;
+  let mappingHook: Record<string, any> = { status: "NOT_RUN" };
   const statusCounts: Record<string, { pages: number; fetched: number; accepted: number }> = {
     "For Sale": { pages: 0, fetched: 0, accepted: 0 },
     Sold: { pages: 0, fetched: 0, accepted: 0 },
@@ -300,6 +301,21 @@ Deno.serve(async (req: Request) => {
         .from("data_sources")
         .update({ last_success_at: new Date().toISOString() })
         .eq("id", source.id);
+
+      // P4.5C: evidence mapping is downstream enrichment.
+      // It is deliberately fail-isolated from the source collection result.
+      try {
+        const { data: hookData, error: hookError } = await admin.rpc(
+          "run_child_evidence_mapping_hook_v01",
+          { p_trigger_run_id: run.id },
+        );
+        mappingHook = hookError
+          ? { ok: false, status: "RPC_ERROR", error_code: hookError.code ?? null }
+          : (hookData ?? { ok: false, status: "EMPTY_RESULT" });
+      } catch (hookError) {
+        console.error("child evidence mapping hook failed", hookError);
+        mappingHook = { ok: false, status: "CLIENT_EXCEPTION" };
+      }
     }
 
     return new Response(
@@ -314,6 +330,7 @@ Deno.serve(async (req: Request) => {
         status_counts: statusCounts,
         sold_warning: soldWarning,
         sold_lookback_days: soldLookbackDays,
+        child_evidence_mapping_hook: mappingHook,
       }),
       {
         status: gatePass ? 200 : 503,
